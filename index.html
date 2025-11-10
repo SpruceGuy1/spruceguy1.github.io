@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CountrySim</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <table>
+            <tr id="r0"></tr>
+            <tr id="r1"></tr>
+            <tr id="r2"></tr>
+            <tr id="r3"></tr>
+            <tr id="r4"></tr>
+            <tr id="r5"></tr>
+            <tr id="r6"></tr>
+            <tr id="r7"></tr>
+        </table>
+        <script>
+        var i = 0
+        var j
+        var colors=[
+            "000000",
+            "000080",
+            "0000ff",
+            "008000",
+            "008080",
+            "0080ff",
+            "00ff00",
+            "00ff80",
+            "00ffff",
+            "800000",
+            "800080",
+            "8000ff",
+            "808000",
+            "808080",
+            "8080ff",
+            "80ff00",
+            "80ff80",
+            "80ffff",
+            "ff0000",
+            "ff0080",
+            "ff00ff",
+            "ff8000",
+            "ff8080",
+            "ffff00",
+            "ffff80",
+            "ffffff",
+            Math.floor(Math.random()*16777217).toString(16),
+            Math.floor(Math.random()*16777217).toString(16),
+            Math.floor(Math.random()*16777217).toString(16),
+            Math.floor(Math.random()*16777217).toString(16),
+            Math.floor(Math.random()*16777217).toString(16),
+            Math.floor(Math.random()*16777217).toString(16),
+            Math.floor(Math.random()*16777217).toString(16),
+            Math.floor(Math.random()*16777217).toString(16),
+            Math.floor(Math.random()*16777217).toString(16),
+            Math.floor(Math.random()*16777217).toString(16),
+            Math.floor(Math.random()*16777217).toString(16),
+            Math.floor(Math.random()*16777217).toString(16),
+            Math.floor(Math.random()*16777217).toString(16),
+            Math.floor(Math.random()*16777217).toString(16),
+            Math.floor(Math.random()*16777217).toString(16),
+            Math.floor(Math.random()*16777217).toString(16),
+            Math.floor(Math.random()*16777217).toString(16),
+            Math.floor(Math.random()*16777217).toString(16),
+            Math.floor(Math.random()*16777217).toString(16),
+            Math.floor(Math.random()*16777217).toString(16),
+            Math.floor(Math.random()*16777217).toString(16),
+            Math.floor(Math.random()*16777217).toString(16),
+            Math.floor(Math.random()*16777217).toString(16),
+            Math.floor(Math.random()*16777217).toString(16),
+            Math.floor(Math.random()*16777217).toString(16),
+            Math.floor(Math.random()*16777217).toString(16),
+            Math.floor(Math.random()*16777217).toString(16),
+            Math.floor(Math.random()*16777217).toString(16),
+            Math.floor(Math.random()*16777217).toString(16),
+            "804000",
+            "408000",
+            "004080",
+            "008040",
+            "800040",
+            "400080",
+            Math.floor(Math.random()*16777217).toString(16),
+            "ffc080",
+            "4040ff"
+            
+            ]
+            var sl = [
+                "Th",
+                "S",
+                "T",
+                "P",
+                "H"
+                ]
+                var cons = [
+                     "b",
+                     "bb",
+                     "c",
+                     "ch",
+                     "d",
+                     "dd",
+                     "f",
+                     "g",
+                     "gh",
+                     "h",
+                     "j",
+                     "k",
+                     "kh",
+                     "l",
+                     "ll",
+                     "m",
+                     "n",
+                     "nn",
+                     "mm",
+                     "p",
+                     "ph",
+                     "qu",
+                     "r",
+                     "rr",
+                     "s",
+                     "sh",
+                     "t",
+                     "th",
+                     "v",
+                     "w",
+                     "x",
+                     "y",
+                     "z"
+                    ]
+                    
+        var vow = [
+            "a",
+            "aa",
+            "ae",
+            "ai",
+            "au",
+            "aw",
+            "e",
+            "ee",
+            "i",
+            "igh",
+            "o",
+            "oa",
+            "oo",
+            "u",
+            "uh",
+            "ue"
+            ]
+        var names = []
+        for(i=0;i<=63;i++){
+            j=Math.floor(i/8)
+            names[i] = sl[Math.floor(Math.random() * sl.length)]+vow[Math.floor(Math.random() * vow.length)]+cons[Math.floor(Math.random() * cons.length)]+vow[Math.floor(Math.random() * vow.length)]+cons[Math.floor(Math.random() * cons.length)]
+            $("#r"+j).append("<td id='c"+i+"'>"+names[i]+"</td>")
+            $("#c"+i).css("background", "#"+colors[i])
+        }
+        $("#c30").append("<br>Gold:<span id='g'>0</span>")
+        var ctha = []
+        var c30g = 0
+        
+        var levels = [
+             1, 1, 1, 1, 1, 1, 1, 1,
+             1, 1, 1, 1, 1, 1, 1, 1,
+             1, 1, 1, 1, 1, 1, 1, 1,
+             1, 1, 1, 1, 1, 1, 1, 1,
+             1, 1, 1, 1, 1, 1, 1, 1,
+             1, 1, 1, 1, 1, 1, 1, 1,
+             1, 1, 1, 1, 1, 1, 1, 1,
+             1, 1, 1, 1, 1, 1, 1, 1,
+            
+            ]
+        var dirs = [-9, -8, -7, -1, 1, 7, 8, 9]
+        setInterval(()=>{
+            c30g+=levels[30]
+            $("#g").text(c30g)
+            if(Math.floor(Math.random()*6)==3){
+                var t = Math.floor(Math.random()*56)+8
+                if(!ctha.includes(t)){
+                    $("#c"+t).append(" Allied with "+names[t+dirs[Math.floor(Math.random() * dirs.length)]])
+                    ctha.push(t)
+                }
+            }
+            if(Math.floor(Math.random()*6)==2){
+                var t = Math.floor(Math.random()*64)
+                var u = Math.floor(Math.random()*6)
+                var v = t+dirs[Math.floor(Math.random() * dirs.length)]
+                switch(u){
+                    case 0:
+                        
+                        
+                         $("#c"+t).css("background", $("#c"+v).css("background"))
+            $("#c"+t).text("Annexed territory of "+names[v])
+                
+                break
+                case 1:
+                    $("#c"+t).append(" Enemy of "+names[v])
+                    break
+            }
+            }
+        },100)
+        setTimeout(()=>{
+            if(!ctha.includes(38)){
+            $("#c38").css("background", $("#c30").css("background"))
+            $("#c38").text("Annexed territory of "+names[30])
+            }
+            
+        },10000)
+        // Script tags should go at the end of the body:
+        </script>
+    </body>
+</html>
