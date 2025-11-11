@@ -17,6 +17,7 @@
             <tr id="r6"></tr>
             <tr id="r7"></tr>
         </table>
+        Wanderer has <span id="wgold">0</span> gold
         <script>
         var i = 0
         var j
@@ -205,9 +206,20 @@
             }
             
         },100)
+            var x
+            var y
+            var wgold = 0
         setInterval(()=>{
-            $("#wanderer").css("top", Math.floor(Math.random()*900)+"px")
-            $("#wanderer").css("left", Math.floor(Math.random()*900)+"px")
+            x=Math.floor(Math.random()*900)
+            y=Math.floor(Math.random()*900)
+            $("#wanderer").css("top", x+"px")
+            $("#wanderer").css("left", y+"px")
+            if(x>=$("table").width()){
+                wgold++
+                $("#wgold").text(wgold)
+            }
+            
+            
         },5000)
         setTimeout(()=>{
             if(!ctha.includes(38)){
