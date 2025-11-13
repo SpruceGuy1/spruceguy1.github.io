@@ -47,6 +47,8 @@
             }
             annex(n){
                 if(!this.alliances.includes(n.loc)){
+                    n.owner=this.loc
+                    n.area--
                     this.annexedTerritories.push(n.loc)
                     this.area++
                 }
