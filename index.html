@@ -21,8 +21,8 @@
         </table>
         Wanderer has <span id="wgold">0</span> gold
         
-        <div id="lb">
-        </div>
+        <ol id="lb">
+        </ol>
         <script>
         var i = 0
         var j
@@ -230,8 +230,10 @@
                 }
             }
             leaderboard.sort((a,b)=>b.area-a.area)
+            $("#lb").html("")
             for(let k of leaderboard){
-                $("#lb").html(k.name+"<br>")
+                
+                $("#lb").append("<li>"+k.name+"</li>")
                 
             }
             console.log("t")
