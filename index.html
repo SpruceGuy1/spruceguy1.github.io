@@ -21,6 +21,27 @@
         <script>
         var i = 0
         var j
+        var states = []
+        class State{
+            constructor(color, name, loc){
+                this.color = color
+                this.name = name
+                this.loc = loc
+                this.alliances = []
+                this.area = 1
+                this.annexedTerritories = []
+            }
+            ally(n){
+                this.alliances.push(n.loc)
+                n.alliances.push(this.loc)
+            }
+            annex(n){
+                if(!this.alliances.includes(n.loc)){
+                    this.annexedTerritories.push(n.loc)
+                    this.area++
+                }
+            }
+        }
         var colors=[
             "000000",
             "000080",
@@ -160,6 +181,7 @@
             names[i] = sl[Math.floor(Math.random() * sl.length)]+vow[Math.floor(Math.random() * vow.length)]+cons[Math.floor(Math.random() * cons.length)]+vow[Math.floor(Math.random() * vow.length)]+cons[Math.floor(Math.random() * cons.length)]
             $("#r"+j).append("<td id='c"+i+"'>"+names[i]+"</td>")
             $("#c"+i).css("background", "#"+colors[i])
+            states.push(new State(colors[i], names[i], i))
         }
         $("#c30").append("<br>Gold:<span id='g'>0</span>")
         var ctha = []
@@ -176,16 +198,18 @@
              1, 1, 1, 1, 1, 1, 1, 1,
             
             ]
+        
         var dirs = [-9, -8, -7, -1, 1, 7, 8, 9]
         setInterval(()=>{
             c30g+=levels[30]
             $("#g").text(c30g)
             if(Math.floor(Math.random()*6)==3){
                 var t = Math.floor(Math.random()*56)+8
-                if(!ctha.includes(t)){
-                    $("#c"+t).append(" Allied with "+names[t+dirs[Math.floor(Math.random() * dirs.length)]])
-                    ctha.push(t)
-                }
+                var u = t+dirs[Math.floor(Math.random() * dirs.length)]
+                    $("#c"+t).append(" Allied with "+names[u])
+                    states[t].ally(states[u])
+                    
+                
             }
             if(Math.floor(Math.random()*6)==2){
                 var t = Math.floor(Math.random()*64)
@@ -194,9 +218,10 @@
                 switch(u){
                     case 0:
                         
-                        
+                        if(!states[v].alliances.includes(t)){
                          $("#c"+t).css("background", $("#c"+v).css("background"))
             $("#c"+t).text("Annexed territory of "+names[v]+", originally "+names[t])
+                        }
                 
                 break
                 case 1:
