@@ -229,14 +229,18 @@
             leaderboard.sort((a,b)=>b.area-a.area)
             for(let k of leaderboard){
                 $("#lb").html(k.name+"<br>")
+                
             }
-            
+            console.log("t")
             if(Math.floor(Math.random()*6)==2){
                 var t = Math.floor(Math.random()*64)
                 var u = Math.floor(Math.random()*6)
                 var v = t+dirs[Math.floor(Math.random() * dirs.length)]
                 switch(u){
                     case 0:
+                        if(v>=64 || v<= -1){
+                            v = t+dirs[Math.floor(Math.random() * dirs.length)]
+                        }
                         
                         if(!states[v].alliances.includes(t)){
                          $("#c"+t).css("background", $("#c"+v).css("background"))
@@ -249,7 +253,7 @@
                     break
             }
             }
-            console.log(leaderboard)
+           // console.log(leaderboard)
             
         },100)
             var x
