@@ -195,7 +195,7 @@
             $("#c"+i).css("background", "#"+colors[i])
             states.push(new State(colors[i], names[i], i))
         }
-        $("td").click(()=>{
+        $("td").click(function(){
             console.log($(this).attr("id"))
             alert($(this).attr("id")+`
             Area: ${states[$(this).attr("id").substring(1)].area}
