@@ -32,6 +32,7 @@
         <br><button id="cf">Change font</button>
         <script>
         var i = 0
+        
         var j
         var states = []
         class State{
@@ -233,6 +234,21 @@
             $("td").css("font-family", fonts[s])
             $("#font").text(fn[s])
         })
+        async function getData() {
+  const url = "data.json";
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+    const result = await response.json();
+    console.log(result);
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+            await getData();
         setInterval(()=>{
             c30g+=levels[30]
             $("#g").text(c30g)
@@ -318,21 +334,7 @@
             $("#c"+Math.floor(Math.random()*64)).append("<img id='wanderer' src='wanderer.png'>")
             console.info(leaderboard)
         },10000)
-            async function getData() {
-  const url = "data.json";
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`);
-    }
 
-    const result = await response.json();
-    console.log(result);
-  } catch (error) {
-    console.error(error.message);
-  }
-}
-            await getData();
         // Script tags should go at the end of the body:
         </script>
     </body>
