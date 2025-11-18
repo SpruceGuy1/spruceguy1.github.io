@@ -51,6 +51,7 @@
             }
             annex(n){
                 if(!this.alliances.includes(n.loc)){
+                    console.log(this.owner)
                      states[n.owner].area--
                     n.owner=states[this.owner].loc
                    
