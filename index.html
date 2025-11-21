@@ -5,6 +5,8 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <link rel="stylesheet" href="style.css">
         <script src="//cdn.jsdelivr.net/npm/eruda"></script>
+        <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.27.2.min.js"></script>
+        
 <script>eruda.init();</script>
         <base target="_blank"/>
     </head>
@@ -334,7 +336,30 @@ req.send(d);
             $("#c"+Math.floor(Math.random()*64)).append("<img id='wanderer' src='wanderer.png'>")
             console.info(leaderboard)
         },10000)
-
+        var pubnub = new PubNub({
+            publishKey:"pub-c-327bd66c-dba9-4825-9d83-78888e2cebd1",
+            subscribeKey:"sub-c-3fef8705-c927-4394-83a3-481da882cd34"
+        })
+        function sm(msg){
+            pubnub.publish({
+                channel:"message",
+                message:{
+                    text:msg
+                }
+            })
+        }
+        pubnub.addListener({
+            message:function(m){
+                console.log(m.message.text)
+            }
+        })
+        pubnub.subscribe({
+            channels: ["message"]
+        })
+        function si(){
+            sm("joe")
+        }
+        si()
         // Script tags should go at the end of the body:
         </script>
     </body>
