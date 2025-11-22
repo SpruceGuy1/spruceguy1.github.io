@@ -3,6 +3,9 @@
   <head>
     <link rel="stylesheet" href="style.css"/>
     <title>Blocks</title>
+    <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.27.2.min.js"></script>
+        
+<script>eruda.init();</script>
   </head>
   <body>
     <h1>Blocks</h1>
@@ -53,7 +56,7 @@ var ctx = c.getContext("2d");
             ctx.fillStyle="#c0c0c0"
             break;
         }
-        ctx.fillRect(16*(i-(16*j)),16*j,10,10)
+        ctx.fillRect(10*(i-(16*j)),10*j,10,10)
       }
     </script>
   </body>
