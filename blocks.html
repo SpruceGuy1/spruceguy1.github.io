@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css"/>
+    <title>Blocks</title>
+  </head>
+  <body>
+    <h1>Blocks</h1>
+    <p>Alpha 0.1</p>
+    <canvas id="game" height="160" width="160">
+      
+    </canvas>
+    <script>
+      var cgs = [
+      "wwwwwwwwwwwwwwww",
+      "wwwwwwwffwwwwwww",
+      "wwwwwwffffwwwwww",
+      "wwwwwffffffwwwww",
+      "wwwwffffffffwwww",
+      "wwwffffffffffwww",
+      "wwffffffffffffww",
+      "wffffffffffffffw",
+      "ffffffffffffffff",
+      "fffffffggfffffff",
+      "ffffffggggffffff",
+      "fffffggggggfffff",
+      "ffffggggggggffff",
+      "fffggggggggggfff",
+      "ffggggggggggggff",
+      "fggggggggggggggf"
+      
+      ]
+      for(let k of cgs){
+        k=Array.from(k)
+      }
+      var i = 0
+      var j = 0
+      var c = document.getElementById("game");
+var ctx = c.getContext("2d");
+      for(i=0;i<=255;i++){
+        j = Math.floor(i/16)
+        switch(cgs[i]){
+          case "w":
+            ctx.fillStyle="#0000ff"
+            break;
+          case "f":
+            ctx.fillStyle="#008000"
+            break;
+          case "g":
+            ctx.fillStyle="#408000"
+            break;
+          case "m":
+            ctx.fillStyle="#c0c0c0"
+            break;
+        }
+        ctx.fillRect(16*(i-(16*j)),16*j,10,10)
+      }
+    </script>
+  </body>
+</html>
