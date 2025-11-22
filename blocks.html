@@ -42,7 +42,7 @@
 var ctx = c.getContext("2d");
       for(i=0;i<=255;i++){
         j = Math.floor(i/16)
-        switch(cgs[j][i%16])
+        switch(cgs[j][i%16]){
           case "w":
             ctx.fillStyle="#0000ff"
             break;
