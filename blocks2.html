@@ -11,11 +11,13 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.2
+    Beta 1.3
+    <canvas width="1024" height="1024" id="game"></canvas>
     <script>
       var bt = ""
       var temp = ""
       var game = ""
+      var c = document.getElementByID("game").getContext("2d")
       function simplify(t){
           return Math.floor(4*t)
       }
@@ -49,6 +51,80 @@
 
       }
       console.log(game)
+      game = Array.from(game)
+      for(let iy = 0; iy < 64; iy++){
+        for(let ix = 0; ix < 64; ix++){
+          switch(game[iy*16+ix]){
+            case "0":
+              c.fillStyle="#c0ffff"
+              //tundra
+              break
+            case "1":
+              c.fillStyle="blue"
+              //water
+              break
+            case "2":
+              c.fillStyle="#80ff80"
+              //plains
+              break
+            case "3":
+              c.fillStyle="#ffff80"
+              //sand
+              break
+            case "4":
+              c.fillStyle="#305040"
+              //taiga
+              break
+            case "5":
+              c.fillStyle="#006030"
+              //forest
+              break
+            case "6":
+              c.fillStyle="008000"
+              //deciduous
+              break
+            case "7":
+              c.fillStyle="#806000"
+              //savanna
+              break
+            case "8":
+              c.fillStyle="#d8d8d8"
+              //snowy mountains
+              break
+            case "9":
+              c.fillStyle="#c0c0c0"
+              //mountains
+              break
+            case "a":
+              c.fillStyle="#808080"
+              //stone
+              break
+            case "b":
+              c.fillStyle="#ffffc0"
+              //sand dunes
+              break
+            case "c":
+              c.fillStyle="#008080"
+              //snowy hills
+              break
+            case "d":
+              c.fillStyle="#60b060"
+              //hills
+              break
+            case "e":
+              c.fillStyle="#80c080"
+              //grassland
+              break
+            case "f":
+              c.fillStyle="#808000"
+              //highland
+              break
+              
+          }
+          c.fillRect(16*ix,16*iy,16,16)
+        }
+      }
+
     </script>
   </body>
 </html>
