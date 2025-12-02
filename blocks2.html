@@ -11,10 +11,34 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.0
+    Beta 1.1
     <script>
-      const noise2D =simplexNoise.createNoise2D();
-  console.log(noise2D(0.5, 0.5));
+      var bt = ""
+      var temp = ""
+      function simplify(t){
+          return 4*Math.floor(t)
+      }
+      var noise = new Noise()
+      for(let i = 0; i<=63; i++){
+          for(let j = 0; j<=63; j++){
+              var value = Math.abs(noise.perlin2(i / 100, j / 100));
+      value = simplify(value)
+      bt += value
+      
+      
+          }
+      }
+         for(i = 0; i<=63; i++){
+          for(j = 0; j<=63; j++){
+              var value2 = Math.abs(noise.perlin2(i / 100, j / 100));
+      value2 = simplify(value2)
+      temp += value2
+      
+      
+          }
+      }
+        console.log(bt)
+        console.log(temp)
     </script>
   </body>
 </html>
