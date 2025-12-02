@@ -11,10 +11,11 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.1.1
+    Beta 1.2
     <script>
       var bt = ""
       var temp = ""
+      var game = ""
       function simplify(t){
           return Math.floor(4*t)
       }
@@ -28,6 +29,7 @@
       
           }
       }
+      noise = new Noise()
          for(i = 0; i<=63; i++){
           for(j = 0; j<=63; j++){
               var value2 = Math.abs(noise.perlin2(i / 100, j / 100));
@@ -39,6 +41,14 @@
       }
         console.log(bt)
         console.log(temp)
+        bt = Array.from(bt)
+        temp = Array.from(temp)
+      for(let k = 0; k<4096; k++){
+        game += ((4*bt[k])+temp[k]).toString(16)
+        
+
+      }
+      console.log(game)
     </script>
   </body>
 </html>
