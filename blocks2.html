@@ -11,7 +11,7 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.4
+    Beta 1.4.1
     <canvas width="1024" height="1024" id="game"></canvas>
     <script>
       var bt = ""
@@ -47,7 +47,7 @@
         bt = Array.from(bt)
         temp = Array.from(temp)
       for(let k = 0; k<4096; k++){
-        game += ((4*bt[k])+temp[k]).toString(16)
+        game += ((4*Number(bt[k]))+Number(temp[k])).toString(16)
         
 
       }
