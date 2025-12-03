@@ -11,7 +11,7 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.4.1
+    Beta 1.4.2
     <canvas width="1024" height="1024" id="game"></canvas>
     <script>
       var bt = ""
@@ -19,6 +19,7 @@
       var game = ""
       var c = document.getElementById("game").getContext("2d")
       function simplify(s){
+        console.error(s)
           var t = (s+1)/2
           return Math.floor(4*t)
       }
