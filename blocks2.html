@@ -11,7 +11,7 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.4.3
+    Beta 1.4.4
     <canvas width="1024" height="1024" id="game"></canvas>
     <script>
       var bt = ""
@@ -19,7 +19,7 @@
       var game = ""
       var c = document.getElementById("game").getContext("2d")
       function simplify(s){
-        return Math.abs(Math.floor(4*s))
+        return Math.floor((s+1)*2)
       }
       var noise = new Noise(Math.random())
       for(let i = 0; i<=63; i++){
