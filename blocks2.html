@@ -11,7 +11,7 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.4.4
+    Beta 1.5
     <canvas width="1024" height="1024" id="game"></canvas>
     <script>
       var bt = ""
@@ -24,7 +24,7 @@
       var noise = new Noise(Math.random())
       for(let i = 0; i<=63; i++){
           for(let j = 0; j<=63; j++){
-              var value = Math.abs(noise.perlin2(i / 100, j / 100));
+              var value = noise.perlin2(i / 64, j / 64);
       value = simplify(value)
       bt += value
       
@@ -34,7 +34,7 @@
       noise = new Noise(Math.random)
          for(i = 0; i<=63; i++){
           for(j = 0; j<=63; j++){
-              var value2 = Math.abs(noise.perlin2(i / 100, j / 100));
+              var value2 = noise.perlin2(i / 64, j / 64);
       value2 = simplify(value2)
       temp += value2
       
@@ -54,7 +54,7 @@
       game = Array.from(game)
       for(let iy = 0; iy < 64; iy++){
         for(let ix = 0; ix < 64; ix++){
-          switch(game[iy*16+ix]){
+          switch(game[iy*64+ix]){
             case "0":
               c.fillStyle="#c0ffff"
               //tundra
