@@ -11,7 +11,7 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.7.1
+    Beta 1.7.2
     <canvas width="1024" height="1024" id="game"></canvas>
     <button id="regen">Regenerate</button>
     <select id="menu">
@@ -324,7 +324,7 @@
       $("#regen").click(function(){
         perl()
       })
-      $("menu").change(function(){
+      $("#menu").change(function(){
         var t = $("#menu").val()
         switch(t){
           case "perlin":
