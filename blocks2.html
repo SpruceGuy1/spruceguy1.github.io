@@ -11,7 +11,7 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.7.2
+    Beta 1.8
     <canvas width="1024" height="1024" id="game"></canvas>
     <button id="regen">Regenerate</button>
     <select id="menu">
@@ -20,6 +20,10 @@
       </optgroup>
       <optgroup label="Other">
         <option value="every">All 16</option>
+        
+      </optgroup>
+      <optgroup label="Real Life">
+        <option value="italy">Italy</option>
       </optgroup>
     </select>
     <script>
@@ -321,6 +325,83 @@
         }
       }
       }
+      function italy(){
+        game = "beebbbbbebbbbbbebbbbbbeebbbbbeeebbbbebbbbeeeeeeeeeeeeeeeeeeeeeeebbbbebbbeebebeebebbebbbbebbeeeeeeeeeeeeebeeeeeeeeeeeeeeeeeee00eebbbbebbbebbebeebebbebbbbeebeeeeeeeeebeeebeeeeeee0eeeeeeeeeee00eebbbbbbbeebbebbbbebbbbbbbeeebbbeeeeeebbebbbbeeebb00eeeeeeeeeeebeeebbeeeebeeee0ebbeeeeeeebeeeebbbbeeeebbeebeeeeeeeeebeeeeeeeeeeeeeeeebebeeeebb0ebbbbbeeeebeeeeebbbeeeeeeeeeeeeeebbeeeeeeeeeeeeeeeeeeebeeeeeebeeeebbbbbeeebeeeeeebbeeeeeeeeeeeeebbbe00eeeeeeeeeeeeebbbeeeeeee00e00eeeebeeeebbbeeeeeeeeeeeeeeebeeeeeb00eeeeeeeeeeeeebbbee00eeeeeeeeeeeeee00eeeeeeeebe000000bbbbbeeeeeeeeeeeeeebbeeeebbbbe00eeeeeeeeeeeeee00eeeeee0000000000be00beeeeebeeee00eeebeeeebbbbeeeeeeee0ee0000ee0000eeee0000000000ee00b0eeeebeeee00eeebe00ebbbeebbeeeee0000000eee0000eeee000000000be00000bebeeeeebbeeeee00bbbbeeeeeeeeeebbeeeeeeeeeeeeeee000000000b000000eeeeeebbbeeeebeeebeeeeebbbbbbbbeeebeeebeeeeeeeee000000000000000eebbbbeebbbbbbeeebeeeeeebbbbbbe0eebbeeebeeeeeeeee000000000000000000ebbeebbebbbeebbbbeeebbbbee0000eeeeebbeebebbeee000000000000000000eeeebbeeeeebbebbbeebeebb000000000eebeeeeebbbbbe0000000000000000bbeeebeeebbbbebbbeeeeee00000000000000eeeeebbbbbbe000000000000000000eeeeeebbbbbbbeeee00000000000000000eeeeebbbbbbbbb00000000000000000eeeebbbbbbbbeee000000000000000000eeeeeeeebebbeeeeb00000000000000eeebbbbeeebbb00000000000000000000eeeebeeeeebbeeebbe000000000000000000bbbbeeee0000000000000000000000ebbeeeeee0ebbbee000000000000000000000bebbb00000000000000000000000bbeeeee00ebbbee000000000000000000000b0ebb00000000000000000000000eebbeee00eeebeeee0000000000000000000b00eb000000000000ee0000000000eeee00beebbbeeee000000000000000000000000000000000000eee00000000000be0be0ebbbeeee00000000000000000000000000000000000beeee000000000000ebe0ebbbeeeeeb000000000000000000000000000000000bbee0000000000000eeebebbbeeeebeee00000000000000000000000000000000ee000000000000000000ebbbebbeebbeeeeeeeeb000000000000000000000000ee000000000000000000eebbebbeebbeebeeee00000000000000000000000000000000000000000000000eebebbeebbebbbeee0000000000000000000000000000000000000000000000000eeeee0eebbbeeeeee000000000000000000000000000000000000000000000000000beeeeebbee0ebeeee000000000000000000000bb0000000000000000000000000eeebebe0eebbeeee00000000000000000000bbbe000000000000000000000000000bbbe0bbbbeeeebb000000000000000bbeebbeb00000000000000000000000000beeebbbbbeeeeeeeee0000000000000ebbbbeb00000000000000000000000000000bbbbbeeeee00beeeee0000000000bebeee0000000000000000000000000000000bbbbeee00000000ee0000000000bebeeb000000000000000000000000000000000bbeee000000000e0000000000eebbbb0000000000000000000000000000000000bbee00000000000000000000eeeeee00000000000000000000000000000000000eb000000000000000000000beeebe00000000000000000000000000000000000bbe0000000000000000000eeeee00000000000000000000000000000000000000bbbbb000000000000000beebe000000000000000000000000000000000000000eeeee000000000000000000b0000000000000000000000000000000000000000eeeeb00000000000000000000000000000000000000000000000000000000000b00000000000000000000000000000000000000000000000000000000000000bb00000000000000000000000000000000000000000000000000000000000000bee000000000000000000000000000000000000000000000000000000000e00be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000eeeeeeebeebebe000000000000000000000000000000000000000000000000000eebeeeebbbbbe000000000000000000000000000000000000000000000000000000ebbbebbeee000000000000000000000000000000000000000000000000000000000beeebee00000000000000000000000000000000eeeb0000000000000000000000000bee000000000000000000000bb000000beeeebe00000000000000000000000000ee000000000000000000eeeeeeebeeebeeeeeeeeeeee0000000000000000000000000000000000000000bbbeeeebeeeebeeeeeeeee000000000000000000000000000000000000000000bbbeeeeebeeebbbbeeee00000000000000000000000000000000000000000000ebbbebbbbeebbebbeeee00000000000000000000000000000000000000000000beebbeeeeebbebbbeeeee0000000000000000000000000000000000000000000beebebbbbeebebbeeeeee0000000000000000000000000000000000000000000bbbbebbbbbbbbbbbbbeeeb000000000000000000000000000000000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        game = Array.from(game)
+        console.log(game)
+      for( iy = 0; iy < 64; iy++){
+        for( ix = 0; ix < 64; ix++){
+          switch(game[iy*64+ix]){
+            case "0":
+              c.fillStyle="#c0ffff"
+              //tundra
+              break
+            case "1":
+              c.fillStyle="blue"
+              //water
+              break
+            case "2":
+              c.fillStyle="#80ff80"
+              //plains
+              break
+            case "3":
+              c.fillStyle="#ffff80"
+              //sand
+              break
+            case "4":
+              c.fillStyle="#305040"
+              //taiga
+              break
+            case "5":
+              c.fillStyle="#006030"
+              //forest
+              break
+            case "6":
+              c.fillStyle="008000"
+              //deciduous
+              break
+            case "7":
+              c.fillStyle="#806000"
+              //savanna
+              break
+            case "8":
+              c.fillStyle="#d8d8d8"
+              //snowy mountains
+              break
+            case "9":
+              c.fillStyle="#c0c0c0"
+              //mountains
+              break
+            case "a":
+              c.fillStyle="#808080"
+              //stone
+              break
+            case "b":
+              c.fillStyle="#ffffc0"
+              //sand dunes
+              break
+            case "c":
+              c.fillStyle="#008080"
+              //snowy hills
+              break
+            case "d":
+              c.fillStyle="#60b060"
+              //hills
+              break
+            case "e":
+              c.fillStyle="#80c080"
+              //grassland
+              break
+            case "f":
+              c.fillStyle="#808000"
+              //highland
+              break
+              
+          }
+          c.fillRect(16*ix,16*iy,16,16)
+        }
+      }
+      }
       $("#regen").click(function(){
         perl()
       })
@@ -332,6 +413,9 @@
             break
           case "every":
             every()
+            break
+          case "italy":
+            italy()
             break
 
         }
