@@ -11,7 +11,7 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.10
+    Beta 1.11
     <div id="cc" style="position:relative;">
           <canvas width="1024" height="1024" id="game"></canvas>
           <div id="player" style="position:absolute; left:0; top:0; ">
@@ -34,12 +34,14 @@
       </optgroup>
      
     </select>
-     You have <span id="hp">20</span> hp.
+     You have <span id="hp">20</span> hp and $<span id="cash">0</span>.
       <button id="up">Up</button>
       <button id="down">Down</button>
       <button id="left">Left</button>
       <button id="right">Right</button>
+    <button id="makePizza">Make pizza</button>
     <script>
+      
       var bt = ""
       var temp = ""
       var game = ""
@@ -47,14 +49,21 @@
       var p = {
         x:0,
         y:0,
+        $:0,
         inv:[],
         hp:20,
-        takeDamage:()=>{ 
-          this.hp--
-          if(this.hp==0){
+        takeDamage:(t)=>{ 
+          this.hp-=t
+          $('#hp').text(this.hp)
+          if(this.hp<=0){
             alert("You died.")
           }
+        },
+        genHP:(t)=>{
+          this.hp += t
+          $('#hp').text(this.hp)
         }
+
       
       }
       function simplify(s){
@@ -548,6 +557,31 @@
       $("#down").click(down)
       $("#left").click(left)
       $("#right").click(right)
+      
+      $("#pizza").click(function(){
+        var flav = $(this).attr(src)
+        switch(flav){
+          case "pizza.png":
+            var se = prompt("Would you like to sell or eat? (lowercase \"sell\"or \"eat\")")
+            if(se=="sell"){
+              p.$ += 1
+              $("#cash").text(p.$)
+            }else{
+              p.genHP(3)
+            }
+            break
+          case "mushroom-pizza.png":
+            var se = prompt("Would you like to sell or eat? (lowercase \"sell\"or \"eat\")")
+            if(se=="sell"){
+              p.$ += 1.5
+              $("#cash").text(p.$)
+            }else{
+              p.genHP(4.5)
+            }
+            break
+            
+        }
+      })
     </script>
   </body>
 </html>
