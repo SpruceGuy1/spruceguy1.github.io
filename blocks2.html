@@ -11,7 +11,7 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.11.2
+    Beta 1.11.3
     <div id="cc" style="position:relative;">
           <canvas width="1024" height="1024" id="game"></canvas>
           <div id="player" style="position:absolute; left:0; top:0; ">
@@ -528,9 +528,9 @@
           case "italy":
             var q = Math.floor(Math.random()*2)
             if(q==1){
-              $("body").append('<img id="pizza" src="mushroom-pizza.png"/>')
+              $("body").append('<img id="pizza" class="pizza mush" src="mushroom-pizza.png"/>')
             }else{
-              $("body").append('<img id="pizza" src="pizza.png"/>')
+              $("body").append('<img id="pizza" class="pizza pepp" src="pizza.png"/>')
             }
             italy()
             break
@@ -558,20 +558,11 @@
       $("#left").click(left)
       $("#right").click(right)
       
-      $("#pizza").click(function(){
-        var flav = $(this).attr("src")
-        console.log(flav)
-        switch(flav){
-          case "pizza.png":
-            var se = prompt("Would you like to sell or eat? (lowercase \"sell\"or \"eat\")")
-            if(se=="sell"){
-              p.$ += 1
-              $("#cash").text(p.$)
-            }else{
-              p.genHP(3)
-            }
-            break
-          case "mushroom-pizza.png":
+      $(".mush").click(function(){
+        
+        
+          
+          
             var se = prompt("Would you like to sell or eat? (lowercase \"sell\"or \"eat\")")
             if(se=="sell"){
               p.$ += 1.5
@@ -579,7 +570,23 @@
             }else{
               p.genHP(4.5)
             }
-            break
+            
+            
+        }
+      })
+      $(".pepp").click(function(){
+        
+        
+          
+          
+            var se = prompt("Would you like to sell or eat? (lowercase \"sell\"or \"eat\")")
+            if(se=="sell"){
+              p.$ += 1
+              $("#cash").text(p.$)
+            }else{
+              p.genHP(3)
+            }
+            
             
         }
       })
