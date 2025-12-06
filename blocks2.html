@@ -11,7 +11,7 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.11.5
+    Beta 1.12
     <div id="cc" style="position:relative;">
           <canvas width="1024" height="1024" id="game"></canvas>
           <div id="player" style="position:absolute; left:0; top:0; ">
@@ -40,12 +40,18 @@
       <button id="left">Left</button>
       <button id="right">Right</button>
     <button id="makePizza">Make pizza</button>
+    <div id="pizza-container"></div>
+    <select id="menu2">
+      <option value="sell">Sell</option>
+      <option value="eat">Eat</option>
+    </select>
     <script>
       
       var bt = ""
       var temp = ""
       var game = ""
       var c = document.getElementById("game").getContext("2d")
+      var se = "sell"
       var p = {
         x:0,
         y:0,
@@ -528,9 +534,9 @@
           case "italy":
             var q = Math.floor(Math.random()*2)
             if(q==1){
-              $("body").append('<img id="pizza" class="pizza mush" onclick="mush()" src="mushroom-pizza.png"/>')
+              $("#pizza-container").append('<img id="pizza" class="pizza mush" onclick="mush()" src="mushroom-pizza.png"/>')
             }else{
-              $("body").append('<img id="pizza" class="pizza pepp" onclick="pepp()" src="pizza.png"/>')
+              $("#pizza-container").append('<img id="pizza" class="pizza pepp" onclick="pepp()" src="pizza.png"/>')
             }
             italy()
             break
@@ -561,8 +567,8 @@
         
         
           
-          
-            var se = prompt("Would you like to sell or eat? (lowercase \"sell\"or \"eat\")")
+            $("#pizza-container:last-child()").remove()
+            
             if(se=="sell"){
               p.$ += 1.5
               $("#cash").text(p.$)
@@ -579,8 +585,8 @@
         
         
           
-          
-            var se = prompt("Would you like to sell or eat? (lowercase \"sell\"or \"eat\")")
+            $("#pizza-container:last-child()").remove()
+            
             if(se=="sell"){
               p.$ += 1
               $("#cash").text(p.$)
@@ -592,6 +598,18 @@
         
       }
       $(".pepp").click(pepp)
+      $("#menu2").change(function(){
+        var t = $("#menu2").val()
+        se = t
+      })
+      $("#makePizza").click(function(){
+        var q = Math.floor(Math.random()*2)
+            if(q==1){
+              $("#pizza-container").append('<img id="pizza" class="pizza mush" onclick="mush()" src="mushroom-pizza.png"/>')
+            }else{
+              $("#pizza-container").append('<img id="pizza" class="pizza pepp" onclick="pepp()" src="pizza.png"/>')
+            }
+      })
     </script>
   </body>
 </html>
