@@ -11,7 +11,7 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.11.1
+    Beta 1.11.2
     <div id="cc" style="position:relative;">
           <canvas width="1024" height="1024" id="game"></canvas>
           <div id="player" style="position:absolute; left:0; top:0; ">
@@ -560,6 +560,7 @@
       
       $("#pizza").click(function(){
         var flav = $(this).attr("src")
+        console.log(flav)
         switch(flav){
           case "pizza.png":
             var se = prompt("Would you like to sell or eat? (lowercase \"sell\"or \"eat\")")
