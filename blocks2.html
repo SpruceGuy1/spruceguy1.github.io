@@ -11,7 +11,7 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.11.4
+    Beta 1.11.5
     <div id="cc" style="position:relative;">
           <canvas width="1024" height="1024" id="game"></canvas>
           <div id="player" style="position:absolute; left:0; top:0; ">
@@ -528,9 +528,9 @@
           case "italy":
             var q = Math.floor(Math.random()*2)
             if(q==1){
-              $("body").append('<img id="pizza" class="pizza mush" src="mushroom-pizza.png"/>')
+              $("body").append('<img id="pizza" class="pizza mush" onclick="mush()" src="mushroom-pizza.png"/>')
             }else{
-              $("body").append('<img id="pizza" class="pizza pepp" src="pizza.png"/>')
+              $("body").append('<img id="pizza" class="pizza pepp" onclick="pepp()" src="pizza.png"/>')
             }
             italy()
             break
@@ -557,8 +557,7 @@
       $("#down").click(down)
       $("#left").click(left)
       $("#right").click(right)
-      
-      $(".mush").click(function(){
+      function mush(){
         
         
           
@@ -573,8 +572,10 @@
             
             
         
-      })
-      $(".pepp").click(function(){
+      }
+      $(".mush").click(mush)
+      
+      function pepp(){
         
         
           
@@ -589,7 +590,8 @@
             
             
         
-      })
+      }
+      $(".pepp").click(pepp)
     </script>
   </body>
 </html>
