@@ -11,7 +11,7 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.9.1
+    Beta 1.10
     <div id="cc" style="position:relative;">
           <canvas width="1024" height="1024" id="game"></canvas>
           <div id="player" style="position:absolute; left:0; top:0; ">
@@ -517,6 +517,12 @@
             every()
             break
           case "italy":
+            var q = Math.floor(Math.random()*2)
+            if(q==1){
+              $("body").append('<img id="pizza" src="mushroom-pizza.png"/>')
+            }else{
+              $("body").append('<img id="pizza" src="pizza.png"/>')
+            }
             italy()
             break
 
