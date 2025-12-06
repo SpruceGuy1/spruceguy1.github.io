@@ -11,8 +11,15 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.8.2
-    <canvas width="1024" height="1024" id="game"></canvas>
+    Beta 1.9
+    <div id="cc" style="position:relative;">
+          <canvas width="1024" height="1024" id="game"></canvas>
+          <div id="player" style="position:absolute; left:0; top:0; ">
+            <img src="Riggy.png">
+
+          </div>
+    </div>
+
     <button id="regen">Regenerate</button>
     <select id="menu">
       <optgroup label="Generated">
@@ -25,12 +32,30 @@
       <optgroup label="Real Life">
         <option value="italy">Italy</option>
       </optgroup>
+      You have <span id="hp">20</span> hp.
+      <button id="up">Up</button>
+      <button id="down">Down</button>
+      <button id="left">Left</button>
+      <button id="right">Right</button>
     </select>
     <script>
       var bt = ""
       var temp = ""
       var game = ""
       var c = document.getElementById("game").getContext("2d")
+      var p = {
+        x:0,
+        y:0,
+        inv:[],
+        hp:20,
+        takeDamage:()=>{ 
+          this.hp--
+          if(this.hp==0){
+            alert("You died.")
+          }
+        }
+      
+      }
       function simplify(s){
         return Math.floor((s+1)*2)
       }
@@ -402,6 +427,82 @@
         }
       }
       }
+      function assemble(){
+        game = Array.from(game)
+        console.log(game)
+      for( iy = 0; iy < 64; iy++){
+        for( ix = 0; ix < 64; ix++){
+          switch(game[iy*64+ix]){
+            case "0":
+              c.fillStyle="#c0ffff"
+              //tundra
+              break
+            case "1":
+              c.fillStyle="blue"
+              //water
+              break
+            case "2":
+              c.fillStyle="#80ff80"
+              //plains
+              break
+            case "3":
+              c.fillStyle="#ffff80"
+              //sand
+              break
+            case "4":
+              c.fillStyle="#305040"
+              //taiga
+              break
+            case "5":
+              c.fillStyle="#006030"
+              //forest
+              break
+            case "6":
+              c.fillStyle="008000"
+              //deciduous
+              break
+            case "7":
+              c.fillStyle="#806000"
+              //savanna
+              break
+            case "8":
+              c.fillStyle="#d8d8d8"
+              //snowy mountains
+              break
+            case "9":
+              c.fillStyle="#c0c0c0"
+              //mountains
+              break
+            case "a":
+              c.fillStyle="#808080"
+              //stone
+              break
+            case "b":
+              c.fillStyle="#ffffc0"
+              //sand dunes
+              break
+            case "c":
+              c.fillStyle="#008080"
+              //snowy hills
+              break
+            case "d":
+              c.fillStyle="#60b060"
+              //hills
+              break
+            case "e":
+              c.fillStyle="#80c080"
+              //grassland
+              break
+            case "f":
+              c.fillStyle="#808000"
+              //highland
+              break
+              
+          }
+          c.fillRect(16*ix,16*iy,16,16)
+        }
+      }
+      }
       $("#regen").click(function(){
         perl()
       })
@@ -420,6 +521,26 @@
 
         }
       })
+      function up(){
+        p.y--
+        $("#player").css("top", 16*p.y+"px")
+      }
+      function down(){
+        p.y++
+        $("#player").css("top", 16*p.y+"px")
+      }
+      function left(){
+        p.x--
+        $("#player").css("left", 16*p.x+"px")
+      }
+      function right(){
+        p.x++
+        $("#player").css("left", 16*p.x+"px")
+      }
+      $("#up").click(up)
+      $("#down").click(down)
+      $("#left").click(left)
+      $("#right").click(right)
     </script>
   </body>
 </html>
