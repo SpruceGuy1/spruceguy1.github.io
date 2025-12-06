@@ -11,7 +11,7 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.12.1
+    Beta 1.12.2
     <div id="cc" style="position:relative;">
           <canvas width="1024" height="1024" id="game"></canvas>
           <div id="player" style="position:absolute; left:0; top:0; ">
@@ -534,9 +534,9 @@
           case "italy":
             var q = Math.floor(Math.random()*2)
             if(q==1){
-              $("#pizza-container").append('<img id="pizza" class="pizza mush" onclick="mush()" src="mushroom-pizza.png"/>')
+              $("#pizza-container").append('<img id="pizza" class="pizza mush" onclick="mush(this)" src="mushroom-pizza.png"/>')
             }else{
-              $("#pizza-container").append('<img id="pizza" class="pizza pepp" onclick="pepp()" src="pizza.png"/>')
+              $("#pizza-container").append('<img id="pizza" class="pizza pepp" onclick="pepp(this)" src="pizza.png"/>')
             }
             italy()
             break
@@ -563,11 +563,11 @@
       $("#down").click(down)
       $("#left").click(left)
       $("#right").click(right)
-      function mush(){
+      function mush(t){
         
         
           
-            $("#pizza-container:last-child").remove()
+            t.remove()
             
             if(se=="sell"){
               p.$ += 1.5
@@ -581,11 +581,11 @@
       }
       $(".mush").click(mush)
       
-      function pepp(){
+      function pepp(t){
         
         
           
-            $("#pizza-container:last-child()").remove()
+            t.remove()
             
             if(se=="sell"){
               p.$ += 1
