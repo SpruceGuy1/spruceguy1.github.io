@@ -11,7 +11,7 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.12
+    Beta 1.12.1
     <div id="cc" style="position:relative;">
           <canvas width="1024" height="1024" id="game"></canvas>
           <div id="player" style="position:absolute; left:0; top:0; ">
@@ -58,14 +58,14 @@
         $:0,
         inv:[],
         hp:20,
-        takeDamage:(t)=>{ 
+        takeDamage:function(t){ 
           this.hp-=t
           $('#hp').text(this.hp)
           if(this.hp<=0){
             alert("You died.")
           }
         },
-        genHP:(t)=>{
+        genHP:function(t){
           this.hp += t
           $('#hp').text(this.hp)
         }
@@ -567,7 +567,7 @@
         
         
           
-            $("#pizza-container:last-child()").remove()
+            $("#pizza-container:last-child").remove()
             
             if(se=="sell"){
               p.$ += 1.5
