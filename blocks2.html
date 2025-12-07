@@ -11,7 +11,7 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.13.1
+    Beta 1.14
     <div id="cc" style="position:relative;">
           <canvas width="1024" height="1024" id="game"></canvas>
           <div id="player" style="position:absolute; left:0; top:0; ">
@@ -55,7 +55,7 @@
       var temp = ""
       var game = ""
       var prod = 1
-      var pp5s = 0
+      var pp2s = 0
       var c = document.getElementById("game").getContext("2d")
       var se = "sell"
       var p = {
@@ -604,19 +604,36 @@
         
       }
       $(".pepp").click(pepp)
+      function marg(t){
+        
+        
+          
+            t.remove()
+            
+            if(se=="sell"){
+              p.$ += 5
+              $("#cash").text(p.$)
+            }else{
+              p.genHP(10)
+            }
+            
+            
+        
+      }
       $("#menu2").change(function(){
         var t = $("#menu2").val()
         se = t
       })
       $("#makePizza").click(function(){
         for(let i = 1; i<=prod; i++){
-            var q = Math.floor(Math.random()*2)
-            if(q==1){
+            var q = Math.floor(Math.random()*20)
+            if(q<=9){
               $("#pizza-container").append('<img id="pizza" class="pizza mush" onclick="mush(this)" src="mushroom-pizza.png"/>')
-            }else{
+            }else if(q>=11){
               $("#pizza-container").append('<img id="pizza" class="pizza pepp" onclick="pepp(this)" src="pizza.png"/>')
+            }else{
+              $("#pizza-container").append('<img id="pizza" class="pizza marg" onclick="marg(this)" src="margarita-pizza.png"/>')
             }
-        }
       })
       $("#autopizz").click(function(){
         if(p.$>=20){
@@ -638,15 +655,17 @@
         }
       })
       setInterval(function(){
-        for(let i = 1; i<=pp5s; i++){
-            var q = Math.floor(Math.random()*2)
-            if(q==1){
+        for(let i = 1; i<=pp2s; i++){
+            var q = Math.floor(Math.random()*20)
+            if(q<=9){
               $("#pizza-container").append('<img id="pizza" class="pizza mush" onclick="mush(this)" src="mushroom-pizza.png"/>')
-            }else{
+            }else if(q>=11){
               $("#pizza-container").append('<img id="pizza" class="pizza pepp" onclick="pepp(this)" src="pizza.png"/>')
+            }else{
+              $("#pizza-container").append('<img id="pizza" class="pizza marg" onclick="marg(this)" src="margarita-pizza.png"/>')
             }
         }
-      },5000)
+      },2000)
     </script>
   </body>
 </html>
