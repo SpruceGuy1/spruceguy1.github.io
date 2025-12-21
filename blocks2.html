@@ -11,7 +11,7 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.17.2
+    Beta 1.17.3
     Time: <span id="time">1-1-0</span>
     <div id="cc" style="position:relative;">
           <canvas width="1024" height="1024" id="game"></canvas>
@@ -810,7 +810,7 @@
       },60000)
       var kb = function(t){
         window["zx"+String(t)]++
-        $("#z"+t).attr("style", "position:absolute; top: "+zy*16+"px; left: "+zx*16+"px;")
+        $("#z"+t).attr("style", "position:absolute; top: "+window["zy"+String(t)]*16+"px; left: "+window["zx"+String(t)]*16+"px;")
         window["zh"+String(t)]--
         if(window["zh"+String(t)]==0){
             $("#z"+t).remove()
