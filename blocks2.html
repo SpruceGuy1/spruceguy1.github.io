@@ -11,7 +11,7 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.17
+    Beta 1.17.1
     Time: <span id="time">1-1-0</span>
     <div id="cc" style="position:relative;">
           <canvas width="1024" height="1024" id="game"></canvas>
@@ -64,16 +64,16 @@
       var c = document.getElementById("game").getContext("2d")
       var se = "sell"
       
-      var zx = 64
-      var zy = 64
-      var zh = 20
+      var zx1 = 64
+      var zy1 = 64
+      var zh1 = 20
       var zx2 = 64
       var zy2 = 64
       var zh2 = 20
       var zx3 = 64
       var zy3 = 64
       var zh3 = 20
-      var lfzn = 1
+      var lfzn = 2
       var zstat = {
         z1: false,
         z2: false,
@@ -662,6 +662,7 @@
           return
         }
         noz++
+        zstat["z"+lfzn] = true
         $("#cc").append("<img src='zombie.png' class='zombie' id='z"+lfzn+"' onclick='kb("+lfzn+")' style='position:absolute; top:1024px; left: 1024px;'>" )
         if(noz==1){
           switch(lfzn){
@@ -719,20 +720,20 @@
               $("#pizza-container").append('<img id="pizza" class="pizza marg" onclick="marg(this)" src="margarita-pizza.png"/>')
             }
         }
-        if(zx!==p.x){
-          if(zx>p.x){
-            zx--
+        if(zx1!==p.x){
+          if(zx1>p.x){
+            zx1--
             
           }else{
-            zx++
+            zx1++
           }
         }
-        if(zy!==p.y){
-          if(zy>p.y){
-            zy--
+        if(zy1!==p.y){
+          if(zy1>p.y){
+            zy1--
             
           }else{
-            zy++
+            zy1++
           }
         }
         if(zx2!==p.x){
@@ -770,7 +771,7 @@
 
         
 
-        $("#z1").attr("style", "position:absolute; top: "+zy*16+"px; left: "+zx*16+"px;")
+        $("#z1").attr("style", "position:absolute; top: "+zy1*16+"px; left: "+zx1*16+"px;")
         $("#z2").attr("style", "position:absolute; top: "+zy2*16+"px; left: "+zx2*16+"px;")
         $("#z3").attr("style", "position:absolute; top: "+zy3*16+"px; left: "+zx3*16+"px;")
         if((zy==p.y) && (zx = p.x)){
@@ -802,6 +803,8 @@
         if(window[zh+String(t)]==0){
             $("#z"+t).remove()
             alert("You beat a zombie!")
+            zstat["z"+t] = false
+            noz--
             p.$ += 10
             $("#cash").text(p.$)
           }
