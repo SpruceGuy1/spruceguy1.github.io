@@ -11,7 +11,7 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.16
+    Beta 1.16.1
     Time: <span id="time">1-1-0</span>
     <div id="cc" style="position:relative;">
           <canvas width="1024" height="1024" id="game"></canvas>
@@ -692,7 +692,7 @@
             zy++
           }
         }
-        $("#zombie").attr("style", "position:absolute; top: "+zy*16+"px; left: "+zx*16+"px;")
+        $(".zombie").attr("style", "position:absolute; top: "+zy*16+"px; left: "+zx*16+"px;")
         if((zy==p.y) && (zx = p.x)){
           console.log("oy")
           p.takeDamage(1)
