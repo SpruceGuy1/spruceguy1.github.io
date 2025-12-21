@@ -11,7 +11,7 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.17.4
+    Beta 1.17.5
     Time: <span id="time">1-1-0</span>
     <div id="cc" style="position:relative;">
           <canvas width="1024" height="1024" id="game"></canvas>
@@ -712,6 +712,36 @@
           alert("You need $40.")
         }
       })
+      $(document).on('keydown', function(event) {
+  
+  switch(event.which) {
+    case 37: 
+      left()
+      break;
+    case 38:
+      up()
+      break
+    case 39: 
+      right()
+      break;
+    case 40: 
+      down()
+      break;
+    case 65: 
+      right()
+      break;
+    case 68: 
+      left()
+      break;
+    case 83: 
+      down()
+      break;
+    case 87: 
+      up()
+      break;
+    
+  }
+});
       setInterval(function(){
         for(let i = 1; i<=pp2s; i++){
             var q = Math.floor(Math.random()*20)
