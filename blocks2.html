@@ -11,7 +11,7 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.15.1
+    Beta 1.16
     Time: <span id="time">1-1-0</span>
     <div id="cc" style="position:relative;">
           <canvas width="1024" height="1024" id="game"></canvas>
@@ -642,6 +642,9 @@
             }
         }
       })
+      $("#spawnZombie").click(function(){
+        $("#cc").append("<img src='zombie.png' class='zombie' onclick='kb()' style='position:absolute; top:1024px; left: 1024px;'>" )
+      })
       $("#autopizz").click(function(){
         if(p.$>=20){
           p.$-=20
@@ -694,7 +697,7 @@
           p.takeDamage(1)
           zh--
           if(zh==0){
-            $("#zombie").remove()
+            $(".zombie").remove()
             alert("You beat a zombie!")
             p.$ += 10
             $("#cash").text(p.$)
@@ -714,14 +717,14 @@
         $("#time").text(month+"-"+day+"-"+year)
       }, 17280000)
       setTimeout(function(){
-        $("#cc").append("<img src='zombie.png' id='zombie' onclick='kb()' style='position:absolute; top:1024px; left: 1024px;'>" )
+        $("#cc").append("<img src='zombie.png' class='zombie' onclick='kb()' style='position:absolute; top:1024px; left: 1024px;'>" )
       },60000)
       var kb = function(){
         zx++
-        $("#zombie").attr("style", "position:absolute; top: "+zy*16+"px; left: "+zx*16+"px;")
+        $(".zombie").attr("style", "position:absolute; top: "+zy*16+"px; left: "+zx*16+"px;")
         zh--
         if(zh==0){
-            $("#zombie").remove()
+            $(".zombie").remove()
             alert("You beat a zombie!")
             p.$ += 10
             $("#cash").text(p.$)
