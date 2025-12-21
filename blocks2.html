@@ -11,7 +11,7 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.16.1
+    Beta 1.17
     Time: <span id="time">1-1-0</span>
     <div id="cc" style="position:relative;">
           <canvas width="1024" height="1024" id="game"></canvas>
@@ -60,11 +60,25 @@
       var game = ""
       var prod = 1
       var pp2s = 0
+      var noz = 1
       var c = document.getElementById("game").getContext("2d")
       var se = "sell"
+      
       var zx = 64
       var zy = 64
       var zh = 20
+      var zx2 = 64
+      var zy2 = 64
+      var zh2 = 20
+      var zx3 = 64
+      var zy3 = 64
+      var zh3 = 20
+      var lfzn = 1
+      var zstat = {
+        z1: false,
+        z2: false,
+        z3: false
+      }
       var p = {
         x:0,
         y:0,
@@ -644,7 +658,36 @@
         }
       })
       $("#spawnZombie").click(function(){
-        $("#cc").append("<img src='zombie.png' class='zombie' onclick='kb()' style='position:absolute; top:1024px; left: 1024px;'>" )
+        if(noz==3){
+          return
+        }
+        noz++
+        $("#cc").append("<img src='zombie.png' class='zombie' id='z"+lfzn+"' onclick='kb("+lfzn+")' style='position:absolute; top:1024px; left: 1024px;'>" )
+        if(noz==1){
+          switch(lfzn){
+            case 1:
+              lfzn = 2
+              break
+            case 2:
+              lfzn = 1
+              break
+            case 3:
+              lfzn = 1
+              break
+          }
+        }
+        if(noz==2){
+          if(zstat.z1 && zstat.z2){
+            lfzn = 3
+          }
+          if(zstat.z1 && zstat.z3){
+            lfzn = 2
+          }
+          if(zstat.z2 && zstat.z3){
+            lfzn = 1
+          }
+        }
+        
       })
       $("#autopizz").click(function(){
         if(p.$>=20){
@@ -692,17 +735,49 @@
             zy++
           }
         }
-        $(".zombie").attr("style", "position:absolute; top: "+zy*16+"px; left: "+zx*16+"px;")
+        if(zx2!==p.x){
+          if(zx2>p.x){
+            zx2--
+            
+          }else{
+            zx2++
+          }
+        }
+        if(zy2!==p.y){
+          if(zy2>p.y){
+            zy2--
+            
+          }else{
+            zy2++
+          }
+        }
+        if(zx3!==p.x){
+          if(zx3>p.x){
+            zx3--
+            
+          }else{
+            zx3++
+          }
+        }
+        if(zy3!==p.y){
+          if(zy3>p.y){
+            zy3--
+            
+          }else{
+            zy3++
+          }
+        }
+
+        
+
+        $("#z1").attr("style", "position:absolute; top: "+zy*16+"px; left: "+zx*16+"px;")
+        $("#z2").attr("style", "position:absolute; top: "+zy2*16+"px; left: "+zx2*16+"px;")
+        $("#z3").attr("style", "position:absolute; top: "+zy3*16+"px; left: "+zx3*16+"px;")
         if((zy==p.y) && (zx = p.x)){
           console.log("oy")
-          p.takeDamage(1)
-          zh--
-          if(zh==0){
-            $(".zombie").remove()
-            alert("You beat a zombie!")
-            p.$ += 10
-            $("#cash").text(p.$)
-          }
+          p.takeDamage(3)
+          
+          
         }
       },2000)
       setInterval(function(){
@@ -718,14 +793,14 @@
         $("#time").text(month+"-"+day+"-"+year)
       }, 17280000)
       setTimeout(function(){
-        $("#cc").append("<img src='zombie.png' class='zombie' onclick='kb()' style='position:absolute; top:1024px; left: 1024px;'>" )
+        $("#cc").append("<img src='zombie.png' class='zombie' id='z1' onclick='kb(1)' style='position:absolute; top:1024px; left: 1024px;'>" )
       },60000)
-      var kb = function(){
-        zx++
-        $(".zombie").attr("style", "position:absolute; top: "+zy*16+"px; left: "+zx*16+"px;")
-        zh--
-        if(zh==0){
-            $(".zombie").remove()
+      var kb = function(t){
+        window[zx+String(t)]++
+        $("#z"+t).attr("style", "position:absolute; top: "+zy*16+"px; left: "+zx*16+"px;")
+        window[zh+String(t)]--
+        if(window[zh+String(t)]==0){
+            $("#z"+t).remove()
             alert("You beat a zombie!")
             p.$ += 10
             $("#cash").text(p.$)
