@@ -22,7 +22,8 @@ td{
     height:49px;
     width:49px;
 }
-#player{
+#player, #zombie{
     height:10px;
     width:10px;
 }
+
