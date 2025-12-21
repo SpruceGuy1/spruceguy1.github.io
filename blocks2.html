@@ -11,7 +11,7 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.17.3
+    Beta 1.17.4
     Time: <span id="time">1-1-0</span>
     <div id="cc" style="position:relative;">
           <canvas width="1024" height="1024" id="game"></canvas>
@@ -658,10 +658,13 @@
         }
       })
       $("#spawnZombie").click(function(){
+        
         if(noz==3){
           return
         }
         noz++
+        window["zx"+String(lfzn)] = 64
+        window["zy"+String(lfzn)] = 64
         zstat["z"+lfzn] = true
         $("#cc").append("<img src='zombie.png' class='zombie' id='z"+lfzn+"' onclick='kb("+lfzn+")' style='position:absolute; top:1024px; left: 1024px;'>" )
         if(noz==1){
