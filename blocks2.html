@@ -11,7 +11,7 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.17.1
+    Beta 1.17.2
     Time: <span id="time">1-1-0</span>
     <div id="cc" style="position:relative;">
           <canvas width="1024" height="1024" id="game"></canvas>
@@ -774,7 +774,19 @@
         $("#z1").attr("style", "position:absolute; top: "+zy1*16+"px; left: "+zx1*16+"px;")
         $("#z2").attr("style", "position:absolute; top: "+zy2*16+"px; left: "+zx2*16+"px;")
         $("#z3").attr("style", "position:absolute; top: "+zy3*16+"px; left: "+zx3*16+"px;")
-        if((zy==p.y) && (zx = p.x)){
+        if((zy1==p.y) && (zx1 = p.x)){
+          console.log("oy")
+          p.takeDamage(3)
+          
+          
+        }
+        if((zy2==p.y) && (zx2 = p.x)){
+          console.log("oy")
+          p.takeDamage(3)
+          
+          
+        }
+        if((zy2==p.y) && (zx2 = p.x)){
           console.log("oy")
           p.takeDamage(3)
           
@@ -797,10 +809,10 @@
         $("#cc").append("<img src='zombie.png' class='zombie' id='z1' onclick='kb(1)' style='position:absolute; top:1024px; left: 1024px;'>" )
       },60000)
       var kb = function(t){
-        window[zx+String(t)]++
+        window["zx"+String(t)]++
         $("#z"+t).attr("style", "position:absolute; top: "+zy*16+"px; left: "+zx*16+"px;")
-        window[zh+String(t)]--
-        if(window[zh+String(t)]==0){
+        window["zh"+String(t)]--
+        if(window["zh"+String(t)]==0){
             $("#z"+t).remove()
             alert("You beat a zombie!")
             zstat["z"+t] = false
