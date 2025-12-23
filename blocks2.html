@@ -13,7 +13,7 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.17.6
+    Beta 1.18
     Time: <span id="time">1-1-0</span>
     <div id="cc" style="position:relative;">
           <canvas width="1024" height="1024" id="game"></canvas>
@@ -53,6 +53,7 @@
       <li><button id="autopizz">Hire a pizza maker for $20</button></li>
       <li><button id="pizzaprod">Increase pizza production for $40</button></li>
     </ul>
+    You have <span id="appleCount">0</span> apples and <span id="appleCount">0</span> wood.
     <script>
       var month = 1
       var day = 1
@@ -93,7 +94,10 @@
         x:0,
         y:0,
         $:0,
-        inv:[],
+        inv:{
+          apples: 0,
+          wood:0
+        },
         hp:20,
         takeDamage:function(t){ 
           this.hp-=t
@@ -169,10 +173,20 @@
             case "5":
               c.fillStyle="#006030"
               //forest
+              if(Math.floor(5*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+64*iy+"px; left: "+ix*64+"px;'>")
+                
+              }
               break
             case "6":
               c.fillStyle="#008000"
               //deciduous
+              if(Math.floor(5*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+64*iy+"px; left: "+ix*64+"px;'>")
+                
+              }
               break
             case "7":
               c.fillStyle="#806000"
@@ -201,10 +215,20 @@
             case "d":
               c.fillStyle="#60b060"
               //hills
+              if(Math.floor(5*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+64*iy+"px; left: "+ix*64+"px;'>")
+                
+              }
               break
             case "e":
               c.fillStyle="#80c080"
               //grassland
+              if(Math.floor(5*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+64*iy+"px; left: "+ix*64+"px;'>")
+                
+              }
               break
             case "f":
               c.fillStyle="#808000"
@@ -276,10 +300,20 @@
             case "5":
               c.fillStyle="#006030"
               //forest
+              if(Math.floor(5*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+64*iy+"px; left: "+ix*64+"px;'>")
+                
+              }
               break
             case "6":
               c.fillStyle="#008000"
               //deciduous
+              if(Math.floor(5*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+64*iy+"px; left: "+ix*64+"px;'>")
+                
+              }
               break
             case "7":
               c.fillStyle="#806000"
@@ -308,10 +342,20 @@
             case "d":
               c.fillStyle="#60b060"
               //hills
+              if(Math.floor(5*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+64*iy+"px; left: "+ix*64+"px;'>")
+                
+              }
               break
             case "e":
               c.fillStyle="#80c080"
               //grassland
+              if(Math.floor(5*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+64*iy+"px; left: "+ix*64+"px;'>")
+                
+              }
               break
             case "f":
               c.fillStyle="#808000"
@@ -356,10 +400,20 @@
             case "5":
               c.fillStyle="#006030"
               //forest
+              if(Math.floor(5*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+64*iy+"px; left: "+ix*64+"px;'>")
+                
+              }
               break
             case "6":
               c.fillStyle="#008000"
               //deciduous
+              if(Math.floor(5*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+64*iy+"px; left: "+ix*64+"px;'>")
+                
+              }
               break
             case "7":
               c.fillStyle="#806000"
@@ -388,10 +442,20 @@
             case "d":
               c.fillStyle="#60b060"
               //hills
+              if(Math.floor(5*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+64*iy+"px; left: "+ix*64+"px;'>")
+                
+              }
               break
             case "e":
               c.fillStyle="#80c080"
               //grassland
+              if(Math.floor(5*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+64*iy+"px; left: "+ix*64+"px;'>")
+                
+              }
               break
             case "f":
               c.fillStyle="#808000"
@@ -433,10 +497,20 @@
             case "5":
               c.fillStyle="#006030"
               //forest
+              if(Math.floor(5*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+64*iy+"px; left: "+ix*64+"px;'>")
+                
+              }
               break
             case "6":
               c.fillStyle="008000"
               //deciduous
+              if(Math.floor(5*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+64*iy+"px; left: "+ix*64+"px;'>")
+                
+              }
               break
             case "7":
               c.fillStyle="#806000"
@@ -465,10 +539,20 @@
             case "d":
               c.fillStyle="#60b060"
               //hills
+              if(Math.floor(5*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+64*iy+"px; left: "+ix*64+"px;'>")
+                
+              }
               break
             case "e":
               c.fillStyle="#80c080"
               //grassland
+              if(Math.floor(5*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+64*iy+"px; left: "+ix*64+"px;'>")
+                
+              }
               break
             case "f":
               c.fillStyle="#808000"
@@ -511,14 +595,19 @@
               //forest
               
               if(Math.floor(5*Math.random())==2){
-                trees.push()
-                $("#cc")
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+64*iy+"px; left: "+ix*64+"px;'>")
                 
               }
               break
             case "6":
               c.fillStyle="008000"
               //deciduous
+              if(Math.floor(5*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+64*iy+"px; left: "+ix*64+"px;'>")
+                
+              }
               break
             case "7":
               c.fillStyle="#806000"
@@ -547,10 +636,20 @@
             case "d":
               c.fillStyle="#60b060"
               //hills
+              if(Math.floor(5*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+64*iy+"px; left: "+ix*64+"px;'>")
+                
+              }
               break
             case "e":
               c.fillStyle="#80c080"
               //grassland
+              if(Math.floor(5*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+64*iy+"px; left: "+ix*64+"px;'>")
+                
+              }
               break
             case "f":
               c.fillStyle="#808000"
@@ -870,6 +969,26 @@
             p.$ += 10
             $("#cash").text(p.$)
           }
+      }
+      function cut(a,b){
+        var q = prompt("Would you like to cut or harvest from the "+b+" tree? (say 'cut' or 'harvest')")
+        switch(q){
+          case "cut":
+            t.remove()
+            var n = Math.floor(Math.random()*5)+1
+            alert("You got "+n+" wood.")
+            p.inv.wood += n
+            $("#woodCount").text(p.inv.wood)
+            break
+          case "harvest":
+            setTimeout(function(){
+              var n = Math.floor(Math.random()*5)+1
+            alert("You got "+n+" apples.")
+            p.inv.apples += n
+            $("#appleCount").text(p.inv.apples)
+            }, 1000)
+            break
+        }
       }
     </script>
   </body>
