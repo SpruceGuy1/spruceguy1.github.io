@@ -13,7 +13,7 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.18
+    Beta 1.18.1
     Time: <span id="time">1-1-0</span>
     <div id="cc" style="position:relative;">
           <canvas width="1024" height="1024" id="game"></canvas>
@@ -148,6 +148,7 @@
       console.log(game)
       game = Array.from(game)
       treepos = []
+      $(".tree").remove()
       for(let iy = 0; iy < 64; iy++){
         for(let ix = 0; ix < 64; ix++){
           switch(game[iy*64+ix]){
@@ -276,6 +277,7 @@
       console.log(game)
       game = Array.from(game)
         treepos = []
+        $(".tree").remove()
       for( iy = 0; iy < 64; iy++){
         for( ix = 0; ix < 64; ix++){
           switch(game[iy*64+ix]){
@@ -377,6 +379,7 @@
         game = Array.from(game)
         console.log(game)
         treepos = []
+        $(".tree").remove()
       for( iy = 0; iy < 64; iy++){
         for( ix = 0; ix < 64; ix++){
           switch(game[iy*64+ix]){
@@ -475,6 +478,7 @@
         game = Array.from(game)
         console.log(game)
         treepos = []
+        $(".tree").remove()
       for( iy = 0; iy < 64; iy++){
         for( ix = 0; ix < 64; ix++){
           switch(game[iy*64+ix]){
@@ -571,6 +575,8 @@
       function assemble(){
         game = Array.from(game)
         console.log(game)
+        treepos = []
+        $(".tree").remove()
       for( iy = 0; iy < 64; iy++){
         for( ix = 0; ix < 64; ix++){
           switch(game[iy*64+ix]){
