@@ -13,7 +13,7 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.18.1
+    Beta 1.18.2
     Time: <span id="time">1-1-0</span>
     <div id="cc" style="position:relative;">
           <canvas width="1024" height="1024" id="game"></canvas>
@@ -54,6 +54,8 @@
       <li><button id="pizzaprod">Increase pizza production for $40</button></li>
     </ul>
     You have <span id="appleCount">0</span> apples and <span id="woodCount">0</span> wood.
+    <button id="eatApple">Eat an apple</button>
+    <button id="eatMaxApples">Eat all of your apples</button>
     <script>
       var month = 1
       var day = 1
@@ -163,6 +165,11 @@
             case "2":
               c.fillStyle="#80ff80"
               //plains
+              if(Math.floor(20*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+                 
+              }
               break
             case "3":
               c.fillStyle="#ffff80"
@@ -292,6 +299,11 @@
             case "2":
               c.fillStyle="#80ff80"
               //plains
+              if(Math.floor(20*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+                 
+              }
               break
             case "3":
               c.fillStyle="#ffff80"
@@ -394,6 +406,11 @@
             case "2":
               c.fillStyle="#80ff80"
               //plains
+              if(Math.floor(20*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+                 
+              }
               break
             case "3":
               c.fillStyle="#ffff80"
@@ -493,6 +510,11 @@
             case "2":
               c.fillStyle="#80ff80"
               //plains
+              if(Math.floor(20*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+                 
+              }
               break
             case "3":
               c.fillStyle="#ffff80"
@@ -591,6 +613,11 @@
             case "2":
               c.fillStyle="#80ff80"
               //plains
+              if(Math.floor(20*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+                 
+              }
               break
             case "3":
               c.fillStyle="#ffff80"
@@ -1000,6 +1027,23 @@
             break
         }
       }
+      $("#eatApple").click(function(){
+        if(p.inv.apples==0){
+          return
+        }
+        p.inv.apples--
+        $("#appleCount").text(p.inv.apples)
+        p.genHP(3)
+      })
+      $("#eatMaxApples").click(function(){
+        if(p.inv.apples==0){
+          return
+        }
+        p.genHP(3*p.inv.apples)
+        p.inv.apples=0
+        $("#appleCount").text(p.inv.apples)
+        
+      })
     </script>
   </body>
 </html>
