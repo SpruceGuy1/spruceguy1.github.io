@@ -13,7 +13,9 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.19.2
+    Beta 1.19.3
+    <audio id="theme" src="Theme.mp3" autoplay/>
+    <button id="tSound">Toggle sound</button> (currently <span id="soundStatus">off</span>.)
     Time: <span id="time">1-1-0</span>
     <div id="cc" style="position:relative;">
           <canvas width="1024" height="1024" id="game"></canvas>
@@ -82,6 +84,7 @@
         
       ]
       var haswb = false
+      var soundStatus = false
       function toXY(n){
         var m = n/64
         m = Math.floor(m)
@@ -1155,6 +1158,16 @@
         p.inv.apples=0
         $("#appleCount").text(p.inv.apples)
         
+      })
+      $("#tSound").click(function(){
+        soundStatus = !soundStatus
+        if(soundStatus){
+          document.getElementById("theme").play()
+          $("#soundStatus").text("on")
+        }else{
+          document.getElementById("theme").pause()
+          $("#soundStatus").text("off")
+        }
       })
     </script>
   </body>
