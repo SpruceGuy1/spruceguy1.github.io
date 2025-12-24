@@ -13,7 +13,7 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.18.2
+    Beta 1.19
     Time: <span id="time">1-1-0</span>
     <div id="cc" style="position:relative;">
           <canvas width="1024" height="1024" id="game"></canvas>
@@ -34,6 +34,7 @@
       </optgroup>
       <optgroup label="Real Life">
         <option value="italy">Italy</option>
+        <option value="japan">Japan</option>
       </optgroup>
      
     </select>
@@ -56,6 +57,14 @@
     You have <span id="appleCount">0</span> apples and <span id="woodCount">0</span> wood.
     <button id="eatApple">Eat an apple</button>
     <button id="eatMaxApples">Eat all of your apples</button>
+    <h3>Crafting</h3>
+    <select id="menu3">
+      <option value="woodenSword">Wooden sword - 3 wood (needs workbench)</option>
+      <option value="workbench">Workbench - 4 wood</option>
+      <option value="woodhut">Wooden hut - 5 wood</option>
+    </select>
+    <button id="craftButton">Craft</button>
+    <div id='wbc'></div>
     <script>
       var month = 1
       var day = 1
@@ -69,6 +78,10 @@
       var treepos = [
         //[x,y]
       ]
+      var hutpos = [
+        
+      ]
+      var haswb = false
       function toXY(n){
         var m = n/64
         m = Math.floor(m)
@@ -96,6 +109,7 @@
         x:0,
         y:0,
         $:0,
+        dmg:1,
         inv:{
           apples: 0,
           wood:0
@@ -178,6 +192,11 @@
             case "4":
               c.fillStyle="#305040"
               //taiga
+              if(Math.floor(5*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+                 
+              }
               break
             case "5":
               c.fillStyle="#006030"
@@ -185,6 +204,10 @@
               if(Math.floor(5*Math.random())==2){
                 treepos.push([ix, iy])
                 $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+                 
+              }else if(Math.floor(10*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
                  
               }
               break
@@ -312,6 +335,11 @@
             case "4":
               c.fillStyle="#305040"
               //taiga
+              if(Math.floor(5*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+                 
+              }
               break
             case "5":
               c.fillStyle="#006030"
@@ -320,6 +348,10 @@
                 treepos.push([ix, iy])
                 $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
                 
+              }else if(Math.floor(10*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+                 
               }
               break
             case "6":
@@ -419,6 +451,11 @@
             case "4":
               c.fillStyle="#305040"
               //taiga
+              if(Math.floor(5*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+                 
+              }
               break
             case "5":
               c.fillStyle="#006030"
@@ -427,6 +464,10 @@
                 treepos.push([ix, iy])
                 $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
                 
+              }else if(Math.floor(10*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+                 
               }
               break
             case "6":
@@ -523,6 +564,11 @@
             case "4":
               c.fillStyle="#305040"
               //taiga
+              if(Math.floor(5*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+                 
+              }
               break
             case "5":
               c.fillStyle="#006030"
@@ -531,6 +577,10 @@
                 treepos.push([ix, iy])
                 $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
                 
+              }else if(Math.floor(10*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+                 
               }
               break
             case "6":
@@ -626,6 +676,11 @@
             case "4":
               c.fillStyle="#305040"
               //taiga
+              if(Math.floor(5*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+                 
+              }
               break
             case "5":
               c.fillStyle="#006030"
@@ -635,6 +690,10 @@
                 treepos.push([ix, iy])
                 $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
                 
+              }else if(Math.floor(10*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+                 
               }
               break
             case "6":
@@ -699,6 +758,10 @@
       }
         
       }
+      function japan(){
+        game = "11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111ee11111111111111111111111111111111111111111111111111111111111111eee1111111111111111111111111111111111111111111111111111111111111eeeeee11111e1111111111111111111111111111111111111111111111111111eeebbeeeeee11111111111111111111111111111111111111111111111111111eeebbebeeee11111111111111111111111111111111111111111111111111111ebeeeebeee1111111111111111111111111111111111111111111111111111eebbeeeeee111111111111111111111111111111111111111111111111111eeee111beee11111111111111111111111111111111111111111111111111111eee1111eee1111111111111111111111111111111111111111111111111111111ee11111111111111111111111111111111111111111111111111111111111111ee11111111111111111111111111111111111111111111111111111111111111ebe1111111111111111111111111111111111111111111111111111111111111ebbe111111111111111111111111111111111111111111111111111111111111eebe111111111111111111111111111111111111111111111111111111111111eeeb11111111111111111111111111111111111111111111111111111111111eeeebe1111111111111111111111111111111111111111111111111111111111eeeebee1111111111111111111111111111111111111111111111111111111111eebbee1111111111111111111111111111111111111111111111111111111111eeee11111111111111111111111111111111111111111111111111111111111eeeee11111111111111111111111111111111111111111111111111111111111eeeee11111111111111111111111111111111111111111111111111111111111ebbe11111111111111111111111111111111111111111111111111111111111beeee1111111111111111111111111111111111111111111111111111111111eebeee111111111111111111111111111111111111111111111111111111111eeebeee1111111111111111111111111111111111111111111111111111111bbeebbeee1111111111111111111111111111111111111111111111111111eeeebbbbeee1111111111111111111111111111111111111111111111111111ebbbeeeeeeee1111111111111111111111111111111111111111111111111111ebbbbeeeeeee111111111111111111111111111111111111111111111111bb11eebbbeeeeeee111111111111111111111111111111111111111111ebbeeeeeeeeeeeeeee1eee11111111111111111111111111111111111111111eeeeebbeeeee111ebee111111111111111111111111111111111111111111111beeeeeeeeeee111eee1111111111111111111111111111111111111111111ebbbbbe1ee111ebe111111111111111111111111111111111111111111111111111e11ebbbeeee1111111111111111111111111111111111111111111111111eeee1eee1ee11ee1111111111111111111111111111111111111111111111111eeee1ebe1ee1111111111111111111111111111111111111111111111111111eebbe1ebe1111111111111111e111111111111111111111111111111111111111bbbe111111111111111111111111111111111111111111111111111111111111bbbe111111111111111111111111111111111111111111111111111111111111bbee111111111111111111111111111111111111111111111111111111111111bee1111111111111111111111111111111111111111111111111111111111111bbe11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111ee11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111e111111111111111111111111111111111111111111111111111111111111"
+        assemble()
+      }
       $("#regen").click(function(){
         perl()
       })
@@ -720,6 +783,10 @@
             }
             italy()
             break
+          case "japan":
+            japan()
+            break
+            
 
         }
       })
@@ -895,6 +962,43 @@
     
   }
 });
+      $("#craftButton").click(function(){
+        var q = $("#menu3").val()
+        switch(q){
+          case "woodhut":
+            if(p.inv.wood<5){
+              alert("You need 5 wood.")
+            }else{
+              p.inv.wood -= 5
+              $("#woodCount").text(p.inv.wood)
+              hutpos.push([p.x, p.y+1])
+              $("#cc").append("<img src='wooden-hut.png' class='1x1-icon hut' style='position:absolute; top:"+16*(p.y+1)+"px; left:"+16*p.x+"px;'/>")
+            }
+            break
+          case "workbench":
+            if(p.inv.wood<4){
+              alert("You need 4 wood.")
+            }else{
+              p.inv.wood -= 4
+              $("#woodCount").text(p.inv.wood)
+              haswb = true
+              $("#wbc").append("<img class='1x1-icon' src='workbench.png'/>")
+            }
+            break
+          case "woodenSword":
+            if(p.inv.wood<3){
+              alert("You need 3 wood.")
+            }else if(!haswb){
+              alert("You need a workbench.")
+            }else{
+              p.inv.wood -= 3
+              $("#woodCount").text(p.inv.wood)
+              p.dmg = 3
+              $("#wbc").append("<img class='1x1-icon' src='wooden-sword.png'/>")
+            }
+            break
+        }
+      })
       setInterval(function(){
         for(let i = 1; i<=pp2s; i++){
             var q = Math.floor(Math.random()*20)
@@ -960,19 +1064,19 @@
         $("#z1").attr("style", "position:absolute; top: "+zy1*16+"px; left: "+zx1*16+"px;")
         $("#z2").attr("style", "position:absolute; top: "+zy2*16+"px; left: "+zx2*16+"px;")
         $("#z3").attr("style", "position:absolute; top: "+zy3*16+"px; left: "+zx3*16+"px;")
-        if((zy1==p.y) && (zx1 = p.x)){
+        if((zy1==p.y) && (zx1==p.x)){
           console.log("oy")
           p.takeDamage(3)
           
           
         }
-        if((zy2==p.y) && (zx2 = p.x)){
+        if((zy2==p.y) && (zx2==p.x)){
           console.log("oy")
           p.takeDamage(3)
           
           
         }
-        if((zy2==p.y) && (zx2 = p.x)){
+        if((zy3==p.y) && (zx3==p.x)){
           console.log("oy")
           p.takeDamage(3)
           
@@ -997,7 +1101,7 @@
       var kb = function(t){
         window["zx"+String(t)]++
         $("#z"+t).attr("style", "position:absolute; top: "+window["zy"+String(t)]*16+"px; left: "+window["zx"+String(t)]*16+"px;")
-        window["zh"+String(t)]--
+        window["zh"+String(t)]-=p.dmg
         if(window["zh"+String(t)]==0){
             $("#z"+t).remove()
             alert("You beat a zombie!")
@@ -1008,6 +1112,14 @@
           }
       }
       function cut(a,b){
+        if(b=="spruce"){
+          a.remove()
+            var n = Math.floor(Math.random()*5)+1
+            alert("You got "+n+" wood.")
+            p.inv.wood += n
+            $("#woodCount").text(p.inv.wood)
+          return
+        }
         var q = prompt("Would you like to cut or harvest from the "+b+" tree? (say 'cut' or 'harvest')")
         switch(q){
           case "cut":
