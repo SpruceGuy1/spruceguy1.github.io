@@ -59,6 +59,7 @@
     <button id="eatMaxApples">Eat all of your apples</button>
     <h3>Crafting</h3>
     <select id="menu3">
+      <option value="woodenSword">Wooden sword - 3 wood (needs workbench)</option>
       <option value="workbench">Workbench - 4 wood</option>
       <option value="woodhut">Wooden hut - 5 wood</option>
     </select>
@@ -108,6 +109,7 @@
         x:0,
         y:0,
         $:0,
+        dmg:1,
         inv:{
           apples: 0,
           wood:0
@@ -980,8 +982,21 @@
               p.inv.wood -= 4
               $("#woodCount").text(p.inv.wood)
               haswb = true
-              $("#wbc").html("<img class='1x1-icon' src='workbench.png'/>")
+              $("#wbc").append("<img class='1x1-icon' src='workbench.png'/>")
             }
+            break
+          case "woodenSword":
+            if(p.inv.wood<3){
+              alert("You need 3 wood.")
+            }else if(!haswb){
+              alert("You need a workbench.")
+            }else{
+              p.inv.wood -= 3
+              $("#woodCount").text(p.inv.wood)
+              p.dmg = 3
+              $("#wbc").append("<img class='1x1-icon' src='wooden-sword.png'/>")
+            }
+            break
         }
       })
       setInterval(function(){
@@ -1086,7 +1101,7 @@
       var kb = function(t){
         window["zx"+String(t)]++
         $("#z"+t).attr("style", "position:absolute; top: "+window["zy"+String(t)]*16+"px; left: "+window["zx"+String(t)]*16+"px;")
-        window["zh"+String(t)]--
+        window["zh"+String(t)]-=p.dmg
         if(window["zh"+String(t)]==0){
             $("#z"+t).remove()
             alert("You beat a zombie!")
