@@ -22,7 +22,7 @@ td{
     height:49px;
     width:49px;
 }
-#player, .zombie{
+#player, .zombie, .player-size-icon{
     height:10px;
     width:10px;
 }
@@ -30,4 +30,7 @@ td{
     height:16px;
     width:16px;
 }
-
+.1x1-icon{
+    height:16px;
+    width:16px;
+}
