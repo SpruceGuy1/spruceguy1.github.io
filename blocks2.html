@@ -57,6 +57,11 @@
     You have <span id="appleCount">0</span> apples and <span id="woodCount">0</span> wood.
     <button id="eatApple">Eat an apple</button>
     <button id="eatMaxApples">Eat all of your apples</button>
+    <h3>Crafting</h3>
+    <select id="menu3">
+      <option value="woodhut">Wooden hut - 5 wood</option>
+    </select>
+    <button id="craftButton">Craft</button>
     <script>
       var month = 1
       var day = 1
@@ -69,6 +74,9 @@
       var noz = 1
       var treepos = [
         //[x,y]
+      ]
+      var hutpos = [
+        
       ]
       function toXY(n){
         var m = n/64
@@ -949,6 +957,21 @@
     
   }
 });
+      $("#craftButton").click(function(){
+        var q = $("#menu3").val()
+        switch(q){
+          case "woodhut":
+            if(p.inv.wood<5){
+              alert("You need 5 wood.")
+            }else{
+              p.inv.wood -= 5
+              $("#woodCount").text(p.inv.wood)
+              hutpos.push([p.x, p.y+1])
+              $("#cc").append("<img src='wooden-hut.png' class='hut' style='position:absolute; top:"+16*(p.y+1)+"px; left:"+16*p.x+"px;'/>")
+            }
+            break
+        }
+      })
       setInterval(function(){
         for(let i = 1; i<=pp2s; i++){
             var q = Math.floor(Math.random()*20)
