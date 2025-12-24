@@ -13,7 +13,7 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.19.1
+    Beta 1.19.2
     Time: <span id="time">1-1-0</span>
     <div id="cc" style="position:relative;">
           <canvas width="1024" height="1024" id="game"></canvas>
@@ -1064,19 +1064,19 @@
         $("#z1").attr("style", "position:absolute; top: "+zy1*16+"px; left: "+zx1*16+"px;")
         $("#z2").attr("style", "position:absolute; top: "+zy2*16+"px; left: "+zx2*16+"px;")
         $("#z3").attr("style", "position:absolute; top: "+zy3*16+"px; left: "+zx3*16+"px;")
-        if((zy1==p.y) && (zx1==p.x)){
+        if((zy1==p.y) && (zx1==p.x) && zstat.z1){
           console.log("oy")
           p.takeDamage(3)
           
           
         }
-        if((zy2==p.y) && (zx2==p.x)){
+        if((zy2==p.y) && (zx2==p.x) && zstat.z2){
           console.log("oy")
           p.takeDamage(3)
           
           
         }
-        if((zy3==p.y) && (zx3==p.x)){
+        if((zy3==p.y) && (zx3==p.x) && zstat.z3){
           console.log("oy")
           p.takeDamage(3)
           
