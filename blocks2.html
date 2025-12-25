@@ -1011,7 +1011,7 @@
             window["sx"+String(lfsn)] = Math.floor(64*Math.random())
             window["sy"+String(lfsn)] = Math.floor(64*Math.random())
             sstat["s"+lfsn] = true
-            $("#cc").append("<img src='sheep.png' class='sheep' id='sheep"+lfsn+"' onclick='hs(this, "+lfsn+")' style='position:absolute; top:"+64*window["sy"+String(lfsn)]+"px; left: "+64*window["sx"+String(lfsn)]+"px;'>" )
+            $("#cc").append("<img src='sheep.png' class='sheep' id='sheep"+lfsn+"' onclick='hs(this, "+lfsn+")' style='position:absolute; top:"+16*window["sy"+String(lfsn)]+"px; left: "+16*window["sx"+String(lfsn)]+"px;'>" )
             if(nos==1){
               switch(lfsn){
                 case 1:
@@ -1045,7 +1045,7 @@
             window["px"+String(lfpn)] = Math.floor(64*Math.random())
             window["py"+String(lfpn)] = Math.floor(64*Math.random())
             pstat["p"+lfpn] = true
-            $("#cc").append("<img src='pig.png' class='pig' id='pig"+lfpn+"' onclick='hp(this, "+lfpn+")' style='position:absolute; top:"+64*window["py"+String(lfpn)]+"px; left: "+64*window["px"+String(lfpn)]+"px;'>" )
+            $("#cc").append("<img src='pig.png' class='pig' id='pig"+lfpn+"' onclick='hp(this, "+lfpn+")' style='position:absolute; top:"+16*window["py"+String(lfpn)]+"px; left: "+16*window["px"+String(lfpn)]+"px;'>" )
             if(nop==1){
               switch(lfpn){
                 case 1:
