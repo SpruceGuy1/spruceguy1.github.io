@@ -171,6 +171,9 @@
       function simplify(s){
         return Math.floor((s+1)*2)
       }
+      function cookPork(t){
+        //add stuff later
+      }
       var noise = new Noise(Math.random())
       for(let i = 0; i<=63; i++){
           for(let j = 0; j<=63; j++){
@@ -1039,8 +1042,8 @@
             nop++
             window["px"+String(lfpn)] = Math.floor(64*Math.random())
             window["py"+String(lfpn)] = Math.floor(64*Math.random())
-            pstat["s"+lfpn] = true
-            $("#cc").append("<img src='pig.png' class='pig' id='pig"+lfpn+"' onclick='hp(this, "+lfpn+")' style='position:absolute; top:"+64*window["py"+String(lfpn)]+"px; left: "+64*window["pn"+String(lfpn)]+"px;'>" )
+            pstat["p"+lfpn] = true
+            $("#cc").append("<img src='pig.png' class='pig' id='pig"+lfpn+"' onclick='hp(this, "+lfpn+")' style='position:absolute; top:"+64*window["py"+String(lfpn)]+"px; left: "+64*window["px"+String(lfpn)]+"px;'>" )
             if(nop==1){
               switch(lfpn){
                 case 1:
