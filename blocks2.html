@@ -13,7 +13,7 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.19.6
+    Beta 1.20
     <audio id="theme" src="Theme.mp3" loop></audio>
     <button id="tSound">Toggle sound</button> (currently <span id="soundStatus">off</span>.)
     Time: <span id="time">1-1-0</span>
@@ -21,8 +21,10 @@
           <canvas width="1024" height="1024" id="game"></canvas>
           <div id="player" style="position:absolute; left:0; top:0; ">
             <img src="Riggy.png">
-
+            
           </div>
+          <img src="sheep.png" class="1x1-icon sheep" id="sheep1" onclick="hs(this, 1)" style="position:absolute; left:752px; top:512px; "/>
+          <img src="pig.png" class="1x1-icon pig" id="pig1" onclick="hp(this, 1)" style="position:absolute; left:512px; top:656px; "/>
     </div>
 
     <button id="regen">Regenerate</button>
@@ -37,6 +39,7 @@
       <optgroup label="Real Life">
         <option value="italy">Italy</option>
         <option value="japan">Japan</option>
+        <option value="northAmerica">North America</option>
       </optgroup>
      
     </select>
@@ -56,14 +59,16 @@
       <li><button id="autopizz">Hire a pizza maker for $20</button></li>
       <li><button id="pizzaprod">Increase pizza production for $40</button></li>
     </ul>
-    You have <span id="appleCount">0</span> apples and <span id="woodCount">0</span> wood.
+    You have <span id="appleCount">0</span> apples, <span id="woodCount">0</span> wood, <span id="woolCount">0</span> wool, <span id="coalCount">0</span> coal, <span id="cookedPorkCount">0</span> cooked pork, and <span id="rawPorkCount">0</span> raw pork.
     <button id="eatApple">Eat an apple</button>
     <button id="eatMaxApples">Eat all of your apples</button>
+    <button id="buyCoal">Buy 2 coal for 3 apples</button>
+    Click on cooked pork to eat it.
     <h3>Crafting</h3>
     <select id="menu3">
       <option value="woodenSword">Wooden sword - 3 wood (needs workbench)</option>
       <option value="workbench">Workbench - 4 wood</option>
-      <option value="woodhut">Wooden hut - 5 wood</option>
+      <option value="woodhut">Wooden hut (comes with furnace) - 5 wood</option>
     </select>
     <button id="craftButton">Craft</button>
     <div id='wbc'></div>
@@ -76,7 +81,9 @@
       var game = ""
       var prod = 1
       var pp2s = 0
-      var noz = 1
+      var noz = 1 //zombie
+      var nop = 1 //pig
+      var nos = 1 //sheep
       var treepos = [
         //[x,y]
       ]
@@ -84,6 +91,7 @@
         
       ]
       var haswb = false
+      var hasFurnace = false
       var soundStatus = false
       function toXY(n){
         var m = n/64
@@ -108,6 +116,37 @@
         z2: false,
         z3: false
       }
+      var px1 = 32
+      var py1 = 41
+      var ph1 = 20
+      var px2 = 32
+      var py2 = 41
+      var ph2 = 20
+      var px3 = 32
+      var py3 = 41
+      var ph3 = 20
+      var lfpn = 2
+      var pstat = {
+        p1: true,
+        p2: false,
+        p3: false
+      }
+      var sx1 = 47
+      var sy1 = 32
+      var sh1 = 20
+      var sx2 = 64
+      var sy2 = 64
+      var sh2 = 20
+      var sx3 = 64
+      var sy3 = 64
+      var sh3 = 20
+      var lfsn = 2
+      var sstat = {
+        s1: true,
+        s2: false,
+        s3: false
+      }
+
       var p = {
         x:0,
         y:0,
@@ -115,7 +154,11 @@
         dmg:1,
         inv:{
           apples: 0,
-          wood:0
+          wood:0,
+          rawPork:0,
+          wool:0,
+          cookedPork:0,
+          coal:0
         },
         hp:20,
         takeDamage:function(t){ 
@@ -134,6 +177,26 @@
       }
       function simplify(s){
         return Math.floor((s+1)*2)
+      }
+      function cookPork(t){
+        if(hasFurnace){
+          if(p.inv.coal>0){
+            p.inv.coal--
+            $('#wbc').children('.coal').last().remove()
+            $("#coalCount").text(p.inv.coal)
+            t.remove()
+            p.inv.rawPork--
+            $("#rawPorkCount").text(p.inv.rawPork)
+            $(".furnace").attr("src", "lit-furnace.png")
+            setTimeout(function(){
+              $(".furnace").attr("src", "empty-furnace.png")
+              $("#wbc").append("<img class='1x1-icon' src='cooked-pork.png' onclick='eatPork(this)'/>")
+              p.inv.cookedPork++
+              $("#cookedPorkCount").text(p.inv.cookedPork)
+            },1500)
+          }
+        }
+        
       }
       var noise = new Noise(Math.random())
       for(let i = 0; i<=63; i++){
@@ -790,6 +853,10 @@
         game = "11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111ee11111111111111111111111111111111111111111111111111111111111111eee1111111111111111111111111111111111111111111111111111111111111eeeeee11111e1111111111111111111111111111111111111111111111111111eeebbeeeeee11111111111111111111111111111111111111111111111111111eeebbebeeee11111111111111111111111111111111111111111111111111111ebeeeebeee1111111111111111111111111111111111111111111111111111eebbeeeeee111111111111111111111111111111111111111111111111111eeee111beee11111111111111111111111111111111111111111111111111111eee1111eee1111111111111111111111111111111111111111111111111111111ee11111111111111111111111111111111111111111111111111111111111111ee11111111111111111111111111111111111111111111111111111111111111ebe1111111111111111111111111111111111111111111111111111111111111ebbe111111111111111111111111111111111111111111111111111111111111eebe111111111111111111111111111111111111111111111111111111111111eeeb11111111111111111111111111111111111111111111111111111111111eeeebe1111111111111111111111111111111111111111111111111111111111eeeebee1111111111111111111111111111111111111111111111111111111111eebbee1111111111111111111111111111111111111111111111111111111111eeee11111111111111111111111111111111111111111111111111111111111eeeee11111111111111111111111111111111111111111111111111111111111eeeee11111111111111111111111111111111111111111111111111111111111ebbe11111111111111111111111111111111111111111111111111111111111beeee1111111111111111111111111111111111111111111111111111111111eebeee111111111111111111111111111111111111111111111111111111111eeebeee1111111111111111111111111111111111111111111111111111111bbeebbeee1111111111111111111111111111111111111111111111111111eeeebbbbeee1111111111111111111111111111111111111111111111111111ebbbeeeeeeee1111111111111111111111111111111111111111111111111111ebbbbeeeeeee111111111111111111111111111111111111111111111111bb11eebbbeeeeeee111111111111111111111111111111111111111111ebbeeeeeeeeeeeeeee1eee11111111111111111111111111111111111111111eeeeebbeeeee111ebee111111111111111111111111111111111111111111111beeeeeeeeeee111eee1111111111111111111111111111111111111111111ebbbbbe1ee111ebe111111111111111111111111111111111111111111111111111e11ebbbeeee1111111111111111111111111111111111111111111111111eeee1eee1ee11ee1111111111111111111111111111111111111111111111111eeee1ebe1ee1111111111111111111111111111111111111111111111111111eebbe1ebe1111111111111111e111111111111111111111111111111111111111bbbe111111111111111111111111111111111111111111111111111111111111bbbe111111111111111111111111111111111111111111111111111111111111bbee111111111111111111111111111111111111111111111111111111111111bee1111111111111111111111111111111111111111111111111111111111111bbe11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111ee11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111e111111111111111111111111111111111111111111111111111111111111"
         assemble()
       }
+      function northAmerica(){
+        game = "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111119911111911911111111111199991111111111111111111111111111111111119e999999e9999911111911199bb91111111111111111111111111111119e999919bb1ebee9919111111999bbbbbb11111111111111111111111111111991e119bbbbbbbb99911199999bbbbbbbbb111111111111111111111111111119e9199bbbbbbbb911111111999999bbbbbb111111111111111111111111111119ee19bbebbeebe91111111111911119e9bb111111111111191111111111119119ee99ebbbbbbe911111111111111111199b11111111eeeee11111111111199e119991119119bbeee1111111111111111119111111999119999999119e91111e111111119119bbbbee111111111111111119111111911119ebb9b991ee91111111111111911bbbbbbbe11111111111111111111111111111ebbbeeeeeeee11111999911119eeeeeeee999911111111111111eee99e99911eeeeee11eee911111111191111ebbe1111119e999111111111111eeebbbbb9119bbbb9911eee99999e111b99e9eeee1111111e11e991111111111beebbbe99119bbe9bb91eeeeeeeee119bbe99ee911111111e11999e911111111bbbeeb919119bb91bbbbbbeeeeeeeeeeeb91199111111111eee9e11911111111bbbbbbbebbbbebb9bbbbbeebbeebeeee11111e9ee11111111199111111111111bbbbebbbbbbbe11ebbbbbbbbbbbbeeee11111111111119991111111111111111bbbeebbbbbe9e11eebbbbbbbbbbbe991111111111111eeee1111111111111111bbebbebbbb91e99eeebbbbbbbbbbe111111111111111eeee9911111111111111beeeebbbbbbebb91ebbbbbbbbbbebe911111111111111eeeee91111911111111beebbbbebbbbbb99bbbbbbbbbb91ebe911111111111119bbbb9999e991111111bbbbbbeebbbbbbbbbb99bbbebb91ebbe11111111111119bbbbbbbbbb91111111ebbebbbebbbbbbbbbb91bbbbbbe9beeeeeee9111111119bbbbbbbbbbb9911111199bbb91eebbbbbbbbbbbbbb911ebbbbbeeeeeee11111eebbbbbbb9199999111111bbb99bbbbebbbbbbbbbbb9119bbbbbbbbeeeee111ebbbbbbbbb9919bb91111119bbbbbbbbebbbbbbbbbbbb1199ebbbbbeeeeee111ebbbbbbbbbbb19bb991111199eebbbbeebbbbbbbbbbbb9e119bbbbbbbeeeeeeeeeebbbbbeb999eee19911111119ebbbeebbbbbbbbbbbb9bee9bbbb9999bbbb999bbbebbb19911111199e1111111ebbbbbbbbbbbbbbbb1ebb19bbb1111119bb911ebebbbb99911111111911111119999bbbbbbbbbbbbb1ebb19bbb11111119b911ebebbbbb9911111111111111119911ebbbbbbbbbbbb9bbbbbbbb99911119ee9eebeeebbee911111111111111119bbbbbbbbbbbbbbbbbbbbbbbbebbe19e9199beebee11111111111111111111119bbbbb119bbbbbbbbbbbbbbbbbbbe19bb9e91ebbb99111111111111111111119bbbbbb119bbbbbbbbbbbbbbbbbbbe19bbee91bbbb991111111111111111111119bbebbb99bbbbbbbbbbbbbbbbebbee9bbbbbbbbb91111111111111111111111199bbebbbbbbbbbbbbbbbbbbbbeeeeeeeebbbbee91111111111111111111111111ebbbbbbbbbbbbbbbbbbbbbbbbeee19ebbbbbe1111111111111111111111111119ebbbb9ebbbbbbbbbbbbbbbbebee19bbbbbbe11111111111111111111111111119ebbbe1bbbbbbbbbbbbbbbeeeeeebbbeebeee111111111111111111111111111199bbbebbbbbbbbbbbbbbbbeeeeebbbeeee91111111111111111111111111111111eeebbbbbbbbbbbbbeeeeeeeeebbeee9111111111111111111111111111111111e999bbbbbbbbbbbbeeeeeeeeebbee91111111111111111111111111111111111111ebbbbbbbbbbbbeeeeeeeeeeeee111111111111111111111111111111111111111e99bbbbbbbebee9119911111e1111111111111111111111111111111111111111119bbbbbbebe1111111111119111111111111111111111111111111111111111119bbbbbbbe91111111111111911111111111111111111111111111111111111119bbbbbbbe11111111111119111111111111111111111111111111111111111111ebbbbbee111111111111111111111111111111111111111111111111111111111ebbbbb9111111111111111111111111111111111111111111111111111111111ebbbbb911111111111111111111111111111111111111111111111111111111199beeee11111111111111119111111111111111111111111111111111111111199bbbbbe11119e11111111199911111111111111111111111111111111111111119bbbbe9999eee111111119111111111111111111111111111111111111111111199999e9ebeee11111111111111111111111111111111111111111111111111111111119ebbe9111111111111111111111111111111111111111111111111111111111111eeee9ee11111111111111111111111111111111111111111111111111111111111199eee111111111111111111111111111111111111111111111111111111111119999e111111111111111111111111111111111111111111111111111111111111111e111111111111111111111111111111111111111111111111111111111111119911111119eee9ee111111111111111111111111111111111111111111111111111111119eebbeeee9919111111111111111111111111111111111111111111111111119bebbbeeeee9e91111111111111111111111111111111111111111111111111eeeebbeeeeee19e11111"
+        assemble()
+      }
       $("#regen").click(function(){
         perl()
       })
@@ -813,6 +880,9 @@
             break
           case "japan":
             japan()
+            break
+          case "northAmerica":
+            northAmerica()
             break
             
 
@@ -960,6 +1030,81 @@
           alert("You need $40.")
         }
       })
+      function spawnAnimal(type){
+        switch(type){
+          case "sheep":
+            if(nos==3){
+              return
+            }
+            nos++
+            window["sx"+String(lfsn)] = Math.floor(64*Math.random())
+            window["sy"+String(lfsn)] = Math.floor(64*Math.random())
+            sstat["s"+lfsn] = true
+            $("#cc").append("<img src='sheep.png' class='sheep' id='sheep"+lfsn+"' onclick='hs(this, "+lfsn+")' style='position:absolute; top:"+16*window["sy"+String(lfsn)]+"px; left: "+16*window["sx"+String(lfsn)]+"px;'>" )
+            if(nos==1){
+              switch(lfsn){
+                case 1:
+                  lfsn = 2
+                  break
+                case 2:
+                  lfsn = 1
+                  break
+                case 3:
+                  lfsn = 1
+                  break
+              }
+          }
+            if(nos==2){
+          if(sstat.s1 && sstat.s2){
+            lfsn = 3
+          }
+          if(sstat.s1 && sstat.s3){
+            lfsn = 2
+          }
+          if(sstat.s2 && sstat.s3){
+            lfsn = 1
+          }
+        }
+          break
+          case "pig":
+            if(nop==3){
+              return
+            }
+            nop++
+            window["px"+String(lfpn)] = Math.floor(64*Math.random())
+            window["py"+String(lfpn)] = Math.floor(64*Math.random())
+            pstat["p"+lfpn] = true
+            $("#cc").append("<img src='pig.png' class='pig' id='pig"+lfpn+"' onclick='hp(this, "+lfpn+")' style='position:absolute; top:"+16*window["py"+String(lfpn)]+"px; left: "+16*window["px"+String(lfpn)]+"px;'>" )
+            if(nop==1){
+              switch(lfpn){
+                case 1:
+                  lfpn = 2
+                  break
+                case 2:
+                  lfpn = 1
+                  break
+                case 3:
+                  lfpn = 1
+                  break
+              }
+          }
+          if(nop==2){
+          if(pstat.p1 && pstat.p2){
+            lfpn = 3
+          }
+          if(pstat.p1 && pstat.p3){
+            lfpn = 2
+          }
+          if(pstat.p2 && pstat.p3){
+            lfpn = 1
+          }
+        }
+            break
+      }
+        
+        
+        }
+      
       $(document).on('keydown', function(event) {
   
   switch(event.which) {
@@ -1001,6 +1146,11 @@
               $("#woodCount").text(p.inv.wood)
               hutpos.push([p.x, p.y+1])
               $("#cc").append("<img src='wooden-hut.png' class='1x1-icon hut' style='position:absolute; top:"+16*(p.y+1)+"px; left:"+16*p.x+"px;'/>")
+              if(!hasFurnace){
+                $("#wbc").append("<img class='1x1-icon furnace' src='empty-furnace.png'/>")
+                hasFurnace = true
+              }
+              
             }
             break
           case "workbench":
@@ -1025,6 +1175,7 @@
               $("#wbc").append("<img class='1x1-icon' src='wooden-sword.png'/>")
             }
             break
+        
         }
       })
       setInterval(function(){
@@ -1086,12 +1237,29 @@
             zy3++
           }
         }
+        px1 += Math.floor(3*Math.random()) - 1
+        px2 += Math.floor(3*Math.random()) - 1
+        px3 += Math.floor(3*Math.random()) - 1
+        py1 += Math.floor(3*Math.random()) - 1
+        py2 += Math.floor(3*Math.random()) - 1
+        py3 += Math.floor(3*Math.random()) - 1
+        sx1 += Math.floor(3*Math.random()) - 1
+        sx2 += Math.floor(3*Math.random()) - 1
+        sx3 += Math.floor(3*Math.random()) - 1
+        sy1 += Math.floor(3*Math.random()) - 1
+        sy2 += Math.floor(3*Math.random()) - 1
+        sy3 += Math.floor(3*Math.random()) - 1
 
-        
 
         $("#z1").attr("style", "position:absolute; top: "+zy1*16+"px; left: "+zx1*16+"px;")
         $("#z2").attr("style", "position:absolute; top: "+zy2*16+"px; left: "+zx2*16+"px;")
         $("#z3").attr("style", "position:absolute; top: "+zy3*16+"px; left: "+zx3*16+"px;")
+        $("#pig1").attr("style", "position:absolute; top: "+py1*16+"px; left: "+px1*16+"px;")
+        $("#pig2").attr("style", "position:absolute; top: "+py2*16+"px; left: "+px2*16+"px;")
+        $("#pig3").attr("style", "position:absolute; top: "+py3*16+"px; left: "+px3*16+"px;")
+        $("#sheep1").attr("style", "position:absolute; top: "+sy1*16+"px; left: "+sx1*16+"px;")
+        $("#sheep2").attr("style", "position:absolute; top: "+sy2*16+"px; left: "+sx2*16+"px;")
+        $("#sheep3").attr("style", "position:absolute; top: "+sy3*16+"px; left: "+sx3*16+"px;")
         if((zy1==p.y) && (zx1==p.x) && zstat.z1){
           console.log("oy")
           p.takeDamage(3)
@@ -1114,6 +1282,14 @@
       setInterval(function(){
         day = (day+1)>30?1:(day+1)
         $("#time").text(month+"-"+day+"-"+year)
+        var sts = Math.floor(3*Math.random())
+        for(let i = 0; i<sts; i++){
+          spawnAnimal("sheep")
+        }
+        var pts = Math.floor(3*Math.random())
+        for(let i = 0; i<pts; i++){
+          spawnAnimal("pig")
+        }
       }, 48000)
       setInterval(function(){
         month = (month+1)>12?1:(month+1)
@@ -1139,6 +1315,37 @@
             $("#cash").text(p.$)
           }
       }
+      var hs = function(el, t){
+        window["sx"+String(t)]++
+        $("#sheep"+t).attr("style", "position:absolute; top: "+window["sy"+String(t)]*16+"px; left: "+window["sx"+String(t)]*16+"px;")
+        window["sh"+String(t)]-=p.dmg
+        if(window["sh"+String(t)]<=0){
+            $("#sheep"+t).remove()
+            alert("You killed a sheep. You got a piece of wool.")
+            p.inv.wool++
+            $("#woolCount").text(p.inv.wool)
+            sstat["s"+t] = false
+            nos--
+            lfsn = t
+
+          }
+      }
+      var hp = function(el, t){
+        window["px"+String(t)]++
+        $("#pig"+t).attr("style", "position:absolute; top: "+window["py"+String(t)]*16+"px; left: "+window["px"+String(t)]*16+"px;")
+        window["ph"+String(t)]-=p.dmg
+        if(window["ph"+String(t)]<=0){
+            $("#pig"+t).remove()
+            alert("You killed a pig. You got a piece of raw pork.")
+            p.inv.rawPork++
+            $("#rawPorkCount").text(p.inv.rawPork)
+            $("#wbc").append("<img src='raw-pork.png' class='pork 1x1-icon' onclick='cookPork(this)'/>")
+            pstat["p"+t] = false
+            nop--
+          lfpn = t
+          }
+      }
+
       function cut(a,b){
         if(b=="spruce"){
           a.remove()
@@ -1175,6 +1382,12 @@
         $("#appleCount").text(p.inv.apples)
         p.genHP(3)
       })
+      function eatPork(el){
+        el.remove()
+        p.inv.cookedPork--
+        $("#cookedPorkCount").text(p.inv.cookedPork)
+        p.genHP(6)
+      }
       $("#eatMaxApples").click(function(){
         if(p.inv.apples==0){
           return
@@ -1192,6 +1405,18 @@
         }else{
           document.getElementById("theme").pause()
           $("#soundStatus").text("off")
+        }
+      })
+      $("#buyCoal").click(function(){
+        if(p.inv.apples<3){
+          alert("You need 3 apples.")
+        }else{
+          p.inv.apples-=3
+          $("#appleCount").text(p.inv.apples)
+          p.inv.coal+=2
+          $("#coalCount").text(p.inv.coal)
+          $("#wbc").append("<img class='1x1-icon coal' src='coal.png'/>")
+          $("#wbc").append("<img class='1x1-icon coal' src='coal.png'/>")
         }
       })
     </script>
