@@ -185,6 +185,8 @@
             $('#wbc').children('.coal').last().remove()
             $("#coalCount").text(p.inv.coal)
             t.remove()
+            p.inv.rawPork--
+            $("#rawPorkCount").text(p.inv.rawPork)
             $(".furnace").attr("src", "lit-furnace.png")
             setTimeout(function(){
               $(".furnace").attr("src", "empty-furnace.png")
@@ -194,7 +196,7 @@
             },1500)
           }
         }
-        //add stuff later
+        
       }
       var noise = new Noise(Math.random())
       for(let i = 0; i<=63; i++){
