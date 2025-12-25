@@ -58,14 +58,16 @@
       <li><button id="autopizz">Hire a pizza maker for $20</button></li>
       <li><button id="pizzaprod">Increase pizza production for $40</button></li>
     </ul>
-    You have <span id="appleCount">0</span> apples, <span id="woodCount">0</span> wood, <span id="woolCount">0</span> wool, and <span id="rawPorkCount">0</span> raw pork.
+    You have <span id="appleCount">0</span> apples, <span id="woodCount">0</span> wood, <span id="woolCount">0</span> wool, <span id="coalCount">0</span> coal, <span id="cookedPorkCount">0</span> cooked pork, and <span id="rawPorkCount">0</span> raw pork.
     <button id="eatApple">Eat an apple</button>
     <button id="eatMaxApples">Eat all of your apples</button>
+    <button id="buyCoal">Buy 2 coal for 3 apples</button>
+    Click on cooked pork to eat it.
     <h3>Crafting</h3>
     <select id="menu3">
       <option value="woodenSword">Wooden sword - 3 wood (needs workbench)</option>
       <option value="workbench">Workbench - 4 wood</option>
-      <option value="woodhut">Wooden hut - 5 wood</option>
+      <option value="woodhut">Wooden hut (comes with furnace) - 5 wood</option>
     </select>
     <button id="craftButton">Craft</button>
     <div id='wbc'></div>
@@ -153,7 +155,9 @@
           apples: 0,
           wood:0,
           rawPork:0,
-          wool:0
+          wool:0,
+          cookedPork:0,
+          coal:0
         },
         hp:20,
         takeDamage:function(t){ 
@@ -174,6 +178,21 @@
         return Math.floor((s+1)*2)
       }
       function cookPork(t){
+        if(hasFurnace){
+          if(p.inv.coal>0){
+            p.inv.coal--
+            $('#wbc').children('.coal').last().remove()
+            $("#coalCount").text(p.inv.coal)
+            t.remove()
+            $(".furnace").attr("src", "lit-furnace.png")
+            setTimeout(function(){
+              $(".furnace").attr("src", "empty-furnace.png")
+              $("#wbc").append("<img class='1x1-icon' src='cooked-pork.png' onclick='eatPork(this)'/>")
+              p.inv.coal--
+              $("#coalCount").text(p.inv.coal)
+            },1500)
+          }
+        }
         //add stuff later
       }
       var noise = new Noise(Math.random())
@@ -1117,6 +1136,11 @@
               $("#woodCount").text(p.inv.wood)
               hutpos.push([p.x, p.y+1])
               $("#cc").append("<img src='wooden-hut.png' class='1x1-icon hut' style='position:absolute; top:"+16*(p.y+1)+"px; left:"+16*p.x+"px;'/>")
+              if(!hasFurnace){
+                $("wbc").append("<img class='1x1-icon furnace' src='empty-furnace.png'/>")
+                hasFurnace = true
+              }
+              
             }
             break
           case "workbench":
@@ -1141,6 +1165,7 @@
               $("#wbc").append("<img class='1x1-icon' src='wooden-sword.png'/>")
             }
             break
+        
         }
       })
       setInterval(function(){
@@ -1330,6 +1355,12 @@
         $("#appleCount").text(p.inv.apples)
         p.genHP(3)
       })
+      function eatPork(el){
+        el.remove()
+        p.inv.cookedPork--
+        $("#cookedPorkCount").text(p.inv.cookedPork)
+        p.genHP(6)
+      }
       $("#eatMaxApples").click(function(){
         if(p.inv.apples==0){
           return
@@ -1347,6 +1378,18 @@
         }else{
           document.getElementById("theme").pause()
           $("#soundStatus").text("off")
+        }
+      })
+      $("#buyCoal").click(function(){
+        if(p.inv.apples<3){
+          alert("You need 3 apples.")
+        }else{
+          p.inv.apples-=3
+          $("#appleCount").text(p.inv.apples)
+          p.inv.coal+=2
+          $("#coalCount").text(p.inv.coal)
+          $("#wbc").append("<img class='1x1-icon coal' src='coal.png'/>")
+          $("#wbc").append("<img class='1x1-icon coal' src='coal.png'/>")
         }
       })
     </script>
