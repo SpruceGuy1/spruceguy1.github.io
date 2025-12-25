@@ -13,7 +13,7 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.19.6
+    Beta 1.20
     <audio id="theme" src="Theme.mp3" loop></audio>
     <button id="tSound">Toggle sound</button> (currently <span id="soundStatus">off</span>.)
     Time: <span id="time">1-1-0</span>
@@ -21,8 +21,10 @@
           <canvas width="1024" height="1024" id="game"></canvas>
           <div id="player" style="position:absolute; left:0; top:0; ">
             <img src="Riggy.png">
-
+            
           </div>
+          <img src="sheep.png" class="1x1-icon sheep" id="sheep1" onclick="hs(this, 1)" style="position:absolute; left:752; top:512; "/>
+          <img src="pig.png" class="1x1-icon pig" id="pig1" onclick="hp(this,1)" style="position:absolute; left:512; top:656; "/>
     </div>
 
     <button id="regen">Regenerate</button>
@@ -56,7 +58,7 @@
       <li><button id="autopizz">Hire a pizza maker for $20</button></li>
       <li><button id="pizzaprod">Increase pizza production for $40</button></li>
     </ul>
-    You have <span id="appleCount">0</span> apples and <span id="woodCount">0</span> wood.
+    You have <span id="appleCount">0</span> apples, <span id="woodCount">0</span> wood, <span id="woolCount">0</span> wool, and <span id="rawPorkCount">0</span> raw pork.
     <button id="eatApple">Eat an apple</button>
     <button id="eatMaxApples">Eat all of your apples</button>
     <h3>Crafting</h3>
@@ -76,7 +78,9 @@
       var game = ""
       var prod = 1
       var pp2s = 0
-      var noz = 1
+      var noz = 1 //zombie
+      var nop = 1 //pig
+      var nos = 1 //sheep
       var treepos = [
         //[x,y]
       ]
@@ -84,6 +88,7 @@
         
       ]
       var haswb = false
+      var hasFurnace = false
       var soundStatus = false
       function toXY(n){
         var m = n/64
@@ -108,6 +113,37 @@
         z2: false,
         z3: false
       }
+      var px1 = 32
+      var py1 = 41
+      var ph1 = 20
+      var px2 = 32
+      var py2 = 41
+      var ph2 = 20
+      var px3 = 32
+      var py3 = 41
+      var ph3 = 20
+      var lfpn = 2
+      var pstat = {
+        p1: true,
+        p2: false,
+        p3: false
+      }
+      var sx1 = 47
+      var sy1 = 32
+      var sh1 = 20
+      var sx2 = 64
+      var sy2 = 64
+      var sh2 = 20
+      var sx3 = 64
+      var sy3 = 64
+      var sh3 = 20
+      var lfsn = 2
+      var sstat = {
+        s1: true,
+        s2: false,
+        s3: false
+      }
+
       var p = {
         x:0,
         y:0,
@@ -960,6 +996,44 @@
           alert("You need $40.")
         }
       })
+      function spawnAnimal(type){
+        switch(type){
+          case pig:
+            if(nos==3){
+              return
+            }
+            noz++
+            window["sx"+String(lfsn)] = Math.floor(64*Math.random())
+            window["sy"+String(lfsn)] = Math.floor(64*Math.random())
+            sstat["s"+lfsn] = true
+            $("#cc").append("<img src='sheep.png' class='sheep' id='s"+lfsn+"' onclick='hs(this, "+lfsn+")' style='position:absolute; top:"+64*window["sy"+String(lfsn)]+"px; left: "+64*window["sx"+String(lfsn)]+"px;'>" )
+            if(nos==1){
+              switch(lfsn){
+                case 1:
+                  lfsn = 2
+                  break
+                case 2:
+                  lfsn = 1
+                  break
+                case 3:
+                  lfsn = 1
+                  break
+          }
+        }
+        if(nos==2){
+          if(sstat.s1 && sstat.s2){
+            lfsn = 3
+          }
+          if(sstat.s1 && sstat.s3){
+            lfsn = 2
+          }
+          if(sstat.s2 && sstat.s3){
+            lfsn = 1
+          }
+        }
+        
+        }
+      }
       $(document).on('keydown', function(event) {
   
   switch(event.which) {
@@ -1114,6 +1188,14 @@
       setInterval(function(){
         day = (day+1)>30?1:(day+1)
         $("#time").text(month+"-"+day+"-"+year)
+        var sts = Math.floor(3*Math.random())
+        for(let i = 0; i<sts; i++){
+          spawnAnimal("sheep")
+        }
+        var pts = Math.floor(3*Math.random())
+        for(let i = 0; i<pts; i++){
+          spawnAnimal("pig")
+        }
       }, 48000)
       setInterval(function(){
         month = (month+1)>12?1:(month+1)
@@ -1139,6 +1221,36 @@
             $("#cash").text(p.$)
           }
       }
+      var hs = function(el, t){
+        window["sx"+String(t)]++
+        $("#sheep"+t).attr("style", "position:absolute; top: "+window["sx"+String(t)]*16+"px; left: "+window["sy"+String(t)]*16+"px;")
+        window["sh"+String(t)]-=p.dmg
+        if(window["sh"+String(t)]<=0){
+            $("#sheep"+t).remove()
+            alert("You killed a sheep. You got a piece of wool.")
+            p.inv.wool++
+            $("#woolCount").text(p.inv.wool)
+            sstat["s"+t] = false
+            nos--
+            
+          }
+      }
+      var hp = function(el, t){
+        window["px"+String(t)]++
+        $("#pig"+t).attr("style", "position:absolute; top: "+window["py"+String(t)]*16+"px; left: "+window["px"+String(t)]*16+"px;")
+        window["ph"+String(t)]-=p.dmg
+        if(window["ph"+String(t)]<=0){
+            $("#pig"+t).remove()
+            alert("You killed a pig. You got a piece of raw pork.")
+            p.inv.rawPork++
+            $("#rawPorkCount").text(p.inv.rawPork)
+            $("#wbc").append("<img src='raw-pork.png' class='pork 1x1-icon' onclick='cookPork(this)'/>")
+            pstat["p"+t] = false
+            nop--
+            
+          }
+      }
+
       function cut(a,b){
         if(b=="spruce"){
           a.remove()
