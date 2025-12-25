@@ -998,15 +998,15 @@
       })
       function spawnAnimal(type){
         switch(type){
-          case pig:
+          case "sheep":
             if(nos==3){
               return
             }
-            noz++
+            nos++
             window["sx"+String(lfsn)] = Math.floor(64*Math.random())
             window["sy"+String(lfsn)] = Math.floor(64*Math.random())
             sstat["s"+lfsn] = true
-            $("#cc").append("<img src='sheep.png' class='sheep' id='s"+lfsn+"' onclick='hs(this, "+lfsn+")' style='position:absolute; top:"+64*window["sy"+String(lfsn)]+"px; left: "+64*window["sx"+String(lfsn)]+"px;'>" )
+            $("#cc").append("<img src='sheep.png' class='sheep' id='sheep"+lfsn+"' onclick='hs(this, "+lfsn+")' style='position:absolute; top:"+64*window["sy"+String(lfsn)]+"px; left: "+64*window["sx"+String(lfsn)]+"px;'>" )
             if(nos==1){
               switch(lfsn){
                 case 1:
@@ -1018,9 +1018,9 @@
                 case 3:
                   lfsn = 1
                   break
+              }
           }
-        }
-        if(nos==2){
+            if(nos==2){
           if(sstat.s1 && sstat.s2){
             lfsn = 3
           }
@@ -1031,6 +1031,42 @@
             lfsn = 1
           }
         }
+          break
+          case "pig":
+            if(nop==3){
+              return
+            }
+            nop++
+            window["px"+String(lfpn)] = Math.floor(64*Math.random())
+            window["py"+String(lfpn)] = Math.floor(64*Math.random())
+            pstat["s"+lfpn] = true
+            $("#cc").append("<img src='pig.png' class='pig' id='pig"+lfpn+"' onclick='hp(this, "+lfpn+")' style='position:absolute; top:"+64*window["py"+String(lfpn)]+"px; left: "+64*window["pn"+String(lfpn)]+"px;'>" )
+            if(nop==1){
+              switch(lfpn){
+                case 1:
+                  lfpn = 2
+                  break
+                case 2:
+                  lfpn = 1
+                  break
+                case 3:
+                  lfpn = 1
+                  break
+              }
+          }
+          if(nop==2){
+          if(pstat.p1 && pstat.p2){
+            lfpn = 3
+          }
+          if(pstat.p1 && pstat.p3){
+            lfpn = 2
+          }
+          if(pstat.p2 && pstat.p3){
+            lfpn = 1
+          }
+        }
+      }
+        
         
         }
       }
