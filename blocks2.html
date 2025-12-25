@@ -1259,7 +1259,7 @@
       }
       var hs = function(el, t){
         window["sx"+String(t)]++
-        $("#sheep"+t).attr("style", "position:absolute; top: "+window["sx"+String(t)]*16+"px; left: "+window["sy"+String(t)]*16+"px;")
+        $("#sheep"+t).attr("style", "position:absolute; top: "+window["sy"+String(t)]*16+"px; left: "+window["sx"+String(t)]*16+"px;")
         window["sh"+String(t)]-=p.dmg
         if(window["sh"+String(t)]<=0){
             $("#sheep"+t).remove()
