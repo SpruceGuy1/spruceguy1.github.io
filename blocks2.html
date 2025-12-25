@@ -188,8 +188,8 @@
             setTimeout(function(){
               $(".furnace").attr("src", "empty-furnace.png")
               $("#wbc").append("<img class='1x1-icon' src='cooked-pork.png' onclick='eatPork(this)'/>")
-              p.inv.coal--
-              $("#coalCount").text(p.inv.coal)
+              p.inv.cookedPork++
+              $("#cookedPorkCount").text(p.inv.cookedPork)
             },1500)
           }
         }
@@ -1094,7 +1094,7 @@
         
         
         }
-      }
+      
       $(document).on('keydown', function(event) {
   
   switch(event.which) {
@@ -1137,7 +1137,7 @@
               hutpos.push([p.x, p.y+1])
               $("#cc").append("<img src='wooden-hut.png' class='1x1-icon hut' style='position:absolute; top:"+16*(p.y+1)+"px; left:"+16*p.x+"px;'/>")
               if(!hasFurnace){
-                $("wbc").append("<img class='1x1-icon furnace' src='empty-furnace.png'/>")
+                $("#wbc").append("<img class='1x1-icon furnace' src='empty-furnace.png'/>")
                 hasFurnace = true
               }
               
