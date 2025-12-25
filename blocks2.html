@@ -13,7 +13,7 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.19.5
+    Beta 1.19.6
     <audio id="theme" src="Theme.mp3" loop></audio>
     <button id="tSound">Toggle sound</button> (currently <span id="soundStatus">off</span>.)
     Time: <span id="time">1-1-0</span>
@@ -174,6 +174,11 @@
             case "0":
               c.fillStyle="#c0ffff"
               //tundra
+              if(Math.floor(20*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+                 
+              }
               break
             case "1":
               c.fillStyle="blue"
@@ -317,6 +322,11 @@
             case "0":
               c.fillStyle="#c0ffff"
               //tundra
+              if(Math.floor(20*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+                 
+              }
               break
             case "1":
               c.fillStyle="blue"
@@ -433,6 +443,11 @@
             case "0":
               c.fillStyle="#c0ffff"
               //tundra
+              if(Math.floor(20*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+                 
+              }
               break
             case "1":
               c.fillStyle="blue"
@@ -546,6 +561,11 @@
             case "0":
               c.fillStyle="#c0ffff"
               //tundra
+              if(Math.floor(20*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+                 
+              }
               break
             case "1":
               c.fillStyle="blue"
@@ -658,6 +678,11 @@
             case "0":
               c.fillStyle="#c0ffff"
               //tundra
+              if(Math.floor(20*Math.random())==2){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+                 
+              }
               break
             case "1":
               c.fillStyle="blue"
