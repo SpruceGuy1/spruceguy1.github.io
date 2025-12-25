@@ -1235,12 +1235,29 @@
             zy3++
           }
         }
+        px1 += Math.floor(3*Math.random()) - 1
+        px2 += Math.floor(3*Math.random()) - 1
+        px3 += Math.floor(3*Math.random()) - 1
+        py1 += Math.floor(3*Math.random()) - 1
+        py2 += Math.floor(3*Math.random()) - 1
+        py3 += Math.floor(3*Math.random()) - 1
+        sx1 += Math.floor(3*Math.random()) - 1
+        sx2 += Math.floor(3*Math.random()) - 1
+        sx3 += Math.floor(3*Math.random()) - 1
+        sy1 += Math.floor(3*Math.random()) - 1
+        sy2 += Math.floor(3*Math.random()) - 1
+        sy3 += Math.floor(3*Math.random()) - 1
 
-        
 
         $("#z1").attr("style", "position:absolute; top: "+zy1*16+"px; left: "+zx1*16+"px;")
         $("#z2").attr("style", "position:absolute; top: "+zy2*16+"px; left: "+zx2*16+"px;")
         $("#z3").attr("style", "position:absolute; top: "+zy3*16+"px; left: "+zx3*16+"px;")
+        $("#pig1").attr("style", "position:absolute; top: "+py1*16+"px; left: "+px1*16+"px;")
+        $("#pig2").attr("style", "position:absolute; top: "+py2*16+"px; left: "+px2*16+"px;")
+        $("#pig3").attr("style", "position:absolute; top: "+py3*16+"px; left: "+px3*16+"px;")
+        $("#sheep1").attr("style", "position:absolute; top: "+sy1*16+"px; left: "+sx1*16+"px;")
+        $("#sheep2").attr("style", "position:absolute; top: "+sy2*16+"px; left: "+sx2*16+"px;")
+        $("#sheep3").attr("style", "position:absolute; top: "+sy3*16+"px; left: "+sx3*16+"px;")
         if((zy1==p.y) && (zx1==p.x) && zstat.z1){
           console.log("oy")
           p.takeDamage(3)
