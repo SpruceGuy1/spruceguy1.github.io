@@ -1251,15 +1251,16 @@
                   lfcon = 1
                   break
               }
-              if(noco==2){
+            }
+        if(noco==2){
           if(costat.co1 && costat.co2){
-            lfpn = 3
+            lfcon = 3
           }
           if(costat.co1 && costat.co3){
-            lfpn = 2
+            lfcon = 2
           }
           if(costat.co2 && costat.co3){
-            lfpn = 1
+            lfcon = 1
           }
         }
               break
@@ -1284,15 +1285,16 @@
                   lfchn = 1
                   break
               }
+            }
               if(noch==2){
           if(chstat.ch1 && chstat.ch2){
-            lfpn = 3
+            lfchn = 3
           }
           if(chstat.ch1 && chstat.ch3){
-            lfpn = 2
+            lfchn = 2
           }
           if(chstat.ch2 && chstat.ch3){
-            lfpn = 1
+            lfchn = 1
           }
         }
 
