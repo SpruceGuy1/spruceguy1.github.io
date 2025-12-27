@@ -95,6 +95,7 @@
       <option value="woodenSword">Wooden sword - 3 wood (needs workbench)</option>
       <option value="workbench">Workbench - 4 wood</option>
       <option value="woodhut">Wooden hut (comes with furnace) - 5 wood</option>
+      <option value="bed">Bed - 3 wool, 3 wood</option>
     </select>
     <button id="craftButton">Craft</button>
     <div id='wbc'></div>
@@ -1374,7 +1375,19 @@
               $("#wbc").append("<img class='1x1-icon' src='wooden-sword.png'/>")
             }
             break
-        
+          case "bed":
+            if(p.inv.wood<3){
+              alert("You need 3 wood.")
+            }else if(p.inv.wool<3){
+              alert("You need 3 wool.")
+            }else{
+              p.inv.wood -= 3
+              $("#woodCount").text(p.inv.wood)
+              p.inv.wool -= 3
+              $("#woolCount").text(p.inv.wool)
+              $("#wbc").append("<img class='1x1-icon' src='bed.png' onclick='sleep()'/>")
+            }
+            break
         }
       })
       setInterval(function(){
@@ -1479,7 +1492,7 @@
         $("#chicken2").attr("style", "position:absolute; top: "+chy2*16+"px; left: "+chx2*16+"px;")
         $("#chicken3").attr("style", "position:absolute; top: "+chy3*16+"px; left: "+chx3*16+"px;")
 
-        if((zy1==p.y) && (zx1==p.x) && zstat.z1){
+        if((zy1==p.y) && (zx1==p.x) && zstat.z1){ //fix in 1.21.1
           console.log("oy")
           p.takeDamage(3)
           
@@ -1602,7 +1615,20 @@
           lfchn = t
           }
       }
-
+      function sleep(){
+        alert("Sleeping.")
+        p.genHP(p.hp*0.01)
+        day++
+        if(day==31){
+          day=1
+          month++
+        }
+        if(month==13){
+          month=1
+          year++
+        }
+        $("#time").text(month+"-"+day+"-"+year)
+      }
       function cut(a,b){
         if(b=="spruce"){
           a.remove()
