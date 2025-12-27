@@ -110,6 +110,8 @@
       var noz = 1 //zombie
       var nop = 1 //pig
       var nos = 1 //sheep
+      var noco = 1 //cow
+      var noch = 1 //chicken
       var treepos = [
         //[x,y]
       ]
@@ -172,6 +174,36 @@
         s2: false,
         s3: false
       }
+      var cox1 = 47
+      var coy1 = 32
+      var coh1 = 20
+      var cox2 = 64
+      var coy2 = 64
+      var coh2 = 20
+      var cox3 = 64
+      var coy3 = 64
+      var coh3 = 20
+      var lfcon = 2
+      var costat = {
+        co1: true,
+        co2: false,
+        co3: false
+      }
+      var chx1 = 47
+      var chy1 = 32
+      var chh1 = 20
+      var chx2 = 64
+      var chy2 = 64
+      var chh2 = 20
+      var chx3 = 64
+      var chy3 = 64
+      var chh3 = 20
+      var lfchn = 2
+      var chstat = {
+        ch1: true,
+        ch2: false,
+        ch3: false
+      }
 
       var p = {
         x:0,
@@ -233,6 +265,47 @@
         }
         
       }
+      function cookBeef(t){
+        if(hasFurnace){
+          if(p.inv.coal>0){
+            p.inv.coal--
+            $('#wbc').children('.coal').last().remove()
+            $("#coalCount").text(p.inv.coal)
+            t.remove()
+            p.inv.rawBeef--
+            $("#rawBeefCount").text(p.inv.rawBeef)
+            $(".furnace").attr("src", "lit-furnace.png")
+            setTimeout(function(){
+              $(".furnace").attr("src", "empty-furnace.png")
+              $("#wbc").append("<img class='1x1-icon' src='cooked-beef.png' onclick='eatBeef(this)'/>")
+              p.inv.cookedBeef++
+              $("#cookedBeefCount").text(p.inv.cookedBeef)
+            },1500)
+          }
+        }
+        
+      }
+      function cookChicken(t){
+        if(hasFurnace){
+          if(p.inv.coal>0){
+            p.inv.coal--
+            $('#wbc').children('.coal').last().remove()
+            $("#coalCount").text(p.inv.coal)
+            t.remove()
+            p.inv.rawChicken--
+            $("#rawChickenCount").text(p.inv.rawChicken)
+            $(".furnace").attr("src", "lit-furnace.png")
+            setTimeout(function(){
+              $(".furnace").attr("src", "empty-furnace.png")
+              $("#wbc").append("<img class='1x1-icon' src='cooked-chicken.png' onclick='eatChicken(this)'/>")
+              p.inv.cookedChicken++
+              $("#cookedChickenCount").text(p.inv.cookedChicken)
+            },1500)
+          }
+        }
+        
+      }
+
       var noise = new Noise(Math.random())
       for(let i = 0; i<=63; i++){
           for(let j = 0; j<=63; j++){
@@ -1121,7 +1194,7 @@
           }
         }
           break
-          case "pig":
+        case "pig":
             if(nop==3){
               return
             }
@@ -1142,6 +1215,8 @@
                   lfpn = 1
                   break
               }
+              break
+              
           }
           if(nop==2){
           if(pstat.p1 && pstat.p2){
@@ -1155,6 +1230,73 @@
           }
         }
             break
+            case "cow":
+            if(noco==3){
+              return
+            }
+            noco++
+            window["cox"+String(lfcon)] = Math.floor(64*Math.random())
+            window["coy"+String(lfcon)] = Math.floor(64*Math.random())
+            costat["co"+lfcon] = true
+            $("#cc").append("<img src='cow.png' class='cow' id='cow"+lfcon+"' onclick='hco(this, "+lfcon+")' style='position:absolute; top:"+16*window["coy"+String(lfcon)]+"px; left: "+16*window["cox"+String(lfcon)]+"px;'>" )
+            if(noco==1){
+              switch(lfcon){
+                case 1:
+                  lfcon = 2
+                  break
+                case 2:
+                  lfcon = 1
+                  break
+                case 3:
+                  lfcon = 1
+                  break
+              }
+              if(noco==2){
+          if(costat.co1 && costat.co2){
+            lfpn = 3
+          }
+          if(costat.co1 && costat.co3){
+            lfpn = 2
+          }
+          if(costat.co2 && costat.co3){
+            lfpn = 1
+          }
+        }
+              break
+              case "chicken":
+            if(noch==3){
+              return
+            }
+            noch++
+            window["chx"+String(lfchn)] = Math.floor(64*Math.random())
+            window["chy"+String(lfchn)] = Math.floor(64*Math.random())
+            chstat["ch"+lfchn] = true
+            $("#cc").append("<img src='chicken.png' class='chicken' id='chicken"+lfchn+"' onclick='hch(this, "+lfchn+")' style='position:absolute; top:"+16*window["chy"+String(lfchn)]+"px; left: "+16*window["chx"+String(lfchn)]+"px;'>" )
+            if(noch==1){
+              switch(lfchn){
+                case 1:
+                  lfchn = 2
+                  break
+                case 2:
+                  lfchn = 1
+                  break
+                case 3:
+                  lfchn = 1
+                  break
+              }
+              if(noch==2){
+          if(chstat.ch1 && chstat.ch2){
+            lfpn = 3
+          }
+          if(chstat.ch1 && chstat.ch3){
+            lfpn = 2
+          }
+          if(chstat.ch2 && chstat.ch3){
+            lfpn = 1
+          }
+        }
+
+
       }
         
         
@@ -1176,10 +1318,10 @@
       down()
       break;
     case 65: 
-      right()
+      left()
       break;
     case 68: 
-      left()
+      right()
       break;
     case 83: 
       down()
@@ -1304,7 +1446,20 @@
         sy1 += Math.floor(3*Math.random()) - 1
         sy2 += Math.floor(3*Math.random()) - 1
         sy3 += Math.floor(3*Math.random()) - 1
+        cox1 += Math.floor(3*Math.random()) - 1
+        cox2 += Math.floor(3*Math.random()) - 1
+        cox3 += Math.floor(3*Math.random()) - 1
+        coy1 += Math.floor(3*Math.random()) - 1
+        coy2 += Math.floor(3*Math.random()) - 1
+        coy3 += Math.floor(3*Math.random()) - 1
+        chx1 += Math.floor(3*Math.random()) - 1
+        chx2 += Math.floor(3*Math.random()) - 1
+        chx3 += Math.floor(3*Math.random()) - 1
+        chy1 += Math.floor(3*Math.random()) - 1
+        chy2 += Math.floor(3*Math.random()) - 1
+        chy3 += Math.floor(3*Math.random()) - 1
 
+        
 
         $("#z1").attr("style", "position:absolute; top: "+zy1*16+"px; left: "+zx1*16+"px;")
         $("#z2").attr("style", "position:absolute; top: "+zy2*16+"px; left: "+zx2*16+"px;")
@@ -1315,6 +1470,13 @@
         $("#sheep1").attr("style", "position:absolute; top: "+sy1*16+"px; left: "+sx1*16+"px;")
         $("#sheep2").attr("style", "position:absolute; top: "+sy2*16+"px; left: "+sx2*16+"px;")
         $("#sheep3").attr("style", "position:absolute; top: "+sy3*16+"px; left: "+sx3*16+"px;")
+        $("#cow1").attr("style", "position:absolute; top: "+coy1*16+"px; left: "+cox1*16+"px;")
+        $("#cow2").attr("style", "position:absolute; top: "+coy2*16+"px; left: "+cox2*16+"px;")
+        $("#cow3").attr("style", "position:absolute; top: "+coy3*16+"px; left: "+cox3*16+"px;")
+        $("#chicken1").attr("style", "position:absolute; top: "+chy1*16+"px; left: "+chx1*16+"px;")
+        $("#chicken2").attr("style", "position:absolute; top: "+chy2*16+"px; left: "+chx2*16+"px;")
+        $("#chicken3").attr("style", "position:absolute; top: "+chy3*16+"px; left: "+chx3*16+"px;")
+
         if((zy1==p.y) && (zx1==p.x) && zstat.z1){
           console.log("oy")
           p.takeDamage(3)
@@ -1344,6 +1506,14 @@
         var pts = Math.floor(3*Math.random())
         for(let i = 0; i<pts; i++){
           spawnAnimal("pig")
+        }
+        var cots = Math.floor(3*Math.random())
+        for(let i = 0; i<cots; i++){
+          spawnAnimal("cow")
+        }
+        var chts = Math.floor(3*Math.random())
+        for(let i = 0; i<chts; i++){
+          spawnAnimal("chicken")
         }
       }, 48000)
       setInterval(function(){
@@ -1400,6 +1570,36 @@
           lfpn = t
           }
       }
+      var hco = function(el, t){
+        window["cox"+String(t)]++
+        $("#cow"+t).attr("style", "position:absolute; top: "+window["coy"+String(t)]*16+"px; left: "+window["cox"+String(t)]*16+"px;")
+        window["coh"+String(t)]-=p.dmg
+        if(window["coh"+String(t)]<=0){
+            $("#cow"+t).remove()
+            alert("You killed a cow. You got a piece of raw beef.")
+            p.inv.rawBeef++
+            $("#rawBeefCount").text(p.inv.rawBeef)
+            $("#wbc").append("<img src='raw-beef.png' class='beef 1x1-icon' onclick='cookBeef(this)'/>")
+            costat["co"+t] = false
+            noco--
+          lfcon = t
+          }
+      }
+      var hch = function(el, t){
+        window["chx"+String(t)]++
+        $("#chicken"+t).attr("style", "position:absolute; top: "+window["chy"+String(t)]*16+"px; left: "+window["chx"+String(t)]*16+"px;")
+        window["chh"+String(t)]-=p.dmg
+        if(window["chh"+String(t)]<=0){
+            $("#chicken"+t).remove()
+            alert("You killed a chicken. You got a piece of raw chicken.")
+            p.inv.rawChicken++
+            $("#rawChickenCount").text(p.inv.rawChicken)
+            $("#wbc").append("<img src='raw-chicken.png' class='chicken 1x1-icon' onclick='cookChicken(this)'/>")
+            chstat["ch"+t] = false
+            noch--
+          lfchn = t
+          }
+      }
 
       function cut(a,b){
         if(b=="spruce"){
@@ -1442,6 +1642,18 @@
         p.inv.cookedPork--
         $("#cookedPorkCount").text(p.inv.cookedPork)
         p.genHP(6)
+      }
+        function eatBeef(el){
+        el.remove()
+        p.inv.cookedBeef--
+        $("#cookedBeefCount").text(p.inv.cookedBeef)
+        p.genHP(8)
+      }
+        function eatChicken(el){
+        el.remove()
+        p.inv.cookedChicken--
+        $("#cookedChickenCount").text(p.inv.cookedChicken)
+        p.genHP(4)
       }
       $("#eatMaxApples").click(function(){
         if(p.inv.apples==0){
