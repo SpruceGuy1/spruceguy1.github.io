@@ -13,7 +13,7 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.20.5
+    Beta 1.21
     <audio id="theme" src="Theme.mp3"></audio>
     <button id="tSound">Toggle sound</button> (currently <span id="soundStatus">off</span>.)
     Time: <span id="time">1-1-0</span>
@@ -59,7 +59,33 @@
       <li><button id="autopizz">Hire a pizza maker for $20</button></li>
       <li><button id="pizzaprod">Increase pizza production for $40</button></li>
     </ul>
-    You have <span id="appleCount">0</span> apples, <span id="woodCount">0</span> wood, <span id="woolCount">0</span> wool, <span id="coalCount">0</span> coal, <span id="cookedPorkCount">0</span> cooked pork, and <span id="rawPorkCount">0</span> raw pork.
+    
+    <details>
+      <summary>Inventory</summary>
+      Food<br>
+      <ul>
+        <li>Apples: <span id="appleCount">0</span></li>
+        <li>Beef: <span id="rawBeefCount">0</span> raw, <span id="cookedBeefCount">0</span> cooked</li>
+        <li>Chicken: <span id="rawChickenCount">0</span> raw, <span id="cookedChickenCount">0</span> cooked</li>
+        <li>Pork: <span id="rawPorkCount">0</span> raw, <span id="cookedPorkCount">0</span> cooked</li>
+      </ul>
+      Building Material<br>
+      <ul>
+        <li>Iron: <span id="ironCount">0</span></li>
+        <li>Stone: <span id="stoneCount">0</span></li>
+        <li>Wood: <span id="woodCount">0</span></li>
+        <li>Wool: <span id="woolCount">0</span></li>
+      </ul>
+      Natural Resources<br>
+      <ul>
+        <li>Coal: <span id="coalCount">0</span></li>
+        <li>Iron ore: <span id="ironOreCount">0</span></li>
+      </ul>
+      Other<br>
+      <ul>
+        <li>Arrows: <span id="arrowCount">0</span></li>
+      </ul>
+    </details>
     <button id="eatApple">Eat an apple</button>
     <button id="eatMaxApples">Eat all of your apples</button>
     <button id="buyCoal">Buy 2 coal for 3 apples</button>
@@ -152,13 +178,21 @@
         y:0,
         $:0,
         dmg:1,
+        defense:0,
         inv:{
           apples: 0,
           wood:0,
           rawPork:0,
           wool:0,
           cookedPork:0,
-          coal:0
+          coal:0,
+          rawChicken:0,
+          cookedChicken:0,
+          rawBeef:0,
+          cookedBeef:0,
+          iron:0,
+          ironOre:0,
+          
         },
         hp:20,
         takeDamage:function(t){ 
