@@ -1492,7 +1492,9 @@
         $("#chicken1").attr("style", "position:absolute; top: "+chy1*16+"px; left: "+chx1*16+"px;")
         $("#chicken2").attr("style", "position:absolute; top: "+chy2*16+"px; left: "+chx2*16+"px;")
         $("#chicken3").attr("style", "position:absolute; top: "+chy3*16+"px; left: "+chx3*16+"px;")
-
+        if(zstat.z1){
+          console.log("Zombie z1 - Position:", zx1, zy1, "Player:", p.x, p.y, "Match:", (zy1==p.y && zx1==p.x))
+        }
         if((zy1==p.y) && (zx1==p.x) && zstat.z1){ //fix in 1.21.1
           console.log("oy")
           p.takeDamage(3)
