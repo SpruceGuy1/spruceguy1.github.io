@@ -1114,7 +1114,7 @@
         window["zy"+String(lfzn)] = 64
         zstat["z"+lfzn] = true
         
-        $("#cc").append("<img src='zombie.png' class='zombie' id='z"+lfzn+"' onclick='kb("+lfzn+")' style='position:absolute; top:1024px; left: 1024px;'>" )
+        $("#cc").append("<img src='zombie.png' class='zombie' id='z"+lfzn+"' onclick='kb("+lfzn+")' style='position:absolute; top:"+window["zy"+String(lfzn)]*16+"px; left: "+window["zx"+String(lfzn)]*16+"px;'>" )
         if(noz==1){
           switch(lfzn){
             case 1:
@@ -1542,7 +1542,7 @@
       }, 17280000)
       setTimeout(function(){
         zstat.z1 = true
-        $("#cc").append("<img src='zombie.png' class='zombie' id='z1' onclick='kb(1)' style='position:absolute; top:1024px; left: 1024px;'>" )
+        $("#cc").append("<img src='zombie.png' class='zombie' id='z1' onclick='kb(1)' style='position:absolute; top:"+16*zy1+"px; left: "+16*zx1+"px;'>" )
       },60000)
       var kb = function(t){
         window["zx"+String(t)]++
@@ -1619,7 +1619,7 @@
       }
       function sleep(){
         alert("Sleeping.")
-        p.genHP(p.hp*0.01)
+        p.genHP(p.hp*Math.floor(8*Math.random())/16)
         day++
         if(day==31){
           day=1
