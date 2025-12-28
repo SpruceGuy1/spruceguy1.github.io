@@ -1113,6 +1113,7 @@
         window["zx"+String(lfzn)] = 64
         window["zy"+String(lfzn)] = 64
         zstat["z"+lfzn] = true
+        
         $("#cc").append("<img src='zombie.png' class='zombie' id='z"+lfzn+"' onclick='kb("+lfzn+")' style='position:absolute; top:1024px; left: 1024px;'>" )
         if(noz==1){
           switch(lfzn){
@@ -1540,6 +1541,7 @@
         $("#time").text(month+"-"+day+"-"+year)
       }, 17280000)
       setTimeout(function(){
+        zstat.z1 = true
         $("#cc").append("<img src='zombie.png' class='zombie' id='z1' onclick='kb(1)' style='position:absolute; top:1024px; left: 1024px;'>" )
       },60000)
       var kb = function(t){
