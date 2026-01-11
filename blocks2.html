@@ -974,6 +974,20 @@
               $("#wbc").append("<img src='wooden-pick.png' class='1x1-icon' id='pick'/>")
             }
               break
+              case "stonePick":
+                if(p.inv.wood < 2 || p.inv.stone < 3){
+                  alert("You need 2 wood and 3 stone.")
+                }else if(!haswb){
+                  alert("You need a workbench.")
+                }else{
+                  p.inv.stone -= 3
+                  p.inv.wood -= 2
+                  $("#stoneCount").text(p.inv.stone)
+                  $("#woodCount").text(p.inv.wood)
+                  $("#pick").attr("src", "stone-pickaxe.png")
+                  p.miningLevel=3
+                }
+                break
         }
       })
       setInterval(function(){
