@@ -99,6 +99,7 @@
       <option value="woodenPick">Wooden pickaxe - 5 wood (needs workbench)</option>
     </select>
     <button id="craftButton">Craft</button>
+    <button id="mine">Mine</button>
     <div id='wbc'></div>
     <script>
       var month = 1
@@ -514,8 +515,7 @@
                 treepos.push([ix, iy])
                 $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
                 
-              }
-              if(Math.floor(20*Math.random())==3){
+              }else if(Math.floor(20*Math.random())==3){
                 treepos.push([ix, iy])
                 //treeTypes.maple++
                 $("#cc").append("<img src='maple-tree.png' class='tree' onclick='cut(this, \"maple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
@@ -532,8 +532,7 @@
                 treepos.push([ix, iy])
                 $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
                  
-              }
-              if(Math.floor(20*Math.random())==3){
+              }else if(Math.floor(20*Math.random())==3){
                 treepos.push([ix, iy])
                 //treeTypes.maple++
                 $("#cc").append("<img src='maple-tree.png' class='tree' onclick='cut(this, \"maple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
@@ -1211,7 +1210,7 @@
       }
       function sleep(){
         alert("Sleeping.")
-        p.genHP(p.hp*Math.floor(8*Math.random())/16)
+        p.genHP(20/p.hp + 2)
         day++
         if(day==31){
           day=1
@@ -1326,6 +1325,13 @@
           $("#coalCount").text(p.inv.coal)
           $("#wbc").append("<img class='1x1-icon coal' src='coal.png'/>")
           $("#wbc").append("<img class='1x1-icon coal' src='coal.png'/>")
+        }
+      })
+      $("#mine").click(function(){
+        if(game[64*p.y+p.x] == "8" || game[64*p.y+p.x]=="9" || game[64*p.y+p.x]=="a"){
+          p.inv.stone++
+          $("#stoneCount").text(p.inv.stone)
+          p.hp -= Math.floor(8*Math.random()+1)/4
         }
       })
       setInterval(function(){
