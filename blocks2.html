@@ -963,6 +963,8 @@
           case "woodenPick":
             if(p.inv.wood<5){
               alert("You need 5 wood.")
+            }else if(!haswb){
+              alert("You need a workbench.")
             }else{
               p.inv.wood -= 5
               $("#woodCount").text(p.inv.wood)
