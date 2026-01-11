@@ -391,7 +391,6 @@
         game = Array.from(game)
         console.log(game)
         treepos = []
-        var treeTypes = {maple: 0, birch: 0, spruce: 0, apple: 0}
         $(".tree").remove()
       for( iy = 0; iy < 64; iy++){
         for( ix = 0; ix < 64; ix++){
@@ -403,7 +402,7 @@
                 treepos.push([ix, iy])
                 $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
                 
-              }else if(Math.floor(5*Math.random())==3){
+              }else if(Math.floor(20*Math.random())==3){
                 treeTypes.maple++
                 treepos.push([ix, iy])
                 $("#cc").append("<img src='maple-tree.png' class='tree' onclick='cut(this, \"maple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
@@ -459,7 +458,7 @@
                 treepos.push([ix, iy])
                 //treeTypes.maple++
                 $("#cc").append("<img src='maple-tree.png' class='tree' onclick='cut(this, \"maple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-              }else if(Math.floor(5*Math.random())==4){
+              }else if(Math.floor(10*Math.random())==4){
                 treepos.push([ix, iy])
                 //treeTypes.birch++
                 $("#cc").append("<img src='birch-tree.png' class='tree' onclick='cut(this, \"birch\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
@@ -476,7 +475,7 @@
                 treepos.push([ix, iy])
                 //treeTypes.maple++
                 $("#cc").append("<img src='maple-tree.png' class='tree' onclick='cut(this, \"maple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-              }else if(Math.floor(4*Math.random())==3){
+              }else if(Math.floor(8*Math.random())==3){
                 treepos.push([ix, iy])
                // treeTypes.birch++
                 $("#cc").append("<img src='birch-tree.png' class='tree' onclick='cut(this, \"birch\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
