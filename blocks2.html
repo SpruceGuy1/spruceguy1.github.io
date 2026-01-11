@@ -96,6 +96,7 @@
       <option value="workbench">Workbench - 4 wood</option>
       <option value="woodhut">Wooden hut (comes with furnace) - 5 wood</option>
       <option value="bed">Bed - 3 wool, 3 wood</option>
+      <option value="woodenPick">Wooden pickaxe - 5 wood (needs workbench)</option>
     </select>
     <button id="craftButton">Craft</button>
     <div id='wbc'></div>
@@ -969,7 +970,7 @@
               if(p.miningLevel==1){
                 p.miningLevel++
               }
-              $("#wbc").append("<img src='wooden-pick.png' class='1x1-icon' style='position:absolute; top:"+16*(p.y+1)+"px; left:"+16*p.x+"px;'/>")
+              $("#wbc").append("<img src='wooden-pick.png' class='1x1-icon' id='pick'/>")
             }
               break
         }
@@ -1248,6 +1249,7 @@
             $("#appleCount").text(p.inv.apples)
             }, 1000)
             break*/ // do this later
+            return
         }}
       
         var q = prompt("Would you like to cut or harvest from the "+b+" tree? (say 'cut' or 'harvest')")
