@@ -212,6 +212,7 @@
         $:0,
         dmg:1,
         defense:0,
+        miningLevel:1,
         inv:{
           apples: 0,
           wood:0,
@@ -959,6 +960,18 @@
               $("#wbc").append("<img class='1x1-icon' src='bed.png' onclick='sleep()'/>")
             }
             break
+          case "woodenPick":
+            if(p.inv.wood<5){
+              alert("You need 5 wood.")
+            }else{
+              p.inv.wood -= 5
+              $("#woodCount").text(p.inv.wood)
+              if(p.miningLevel==1){
+                p.miningLevel++
+              }
+              $("#wbc").append("<img src='wooden-pick.png' class='1x1-icon' style='position:absolute; top:"+16*(p.y+1)+"px; left:"+16*p.x+"px;'/>")
+            }
+              break
         }
       })
       setInterval(function(){
