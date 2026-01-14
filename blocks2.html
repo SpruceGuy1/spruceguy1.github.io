@@ -1362,7 +1362,10 @@
         if(p.$>=60){
           $("#cc").append("<img src='iron-mine.png' class='1x1-icon' style='position:absolute; top:"+(p.y*16)+"px; left:"+(p.x*16+16)+";' onclick='mine(this)'>")
           ironMinePos.push([p.x+1,p.y])
-
+          p.$ -= 60
+          $("#cash").text(p.$)
+        }else{
+          alert("You need $60.")
         }
       })
       setInterval(function(){
@@ -1381,8 +1384,12 @@
         }
       },69818+(2/11))
       function mine(el){
-        // do dis lata
+        $("#wbc").append("<img src='iron-ore.png' class='1x1-icon' onclick='smeltIron(this)'>")
+        p.inv.ironOre ++
+        p.takeDamage(1)
+        $("#ironOreCount").text(p.inv.ironOre)
       }
+      
     </script>
   </body>
 </html>
