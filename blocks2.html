@@ -242,6 +242,7 @@
           $('#hp').text(this.hp)
           if(this.hp<=0){
             alert("You died.")
+            location.reload()
           }
         },
         genHP:function(t){
