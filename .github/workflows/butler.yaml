@@ -1,27 +1,22 @@
-name: toItch
-
-env:
-  itchio_project: user/project-name
-  itchio_channel: windows
-
-on: push
+name: Upload to Itch
+on:
+  push:
+    branches:
+      - main
 
 jobs:
-  exports:
-    name: Build, Release, and Upload
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+
+      # Build your game...
+
+      - uses: Oval-Tutu/publish-to-itch-with-butler@v1
         with:
-          lfs: true
-      
-      
-      - name: Upload to itch.io project
-        uses: robpc/itchio-upload-action@v1
-        with:
-          path: build/stuff
-          project: blocks
-          channel: html5
-        
           api-key: ${{ secrets.ITCH_API_KEY }}
+          itch_user: spruceguy
+          itch_game: blocks
+          channel: html5
+          package: ./build/
+          version: ${{vars.VERSION}}
