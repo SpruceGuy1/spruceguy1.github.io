@@ -101,6 +101,7 @@
     </select>
     <button id="craftButton">Craft</button>
     <button id="mine">Mine</button>
+    <button id="ironMine">Establish an iron mine for $60.</button>
     <div id='wbc'></div>
     <script>
       var month = 1
@@ -121,6 +122,9 @@
       ]
       var hutpos = [
         
+      ]
+      var ironMinePos = [
+
       ]
       var haswb = false
       var hasFurnace = false
@@ -980,7 +984,7 @@
                   alert("You need 2 wood and 3 stone.")
                 }else if(!haswb){
                   alert("You need a workbench.")
-                }else{
+                }else if(p.miningLevel<3){
                   p.inv.stone -= 3
                   p.inv.wood -= 2
                   $("#stoneCount").text(p.inv.stone)
@@ -1101,7 +1105,7 @@
         if(zstat.z1){
           console.log("Zombie z1 - Position:", zx1, zy1, "Player:", p.x, p.y, "Match:", (zy1==p.y && zx1==p.x))
         }
-        if((zy1==p.y) && (zx1==p.x) && zstat.z1){ //fix in 1.21.1
+        if((zy1==p.y) && (zx1==p.x) && zstat.z1){ 
           console.log("oy")
           p.takeDamage(3)
           
@@ -1354,6 +1358,13 @@
           
         }
       })
+      $("#ironMine").click(function(){
+        if(p.$>=60){
+          $("#cc").append("<img src='iron-mine.png' class='1x1-icon' style='position:absolute; top:"+(p.y*16)+"px; left:"+(p.x*16+16)+";' onclick='mine(this)'>")
+          ironMinePos.push([p.x+1,p.y])
+
+        }
+      })
       setInterval(function(){
         var t = $("#theme").attr("src")
         if(t=="Theme.mp3"){
@@ -1369,6 +1380,9 @@
           $("#soundStatus").text("off")
         }
       },69818+(2/11))
+      function mine(el){
+        // do dis lata
+      }
     </script>
   </body>
 </html>
