@@ -12,8 +12,7 @@ jobs:
       - uses: robpc/itchio-upload-action@v1
         with:
           api-key: ${{ secrets.ITCH_API_KEY }}
-          itch_user: spruceguy
-          itch_game: blocks
+          project: spruceguy/blocks
           channel: html5
-          package: build
+          path: build
           version: ${{vars.VERSION}}
