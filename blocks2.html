@@ -1384,13 +1384,24 @@
           $("#soundStatus").text("off")
         }
       },69818+(2/11))
+      var msucmi = 0
       function mine(el){
-        $("#wbc").append("<img src='iron-ore.png' class='1x1-icon' onclick='smeltIron(this)'>")
-        p.inv.ironOre ++
-        p.takeDamage(1)
-        $("#ironOreCount").text(p.inv.ironOre)
+        if(msucmi==0){
+          $("#wbc").append("<img src='iron-ore.png' class='1x1-icon' onclick='smeltIron(this)'>")
+          p.inv.ironOre ++
+          p.takeDamage(p.hp/3)
+          $("#ironOreCount").text(p.inv.ironOre)
+          msucmi += 2000
+        }else{
+          alert(`Cooldown: ${msucmi/1000} seconds`)
+        }
+        
       }
-      
+      setInterval(function(){
+        if(msucmi>0){
+          msucmi--
+        }
+      },1)
     </script>
   </body>
 </html>
