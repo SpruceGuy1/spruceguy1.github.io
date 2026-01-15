@@ -1386,7 +1386,7 @@
       },69818+(2/11))
       var msucmi = 0
       function mine(el){
-        if(msucmi==0){
+        if(msucmi==0 && p.miningLevel>=3){
           $("#wbc").append("<img src='iron-ore.png' class='1x1-icon' onclick='smeltIron(this)'>")
           p.inv.ironOre ++
           p.takeDamage(p.hp/3)
