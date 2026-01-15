@@ -9,11 +9,11 @@ jobs:
 
       # Build your game...
 
-      - uses: Oval-Tutu/publish-to-itch-with-butler@1.0.0
+      - uses: robpc/itchio-upload-action@v1
         with:
           api-key: ${{ secrets.ITCH_API_KEY }}
           itch_user: spruceguy
           itch_game: blocks
           channel: html5
-          package: ./build/
+          package: build
           version: ${{vars.VERSION}}
