@@ -315,7 +315,26 @@
         }
         
       }
-
+      function smeltIron(t){
+        if(hasFurnace){
+          if(p.inv.coal>0){
+            p.inv.coal--
+            $('#wbc').children('.coal').last().remove()
+            $("#coalCount").text(p.inv.coal)
+            t.remove()
+            p.inv.ironOre--
+            $("#ironOreCount").text(p.inv.ironOre)
+            $(".furnace").attr("src", "lit-furnace.png")
+            setTimeout(function(){
+              $(".furnace").attr("src", "empty-furnace.png")
+              $("#wbc").append("<img class='1x1-icon' src='iron-ingot.png'/>")
+              p.inv.iron++
+              $("#ironCount").text(p.inv.iron)
+            },1500)
+          }
+        }
+        
+      }
       var noise = new Noise(Math.random())
       for(let i = 0; i<=63; i++){
           for(let j = 0; j<=63; j++){
