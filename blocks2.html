@@ -1054,7 +1054,7 @@
                   $("#ironCount").text(p.inv.stone)
                   
                   $("#wbc").append("<img class='1x1-icon' src='iron-armor.png' onclick='applyArmor(`iron`, this)'>")
-                  p.defense=3
+                  
                 }
                 break
         }
@@ -1465,12 +1465,14 @@
           el.remove()
           $("#char").attr("src", "armor-riggy.png")
           $("#char").attr("onclick", "dequipArmor('iron')")
+          p.defense = 3
         }
       }
       function dequipArmor(t){
         $("#wbc").append('<img id="armor" src="'+t+'-armor.png" class="1x1-icon" onclick="applyArmor(`'+t+'`, this)">')
         $("#char").attr("src", "Riggy.png")
         $("#char").attr("onclick", "")
+        p.defense = 1
       }
       setInterval(function(){
         if(msucmi>0){
