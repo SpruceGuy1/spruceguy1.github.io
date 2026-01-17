@@ -98,6 +98,8 @@
       <option value="bed">Bed - 3 wool, 3 wood</option>
       <option value="woodenPick">Wooden pickaxe - 5 wood (needs workbench)</option>
       <option value="stonePick">Stone pickaxe - 3 stone, 2 wood (needs workbench)</option>
+      <option value="ironPick">Iron pickaxe - 3 iron, 2 wood (needs workbench)</option>
+      <option value="ironSword">Iron sword - 2 iron, 1 wood (needs workbench)</option>
     </select>
     <button id="craftButton">Craft</button>
     <button id="mine">Mine</button>
@@ -218,7 +220,7 @@
         y:0,
         $:0,
         dmg:1,
-        defense:0,
+        defense:1,
         miningLevel:1,
         inv:{
           apples: 0,
@@ -238,7 +240,7 @@
         },
         hp:20,
         takeDamage:function(t){ 
-          this.hp-=t
+          this.hp-=(t/p.defense)
           $('#hp').text(this.hp)
           if(this.hp<=0){
             alert("You died.")
