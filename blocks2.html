@@ -20,7 +20,7 @@
     <div id="cc" style="position:relative;">
           <canvas width="1024" height="1024" id="game"></canvas>
           <div id="player" style="position:absolute; left:0; top:0; ">
-            <img src="Riggy.png">
+            <img id="char" src="Riggy.png">
             
           </div>
           <img src="sheep.png" class="1x1-icon sheep" id="sheep1" onclick="hs(this, 1)" style="position:absolute; left:752px; top:512px; "/>
@@ -971,7 +971,7 @@
               p.inv.wood -= 3
               $("#woodCount").text(p.inv.wood)
               p.dmg = 3
-              $("#wbc").append("<img class='1x1-icon' src='wooden-sword.png'/>")
+              $("#wbc").append("<img class='1x1-icon' id='sword' src='wooden-sword.png'/>")
             }
             break
           case "bed":
@@ -1013,6 +1013,48 @@
                   $("#woodCount").text(p.inv.wood)
                   $("#pick").attr("src", "stone-pickaxe.png")
                   p.miningLevel=3
+                }
+                break
+                case "ironPick":
+                if(p.inv.wood < 2 || p.inv.iron < 3){
+                  alert("You need 2 wood and 3 iron.")
+                }else if(!haswb){
+                  alert("You need a workbench.")
+                }else if(p.miningLevel<4){
+                  p.inv.iron -= 3
+                  p.inv.wood -= 2
+                  $("#ironCount").text(p.inv.iron)
+                  $("#woodCount").text(p.inv.wood)
+                  $("#pick").attr("src", "iron-pickaxe.png")
+                  p.miningLevel=4
+                }
+                break
+                case "ironSword":
+                if(p.inv.wood < 1 || p.inv.iron < 2){
+                  alert("You need 1 wood and 2 iron.")
+                }else if(!haswb){
+                  alert("You need a workbench.")
+                }else if(p.dmg<5){
+                  p.inv.iron -= 2
+                  p.inv.wood -= 1
+                  $("#ironCount").text(p.inv.iron)
+                  $("#woodCount").text(p.inv.wood)
+                  $("#sword").attr("src", "iron-sword.png")
+                  p.dmg=5
+                }
+                break
+                case "ironArmor":
+                if(p.inv.iron < 5){
+                  alert("You need 5 iron.")
+                }else if(!haswb){
+                  alert("You need a workbench.")
+                }else if(p.defense<3){
+                  p.inv.iron -= 5
+                  
+                  $("#ironCount").text(p.inv.stone)
+                  
+                  $("#wbc").append("<img class='1x1-icon' src='iron-armor.png' onclick='applyArmor(`iron`, this)'>")
+                  p.defense=3
                 }
                 break
         }
@@ -1417,6 +1459,18 @@
           alert(`Cooldown: ${msucmi/1000} seconds`)
         }
         
+      }
+      function applyArmor(type,el){
+        if(type==`iron`){
+          el.remove()
+          $("#char").attr("src", "armor-riggy.png")
+          $("#char").attr("onclick", "dequipArmor('iron')")
+        }
+      }
+      function dequipArmor(t){
+        $("#wbc").append('<img id="armor" src="'+t+'-armor.png" class="1x1-icon" onclick="applyArmor(`'+t+'`, this)">')
+        $("#char").attr("src", "Riggy.png")
+        $("#char").attr("onclick", "")
       }
       setInterval(function(){
         if(msucmi>0){
