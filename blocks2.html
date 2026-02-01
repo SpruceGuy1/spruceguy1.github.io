@@ -93,6 +93,8 @@
     <h3>Crafting</h3>
     <select id="menu3">
       <option value="woodenSword">Wooden sword - 3 wood (needs workbench)</option>
+      <option value="arrow">6 arrows - 2 wood (needs workbench)</option>
+      <option value="bow">Bow - 5 wood (needs workbench)</option>
       <option value="workbench">Workbench - 4 wood</option>
       <option value="woodhut">Wooden hut (comes with furnace) - 5 wood</option>
       <option value="bed">Bed - 3 wool, 3 wood</option>
@@ -260,7 +262,10 @@
         $:0,
         dmg:1,
         defense:1,
+        hasBow:false,
+        rangedDamage:0,
         miningLevel:1,
+        inShootMode:false,
         inv:{
           apples: 0,
           wood:0,
