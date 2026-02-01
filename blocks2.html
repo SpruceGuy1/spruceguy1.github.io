@@ -139,6 +139,42 @@
         m = Math.floor(m)
         return [m, n%64]
       }
+      function shootArrow(startX, startY, targetX, targetY) {
+  // Calculate distance and angle
+  var dx = targetX - startX;
+  var dy = targetY - startY;
+  var distance = Math.sqrt(dx * dx + dy * dy);
+  var angle = Math.atan2(dy, dx) * (180 / Math.PI); // Convert to degrees
+  
+  // Create arrow element
+  var arrow = $("<img>")
+    .attr("src", "arrow.png")
+    .addClass("1x1-icon")
+    .css({
+      position: "absolute",
+      top: (startY * 16) + "px",
+      left: (startX * 16) + "px",
+      transform: "rotate(" + angle + "deg)",
+      transformOrigin: "center center",
+      zIndex: 100
+    });
+  
+  // Add arrow to game container
+  $("#cc").append(arrow);
+  
+  // Animate arrow movement
+  var duration = distance * 50; // Adjust speed by changing multiplier
+  arrow.animate({
+    top: (targetY * 16) + "px",
+    left: (targetX * 16) + "px"
+  }, duration, "linear", function() {
+    // Remove arrow when it reaches target
+    $(this).remove();
+    
+    // Optional: Add hit detection here
+    // checkArrowHit(targetX, targetY);
+  });
+}
       var c = document.getElementById("game").getContext("2d")
       var se = "sell"
       
