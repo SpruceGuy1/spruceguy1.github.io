@@ -119,8 +119,8 @@
       var noz = 1 //zombie
       var nop = 1 //pig
       var nos = 1 //sheep
-      var noco = 1 //cow
-      var noch = 1 //chicken
+      var noco = 0 //cow
+      var noch = 0 //chicken
       var treepos = [
         //[x,y]
       ]
@@ -198,7 +198,7 @@
       var coh3 = 20
       var lfcon = 2
       var costat = {
-        co1: true,
+        co1: false,
         co2: false,
         co3: false
       }
@@ -213,7 +213,7 @@
       var chh3 = 20
       var lfchn = 2
       var chstat = {
-        ch1: true,
+        ch1: false,
         ch2: false,
         ch3: false
       }
@@ -332,7 +332,7 @@
             $(".furnace").attr("src", "lit-furnace.png")
             setTimeout(function(){
               $(".furnace").attr("src", "empty-furnace.png")
-              $("#wbc").append("<img class='1x1-icon' src='iron-ingot.png'/>")
+              $("#wbc").append("<img class='1x1-icon' class='iron' src='iron-ingot.png'/>")
               p.inv.iron++
               $("#ironCount").text(p.inv.iron)
             },1500)
@@ -1053,7 +1053,11 @@
                   alert("You need a workbench.")
                 }else if(p.defense<3){
                   p.inv.iron -= 5
-                  
+                  $('#wbc').children('.iron').last().remove()
+                  $('#wbc').children('.iron').last().remove()
+                  $('#wbc').children('.iron').last().remove()
+                  $('#wbc').children('.iron').last().remove()
+                  $('#wbc').children('.iron').last().remove()
                   $("#ironCount").text(p.inv.iron)
                   
                   $("#wbc").append("<img class='1x1-icon' src='iron-armor.png' onclick='applyArmor(`iron`, this)'>")
@@ -1062,15 +1066,18 @@
                 break
                 case "bucket":
                 if(p.inv.iron < 3){
-                  alert("You need 5 iron.")
+                  alert("You need 3 iron.")
                 }else if(!haswb){
                   alert("You need a workbench.")
                 }else{
                   p.inv.iron -= 3
-                  
+                  $('#wbc').children('.iron').last().remove()
+                  $('#wbc').children('.iron').last().remove()
+                  $('#wbc').children('.iron').last().remove()
+
                   $("#ironCount").text(p.inv.iron)
                   
-                  $("#wbc").append("<img class='1x1-icon' src='bucket.png' id='bucket'>")
+                  $("#wbc").append("<img class='1x1-icon' src='empty-bucket.png' id='bucket'>")
                   
                 }
                 break
