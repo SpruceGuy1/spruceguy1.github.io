@@ -1026,6 +1026,10 @@
                 }else if(p.miningLevel<4){
                   p.inv.iron -= 3
                   p.inv.wood -= 2
+                  $('#wbc').children('.iron').last().remove()
+                  $('#wbc').children('.iron').last().remove()
+                  $('#wbc').children('.iron').last().remove()
+                  
                   $("#ironCount").text(p.inv.iron)
                   $("#woodCount").text(p.inv.wood)
                   $("#pick").attr("src", "iron-pickaxe.png")
@@ -1039,6 +1043,9 @@
                   alert("You need a workbench.")
                 }else if(p.dmg<5){
                   p.inv.iron -= 2
+                  $('#wbc').children('.iron').last().remove()
+                  $('#wbc').children('.iron').last().remove()
+                
                   p.inv.wood -= 1
                   $("#ironCount").text(p.inv.iron)
                   $("#woodCount").text(p.inv.wood)
