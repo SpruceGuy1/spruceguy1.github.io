@@ -1655,6 +1655,16 @@
         p.inShootMode = !p.inShootMode
         $("#sm").text(p.inShootMode?"on":"off")
       })
+      $("#cc").click(function(e) {
+  if (p.inShootMode && p.hasBow && p.inv.arrows > 0) {
+    var targetX = Math.floor(e.offsetX / 16)
+    var targetY = Math.floor(e.offsetY / 16)
+    shootArrow(p.x, p.y, targetX, targetY)
+    p.inv.arrows--
+    $("#wbc").children(".arrow").last().remove()
+    $("#arrowCount").text(p.inv.arrows)
+  }
+})
       setInterval(function(){
         if(msucmi>0){
           msucmi--
