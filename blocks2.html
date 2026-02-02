@@ -50,6 +50,7 @@
       <button id="right">Right</button>
     <button id="makePizza">Make pizza</button>
     <button id="spawnZombie">Spawn zombie</button>
+    <button id="spawnArcher">Spawn archer</button>
     <div id="pizza-container"></div>
     <select id="menu2">
       <option value="sell">Sell</option>
@@ -120,6 +121,7 @@
       var prod = 1
       var pp2s = 0
       var noz = 1 //zombie
+      var noa = 1 //archer
       var nop = 1 //pig
       var nos = 1 //sheep
       var noco = 0 //cow
@@ -189,6 +191,33 @@
           }
     zombieHit = true;
   }
+  if(astat.a1 && ax1 == targetX && ay1 == targetY) {
+    t="1"
+    window["ah"+String(t)]-=damage
+        if(window["ah"+String(t)]<=0){
+            $("#a"+t).remove()
+            alert("You beat a zombie!")
+            astat["a"+t] = false
+            noa--
+            p.$ += 10
+            $("#cash").text(p.$)
+          }
+    zombieHit = true;
+  }
+  if(astat.a2 && ax2 == targetX && ay2 == targetY) {
+    t="1"
+    window["ah"+String(t)]-=damage
+        if(window["ah"+String(t)]<=0){
+            $("#a"+t).remove()
+            alert("You beat a zombie!")
+            astat["a"+t] = false
+            noa--
+            p.$ += 10
+            $("#cash").text(p.$)
+          }
+    zombieHit = true;
+  }
+  // Check zombie 2
   
   return zombieHit;
 }
@@ -254,6 +283,21 @@
         z1: false,
         z2: false,
         z3: false
+      }
+      var ax1 = 64
+      var ay1 = 64
+      var ah1 = 20
+      var ax2 = 64
+      var ay2 = 64
+      var ah2 = 20
+      var ax3 = 64
+      var ay3 = 64
+      var ah3 = 20
+      var lfan = 2
+      var astat = {
+        a1: false,
+        a2: false,
+        a3: false
       }
       var px1 = 32
       var py1 = 41
@@ -843,6 +887,44 @@
         }
         
       })
+      $("#spawnArcher").click(function(){
+        
+        if(noa==3){
+          return
+        }
+        noa++
+        window["ax"+String(lfan)] = 64
+        window["ay"+String(lfan)] = 64
+        astat["a"+lfan] = true
+        
+        $("#cc").append("<img src='archer.png' class='archer' id='a"+lfan+"' onclick='ha("+lfan+")' style='position:absolute; top:"+window["ay"+String(lfan)]*16+"px; left: "+window["ax"+String(lfan)]*16+"px;'>" )
+        if(noa==1){
+          switch(lfan){
+            case 1:
+              lfan = 2
+              break
+            case 2:
+              lfan = 1
+              break
+            case 3:
+              lfan = 1
+              break
+          }
+        }
+        if(noa==2){
+          if(astat.a1 && astat.a2){
+            lfan = 3
+          }
+          if(astat.a1 && astat.a3){
+            lfan = 2
+          }
+          if(astat.a2 && astat.a3){
+            lfan = 1
+          }
+        }
+        
+      })
+
       $("#autopizz").click(function(){
         if(p.$>=20){
           p.$-=20
@@ -1309,8 +1391,57 @@
         chy1 += Math.floor(3*Math.random()) - 1
         chy2 += Math.floor(3*Math.random()) - 1
         chy3 += Math.floor(3*Math.random()) - 1
-
-        
+        ax1 += Math.floor(3*Math.random()) - 1
+        ax2 += Math.floor(3*Math.random()) - 1
+        ax3 += Math.floor(3*Math.random()) - 1
+        if(zx1!==p.x && zstat.z1){
+          if(zx1>p.x){
+            zx1--
+            
+          }else{
+            zx1++
+          }
+        }
+        if(zy1!==p.y && zstat.z1){
+          if(zy1>p.y){
+            zy1--
+            
+          }else{
+            zy1++
+          }
+        }
+        if(zx2!==p.x && zstat.z2){
+          if(zx2>p.x){
+            zx2--
+            
+          }else{
+            zx2++
+          }
+        }
+        if(zy2!==p.y && zstat.z2){
+          if(zy2>p.y){
+            zy2--
+            
+          }else{
+            zy2++
+          }
+        }
+        if(zx3!==p.x && zstat.z3){
+          if(zx3>p.x){
+            zx3--
+            
+          }else{
+            zx3++
+          }
+        }
+        if(zy3!==p.y  && zstat.z3){
+          if(zy3>p.y){
+            zy3--
+            
+          }else{
+            zy3++
+          }
+        }
 
         $("#z1").attr("style", "position:absolute; top: "+zy1*16+"px; left: "+zx1*16+"px;")
         $("#z2").attr("style", "position:absolute; top: "+zy2*16+"px; left: "+zx2*16+"px;")
@@ -1324,6 +1455,9 @@
         $("#cow1").attr("style", "position:absolute; top: "+coy1*16+"px; left: "+cox1*16+"px;")
         $("#cow2").attr("style", "position:absolute; top: "+coy2*16+"px; left: "+cox2*16+"px;")
         $("#cow3").attr("style", "position:absolute; top: "+coy3*16+"px; left: "+cox3*16+"px;")
+        $("#a1").attr("style", "position:absolute; top: "+ay1*16+"px; left: "+ax1*16+"px;")
+        $("#a2").attr("style", "position:absolute; top: "+ay2*16+"px; left: "+ax2*16+"px;")
+        $("#a3").attr("style", "position:absolute; top: "+ay3*16+"px; left: "+zx3*16+"px;")
         console.log(0)
         $("#chicken1").attr("style", "position:absolute; top: "+chy1*16+"px; left: "+chx1*16+"px;")
         console.log(1)
@@ -1373,6 +1507,12 @@
         for(let i = 0; i<chts; i++){
           spawnAnimal("chicken")
         }
+        var asc = Math.floor(Math.random()*4)
+        if(lfan>3){asc=0}
+        astat["a"+lfan] = asc==1
+        
+        $("#cc").append("<img src='archer.png' class='archer' id='a"+lfan+"' onclick='ha("+lfan+")' style='position:absolute; top:"+16*window["ay"+lfan]+"px; left: "+16*window["az"+lfan]+"px;'>" )
+        lfan++
       }, 48000)
       setInterval(function(){
         month = (month+1)>12?1:(month+1)
@@ -1395,6 +1535,20 @@
             alert("You beat a zombie!")
             zstat["z"+t] = false
             noz--
+            p.$ += 10
+            $("#cash").text(p.$)
+          }
+      }
+      var ha = function(t){
+        window["ax"+String(t)]++
+        $("#a"+t).attr("style", "position:absolute; top: "+window["ay"+String(t)]*16+"px; left: "+window["ax"+String(t)]*16+"px;")
+        window["ah"+String(t)]-=p.dmg
+        if(window["ah"+String(t)]<=0){
+            $("#a"+t).remove()
+            alert("You beat an archer!")
+            astat["a"+t] = false
+            noa--
+          
             p.$ += 10
             $("#cash").text(p.$)
           }
