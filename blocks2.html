@@ -205,7 +205,7 @@
     zombieHit = true;
   }
   if(astat.a2 && ax2 == targetX && ay2 == targetY) {
-    t="1"
+    t="2"
     window["ah"+String(t)]-=damage
         if(window["ah"+String(t)]<=0){
             $("#a"+t).remove()
@@ -1394,54 +1394,8 @@
         ax1 += Math.floor(3*Math.random()) - 1
         ax2 += Math.floor(3*Math.random()) - 1
         ax3 += Math.floor(3*Math.random()) - 1
-        if(zx1!==p.x && zstat.z1){
-          if(zx1>p.x){
-            zx1--
-            
-          }else{
-            zx1++
-          }
-        }
-        if(zy1!==p.y && zstat.z1){
-          if(zy1>p.y){
-            zy1--
-            
-          }else{
-            zy1++
-          }
-        }
-        if(zx2!==p.x && zstat.z2){
-          if(zx2>p.x){
-            zx2--
-            
-          }else{
-            zx2++
-          }
-        }
-        if(zy2!==p.y && zstat.z2){
-          if(zy2>p.y){
-            zy2--
-            
-          }else{
-            zy2++
-          }
-        }
-        if(zx3!==p.x && zstat.z3){
-          if(zx3>p.x){
-            zx3--
-            
-          }else{
-            zx3++
-          }
-        }
-        if(zy3!==p.y  && zstat.z3){
-          if(zy3>p.y){
-            zy3--
-            
-          }else{
-            zy3++
-          }
-        }
+       
+        
 
         $("#z1").attr("style", "position:absolute; top: "+zy1*16+"px; left: "+zx1*16+"px;")
         $("#z2").attr("style", "position:absolute; top: "+zy2*16+"px; left: "+zx2*16+"px;")
@@ -1457,7 +1411,7 @@
         $("#cow3").attr("style", "position:absolute; top: "+coy3*16+"px; left: "+cox3*16+"px;")
         $("#a1").attr("style", "position:absolute; top: "+ay1*16+"px; left: "+ax1*16+"px;")
         $("#a2").attr("style", "position:absolute; top: "+ay2*16+"px; left: "+ax2*16+"px;")
-        $("#a3").attr("style", "position:absolute; top: "+ay3*16+"px; left: "+zx3*16+"px;")
+        $("#a3").attr("style", "position:absolute; top: "+ay3*16+"px; left: "+ax3*16+"px;")
         console.log(0)
         $("#chicken1").attr("style", "position:absolute; top: "+chy1*16+"px; left: "+chx1*16+"px;")
         console.log(1)
@@ -1511,7 +1465,7 @@
         if(lfan>3){asc=0}
         astat["a"+lfan] = asc==1
         
-        $("#cc").append("<img src='archer.png' class='archer' id='a"+lfan+"' onclick='ha("+lfan+")' style='position:absolute; top:"+16*window["ay"+lfan]+"px; left: "+16*window["az"+lfan]+"px;'>" )
+        $("#cc").append("<img src='archer.png' class='archer' id='a"+lfan+"' onclick='ha("+lfan+")' style='position:absolute; top:"+16*window["ay"+lfan]+"px; left: "+16*window["ax"+lfan]+"px;'>" )
         lfan++
       }, 48000)
       setInterval(function(){
