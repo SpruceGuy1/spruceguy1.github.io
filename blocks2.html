@@ -107,6 +107,7 @@
     </select>
     <button id="craftButton">Craft</button>
     <button id="mine">Mine</button>
+    <button id="esm">Toggle shoot mode, currently <span id="sm">off.</span></button>
     <button id="ironMine">Establish an iron mine for $60.</button>
     <div id='wbc'></div>
     <script>
@@ -141,6 +142,56 @@
         m = Math.floor(m)
         return [m, n%64]
       }
+      function damageEnemy(targetX, targetY, damage) {
+  var zombieHit = false;
+  
+  // Check zombie 1
+  if(zstat.z1 && zx1 == targetX && zy1 == targetY) {
+    t="1"
+    window["zh"+String(t)]-=p.dmg
+        if(window["zh"+String(t)]<=0){
+            $("#z"+t).remove()
+            alert("You beat a zombie!")
+            zstat["z"+t] = false
+            noz--
+            p.$ += 10
+            $("#cash").text(p.$)
+          }
+    zombieHit = true;
+  }
+  
+  // Check zombie 2
+  if(zstat.z2 && zx2 == targetX && zy2 == targetY) {
+    t="2"
+    window["zh"+String(t)]-=p.dmg
+        if(window["zh"+String(t)]<=0){
+            $("#z"+t).remove()
+            alert("You beat a zombie!")
+            zstat["z"+t] = false
+            noz--
+            p.$ += 10
+            $("#cash").text(p.$)
+          }
+    zombieHit = true;
+  }
+  
+  // Check zombie 3
+  if(zstat.z3 && zx3 == targetX && zy3 == targetY) {
+    t="3"
+    zh3-=p.dmg
+        if(zh3<=0){
+            $("#z"+t).remove()
+            alert("You beat a zombie!")
+            zstat["z"+t] = false
+            noz--
+            p.$ += 10
+            $("#cash").text(p.$)
+          }
+    zombieHit = true;
+  }
+  
+  return zombieHit;
+}
       function shootArrow(startX, startY, targetX, targetY) {
   // Calculate distance and angle
   var dx = targetX - startX;
@@ -172,11 +223,20 @@
   }, duration, "linear", function() {
     // Remove arrow when it reaches target
     $(this).remove();
+    var hit = damageEnemy(targetX, targetY, p.rangedDamage);
     
+    // Remove arrow
+    $(this).remove();
+    
+    // Optional: Visual feedback for hit/miss
+    if(hit) {
+      console.log("🎯 Hit!");
+    }
     // Optional: Add hit detection here
     // checkArrowHit(targetX, targetY);
   });
 }
+      
       var c = document.getElementById("game").getContext("2d")
       var se = "sell"
       
@@ -1129,6 +1189,40 @@
                   hasBucket = true
                 }
                 break
+            case "bow":
+                if(p.inv.wood < 5){
+                  alert("You need 5 wood.")
+                }else if(!haswb){
+                  alert("You need a workbench.")
+                }else if(p.rangedDamage<=3){
+                  p.inv.wood -= 5
+                  
+
+                  $("#woodCount").text(p.inv.wood)
+                  
+                  $("#wbc").append("<img class='1x1-icon' src='bow.png' id='bow'>")
+                  p.hasBow = true
+                  p.rangedDamage = 3
+                }
+                break
+            case "arrow":
+                if(p.inv.wood < 2){
+                  alert("You need 2 wood.")
+                }else if(!haswb){
+                  alert("You need a workbench.")
+                }else{
+                  p.inv.wood -= 2
+                  
+
+                  $("#woodCount").text(p.inv.wood)
+                  for(let i = 0; i < 6; i++){
+                    $("#wbc").append("<img class='arrow 1x1-icon' src='arrow.png' >")
+                  p.inv.arrows+=6
+                  $("#arrowCount").text(p.inv.arrows)
+                  }
+                  
+                }
+                break
         }
       })
       setInterval(function(){
@@ -1557,6 +1651,7 @@
         $("#char").attr("onclick", "")
         p.defense = 1
       }
+      
       setInterval(function(){
         if(msucmi>0){
           msucmi--
