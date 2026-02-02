@@ -196,7 +196,7 @@
     window["ah"+String(t)]-=damage
         if(window["ah"+String(t)]<=0){
             $("#a"+t).remove()
-            alert("You beat a zombie!")
+            alert("You beat an archer!")
             astat["a"+t] = false
             noa--
             p.$ += 10
@@ -209,7 +209,7 @@
     window["ah"+String(t)]-=damage
         if(window["ah"+String(t)]<=0){
             $("#a"+t).remove()
-            alert("You beat a zombie!")
+            alert("You beat an archer!")
             astat["a"+t] = false
             noa--
             p.$ += 10
@@ -1394,7 +1394,9 @@
         ax1 += Math.floor(3*Math.random()) - 1
         ax2 += Math.floor(3*Math.random()) - 1
         ax3 += Math.floor(3*Math.random()) - 1
-       
+        ay1 += Math.floor(3*Math.random()) - 1
+        ay2 += Math.floor(3*Math.random()) - 1
+        ay3 += Math.floor(3*Math.random()) - 1
         
 
         $("#z1").attr("style", "position:absolute; top: "+zy1*16+"px; left: "+zx1*16+"px;")
@@ -1462,11 +1464,13 @@
           spawnAnimal("chicken")
         }
         var asc = Math.floor(Math.random()*4)
-        if(lfan>3){asc=0}
-        astat["a"+lfan] = asc==1
-        
-        $("#cc").append("<img src='archer.png' class='archer' id='a"+lfan+"' onclick='ha("+lfan+")' style='position:absolute; top:"+16*window["ay"+lfan]+"px; left: "+16*window["ax"+lfan]+"px;'>" )
-        lfan++
+        if(lfan > 3 || asc !== 1) return
++        astat["a"+lfan] = true
++        noa++
++        window["ax"+lfan] = Math.floor(64*Math.random())
++        window["ay"+lfan] = Math.floor(64*Math.random())
++        $("#cc").append("<img src='archer.png' class='archer' id='a"+lfan+"' onclick='ha("+lfan+")' style='position:absolute; top:"+16*window["ay"+lfan]+"px; left: "+16*window["ax"+lfan]+"px;'>" )
++        lfan++
       }, 48000)
       setInterval(function(){
         month = (month+1)>12?1:(month+1)
