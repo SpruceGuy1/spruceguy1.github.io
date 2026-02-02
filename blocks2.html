@@ -148,7 +148,7 @@
   // Check zombie 1
   if(zstat.z1 && zx1 == targetX && zy1 == targetY) {
     t="1"
-    window["zh"+String(t)]-=p.dmg
+    window["zh"+String(t)]-=damage
         if(window["zh"+String(t)]<=0){
             $("#z"+t).remove()
             alert("You beat a zombie!")
@@ -163,7 +163,7 @@
   // Check zombie 2
   if(zstat.z2 && zx2 == targetX && zy2 == targetY) {
     t="2"
-    window["zh"+String(t)]-=p.dmg
+    window["zh"+String(t)]-=damage
         if(window["zh"+String(t)]<=0){
             $("#z"+t).remove()
             alert("You beat a zombie!")
@@ -178,7 +178,7 @@
   // Check zombie 3
   if(zstat.z3 && zx3 == targetX && zy3 == targetY) {
     t="3"
-    zh3-=p.dmg
+    zh3-=damage
         if(zh3<=0){
             $("#z"+t).remove()
             alert("You beat a zombie!")
@@ -226,7 +226,7 @@
     var hit = damageEnemy(targetX, targetY, p.rangedDamage);
     
     // Remove arrow
-    $(this).remove();
+    
     
     // Optional: Visual feedback for hit/miss
     if(hit) {
@@ -294,7 +294,7 @@
       var cox3 = 64
       var coy3 = 64
       var coh3 = 20
-      var lfcon = 2
+      var lfcon = 1
       var costat = {
         co1: false,
         co2: false,
@@ -309,7 +309,7 @@
       var chx3 = 64
       var chy3 = 64
       var chh3 = 20
-      var lfchn = 2
+      var lfchn = 1
       var chstat = {
         ch1: false,
         ch2: false,
@@ -1194,7 +1194,7 @@
                   alert("You need 5 wood.")
                 }else if(!haswb){
                   alert("You need a workbench.")
-                }else if(p.rangedDamage<=3){
+                }else if(!p.hasBow){
                   p.inv.wood -= 5
                   
 
@@ -1217,7 +1217,7 @@
                   $("#woodCount").text(p.inv.wood)
                   for(let i = 0; i < 6; i++){
                     $("#wbc").append("<img class='arrow 1x1-icon' src='arrow.png' >")
-                  p.inv.arrows+=6
+                  p.inv.arrows++
                   $("#arrowCount").text(p.inv.arrows)
                   }
                   
@@ -1651,7 +1651,10 @@
         $("#char").attr("onclick", "")
         p.defense = 1
       }
-      
+      $("#esm").click(function(){
+        p.inShootMode = !p.inShootMode
+        $("#sm").text(p.inShootMode?"on":"off")
+      })
       setInterval(function(){
         if(msucmi>0){
           msucmi--
