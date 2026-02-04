@@ -303,7 +303,7 @@
         a2: false,
         a3: false
       }
-      var acool = {
+      var archerCooldown = {
         a1:0,
         a2:0,
         ae:0
@@ -1517,12 +1517,12 @@ if(archerCooldown.a3 > 0) {
         }
         var asc = Math.floor(Math.random()*4)
         if(lfan > 3 || asc !== 1) return
-+        astat["a"+lfan] = true
-+        noa++
-+        window["ax"+lfan] = Math.floor(64*Math.random())
-+        window["ay"+lfan] = Math.floor(64*Math.random())
-+        $("#cc").append("<img src='archer.png' class='archer' id='a"+lfan+"' onclick='ha("+lfan+")' style='position:absolute; top:"+16*window["ay"+lfan]+"px; left: "+16*window["ax"+lfan]+"px;'>" )
-+        lfan++
+         astat["a"+lfan] = true
+         noa++
+         window["ax"+lfan] = Math.floor(64*Math.random())
+         window["ay"+lfan] = Math.floor(64*Math.random())
+         $("#cc").append("<img src='archer.png' class='archer' id='a"+lfan+"' onclick='ha("+lfan+")' style='position:absolute; top:"+16*window["ay"+lfan]+"px; left: "+16*window["ax"+lfan]+"px;'>" )
+         lfan++
       }, 48000)
       setInterval(function(){
         month = (month+1)>12?1:(month+1)
