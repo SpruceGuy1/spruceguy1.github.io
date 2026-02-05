@@ -245,7 +245,7 @@
   $("#cc").append(arrow);
   
   // Animate arrow movement
-  var duration = distance * 50; // Adjust speed by changing multiplier
+  var duration = distance * 20; // Adjust speed by changing multiplier
   arrow.animate({
     top: (targetY * 16) + "px",
     left: (targetX * 16) + "px"
@@ -1423,49 +1423,7 @@
         $("#a1").attr("style", "position:absolute; top: "+ay1*16+"px; left: "+ax1*16+"px;")
         $("#a2").attr("style", "position:absolute; top: "+ay2*16+"px; left: "+ax2*16+"px;")
         $("#a3").attr("style", "position:absolute; top: "+ay3*16+"px; left: "+ax3*16+"px;")
-        if(astat.a1 && archerCooldown.a1 <= 0) {
-  shootArrow(ax1, ay1, p.x, p.y,function(targetX, targetY) {
-    // Check if player is still at target location
-    if(p.x == targetX && p.y == targetY) {
-      p.takeDamage(2) // Adjust damage as needed
-      console.log("Player hit by archer arrow!")
-    }
-  })
-  archerCooldown.a1 = 3 // Cooldown of 3 intervals (6 seconds)
-}
-if(archerCooldown.a1 > 0) {
-  archerCooldown.a1--
-}
-
-// Archer 2 shoots
-if(astat.a2 && archerCooldown.a2 <= 0) {
-  shootArrow(ax2, ay2, p.x, p.y,function(targetX, targetY) {
-    // Check if player is still at target location
-    if(p.x == targetX && p.y == targetY) {
-      p.takeDamage(2) // Adjust damage as needed
-      console.log("Player hit by archer arrow!")
-    }
-  })
-  archerCooldown.a2 = 3
-}
-if(archerCooldown.a2 > 0) {
-  archerCooldown.a2--
-}
-
-// Archer 3 shoots
-if(astat.a3 && archerCooldown.a3 <= 0) {
-  shootArrow(ax3, ay3, p.x, p.y,function(targetX, targetY) {
-    // Check if player is still at target location
-    if(p.x == targetX && p.y == targetY) {
-      p.takeDamage(2) // Adjust damage as needed
-      console.log("Player hit by archer arrow!")
-    }
-  })
-  archerCooldown.a3 = 3
-}
-if(archerCooldown.a3 > 0) {
-  archerCooldown.a3--
-}
+        
         console.log(0)
         $("#chicken1").attr("style", "position:absolute; top: "+chy1*16+"px; left: "+chx1*16+"px;")
         console.log(1)
@@ -1834,6 +1792,51 @@ if(archerCooldown.a3 > 0) {
           msucmi--
         }
       },1)
+      setInterval(function(){
+        if(astat.a1 && archerCooldown.a1 <= 0) {
+  shootArrow(ax1, ay1, p.x, p.y,function(targetX, targetY) {
+    // Check if player is still at target location
+    if(p.x == targetX && p.y == targetY) {
+      p.takeDamage(2) // Adjust damage as needed
+      console.log("Player hit by archer arrow!")
+    }
+  })
+  archerCooldown.a1 = 3 // Cooldown of 3 intervals (6 seconds)
+}
+if(archerCooldown.a1 > 0) {
+  archerCooldown.a1--
+}
+
+// Archer 2 shoots
+if(astat.a2 && archerCooldown.a2 <= 0) {
+  shootArrow(ax2, ay2, p.x, p.y,function(targetX, targetY) {
+    // Check if player is still at target location
+    if(p.x == targetX && p.y == targetY) {
+      p.takeDamage(2) // Adjust damage as needed
+      console.log("Player hit by archer arrow!")
+    }
+  })
+  archerCooldown.a2 = 3
+}
+if(archerCooldown.a2 > 0) {
+  archerCooldown.a2--
+}
+
+// Archer 3 shoots
+if(astat.a3 && archerCooldown.a3 <= 0) {
+  shootArrow(ax3, ay3, p.x, p.y,function(targetX, targetY) {
+    // Check if player is still at target location
+    if(p.x == targetX && p.y == targetY) {
+      p.takeDamage(2) // Adjust damage as needed
+      console.log("Player hit by archer arrow!")
+    }
+  })
+  archerCooldown.a3 = 3
+}
+if(archerCooldown.a3 > 0) {
+  archerCooldown.a3--
+}
+      },500)
     </script>
   </body>
 </html>
