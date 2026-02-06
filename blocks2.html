@@ -13,14 +13,14 @@
   </head>
   <body>
     <h3>Blocks</h3>
-    Beta 1.20.5
+    Beta 1.21
     <audio id="theme" src="Theme.mp3"></audio>
     <button id="tSound">Toggle sound</button> (currently <span id="soundStatus">off</span>.)
     Time: <span id="time">1-1-0</span>
     <div id="cc" style="position:relative;">
           <canvas width="1024" height="1024" id="game"></canvas>
           <div id="player" style="position:absolute; left:0; top:0; ">
-            <img src="Riggy.png">
+            <img id="char" src="Riggy.png">
             
           </div>
           <img src="sheep.png" class="1x1-icon sheep" id="sheep1" onclick="hs(this, 1)" style="position:absolute; left:752px; top:512px; "/>
@@ -50,6 +50,7 @@
       <button id="right">Right</button>
     <button id="makePizza">Make pizza</button>
     <button id="spawnZombie">Spawn zombie</button>
+    <button id="spawnArcher">Spawn archer</button>
     <div id="pizza-container"></div>
     <select id="menu2">
       <option value="sell">Sell</option>
@@ -59,7 +60,33 @@
       <li><button id="autopizz">Hire a pizza maker for $20</button></li>
       <li><button id="pizzaprod">Increase pizza production for $40</button></li>
     </ul>
-    You have <span id="appleCount">0</span> apples, <span id="woodCount">0</span> wood, <span id="woolCount">0</span> wool, <span id="coalCount">0</span> coal, <span id="cookedPorkCount">0</span> cooked pork, and <span id="rawPorkCount">0</span> raw pork.
+    
+    <details>
+      <summary>Inventory</summary>
+      Food<br>
+      <ul>
+        <li>Apples: <span id="appleCount">0</span></li>
+        <li>Beef: <span id="rawBeefCount">0</span> raw, <span id="cookedBeefCount">0</span> cooked</li>
+        <li>Chicken: <span id="rawChickenCount">0</span> raw, <span id="cookedChickenCount">0</span> cooked</li>
+        <li>Pork: <span id="rawPorkCount">0</span> raw, <span id="cookedPorkCount">0</span> cooked</li>
+      </ul>
+      Building Material<br>
+      <ul>
+        <li>Iron: <span id="ironCount">0</span></li>
+        <li>Stone: <span id="stoneCount">0</span></li>
+        <li>Wood: <span id="woodCount">0</span></li>
+        <li>Wool: <span id="woolCount">0</span></li>
+      </ul>
+      Natural Resources<br>
+      <ul>
+        <li>Coal: <span id="coalCount">0</span></li>
+        <li>Iron ore: <span id="ironOreCount">0</span></li>
+      </ul>
+      Other<br>
+      <ul>
+        <li>Arrows: <span id="arrowCount">0</span></li>
+      </ul>
+    </details>
     <button id="eatApple">Eat an apple</button>
     <button id="eatMaxApples">Eat all of your apples</button>
     <button id="buyCoal">Buy 2 coal for 3 apples</button>
@@ -67,10 +94,22 @@
     <h3>Crafting</h3>
     <select id="menu3">
       <option value="woodenSword">Wooden sword - 3 wood (needs workbench)</option>
+      <option value="arrow">6 arrows - 2 wood (needs workbench)</option>
+      <option value="bow">Bow - 5 wood (needs workbench)</option>
       <option value="workbench">Workbench - 4 wood</option>
       <option value="woodhut">Wooden hut (comes with furnace) - 5 wood</option>
+      <option value="bed">Bed - 3 wool, 3 wood</option>
+      <option value="woodenPick">Wooden pickaxe - 5 wood (needs workbench)</option>
+      <option value="stonePick">Stone pickaxe - 3 stone, 2 wood (needs workbench)</option>
+      <option value="ironPick">Iron pickaxe - 3 iron, 2 wood (needs workbench)</option>
+      <option value="ironSword">Iron sword - 2 iron, 1 wood (needs workbench)</option>
+      <option value="ironArmor">Iron armor - 5 iron (needs workbench)</option>
+      <option value="bucket">Bucket - 3 iron (needs workbench)</option>
     </select>
     <button id="craftButton">Craft</button>
+    <button id="mine">Mine</button>
+    <button id="esm">Toggle shoot mode, currently <span id="sm">off.</span></button>
+    <button id="ironMine">Establish an iron mine for $60.</button>
     <div id='wbc'></div>
     <script>
       var month = 1
@@ -82,22 +121,155 @@
       var prod = 1
       var pp2s = 0
       var noz = 1 //zombie
+      var noa = 0 //archer
       var nop = 1 //pig
       var nos = 1 //sheep
+      var noco = 0 //cow
+      var noch = 0 //chicken
       var treepos = [
         //[x,y]
       ]
       var hutpos = [
         
       ]
+      var ironMinePos = [
+
+      ]
       var haswb = false
       var hasFurnace = false
+      var hasBucket = false
       var soundStatus = false
       function toXY(n){
         var m = n/64
         m = Math.floor(m)
         return [m, n%64]
       }
+      function damageEnemy(targetX, targetY, damage) {
+  var zombieHit = false;
+  
+  // Check zombie 1
+  if(zstat.z1 && zx1 == targetX && zy1 == targetY) {
+    t="1"
+    window["zh"+String(t)]-=damage
+        if(window["zh"+String(t)]<=0){
+            $("#z"+t).remove()
+            alert("You beat a zombie!")
+            zstat["z"+t] = false
+            noz--
+            p.$ += 10
+            $("#cash").text(p.$)
+          }
+    zombieHit = true;
+  }
+  
+  // Check zombie 2
+  if(zstat.z2 && zx2 == targetX && zy2 == targetY) {
+    t="2"
+    window["zh"+String(t)]-=damage
+        if(window["zh"+String(t)]<=0){
+            $("#z"+t).remove()
+            alert("You beat a zombie!")
+            zstat["z"+t] = false
+            noz--
+            p.$ += 10
+            $("#cash").text(p.$)
+          }
+    zombieHit = true;
+  }
+  
+  // Check zombie 3
+  if(zstat.z3 && zx3 == targetX && zy3 == targetY) {
+    t="3"
+    zh3-=damage
+        if(zh3<=0){
+            $("#z"+t).remove()
+            alert("You beat a zombie!")
+            zstat["z"+t] = false
+            noz--
+            p.$ += 10
+            $("#cash").text(p.$)
+          }
+    zombieHit = true;
+  }
+  if(astat.a1 && ax1 == targetX && ay1 == targetY) {
+    t="1"
+    window["ah"+String(t)]-=damage
+        if(window["ah"+String(t)]<=0){
+            $("#a"+t).remove()
+            alert("You beat an archer!")
+            astat["a"+t] = false
+            noa--
+            p.$ += 10
+            $("#cash").text(p.$)
+          }
+    zombieHit = true;
+  }
+  if(astat.a2 && ax2 == targetX && ay2 == targetY) {
+    t="2"
+    window["ah"+String(t)]-=damage
+        if(window["ah"+String(t)]<=0){
+            $("#a"+t).remove()
+            alert("You beat an archer!")
+            astat["a"+t] = false
+            noa--
+            p.$ += 10
+            $("#cash").text(p.$)
+          }
+    zombieHit = true;
+  }
+  // Check zombie 2
+  
+  return zombieHit;
+}
+      function shootArrow(startX, startY, targetX, targetY, onHit) {
+  // Calculate distance and angle
+  var dx = targetX - startX;
+  var dy = targetY - startY;
+  var distance = Math.sqrt(dx * dx + dy * dy);
+  var angle = Math.atan2(dy, dx) * (180 / Math.PI); // Convert to degrees
+  
+  // Create arrow element
+  var arrow = $("<img>")
+    .attr("src", "arrow.png")
+    .addClass("1x1-icon")
+    .css({
+      position: "absolute",
+      top: (startY * 16) + "px",
+      left: (startX * 16) + "px",
+      transform: "rotate(" + angle + "deg)",
+      transformOrigin: "center center",
+      zIndex: 100
+    });
+  
+  // Add arrow to game container
+  $("#cc").append(arrow);
+  
+  // Animate arrow movement
+  var duration = distance * 20; // Adjust speed by changing multiplier
+  arrow.animate({
+    top: (targetY * 16) + "px",
+    left: (targetX * 16) + "px"
+  }, duration, "linear", function() {
+    if(onHit) {
+      onHit(targetX, targetY)
+    }
+    // Remove arrow when it reaches target
+    $(this).remove();
+    var hit = damageEnemy(targetX, targetY, p.rangedDamage);
+    
+    // Remove arrow
+    
+    
+    // Optional: Visual feedback for hit/miss
+    if(hit) {
+      console.log("🎯 Hit!");
+    }
+    
+    // Optional: Add hit detection here
+    // checkArrowHit(targetX, targetY);
+  });
+}
+      
       var c = document.getElementById("game").getContext("2d")
       var se = "sell"
       
@@ -115,6 +287,26 @@
         z1: false,
         z2: false,
         z3: false
+      }
+      var ax1 = 64
+      var ay1 = 64
+      var ah1 = 20
+      var ax2 = 64
+      var ay2 = 64
+      var ah2 = 20
+      var ax3 = 64
+      var ay3 = 64
+      var ah3 = 20
+      var lfan = 1
+      var astat = {
+        a1: false,
+        a2: false,
+        a3: false
+      }
+      var archerCooldown = {
+        a1:0,
+        a2:0,
+        a3:0
       }
       var px1 = 32
       var py1 = 41
@@ -146,26 +338,70 @@
         s2: false,
         s3: false
       }
+      var cox1 = 47
+      var coy1 = 32
+      var coh1 = 20
+      var cox2 = 64
+      var coy2 = 64
+      var coh2 = 20
+      var cox3 = 64
+      var coy3 = 64
+      var coh3 = 20
+      var lfcon = 1
+      var costat = {
+        co1: false,
+        co2: false,
+        co3: false
+      }
+      var chx1 = 47
+      var chy1 = 32
+      var chh1 = 20
+      var chx2 = 64
+      var chy2 = 64
+      var chh2 = 20
+      var chx3 = 64
+      var chy3 = 64
+      var chh3 = 20
+      var lfchn = 1
+      var chstat = {
+        ch1: false,
+        ch2: false,
+        ch3: false
+      }
 
       var p = {
         x:0,
         y:0,
         $:0,
         dmg:1,
+        defense:1,
+        hasBow:false,
+        rangedDamage:0,
+        miningLevel:1,
+        inShootMode:false,
         inv:{
           apples: 0,
           wood:0,
           rawPork:0,
           wool:0,
           cookedPork:0,
-          coal:0
+          coal:0,
+          rawChicken:0,
+          cookedChicken:0,
+          rawBeef:0,
+          cookedBeef:0,
+          iron:0,
+          ironOre:0,
+          stone:0,
+          arrows:0
         },
         hp:20,
         takeDamage:function(t){ 
-          this.hp-=t
+          this.hp-=(t/p.defense)
           $('#hp').text(this.hp)
           if(this.hp<=0){
             alert("You died.")
+            location.reload()
           }
         },
         genHP:function(t){
@@ -193,6 +429,66 @@
               $("#wbc").append("<img class='1x1-icon' src='cooked-pork.png' onclick='eatPork(this)'/>")
               p.inv.cookedPork++
               $("#cookedPorkCount").text(p.inv.cookedPork)
+            },1500)
+          }
+        }
+        
+      }
+      function cookBeef(t){
+        if(hasFurnace){
+          if(p.inv.coal>0){
+            p.inv.coal--
+            $('#wbc').children('.coal').last().remove()
+            $("#coalCount").text(p.inv.coal)
+            t.remove()
+            p.inv.rawBeef--
+            $("#rawBeefCount").text(p.inv.rawBeef)
+            $(".furnace").attr("src", "lit-furnace.png")
+            setTimeout(function(){
+              $(".furnace").attr("src", "empty-furnace.png")
+              $("#wbc").append("<img class='1x1-icon' src='cooked-beef.png' onclick='eatBeef(this)'/>")
+              p.inv.cookedBeef++
+              $("#cookedBeefCount").text(p.inv.cookedBeef)
+            },1500)
+          }
+        }
+        
+      }
+      function cookChicken(t){
+        if(hasFurnace){
+          if(p.inv.coal>0){
+            p.inv.coal--
+            $('#wbc').children('.coal').last().remove()
+            $("#coalCount").text(p.inv.coal)
+            t.remove()
+            p.inv.rawChicken--
+            $("#rawChickenCount").text(p.inv.rawChicken)
+            $(".furnace").attr("src", "lit-furnace.png")
+            setTimeout(function(){
+              $(".furnace").attr("src", "empty-furnace.png")
+              $("#wbc").append("<img class='1x1-icon' src='cooked-chicken.png' onclick='eatChicken(this)'/>")
+              p.inv.cookedChicken++
+              $("#cookedChickenCount").text(p.inv.cookedChicken)
+            },1500)
+          }
+        }
+        
+      }
+      function smeltIron(t){
+        if(hasFurnace){
+          if(p.inv.coal>0){
+            p.inv.coal--
+            $('#wbc').children('.coal').last().remove()
+            $("#coalCount").text(p.inv.coal)
+            t.remove()
+            p.inv.ironOre--
+            $("#ironOreCount").text(p.inv.ironOre)
+            $(".furnace").attr("src", "lit-furnace.png")
+            setTimeout(function(){
+              $(".furnace").attr("src", "empty-furnace.png")
+              $("#wbc").append("<img class='1x1-icon iron' src='iron-ingot.png'/>")
+              p.inv.iron++
+              $("#ironCount").text(p.inv.iron)
             },1500)
           }
         }
@@ -228,124 +524,8 @@
 
       }
       console.log(game)
-      game = Array.from(game)
-      treepos = []
-      $(".tree").remove()
-      for(let iy = 0; iy < 64; iy++){
-        for(let ix = 0; ix < 64; ix++){
-          switch(game[iy*64+ix]){
-            case "0":
-              c.fillStyle="#c0ffff"
-              //tundra
-              if(Math.floor(20*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                 
-              }
-              break
-            case "1":
-              c.fillStyle="blue"
-              //water
-              break
-            case "2":
-              c.fillStyle="#80ff80"
-              //plains
-              if(Math.floor(20*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                 
-              }
-              break
-            case "3":
-              c.fillStyle="#ffff80"
-              //sand
-              break
-            case "4":
-              c.fillStyle="#305040"
-              //taiga
-              if(Math.floor(5*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                 
-              }
-              break
-            case "5":
-              c.fillStyle="#006030"
-              //forest
-              if(Math.floor(5*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                 
-              }else if(Math.floor(10*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                 
-              }
-              break
-            case "6":
-              c.fillStyle="#008000"
-              //deciduous
-              if(Math.floor(5*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                
-              }
-              break
-            case "7":
-              c.fillStyle="#806000"
-              //savanna
-              break
-            case "8":
-              c.fillStyle="#d8d8d8"
-              //snowy mountains
-              break
-            case "9":
-              c.fillStyle="#c0c0c0"
-              //mountains
-              break
-            case "a":
-              c.fillStyle="#808080"
-              //stone
-              break
-            case "b":
-              c.fillStyle="#ffffc0"
-              //sand dunes
-              break
-            case "c":
-              c.fillStyle="#008080"
-              //snowy hills
-              break
-            case "d":
-              c.fillStyle="#60b060"
-              //hills
-              if(Math.floor(5*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                
-              }
-              break
-            case "e":
-              c.fillStyle="#80c080"
-              //grassland
-              if(Math.floor(5*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                
-              }else if(Math.floor(10*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                 
-              }
-              break
-            case "f":
-              c.fillStyle="#808000"
-              //highland
-              break
-              
-          }
-          c.fillRect(16*ix,16*iy,16,16)
-        }
-      }
+      assemble()
+      
       function perl(){
         bt = ""
       temp = ""
@@ -380,371 +560,19 @@
 
       }
       console.log(game)
-      game = Array.from(game)
-        treepos = []
-        $(".tree").remove()
-      for( iy = 0; iy < 64; iy++){
-        for( ix = 0; ix < 64; ix++){
-          switch(game[iy*64+ix]){
-            case "0":
-              c.fillStyle="#c0ffff"
-              //tundra
-              if(Math.floor(20*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                 
-              }
-              break
-            case "1":
-              c.fillStyle="blue"
-              //water
-              break
-            case "2":
-              c.fillStyle="#80ff80"
-              //plains
-              if(Math.floor(20*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                 
-              }
-              break
-            case "3":
-              c.fillStyle="#ffff80"
-              //sand
-              break
-            case "4":
-              c.fillStyle="#305040"
-              //taiga
-              if(Math.floor(5*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                 
-              }
-              break
-            case "5":
-              c.fillStyle="#006030"
-              //forest
-              if(Math.floor(5*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                
-              }else if(Math.floor(10*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                 
-              }
-              break
-            case "6":
-              c.fillStyle="#008000"
-              //deciduous
-              if(Math.floor(5*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                
-              }
-              break
-            case "7":
-              c.fillStyle="#806000"
-              //savanna
-              break
-            case "8":
-              c.fillStyle="#d8d8d8"
-              //snowy mountains
-              break
-            case "9":
-              c.fillStyle="#c0c0c0"
-              //mountains
-              break
-            case "a":
-              c.fillStyle="#808080"
-              //stone
-              break
-            case "b":
-              c.fillStyle="#ffffc0"
-              //sand dunes
-              break
-            case "c":
-              c.fillStyle="#008080"
-              //snowy hills
-              break
-            case "d":
-              c.fillStyle="#60b060"
-              //hills
-              if(Math.floor(5*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                
-              }
-              break
-            case "e":
-              c.fillStyle="#80c080"
-              //grassland
-              if(Math.floor(5*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                
-              }else if(Math.floor(10*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                 
-              }
-              break
-            case "f":
-              c.fillStyle="#808000"
-              //highland
-              break
-              
-          }
-          c.fillRect(16*ix,16*iy,16,16)
-        }
-      }
+      assemble()
       }
       function every(){
         game = "0000000000000000111111111111111122222222222222223333333333333333000000000000000011111111111111112222222222222222333333333333333300000000000000001111111111111111222222222222222233333333333333330000000000000000111111111111111122222222222222223333333333333333000000000000000011111111111111112222222222222222333333333333333300000000000000001111111111111111222222222222222233333333333333330000000000000000111111111111111122222222222222223333333333333333000000000000000011111111111111112222222222222222333333333333333300000000000000001111111111111111222222222222222233333333333333330000000000000000111111111111111122222222222222223333333333333333000000000000000011111111111111112222222222222222333333333333333300000000000000001111111111111111222222222222222233333333333333330000000000000000111111111111111122222222222222223333333333333333000000000000000011111111111111112222222222222222333333333333333300000000000000001111111111111111222222222222222233333333333333330000000000000000111111111111111122222222222222223333333333333333"
         game += "4444444444444444555555555555555566666666666666667777777777777777444444444444444455555555555555556666666666666666777777777777777744444444444444445555555555555555666666666666666677777777777777774444444444444444555555555555555566666666666666667777777777777777444444444444444455555555555555556666666666666666777777777777777744444444444444445555555555555555666666666666666677777777777777774444444444444444555555555555555566666666666666667777777777777777444444444444444455555555555555556666666666666666777777777777777744444444444444445555555555555555666666666666666677777777777777774444444444444444555555555555555566666666666666667777777777777777444444444444444455555555555555556666666666666666777777777777777744444444444444445555555555555555666666666666666677777777777777774444444444444444555555555555555566666666666666667777777777777777444444444444444455555555555555556666666666666666777777777777777744444444444444445555555555555555666666666666666677777777777777774444444444444444555555555555555566666666666666667777777777777777"
         game += "88888888888888889999999999999999aaaaaaaaaaaaaaaabbbbbbbbbbbbbbbb88888888888888889999999999999999aaaaaaaaaaaaaaaabbbbbbbbbbbbbbbb88888888888888889999999999999999aaaaaaaaaaaaaaaabbbbbbbbbbbbbbbb88888888888888889999999999999999aaaaaaaaaaaaaaaabbbbbbbbbbbbbbbb88888888888888889999999999999999aaaaaaaaaaaaaaaabbbbbbbbbbbbbbbb88888888888888889999999999999999aaaaaaaaaaaaaaaabbbbbbbbbbbbbbbb88888888888888889999999999999999aaaaaaaaaaaaaaaabbbbbbbbbbbbbbbb88888888888888889999999999999999aaaaaaaaaaaaaaaabbbbbbbbbbbbbbbb88888888888888889999999999999999aaaaaaaaaaaaaaaabbbbbbbbbbbbbbbb88888888888888889999999999999999aaaaaaaaaaaaaaaabbbbbbbbbbbbbbbb88888888888888889999999999999999aaaaaaaaaaaaaaaabbbbbbbbbbbbbbbb88888888888888889999999999999999aaaaaaaaaaaaaaaabbbbbbbbbbbbbbbb88888888888888889999999999999999aaaaaaaaaaaaaaaabbbbbbbbbbbbbbbb88888888888888889999999999999999aaaaaaaaaaaaaaaabbbbbbbbbbbbbbbb88888888888888889999999999999999aaaaaaaaaaaaaaaabbbbbbbbbbbbbbbb88888888888888889999999999999999aaaaaaaaaaaaaaaabbbbbbbbbbbbbbbb"
         game += "ccccccccccccccccddddddddddddddddeeeeeeeeeeeeeeeeffffffffffffffffccccccccccccccccddddddddddddddddeeeeeeeeeeeeeeeeffffffffffffffffccccccccccccccccddddddddddddddddeeeeeeeeeeeeeeeeffffffffffffffffccccccccccccccccddddddddddddddddeeeeeeeeeeeeeeeeffffffffffffffffccccccccccccccccddddddddddddddddeeeeeeeeeeeeeeeeffffffffffffffffccccccccccccccccddddddddddddddddeeeeeeeeeeeeeeeeffffffffffffffffccccccccccccccccddddddddddddddddeeeeeeeeeeeeeeeeffffffffffffffffccccccccccccccccddddddddddddddddeeeeeeeeeeeeeeeeffffffffffffffffccccccccccccccccddddddddddddddddeeeeeeeeeeeeeeeeffffffffffffffffccccccccccccccccddddddddddddddddeeeeeeeeeeeeeeeeffffffffffffffffccccccccccccccccddddddddddddddddeeeeeeeeeeeeeeeeffffffffffffffffccccccccccccccccddddddddddddddddeeeeeeeeeeeeeeeeffffffffffffffffccccccccccccccccddddddddddddddddeeeeeeeeeeeeeeeeffffffffffffffffccccccccccccccccddddddddddddddddeeeeeeeeeeeeeeeeffffffffffffffffccccccccccccccccddddddddddddddddeeeeeeeeeeeeeeeeffffffffffffffffccccccccccccccccddddddddddddddddeeeeeeeeeeeeeeeeffffffffffffffff"
-        game = Array.from(game)
-        console.log(game)
-        treepos = []
-        $(".tree").remove()
-      for( iy = 0; iy < 64; iy++){
-        for( ix = 0; ix < 64; ix++){
-          switch(game[iy*64+ix]){
-            case "0":
-              c.fillStyle="#c0ffff"
-              //tundra
-              if(Math.floor(20*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                 
-              }
-              break
-            case "1":
-              c.fillStyle="blue"
-              //water
-              break
-            case "2":
-              c.fillStyle="#80ff80"
-              //plains
-              if(Math.floor(20*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                 
-              }
-              break
-            case "3":
-              c.fillStyle="#ffff80"
-              //sand
-              break
-            case "4":
-              c.fillStyle="#305040"
-              //taiga
-              if(Math.floor(5*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                 
-              }
-              break
-            case "5":
-              c.fillStyle="#006030"
-              //forest
-              if(Math.floor(5*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                
-              }else if(Math.floor(10*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                 
-              }
-              break
-            case "6":
-              c.fillStyle="#008000"
-              //deciduous
-              if(Math.floor(5*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                
-              }
-              break
-            case "7":
-              c.fillStyle="#806000"
-              //savanna
-              break
-            case "8":
-              c.fillStyle="#d8d8d8"
-              //snowy mountains
-              break
-            case "9":
-              c.fillStyle="#c0c0c0"
-              //mountains
-              break
-            case "a":
-              c.fillStyle="#808080"
-              //stone
-              break
-            case "b":
-              c.fillStyle="#ffffc0"
-              //sand dunes
-              break
-            case "c":
-              c.fillStyle="#008080"
-              //snowy hills
-              break
-            case "d":
-              c.fillStyle="#60b060"
-              //hills
-              if(Math.floor(5*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                
-              }
-              break
-            case "e":
-              c.fillStyle="#80c080"
-              //grassland
-              if(Math.floor(5*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                
-              }else if(Math.floor(10*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                 
-              }
-              break
-            case "f":
-              c.fillStyle="#808000"
-              //highland
-              break
-              
-          }
-          c.fillRect(16*ix,16*iy,16,16)
-        }
-      }
+        
+        assemble()
       }
       function italy(){
         game = "beebbbbbebbbbbbebbbbbbeebbbbbeeebbbbebbbbeeeeeeeeeeeeeeeeeeeeeeebbbbebbbeebebeebebbebbbbebbeeeeeeeeeeeeebeeeeeeeeeeeeeeeeeee11eebbbbebbbebbebeebebbebbbbeebeeeeeeeeebeeebeeeeeee1eeeeeeeeeee11eebbbbbbbeebbebbbbebbbbbbbeeebbbeeeeeebbebbbbeeebb11eeeeeeeeeeebeeebbeeeebeeee1ebbeeeeeeebeeeebbbbeeeebbeebeeeeeeeeebeeeeeeeeeeeeeeeebebeeeebb1ebbbbbeeeebeeeeebbbeeeeeeeeeeeeeebbeeeeeeeeeeeeeeeeeeebeeeeeebeeeebbbbbeeebeeeeeebbeeeeeeeeeeeeebbbe11eeeeeeeeeeeeebbbeeeeeee11e11eeeebeeeebbbeeeeeeeeeeeeeeebeeeeeb11eeeeeeeeeeeeebbbee11eeeeeeeeeeeeee11eeeeeeeebe111111bbbbbeeeeeeeeeeeeeebbeeeebbbbe11eeeeeeeeeeeeee11eeeeee1111111111be11beeeeebeeee11eeebeeeebbbbeeeeeeee1ee1111ee1111eeee1111111111ee11b1eeeebeeee11eeebe11ebbbeebbeeeee1111111eee1111eeee111111111be11111bebeeeeebbeeeee11bbbbeeeeeeeeeebbeeeeeeeeeeeeeee111111111b111111eeeeeebbbeeeebeeebeeeeebbbbbbbbeeebeeebeeeeeeeee111111111111111eebbbbeebbbbbbeeebeeeeeebbbbbbe1eebbeeebeeeeeeeee111111111111111111ebbeebbebbbeebbbbeeebbbbee1111eeeeebbeebebbeee111111111111111111eeeebbeeeeebbebbbeebeebb111111111eebeeeeebbbbbe1111111111111111bbeeebeeebbbbebbbeeeeee11111111111111eeeeebbbbbbe111111111111111111eeeeeebbbbbbbeeee11111111111111111eeeeebbbbbbbbb11111111111111111eeeebbbbbbbbeee111111111111111111eeeeeeeebebbeeeeb11111111111111eeebbbbeeebbb11111111111111111111eeeebeeeeebbeeebbe111111111111111111bbbbeeee1111111111111111111111ebbeeeeee1ebbbee111111111111111111111bebbb11111111111111111111111bbeeeee11ebbbee111111111111111111111b1ebb11111111111111111111111eebbeee11eeebeeee1111111111111111111b11eb111111111111ee1111111111eeee11beebbbeeee111111111111111111111111111111111111eee11111111111be1be1ebbbeeee11111111111111111111111111111111111beeee111111111111ebe1ebbbeeeeeb111111111111111111111111111111111bbee1111111111111eeebebbbeeeebeee11111111111111111111111111111111ee111111111111111111ebbbebbeebbeeeeeeeeb111111111111111111111111ee111111111111111111eebbebbeebbeebeeee11111111111111111111111111111111111111111111111eebebbeebbebbbeee1111111111111111111111111111111111111111111111111eeeee1eebbbeeeeee111111111111111111111111111111111111111111111111111beeeeebbee1ebeeee111111111111111111111bb1111111111111111111111111eeebebe1eebbeeee11111111111111111111bbbe111111111111111111111111111bbbe1bbbbeeeebb111111111111111bbeebbeb11111111111111111111111111beeebbbbbeeeeeeeee1111111111111ebbbbeb11111111111111111111111111111bbbbbeeeee11beeeee1111111111bebeee1111111111111111111111111111111bbbbeee11111111ee1111111111bebeeb111111111111111111111111111111111bbeee111111111e1111111111eebbbb1111111111111111111111111111111111bbee11111111111111111111eeeeee11111111111111111111111111111111111eb111111111111111111111beeebe11111111111111111111111111111111111bbe1111111111111111111eeeee11111111111111111111111111111111111111bbbbb111111111111111beebe111111111111111111111111111111111111111eeeee111111111111111111b1111111111111111111111111111111111111111eeeeb11111111111111111111111111111111111111111111111111111111111b11111111111111111111111111111111111111111111111111111111111111bb11111111111111111111111111111111111111111111111111111111111111bee111111111111111111111111111111111111111111111111111111111e11be111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111eeeeeeebeebebe111111111111111111111111111111111111111111111111111eebeeeebbbbbe111111111111111111111111111111111111111111111111111111ebbbebbeee111111111111111111111111111111111111111111111111111111111beeebee11111111111111111111111111111111eeeb1111111111111111111111111bee111111111111111111111bb111111beeeebe11111111111111111111111111ee111111111111111111eeeeeeebeeebeeeeeeeeeeee1111111111111111111111111111111111111111bbbeeeebeeeebeeeeeeeee111111111111111111111111111111111111111111bbbeeeeebeeebbbbeeee11111111111111111111111111111111111111111111ebbbebbbbeebbebbeeee11111111111111111111111111111111111111111111beebbeeeeebbebbbeeeee1111111111111111111111111111111111111111111beebebbbbeebebbeeeeee1111111111111111111111111111111111111111111bbbbebbbbbbbbbbbbbeeeb111111111111111111111111111111111111111111bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb0000000000000000eeebebe0eebbeeee00000000000000000000bbbe000000000000000000000000000bbbe0bbbbeeeebb000000000000000bbeebbeb00000000000000000000000000beeebbbbbeeeeeeeee0000000000000ebbbbeb00000000000000000000000000000bbbbbeeeee00beeeee0000000000bebeee0000000000000000000000000000000bbbbeee00000000ee0000000000bebeeb000000000000000000000000000000000bbeee000000000e0000000000eebbbb0000000000000000000000000000000000bbee00000000000000000000eeeeee00000000000000000000000000000000000eb000000000000000000000beeebe00000000000000000000000000000000000bbe0000000000000000000eeeee00000000000000000000000000000000000000bbbbb000000000000000beebe000000000000000000000000000000000000000eeeee000000000000000000b0000000000000000000000000000000000000000eeeeb00000000000000000000000000000000000000000000000000000000000b00000000000000000000000000000000000000000000000000000000000000bb00000000000000000000000000000000000000000000000000000000000000bee000000000000000000000000000000000000000000000000000000000e00be000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000eeeeeeebeebebe000000000000000000000000000000000000000000000000000eebeeeebbbbbe000000000000000000000000000000000000000000000000000000ebbbebbeee000000000000000000000000000000000000000000000000000000000beeebee00000000000000000000000000000000eeeb0000000000000000000000000bee000000000000000000000bb000000beeeebe00000000000000000000000000ee000000000000000000eeeeeeebeeebeeeeeeeeeeee0000000000000000000000000000000000000000bbbeeeebeeeebeeeeeeeee000000000000000000000000000000000000000000bbbeeeeebeeebbbbeeee00000000000000000000000000000000000000000000ebbbebbbbeebbebbeeee00000000000000000000000000000000000000000000beebbeeeeebbebbbeeeee0000000000000000000000000000000000000000000beebebbbbeebebbeeeeee0000000000000000000000000000000000000000000bbbbebbbbbbbbbbbbbeeeb000000000000000000000000000000000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
-        game = Array.from(game)
-        console.log(game)
-        treepos = []
-        $(".tree").remove()
-      for( iy = 0; iy < 64; iy++){
-        for( ix = 0; ix < 64; ix++){
-          switch(game[iy*64+ix]){
-            case "0":
-              c.fillStyle="#c0ffff"
-              //tundra
-              if(Math.floor(20*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                 
-              }
-              break
-            case "1":
-              c.fillStyle="blue"
-              //water
-              break
-            case "2":
-              c.fillStyle="#80ff80"
-              //plains
-              if(Math.floor(20*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                 
-              }
-              break
-            case "3":
-              c.fillStyle="#ffff80"
-              //sand
-              break
-            case "4":
-              c.fillStyle="#305040"
-              //taiga
-              if(Math.floor(5*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                 
-              }
-              break
-            case "5":
-              c.fillStyle="#006030"
-              //forest
-              if(Math.floor(5*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                
-              }else if(Math.floor(10*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                 
-              }
-              break
-            case "6":
-              c.fillStyle="#008000"
-              //deciduous
-              if(Math.floor(5*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                
-              }
-              break
-            case "7":
-              c.fillStyle="#806000"
-              //savanna
-              break
-            case "8":
-              c.fillStyle="#d8d8d8"
-              //snowy mountains
-              break
-            case "9":
-              c.fillStyle="#c0c0c0"
-              //mountains
-              break
-            case "a":
-              c.fillStyle="#808080"
-              //stone
-              break
-            case "b":
-              c.fillStyle="#ffffc0"
-              //sand dunes
-              break
-            case "c":
-              c.fillStyle="#008080"
-              //snowy hills
-              break
-            case "d":
-              c.fillStyle="#60b060"
-              //hills
-              if(Math.floor(5*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                
-              }
-              break
-            case "e":
-              c.fillStyle="#80c080"
-              //grassland
-              if(Math.floor(5*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                
-              }else if(Math.floor(10*Math.random())==2){
-                treepos.push([ix, iy])
-                $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                 
-              }
-              break
-            case "f":
-              c.fillStyle="#808000"
-              //highland
-              break
-              
-          }
-          c.fillRect(16*ix,16*iy,16,16)
-        }
-      }
+        assemble()
       }
       function assemble(){
         game = Array.from(game)
@@ -760,7 +588,11 @@
               if(Math.floor(20*Math.random())==2){
                 treepos.push([ix, iy])
                 $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
-                 
+                
+              }else if(Math.floor(20*Math.random())==3){
+                
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='maple-tree.png' class='tree' onclick='cut(this, \"maple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
               }
               break
             case "1":
@@ -774,6 +606,10 @@
                 treepos.push([ix, iy])
                 $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
                  
+              }else if(Math.floor(20*Math.random())==3){
+                treepos.push([ix, iy])
+                //treeTypes.maple++
+                $("#cc").append("<img src='maple-tree.png' class='tree' onclick='cut(this, \"maple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
               }
               break
             case "3":
@@ -787,6 +623,10 @@
                 treepos.push([ix, iy])
                 $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
                  
+              }else if(Math.floor(20*Math.random())==3){
+                treepos.push([ix, iy])
+               // treeTypes.maple++
+                $("#cc").append("<img src='maple-tree.png' class='tree' onclick='cut(this, \"maple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
               }
               break
             case "5":
@@ -801,6 +641,14 @@
                 treepos.push([ix, iy])
                 $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
                  
+              }else if(Math.floor(20*Math.random())==3){
+                treepos.push([ix, iy])
+                //treeTypes.maple++
+                $("#cc").append("<img src='maple-tree.png' class='tree' onclick='cut(this, \"maple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+              }else if(Math.floor(10*Math.random())==4){
+                treepos.push([ix, iy])
+                //treeTypes.birch++
+                $("#cc").append("<img src='birch-tree.png' class='tree' onclick='cut(this, \"birch\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
               }
               break
             case "6":
@@ -810,6 +658,14 @@
                 treepos.push([ix, iy])
                 $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
                 
+              }else if(Math.floor(20*Math.random())==3){
+                treepos.push([ix, iy])
+                //treeTypes.maple++
+                $("#cc").append("<img src='maple-tree.png' class='tree' onclick='cut(this, \"maple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+              }else if(Math.floor(8*Math.random())==3){
+                treepos.push([ix, iy])
+               // treeTypes.birch++
+                $("#cc").append("<img src='birch-tree.png' class='tree' onclick='cut(this, \"birch\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
               }
               break
             case "7":
@@ -843,6 +699,10 @@
                 treepos.push([ix, iy])
                 $("#cc").append("<img src='apple-tree.png' class='tree' onclick='cut(this, \"apple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
                 
+              }else if(Math.floor(20*Math.random())==3){
+                treepos.push([ix, iy])
+                //treeTypes.maple++
+                $("#cc").append("<img src='maple-tree.png' class='tree' onclick='cut(this, \"maple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
               }
               break
             case "e":
@@ -856,6 +716,10 @@
                 treepos.push([ix, iy])
                 $("#cc").append("<img src='spruce-tree.png' class='tree' onclick='cut(this, \"spruce\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
                  
+              }else if(Math.floor(20*Math.random())==3){
+                treepos.push([ix, iy])
+                //treeTypes.maple++
+                $("#cc").append("<img src='maple-tree.png' class='tree' onclick='cut(this, \"maple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
               }
               break
             case "f":
@@ -867,7 +731,7 @@
           c.fillRect(16*ix,16*iy,16,16)
         }
       }
-        
+      //console.log(treeTypes)
       }
       function japan(){
         game = "11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111ee11111111111111111111111111111111111111111111111111111111111111eee1111111111111111111111111111111111111111111111111111111111111eeeeee11111e1111111111111111111111111111111111111111111111111111eeebbeeeeee11111111111111111111111111111111111111111111111111111eeebbebeeee11111111111111111111111111111111111111111111111111111ebeeeebeee1111111111111111111111111111111111111111111111111111eebbeeeeee111111111111111111111111111111111111111111111111111eeee111beee11111111111111111111111111111111111111111111111111111eee1111eee1111111111111111111111111111111111111111111111111111111ee11111111111111111111111111111111111111111111111111111111111111ee11111111111111111111111111111111111111111111111111111111111111ebe1111111111111111111111111111111111111111111111111111111111111ebbe111111111111111111111111111111111111111111111111111111111111eebe111111111111111111111111111111111111111111111111111111111111eeeb11111111111111111111111111111111111111111111111111111111111eeeebe1111111111111111111111111111111111111111111111111111111111eeeebee1111111111111111111111111111111111111111111111111111111111eebbee1111111111111111111111111111111111111111111111111111111111eeee11111111111111111111111111111111111111111111111111111111111eeeee11111111111111111111111111111111111111111111111111111111111eeeee11111111111111111111111111111111111111111111111111111111111ebbe11111111111111111111111111111111111111111111111111111111111beeee1111111111111111111111111111111111111111111111111111111111eebeee111111111111111111111111111111111111111111111111111111111eeebeee1111111111111111111111111111111111111111111111111111111bbeebbeee1111111111111111111111111111111111111111111111111111eeeebbbbeee1111111111111111111111111111111111111111111111111111ebbbeeeeeeee1111111111111111111111111111111111111111111111111111ebbbbeeeeeee111111111111111111111111111111111111111111111111bb11eebbbeeeeeee111111111111111111111111111111111111111111ebbeeeeeeeeeeeeeee1eee11111111111111111111111111111111111111111eeeeebbeeeee111ebee111111111111111111111111111111111111111111111beeeeeeeeeee111eee1111111111111111111111111111111111111111111ebbbbbe1ee111ebe111111111111111111111111111111111111111111111111111e11ebbbeeee1111111111111111111111111111111111111111111111111eeee1eee1ee11ee1111111111111111111111111111111111111111111111111eeee1ebe1ee1111111111111111111111111111111111111111111111111111eebbe1ebe1111111111111111e111111111111111111111111111111111111111bbbe111111111111111111111111111111111111111111111111111111111111bbbe111111111111111111111111111111111111111111111111111111111111bbee111111111111111111111111111111111111111111111111111111111111bee1111111111111111111111111111111111111111111111111111111111111bbe11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111ee11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111e111111111111111111111111111111111111111111111111111111111111"
@@ -1004,7 +868,8 @@
         window["zx"+String(lfzn)] = 64
         window["zy"+String(lfzn)] = 64
         zstat["z"+lfzn] = true
-        $("#cc").append("<img src='zombie.png' class='zombie' id='z"+lfzn+"' onclick='kb("+lfzn+")' style='position:absolute; top:1024px; left: 1024px;'>" )
+        
+        $("#cc").append("<img src='zombie.png' class='zombie' id='z"+lfzn+"' onclick='kb("+lfzn+")' style='position:absolute; top:"+window["zy"+String(lfzn)]*16+"px; left: "+window["zx"+String(lfzn)]*16+"px;'>" )
         if(noz==1){
           switch(lfzn){
             case 1:
@@ -1031,6 +896,44 @@
         }
         
       })
+      $("#spawnArcher").click(function(){
+        
+        if(noa==3){
+          return
+        }
+        noa++
+        window["ax"+String(lfan)] = 64
+        window["ay"+String(lfan)] = 64
+        astat["a"+lfan] = true
+        archerCooldown["a"+lfan] = 0
+        $("#cc").append("<img src='archer.png' class='archer' id='a"+lfan+"' onclick='ha("+lfan+")' style='position:absolute; top:"+window["ay"+String(lfan)]*16+"px; left: "+window["ax"+String(lfan)]*16+"px;'>" )
+        if(noa==1){
+          switch(lfan){
+            case 1:
+              lfan = 2
+              break
+            case 2:
+              lfan = 1
+              break
+            case 3:
+              lfan = 1
+              break
+          }
+        }
+        if(noa==2){
+          if(astat.a1 && astat.a2){
+            lfan = 3
+          }
+          if(astat.a1 && astat.a3){
+            lfan = 2
+          }
+          if(astat.a2 && astat.a3){
+            lfan = 1
+          }
+        }
+        
+      })
+
       $("#autopizz").click(function(){
         if(p.$>=20){
           p.$-=20
@@ -1086,7 +989,7 @@
           }
         }
           break
-          case "pig":
+        case "pig":
             if(nop==3){
               return
             }
@@ -1107,6 +1010,8 @@
                   lfpn = 1
                   break
               }
+              
+              
           }
           if(nop==2){
           if(pstat.p1 && pstat.p2){
@@ -1120,10 +1025,79 @@
           }
         }
             break
+            case "cow":
+            if(noco==3){
+              return
+            }
+            noco++
+            window["cox"+String(lfcon)] = Math.floor(64*Math.random())
+            window["coy"+String(lfcon)] = Math.floor(64*Math.random())
+            costat["co"+lfcon] = true
+            $("#cc").append("<img src='cow.png' class='cow' id='cow"+lfcon+"' onclick='hco(this, "+lfcon+")' style='position:absolute; top:"+16*window["coy"+String(lfcon)]+"px; left: "+16*window["cox"+String(lfcon)]+"px;'>" )
+            if(noco==1){
+              switch(lfcon){
+                case 1:
+                  lfcon = 2
+                  break
+                case 2:
+                  lfcon = 1
+                  break
+                case 3:
+                  lfcon = 1
+                  break
+              }
+            }
+        if(noco==2){
+          if(costat.co1 && costat.co2){
+            lfcon = 3
+          }
+          if(costat.co1 && costat.co3){
+            lfcon = 2
+          }
+          if(costat.co2 && costat.co3){
+            lfcon = 1
+          }
+        }
+              break
+              case "chicken":
+            if(noch==3){
+              return
+            }
+            noch++
+            window["chx"+String(lfchn)] = Math.floor(64*Math.random())
+            window["chy"+String(lfchn)] = Math.floor(64*Math.random())
+            chstat["ch"+lfchn] = true
+            $("#cc").append("<img src='chicken.png' class='chicken' id='chicken"+lfchn+"' onclick='hch(this, "+lfchn+")' style='position:absolute; top:"+16*window["chy"+String(lfchn)]+"px; left: "+16*window["chx"+String(lfchn)]+"px;'>" )
+            if(noch==1){
+              switch(lfchn){
+                case 1:
+                  lfchn = 2
+                  break
+                case 2:
+                  lfchn = 1
+                  break
+                case 3:
+                  lfchn = 1
+                  break
+              }
+            }
+              if(noch==2){
+          if(chstat.ch1 && chstat.ch2){
+            lfchn = 3
+          }
+          if(chstat.ch1 && chstat.ch3){
+            lfchn = 2
+          }
+          if(chstat.ch2 && chstat.ch3){
+            lfchn = 1
+          }
+        }
+
+
+      }
       }
         
         
-        }
       
       $(document).on('keydown', function(event) {
   
@@ -1141,10 +1115,10 @@
       down()
       break;
     case 65: 
-      right()
+      left()
       break;
     case 68: 
-      left()
+      right()
       break;
     case 83: 
       down()
@@ -1192,13 +1166,158 @@
               p.inv.wood -= 3
               $("#woodCount").text(p.inv.wood)
               p.dmg = 3
-              $("#wbc").append("<img class='1x1-icon' src='wooden-sword.png'/>")
+              $("#wbc").append("<img class='1x1-icon' id='sword' src='wooden-sword.png'/>")
             }
             break
-        
+          case "bed":
+            if(p.inv.wood<3){
+              alert("You need 3 wood.")
+            }else if(p.inv.wool<3){
+              alert("You need 3 wool.")
+            }else{
+              p.inv.wood -= 3
+              $("#woodCount").text(p.inv.wood)
+              p.inv.wool -= 3
+              $("#woolCount").text(p.inv.wool)
+              $("#wbc").append("<img class='1x1-icon' src='bed.png' onclick='sleep()'/>")
+            }
+            break
+          case "woodenPick":
+            if(p.inv.wood<5){
+              alert("You need 5 wood.")
+            }else if(!haswb){
+              alert("You need a workbench.")
+            }else{
+              p.inv.wood -= 5
+              $("#woodCount").text(p.inv.wood)
+              if(p.miningLevel==1){
+                p.miningLevel++
+              }
+              $("#wbc").append("<img src='wooden-pick.png' class='1x1-icon' id='pick'/>")
+            }
+              break
+              case "stonePick":
+                if(p.inv.wood < 2 || p.inv.stone < 3){
+                  alert("You need 2 wood and 3 stone.")
+                }else if(!haswb){
+                  alert("You need a workbench.")
+                }else if(p.miningLevel<3){
+                  p.inv.stone -= 3
+                  p.inv.wood -= 2
+                  $("#stoneCount").text(p.inv.stone)
+                  $("#woodCount").text(p.inv.wood)
+                  $("#pick").attr("src", "stone-pickaxe.png")
+                  p.miningLevel=3
+                }
+                break
+                case "ironPick":
+                if(p.inv.wood < 2 || p.inv.iron < 3){
+                  alert("You need 2 wood and 3 iron.")
+                }else if(!haswb){
+                  alert("You need a workbench.")
+                }else if(p.miningLevel<4){
+                  p.inv.iron -= 3
+                  p.inv.wood -= 2
+                  $('#wbc').children('.iron').last().remove()
+                  $('#wbc').children('.iron').last().remove()
+                  $('#wbc').children('.iron').last().remove()
+                  
+                  $("#ironCount").text(p.inv.iron)
+                  $("#woodCount").text(p.inv.wood)
+                  $("#pick").attr("src", "iron-pickaxe.png")
+                  p.miningLevel=4
+                }
+                break
+                case "ironSword":
+                if(p.inv.wood < 1 || p.inv.iron < 2){
+                  alert("You need 1 wood and 2 iron.")
+                }else if(!haswb){
+                  alert("You need a workbench.")
+                }else if(p.dmg<5){
+                  p.inv.iron -= 2
+                  $('#wbc').children('.iron').last().remove()
+                  $('#wbc').children('.iron').last().remove()
+                
+                  p.inv.wood -= 1
+                  $("#ironCount").text(p.inv.iron)
+                  $("#woodCount").text(p.inv.wood)
+                  $("#sword").attr("src", "iron-sword.png")
+                  p.dmg=5
+                }
+                break
+                case "ironArmor":
+                if(p.inv.iron < 5){
+                  alert("You need 5 iron.")
+                }else if(!haswb){
+                  alert("You need a workbench.")
+                }else if(p.defense<3){
+                  p.inv.iron -= 5
+                  $('#wbc').children('.iron').last().remove()
+                  $('#wbc').children('.iron').last().remove()
+                  $('#wbc').children('.iron').last().remove()
+                  $('#wbc').children('.iron').last().remove()
+                  $('#wbc').children('.iron').last().remove()
+                  $("#ironCount").text(p.inv.iron)
+                  
+                  $("#wbc").append("<img class='1x1-icon' src='iron-armor.png' onclick='applyArmor(`iron`, this)'>")
+                  
+                }
+                break
+                case "bucket":
+                if(p.inv.iron < 3){
+                  alert("You need 3 iron.")
+                }else if(!haswb){
+                  alert("You need a workbench.")
+                }else{
+                  p.inv.iron -= 3
+                  $('#wbc').children('.iron').last().remove()
+                  $('#wbc').children('.iron').last().remove()
+                  $('#wbc').children('.iron').last().remove()
+
+                  $("#ironCount").text(p.inv.iron)
+                  
+                  $("#wbc").append("<img class='1x1-icon' src='empty-bucket.png' id='bucket'>")
+                  hasBucket = true
+                }
+                break
+            case "bow":
+                if(p.inv.wood < 5){
+                  alert("You need 5 wood.")
+                }else if(!haswb){
+                  alert("You need a workbench.")
+                }else if(!p.hasBow){
+                  p.inv.wood -= 5
+                  
+
+                  $("#woodCount").text(p.inv.wood)
+                  
+                  $("#wbc").append("<img class='1x1-icon' src='bow.png' id='bow'>")
+                  p.hasBow = true
+                  p.rangedDamage = 3
+                }
+                break
+            case "arrow":
+                if(p.inv.wood < 2){
+                  alert("You need 2 wood.")
+                }else if(!haswb){
+                  alert("You need a workbench.")
+                }else{
+                  p.inv.wood -= 2
+                  
+
+                  $("#woodCount").text(p.inv.wood)
+                  for(let i = 0; i < 6; i++){
+                    $("#wbc").append("<img class='arrow 1x1-icon' src='arrow.png' >")
+                  p.inv.arrows++
+                  $("#arrowCount").text(p.inv.arrows)
+                  }
+                  
+                }
+                break
         }
       })
       setInterval(function(){
+        console.log('DEBUG: p', p.x, p.y, 'z', zx1, zy1, 'zstat', zstat.z1)
         for(let i = 1; i<=pp2s; i++){
             var q = Math.floor(Math.random()*20)
             if(q<=9){
@@ -1209,7 +1328,7 @@
               $("#pizza-container").append('<img id="pizza" class="pizza marg" onclick="marg(this)" src="margarita-pizza.png"/>')
             }
         }
-        if(zx1!==p.x){
+        if(zx1!==p.x && zstat.z1){
           if(zx1>p.x){
             zx1--
             
@@ -1217,7 +1336,7 @@
             zx1++
           }
         }
-        if(zy1!==p.y){
+        if(zy1!==p.y && zstat.z1){
           if(zy1>p.y){
             zy1--
             
@@ -1225,7 +1344,7 @@
             zy1++
           }
         }
-        if(zx2!==p.x){
+        if(zx2!==p.x && zstat.z2){
           if(zx2>p.x){
             zx2--
             
@@ -1233,7 +1352,7 @@
             zx2++
           }
         }
-        if(zy2!==p.y){
+        if(zy2!==p.y && zstat.z2){
           if(zy2>p.y){
             zy2--
             
@@ -1241,7 +1360,7 @@
             zy2++
           }
         }
-        if(zx3!==p.x){
+        if(zx3!==p.x && zstat.z3){
           if(zx3>p.x){
             zx3--
             
@@ -1249,7 +1368,7 @@
             zx3++
           }
         }
-        if(zy3!==p.y){
+        if(zy3!==p.y  && zstat.z3){
           if(zy3>p.y){
             zy3--
             
@@ -1269,7 +1388,25 @@
         sy1 += Math.floor(3*Math.random()) - 1
         sy2 += Math.floor(3*Math.random()) - 1
         sy3 += Math.floor(3*Math.random()) - 1
-
+        cox1 += Math.floor(3*Math.random()) - 1
+        cox2 += Math.floor(3*Math.random()) - 1
+        cox3 += Math.floor(3*Math.random()) - 1
+        coy1 += Math.floor(3*Math.random()) - 1
+        coy2 += Math.floor(3*Math.random()) - 1
+        coy3 += Math.floor(3*Math.random()) - 1
+        chx1 += Math.floor(3*Math.random()) - 1
+        chx2 += Math.floor(3*Math.random()) - 1
+        chx3 += Math.floor(3*Math.random()) - 1
+        chy1 += Math.floor(3*Math.random()) - 1
+        chy2 += Math.floor(3*Math.random()) - 1
+        chy3 += Math.floor(3*Math.random()) - 1
+        ax1 += Math.floor(3*Math.random()) - 1
+        ax2 += Math.floor(3*Math.random()) - 1
+        ax3 += Math.floor(3*Math.random()) - 1
+        ay1 += Math.floor(3*Math.random()) - 1
+        ay2 += Math.floor(3*Math.random()) - 1
+        ay3 += Math.floor(3*Math.random()) - 1
+        
 
         $("#z1").attr("style", "position:absolute; top: "+zy1*16+"px; left: "+zx1*16+"px;")
         $("#z2").attr("style", "position:absolute; top: "+zy2*16+"px; left: "+zx2*16+"px;")
@@ -1280,7 +1417,25 @@
         $("#sheep1").attr("style", "position:absolute; top: "+sy1*16+"px; left: "+sx1*16+"px;")
         $("#sheep2").attr("style", "position:absolute; top: "+sy2*16+"px; left: "+sx2*16+"px;")
         $("#sheep3").attr("style", "position:absolute; top: "+sy3*16+"px; left: "+sx3*16+"px;")
-        if((zy1==p.y) && (zx1==p.x) && zstat.z1){
+        $("#cow1").attr("style", "position:absolute; top: "+coy1*16+"px; left: "+cox1*16+"px;")
+        $("#cow2").attr("style", "position:absolute; top: "+coy2*16+"px; left: "+cox2*16+"px;")
+        $("#cow3").attr("style", "position:absolute; top: "+coy3*16+"px; left: "+cox3*16+"px;")
+        $("#a1").attr("style", "position:absolute; top: "+ay1*16+"px; left: "+ax1*16+"px;")
+        $("#a2").attr("style", "position:absolute; top: "+ay2*16+"px; left: "+ax2*16+"px;")
+        $("#a3").attr("style", "position:absolute; top: "+ay3*16+"px; left: "+ax3*16+"px;")
+        
+        console.log(0)
+        $("#chicken1").attr("style", "position:absolute; top: "+chy1*16+"px; left: "+chx1*16+"px;")
+        console.log(1)
+        $("#chicken2").attr("style", "position:absolute; top: "+chy2*16+"px; left: "+chx2*16+"px;")
+        console.log(2)
+        $("#chicken3").attr("style", "position:absolute; top: "+chy3*16+"px; left: "+chx3*16+"px;")
+        console.log(3)
+        console.log("DEBUG - zstat.z1:", zstat.z1, "| p.x:", p.x, "| p.y:", p.y, "| zx1:", zx1, "| zy1:", zy1)
+        if(zstat.z1){
+          console.log("Zombie z1 - Position:", zx1, zy1, "Player:", p.x, p.y, "Match:", (zy1==p.y && zx1==p.x))
+        }
+        if((zy1==p.y) && (zx1==p.x) && zstat.z1){ 
           console.log("oy")
           p.takeDamage(3)
           
@@ -1310,6 +1465,22 @@
         for(let i = 0; i<pts; i++){
           spawnAnimal("pig")
         }
+        var cots = Math.floor(3*Math.random())
+        for(let i = 0; i<cots; i++){
+          spawnAnimal("cow")
+        }
+        var chts = Math.floor(3*Math.random())
+        for(let i = 0; i<chts; i++){
+          spawnAnimal("chicken")
+        }
+        var asc = Math.floor(Math.random()*4)
+        if(noa > 2 || lfan > 3 || asc !== 1) return
+         astat["a"+lfan] = true
+         noa++
+         window["ax"+lfan] = Math.floor(64*Math.random())
+         window["ay"+lfan] = Math.floor(64*Math.random())
+         $("#cc").append("<img src='archer.png' class='archer' id='a"+lfan+"' onclick='ha("+lfan+")' style='position:absolute; top:"+16*window["ay"+lfan]+"px; left: "+16*window["ax"+lfan]+"px;'>" )
+         lfan++
       }, 48000)
       setInterval(function(){
         month = (month+1)>12?1:(month+1)
@@ -1320,7 +1491,8 @@
         $("#time").text(month+"-"+day+"-"+year)
       }, 17280000)
       setTimeout(function(){
-        $("#cc").append("<img src='zombie.png' class='zombie' id='z1' onclick='kb(1)' style='position:absolute; top:1024px; left: 1024px;'>" )
+        zstat.z1 = true
+        $("#cc").append("<img src='zombie.png' class='zombie' id='z1' onclick='kb(1)' style='position:absolute; top:"+16*zy1+"px; left: "+16*zx1+"px;'>" )
       },60000)
       var kb = function(t){
         window["zx"+String(t)]++
@@ -1331,6 +1503,20 @@
             alert("You beat a zombie!")
             zstat["z"+t] = false
             noz--
+            p.$ += 10
+            $("#cash").text(p.$)
+          }
+      }
+      var ha = function(t){
+        window["ax"+String(t)]++
+        $("#a"+t).attr("style", "position:absolute; top: "+window["ay"+String(t)]*16+"px; left: "+window["ax"+String(t)]*16+"px;")
+        window["ah"+String(t)]-=p.dmg
+        if(window["ah"+String(t)]<=0){
+            $("#a"+t).remove()
+            alert("You beat an archer!")
+            astat["a"+t] = false
+            noa--
+            lfan = t
             p.$ += 10
             $("#cash").text(p.$)
           }
@@ -1365,16 +1551,86 @@
           lfpn = t
           }
       }
-
+      var hco = function(el, t){
+        window["cox"+String(t)]++
+        $("#cow"+t).attr("style", "position:absolute; top: "+window["coy"+String(t)]*16+"px; left: "+window["cox"+String(t)]*16+"px;")
+        window["coh"+String(t)]-=p.dmg
+        if(window["coh"+String(t)]<=0){
+            $("#cow"+t).remove()
+            alert("You killed a cow. You got a piece of raw beef.")
+            p.inv.rawBeef++
+            $("#rawBeefCount").text(p.inv.rawBeef)
+            $("#wbc").append("<img src='raw-beef.png' class='beef 1x1-icon' onclick='cookBeef(this)'/>")
+            costat["co"+t] = false
+            noco--
+          lfcon = t
+          }
+      }
+      var hch = function(el, t){
+        window["chx"+String(t)]++
+        $("#chicken"+t).attr("style", "position:absolute; top: "+window["chy"+String(t)]*16+"px; left: "+window["chx"+String(t)]*16+"px;")
+        window["chh"+String(t)]-=p.dmg
+        if(window["chh"+String(t)]<=0){
+            $("#chicken"+t).remove()
+            alert("You killed a chicken. You got a piece of raw chicken.")
+            p.inv.rawChicken++
+            $("#rawChickenCount").text(p.inv.rawChicken)
+            $("#wbc").append("<img src='raw-chicken.png' class='chicken 1x1-icon' onclick='cookChicken(this)'/>")
+            chstat["ch"+t] = false
+            noch--
+          lfchn = t
+          }
+      }
+      function sleep(){
+        alert("Sleeping.")
+        p.genHP(20/p.hp + 2)
+        day++
+        if(day==31){
+          day=1
+          month++
+        }
+        if(month==13){
+          month=1
+          year++
+        }
+        $("#time").text(month+"-"+day+"-"+year)
+      }
       function cut(a,b){
-        if(b=="spruce"){
+        if(b=="spruce" || b=="birch"){
           a.remove()
             var n = Math.floor(Math.random()*5)+1
             alert("You got "+n+" wood.")
             p.inv.wood += n
             $("#woodCount").text(p.inv.wood)
           return
+        }else if(b=="maple"){
+          var q = prompt("Would you like to cut or get syrup from the "+b+" tree? (say 'cut' or 'syrup')")
+        switch(q){
+          case "cut":
+            a.remove()
+            var n = Math.floor(Math.random()*5)+1
+            alert("You got "+n+" wood.")
+            p.inv.wood += n
+            $("#woodCount").text(p.inv.wood)
+            break
+            case "syrup":
+            setTimeout(function(){
+              if(hasBucket){
+                alert("You got maple syrup.")
+                $("#bucket").attr("src", "maple-syrup.png")
+                $("#bucket").attr("onclick", "drinkSyrup()")
+              }
+            
+            
+            
+            
+            }, 1000)
+            
+            
         }
+        return
+        }
+      
         var q = prompt("Would you like to cut or harvest from the "+b+" tree? (say 'cut' or 'harvest')")
         switch(q){
           case "cut":
@@ -1408,6 +1664,18 @@
         $("#cookedPorkCount").text(p.inv.cookedPork)
         p.genHP(6)
       }
+        function eatBeef(el){
+        el.remove()
+        p.inv.cookedBeef--
+        $("#cookedBeefCount").text(p.inv.cookedBeef)
+        p.genHP(8)
+      }
+        function eatChicken(el){
+        el.remove()
+        p.inv.cookedChicken--
+        $("#cookedChickenCount").text(p.inv.cookedChicken)
+        p.genHP(4)
+      }
       $("#eatMaxApples").click(function(){
         if(p.inv.apples==0){
           return
@@ -1417,6 +1685,12 @@
         $("#appleCount").text(p.inv.apples)
         
       })
+      function drinkSyrup(){
+        $("#bucket").attr("src", "empty-bucket.png")
+        $("#bucket").removeAttr("onclick")
+        p.genHP(3)
+
+      }
       $("#tSound").click(function(){
         soundStatus = !soundStatus
         if(soundStatus){
@@ -1439,6 +1713,24 @@
           $("#wbc").append("<img class='1x1-icon coal' src='coal.png'/>")
         }
       })
+      $("#mine").click(function(){
+        if((game[64*p.y+p.x] == "8" || game[64*p.y+p.x]=="9" || game[64*p.y+p.x]=="a") && p.miningLevel>=2){
+          p.inv.stone++
+          $("#stoneCount").text(p.inv.stone)
+          p.takeDamage(Math.floor(8*Math.random()+1)/4)
+          
+        }
+      })
+      $("#ironMine").click(function(){
+        if(p.$>=60){
+          $("#cc").append("<img src='iron-mine.png' class='1x1-icon' style='position:absolute; top:"+(p.y*16)+"px; left:"+(p.x*16+16)+"px;' onclick='mine(this)'>")
+          ironMinePos.push([p.x+1,p.y])
+          p.$ -= 60
+          $("#cash").text(p.$)
+        }else{
+          alert("You need $60.")
+        }
+      })
       setInterval(function(){
         var t = $("#theme").attr("src")
         if(t=="Theme.mp3"){
@@ -1454,6 +1746,97 @@
           $("#soundStatus").text("off")
         }
       },69818+(2/11))
+      var msucmi = 0
+      function mine(el){
+        if(msucmi==0 && p.miningLevel>=3){
+          $("#wbc").append("<img src='iron-ore.png' class='1x1-icon' onclick='smeltIron(this)'>")
+          p.inv.ironOre ++
+          p.takeDamage(p.hp/3)
+          $("#ironOreCount").text(p.inv.ironOre)
+          msucmi += 2000
+        }else{
+          alert(`Cooldown: ${msucmi/1000} seconds`)
+        }
+        
+      }
+      function applyArmor(type,el){
+        if(type==`iron`){
+          el.remove()
+          $("#char").attr("src", "armor-riggy.png")
+          $("#char").attr("onclick", "dequipArmor('iron')")
+          p.defense = 3
+        }
+      }
+      function dequipArmor(t){
+        $("#wbc").append('<img id="armor" src="'+t+'-armor.png" class="1x1-icon" onclick="applyArmor(`'+t+'`, this)">')
+        $("#char").attr("src", "Riggy.png")
+        $("#char").attr("onclick", "")
+        p.defense = 1
+      }
+      $("#esm").click(function(){
+        p.inShootMode = !p.inShootMode
+        $("#sm").text(p.inShootMode?"on":"off")
+      })
+      $("#cc").click(function(e) {
+  if (p.inShootMode && p.hasBow && p.inv.arrows > 0) {
+    var targetX = Math.floor(e.offsetX / 16)
+    var targetY = Math.floor(e.offsetY / 16)
+    shootArrow(p.x, p.y, targetX, targetY)
+    p.inv.arrows--
+    $("#wbc").children(".arrow").last().remove()
+    $("#arrowCount").text(p.inv.arrows)
+  }
+})
+      setInterval(function(){
+        if(msucmi>0){
+          msucmi--
+        }
+      },1)
+      setInterval(function(){
+        if(astat.a1 && archerCooldown.a1 <= 0) {
+  shootArrow(ax1, ay1, p.x, p.y,function(targetX, targetY) {
+    // Check if player is still at target location
+    if(p.x == targetX && p.y == targetY) {
+      p.takeDamage(2) // Adjust damage as needed
+      console.log("Player hit by archer arrow!")
+    }
+  })
+  archerCooldown.a1 = 3 // Cooldown of 3 intervals (6 seconds)
+}
+if(archerCooldown.a1 > 0) {
+  archerCooldown.a1--
+}
+
+// Archer 2 shoots
+if(astat.a2 && archerCooldown.a2 <= 0) {
+  shootArrow(ax2, ay2, p.x, p.y,function(targetX, targetY) {
+    // Check if player is still at target location
+    if(p.x == targetX && p.y == targetY) {
+      p.takeDamage(2) // Adjust damage as needed
+      console.log("Player hit by archer arrow!")
+    }
+  })
+  archerCooldown.a2 = 3
+}
+if(archerCooldown.a2 > 0) {
+  archerCooldown.a2--
+}
+
+// Archer 3 shoots
+if(astat.a3 && archerCooldown.a3 <= 0) {
+  shootArrow(ax3, ay3, p.x, p.y,function(targetX, targetY) {
+    // Check if player is still at target location
+    if(p.x == targetX && p.y == targetY) {
+      p.takeDamage(2) // Adjust damage as needed
+      console.log("Player hit by archer arrow!")
+    }
+  })
+  archerCooldown.a3 = 3
+}
+if(archerCooldown.a3 > 0) {
+  archerCooldown.a3--
+}
+      },500)
     </script>
   </body>
 </html>

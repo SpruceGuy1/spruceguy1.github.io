@@ -1,0 +1,31 @@
+name: Upload to Itch
+on: push
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+    
+      # Build your game...
+      - name: Prepare build directory
+        run: |
+          mkdir -p build
+          cp blocks2.html build/index.html
+          cp *.png build/
+          cp *.mp3 build/
+          cp *.m4a build/
+          cp *.css build/
+          cp *.js build/
+          cp *.ttf build/
+          cp *.ico build/
+          echo "Build directory contents:"
+          ls -la build/
+
+      - uses: robpc/itchio-upload-action@v1
+        with:
+          api-key: ${{ secrets.ITCH_API_KEY }}
+          project: spruceguy/blocks
+          channel: html5
+          path: build
+          version: ${{vars.VERSION}}
