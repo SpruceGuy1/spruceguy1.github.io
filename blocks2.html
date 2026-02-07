@@ -1792,12 +1792,12 @@
         p.defense = 1
       }
       $("#esm").click(function(){
-        p.mode = Number(!p.mode==1)
+        p.mode = Number(!(p.mode==1))
         $("#sm").text(p.mode==1?"on":"off")
         $("#fm").text(p.mode==2?"on":"off")
       })
       $("#efm").click(function(){
-        p.mode = 2*Number(!p.mode==2)
+        p.mode = 2*Number(!(p.mode==2))
         
         $("#fm").text(p.mode==2?"on":"off")
         $("#sm").text(p.mode==1?"on":"off")
