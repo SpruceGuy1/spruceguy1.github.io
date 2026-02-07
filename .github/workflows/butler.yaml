@@ -1,5 +1,9 @@
 name: Upload to Itch
-on: push
+on: 
+  push:
+    branches: 
+      - main
+
 
 jobs:
   deploy:
