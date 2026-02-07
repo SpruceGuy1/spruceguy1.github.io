@@ -82,15 +82,22 @@
       <ul>
         <li>Coal: <span id="coalCount">0</span></li>
         <li>Iron ore: <span id="ironOreCount">0</span></li>
+        
       </ul>
       Other<br>
       <ul>
         <li>Arrows: <span id="arrowCount">0</span></li>
       </ul>
+      Farming<br>
+      <ul>
+        <li>Wheat seeds: <span id="wheatSeedCount">0</span></li>
+        <li>Wheat: <span id="wheatCount">0</span></li>
+      </ul>
     </details>
     <button id="eatApple">Eat an apple</button>
     <button id="eatMaxApples">Eat all of your apples</button>
     <button id="buyCoal">Buy 2 coal for 3 apples</button>
+    <button id="buySeeds">Buy 6 wheat seeds for $5</button>
     Click on cooked pork to eat it.
     <h3>Crafting</h3>
     <select id="menu3">
@@ -110,6 +117,7 @@
     <button id="craftButton">Craft</button>
     <button id="mine">Mine</button>
     <button id="esm">Toggle shoot mode, currently <span id="sm">off.</span></button>
+    <button id="efm">Toggle farming mode, currently <span id="fm">off.</span></button>
     <button id="ironMine">Establish an iron mine for $60.</button>
     <div id='wbc'></div>
     <script>
@@ -379,7 +387,8 @@
         hasBow:false,
         rangedDamage:0,
         miningLevel:1,
-        inShootMode:false,
+        mode:0,
+        // normal: 0, shooting: 1, farming: 2
         inv:{
           apples: 0,
           wood:0,
@@ -394,7 +403,9 @@
           iron:0,
           ironOre:0,
           stone:0,
-          arrows:0
+          arrows:0,
+          wheatSeeds:0,
+          wheat:0
         },
         hp:20,
         takeDamage:function(t){ 
@@ -1781,11 +1792,18 @@
         p.defense = 1
       }
       $("#esm").click(function(){
-        p.inShootMode = !p.inShootMode
-        $("#sm").text(p.inShootMode?"on":"off")
+        p.mode = Number(!p.mode==1)
+        $("#sm").text(p.mode==1?"on":"off")
+        $("#fm").text(p.mode==2?"on":"off")
+      })
+      $("#efm").click(function(){
+        p.mode = 2*Number(!p.mode==2)
+        
+        $("#fm").text(p.mode==2?"on":"off")
+        $("#sm").text(p.mode==1?"on":"off")
       })
       $("#cc").click(function(e) {
-  if (p.inShootMode && p.hasBow && p.inv.arrows > 0) {
+  if (p.mode==1 && p.hasBow && p.inv.arrows > 0) {
     var targetX = Math.floor(e.offsetX / 16)
     var targetY = Math.floor(e.offsetY / 16)
     shootArrow(p.x, p.y, targetX, targetY)
