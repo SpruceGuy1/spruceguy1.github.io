@@ -1881,8 +1881,9 @@
     $("#arrowCount").text(p.inv.arrows)
   }else if(p.mode==2 && p.inv.wheatSeeds>=6){
     if(!treepos.some(function(pos){ return pos[0] === targetX && pos[1] === targetY; }) && !hutpos.some(function(pos){ return pos[0] === targetX && pos[1] === targetY; }) && !ironMinePos.some(function(pos){ return pos[0] === targetX && pos[1] === targetY; }) && wheatpos[targetX][targetY]=="_"){
-      wheatPos[targetX][targetY] = 0
+      wheatpos[targetX][targetY] = 0
       p.inv.wheatSeeds -= 6
+      $("#wheatSeedCount").text(p.inv.wheatSeeds)
       $("#wbc").children(".wheat-seeds").last().remove()
       $("#cc").append("<img src='wheat0.png' class='1x1-icon wheat-gs0' id='wheat-"+targetX+"-"+targetY+"' style='position:absolute; top:"+(targetY*16)+"px; left:"+(targetX*16)+"px;' >")
       
