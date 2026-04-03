@@ -1799,6 +1799,22 @@
           $("#wbc").append("<img class='1x1-icon coal' src='coal.png'/>")
         }
       })
+      $("#buySeeds").click(function(){
+        if(p.$<5){
+          alert("You need $5.")
+        }else{
+          p.inv.$-=5
+          $("#cash").text(p.$)
+          p.inv.wheatSeeds+=6
+          $("#wheatSeedCount").text(p.inv.wheatSeeds)
+          $("#wbc").append("<img class='1x1-icon wheat-seeds' src='seeds-wheat.png'/>")
+          $("#wbc").append("<img class='1x1-icon wheat-seeds' src='seeds-wheat.png'/>")
+          $("#wbc").append("<img class='1x1-icon wheat-seeds' src='seeds-wheat.png'/>")
+          $("#wbc").append("<img class='1x1-icon wheat-seeds' src='seeds-wheat.png'/>")
+          $("#wbc").append("<img class='1x1-icon wheat-seeds' src='seeds-wheat.png'/>")
+          $("#wbc").append("<img class='1x1-icon wheat-seeds' src='seeds-wheat.png'/>")
+        }
+      })
       $("#mine").click(function(){
         if((game[64*p.y+p.x] == "8" || game[64*p.y+p.x]=="9" || game[64*p.y+p.x]=="a") && p.miningLevel>=2){
           p.inv.stone++
