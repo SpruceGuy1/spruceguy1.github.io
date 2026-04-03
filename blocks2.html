@@ -1887,8 +1887,9 @@
         $("#sm").text(p.mode==1?"on":"off")
       })
       $("#cc").click(function(e) {
-        var targetX = Math.floor(e.offsetX / 16)
-    var targetY = Math.floor(e.offsetY / 16)
+        var rect = this.getBoundingClientRect()
+ var targetX = Math.floor((e.clientX - rect.left) / 16)
+  var targetY = Math.floor((e.clientY - rect.top) / 16)
   if (p.mode==1 && p.hasBow && p.inv.arrows > 0) {
     
     shootArrow(p.x, p.y, targetX, targetY)
