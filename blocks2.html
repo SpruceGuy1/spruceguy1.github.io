@@ -135,6 +135,7 @@
       var nos = 1 //sheep
       var noco = 0 //cow
       var noch = 0 //chicken
+      
       var treepos = [
         //[x,y]
       ]
@@ -209,7 +210,7 @@
                         ["_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_"],
                         ["_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_"],
                         ["_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_"],
-                        
+    ]
                       
       var haswb = false
       var hasFurnace = false
@@ -1878,12 +1879,13 @@
     p.inv.arrows--
     $("#wbc").children(".arrow").last().remove()
     $("#arrowCount").text(p.inv.arrows)
-  }else if(p.mode==2 && p.inv.wheatSeeds>6){
-    if(!treepos.includes([targetX,targetY]) && !hutpos.includes([targetX,targetY] && wheatpos[targetX][targetY]=="_"){
+  }else if(p.mode==2 && p.inv.wheatSeeds>=6){
+    if(!treepos.some(function(pos){ return pos[0] === targetX && pos[1] === targetY; }) && !hutpos.some(function(pos){ return pos[0] === targetX && pos[1] === targetY; }) && !ironMinePos.some(function(pos){ return pos[0] === targetX && pos[1] === targetY; }) && wheatpos[targetX][targetY]=="_"){
       wheatpos[targetX][targetY] = 0
       p.inv.wheatSeeds -= 6
       $("#wbc").children(".wheat-seeds").last().remove()
-      $("#cc").append("<img src='wheat0.png' class='1x1-icon wheat-gs0' id='wheat-"+windex+"' style='position:absolute; top:"+(targetY*16)+"px; left:"+(targetX*16)+"px;' >")
+      $("#cc").append("<img src='wheat0.png' class='1x1-icon wheat-gs0' id='wheat-"+targetX+"-"+targetY+"' style='position:absolute; top:"+(targetY*16)+"px; left:"+(targetX*16)+"px;' >")
+      windex++
     }
   }
 })
