@@ -1,6 +1,9 @@
 name: CodeRabbit Review
 
-on: [push]
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
 jobs:
   request-review:
     runs-on: ubuntu-latest
