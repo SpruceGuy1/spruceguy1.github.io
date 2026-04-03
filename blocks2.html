@@ -1541,20 +1541,23 @@
           
         }
         
-        /*for(let column of wheatpos){
+        for(let column of wheatpos){
           for(let position of column){
             if(position=="_" || position==2){
               
             }else{
               var rand = Math.floor(Math.random()*10)
               if(rand==3){
-                position++
-                $("#wheat-"+wheatpos.indexOf(column)+"-"
+                wheatpos[wheatpos.indexOf(column)][column.indexOf(position)]++
+                $("#wheat-"+wheatpos.indexOf(column)+"-"+column.indexOf(position)).attr("src", "wheat"+position+".png")
+                if(position==3{
+                  $("#wheat-"+wheatpos.indexOf(column)+"-"+column.indexOf(position)).attr("onclick", "harvestWheat("+wheatpos.indexOf(column)+", "+column.indexOf(position)+")")
+                }
               }
             }
           }
         }
-        }*/ //finish later
+        } 
       },2000)
       setInterval(function(){
         day = (day+1)>30?1:(day+1)
@@ -1973,6 +1976,9 @@ if(archerCooldown.a3 > 0) {
   archerCooldown.a3--
 }
       },500)
+      function harvestWheat(x,y){
+        // finish later
+      }
     </script>
   </body>
 </html>
