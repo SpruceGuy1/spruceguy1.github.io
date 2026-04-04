@@ -1977,6 +1977,9 @@ if(archerCooldown.a3 > 0) {
 }
       },500)
       function harvestWheat(x,y){
+        $("#wheat-"+x+"-"+y).remove()
+        p.inv.wheat ++
+        $("#wbc").append("<img class='inv-wheat 1x1-icon' src='wheat.png'/>")
         // finish later
       }
     </script>
