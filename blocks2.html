@@ -1541,17 +1541,17 @@
           
         }
         
-        for(let column of wheatpos){
-          for(let position of column){
+        for(let y=0;y<64;y++){
+          for(let x=0;x<64;x++){
             if(position=="_" || position==2){
               
             }else{
               var rand = Math.floor(Math.random()*10)
               if(rand==3){
-                wheatpos[x][y]++
-                var newStage = wheatpos[x][y]
+                wheatpos[y][x]++
+                var newStage = wheatpos[y][x]
                 $("#wheat-"+x+"-"+y).attr("src", "wheat"+newStage+".png")
-                if(newStage==3){
+                if(newStage==2){
                   $("#wheat-"+x+"-"+y).attr("onclick", "harvestWheat("+x+", "+y+")")
               }
             }
@@ -1916,8 +1916,8 @@
     $("#wbc").children(".arrow").last().remove()
     $("#arrowCount").text(p.inv.arrows)
   }else if(p.mode==2 && p.inv.wheatSeeds>=6){
-    if(!treepos.some(function(pos){ return pos[0] === targetX && pos[1] === targetY; }) && !hutpos.some(function(pos){ return pos[0] === targetX && pos[1] === targetY; }) && !ironMinePos.some(function(pos){ return pos[0] === targetX && pos[1] === targetY; }) && wheatpos[targetX][targetY]=="_"){
-      wheatpos[targetX][targetY] = 0
+    if(!treepos.some(function(pos){ return pos[0] === targetX && pos[1] === targetY; }) && !hutpos.some(function(pos){ return pos[0] === targetX && pos[1] === targetY; }) && !ironMinePos.some(function(pos){ return pos[0] === targetX && pos[1] === targetY; }) && wheatpos[targetY][targetX]=="_"){
+      wheatpos[targetY][targetX] = 0
       p.inv.wheatSeeds -= 6
       $("#wheatSeedCount").text(p.inv.wheatSeeds)
       $("#wbc").children(".wheat-seeds").last().remove()
