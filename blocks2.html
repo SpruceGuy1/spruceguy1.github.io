@@ -1827,11 +1827,7 @@
           p.inv.wheatSeeds+=6
           $("#wheatSeedCount").text(p.inv.wheatSeeds)
           $("#wbc").append("<img class='1x1-icon wheat-seeds' src='seeds-wheat.png'/>")
-          $("#wbc").append("<img class='1x1-icon wheat-seeds' src='seeds-wheat.png'/>")
-          $("#wbc").append("<img class='1x1-icon wheat-seeds' src='seeds-wheat.png'/>")
-          $("#wbc").append("<img class='1x1-icon wheat-seeds' src='seeds-wheat.png'/>")
-          $("#wbc").append("<img class='1x1-icon wheat-seeds' src='seeds-wheat.png'/>")
-          $("#wbc").append("<img class='1x1-icon wheat-seeds' src='seeds-wheat.png'/>")
+          
         }
       })
       $("#mine").click(function(){
@@ -1921,6 +1917,8 @@
       p.inv.wheatSeeds -= 6
       $("#wheatSeedCount").text(p.inv.wheatSeeds)
       $("#wbc").children(".wheat-seeds").last().remove()
+  
+      
       $("#cc").append("<img src='wheat0.png' class='1x1-icon wheat-gs0' id='wheat-"+targetX+"-"+targetY+"' style='position:absolute; top:"+(targetY*16)+"px; left:"+(targetX*16)+"px;' >")
       
     }
