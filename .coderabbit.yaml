@@ -4,4 +4,4 @@ reviews:
     enabled: true
     base_branches:
       - ".*" # Use regex to target all base branches
-    ignore_drafts: false
+    drafts: true
