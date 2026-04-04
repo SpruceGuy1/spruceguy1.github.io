@@ -660,6 +660,7 @@
         treepos = []
         wheatpos = structuredClone(wheatPosBasic)
         $(".tree").remove()
+        $("[id^='wheat-']").remove()
       for( iy = 0; iy < 64; iy++){
         for( ix = 0; ix < 64; ix++){
           switch(game[iy*64+ix]){
@@ -1543,6 +1544,7 @@
         
         for(let y=0;y<64;y++){
           for(let x=0;x<64;x++){
+            var position = wheatpos[y][x]
             if(position=="_" || position==2){
               
             }else{
@@ -1976,7 +1978,9 @@ if(archerCooldown.a3 > 0) {
       },500)
       function harvestWheat(x,y){
         $("#wheat-"+x+"-"+y).remove()
+        wheatpos[y][x] = "_"
         p.inv.wheat ++
+        $("#wheatCount").text(p.inv.wheat)
         $("#wbc").append("<img class='inv-wheat 1x1-icon' src='wheat.png'/>")
         // finish later
       }
