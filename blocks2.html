@@ -70,6 +70,8 @@
         <li>Beef: <span id="rawBeefCount">0</span> raw, <span id="cookedBeefCount">0</span> cooked</li>
         <li>Chicken: <span id="rawChickenCount">0</span> raw, <span id="cookedChickenCount">0</span> cooked</li>
         <li>Pork: <span id="rawPorkCount">0</span> raw, <span id="cookedPorkCount">0</span> cooked</li>
+        <li>Flour: <span id="flourCount">0</span></li>
+        <li>Bread: <span id="breadCount">0</span></li>
       </ul>
       Building Material<br>
       <ul>
@@ -113,6 +115,7 @@
       <option value="ironSword">Iron sword - 2 iron, 1 wood (needs workbench)</option>
       <option value="ironArmor">Iron armor - 5 iron (needs workbench)</option>
       <option value="bucket">Bucket - 3 iron (needs workbench)</option>
+      <option value="flour">Flour - 1 wheat (needs workbench)</option>
     </select>
     <button id="craftButton">Craft</button>
     <button id="mine">Mine</button>
@@ -473,7 +476,9 @@
           stone:0,
           arrows:0,
           wheatSeeds:0,
-          wheat:0
+          wheat:0,
+          flour:0,
+          bread:0,
         },
         hp:20,
         takeDamage:function(t){ 
@@ -569,6 +574,26 @@
               $("#wbc").append("<img class='1x1-icon iron' src='iron-ingot.png'/>")
               p.inv.iron++
               $("#ironCount").text(p.inv.iron)
+            },1500)
+          }
+        }
+        
+      }
+      function bakeBread(element){
+        if(hasFurnace){
+          if(p.inv.coal>0){
+            p.inv.coal--
+            $('#wbc').children('.coal').last().remove()
+            $("#coalCount").text(p.inv.coal)
+            t.remove()
+            p.inv.flour--
+            $("#flourCount").text(p.inv.flour)
+            $(".furnace").attr("src", "lit-furnace.png")
+            setTimeout(function(){
+              $(".furnace").attr("src", "empty-furnace.png")
+              $("#wbc").append("<img class='1x1-icon iron' src='bread.png'/>")
+              p.inv.bread++
+              $("#breadCount").text(p.inv.bread)
             },1500)
           }
         }
@@ -1402,6 +1427,21 @@
                   
                 }
                 break
+          case "flour":
+            if(p.inv.wheat < 1){
+                  alert("You need 1 wheat.")
+                }else if(!haswb){
+                  alert("You need a workbench.")
+                }else{
+                  p.inv.wheat -= 1
+                  
+
+                  $("#wheatCount").text(p.inv.wheat)
+                  
+                    $("#wbc").append("<img class='flour 1x1-icon' src='flour.png' onclick='bakeBread(this)'>")
+                  p.inv.flour++
+                  $("#flourCount").text(p.inv.flour)
+                  
         }
       })
       setInterval(function(){
