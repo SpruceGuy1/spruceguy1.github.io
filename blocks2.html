@@ -585,7 +585,7 @@
             p.inv.coal--
             $('#wbc').children('.coal').last().remove()
             $("#coalCount").text(p.inv.coal)
-            t.remove()
+            element.remove()
             p.inv.flour--
             $("#flourCount").text(p.inv.flour)
             $(".furnace").attr("src", "lit-furnace.png")
@@ -1434,7 +1434,7 @@
                   alert("You need a workbench.")
                 }else{
                   p.inv.wheat -= 1
-                  
+                  $("#wbc").children(".inv-wheat").last().remove()
 
                   $("#wheatCount").text(p.inv.wheat)
                   
@@ -1442,6 +1442,8 @@
                   p.inv.flour++
                   $("#flourCount").text(p.inv.flour)
                   
+        }
+            break
         }
       })
       setInterval(function(){
@@ -1946,7 +1948,10 @@
       $("#cc").click(function(e) {
         var rect = this.getBoundingClientRect()
  var targetX = Math.floor((e.clientX - rect.left) / 16)
-  var targetY = Math.floor((e.clientY - rect.top) / 16)
+        var targetY = Math.floor((e.clientY - rect.top) / 16)
+       if(targetX < 0 || targetX >= 64 || targetY < 0 || targetY >= 64){
+          return
+        }
   if (p.mode==1 && p.hasBow && p.inv.arrows > 0) {
     
     shootArrow(p.x, p.y, targetX, targetY)
