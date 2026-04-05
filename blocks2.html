@@ -99,6 +99,8 @@
     <button id="eatApple">Eat an apple</button>
     <button id="eatMaxApples">Eat all of your apples</button>
     <button id="buyCoal">Buy 2 coal for 3 apples</button>
+    <button id="eatBread">Eat a piece of bread</button>
+    <button id="eatMaxBread">Eat all of your bread</button>
     <button id="buySeeds">Buy 6 wheat seeds for $5</button>
     Click on cooked pork to eat it.
     <h3>Crafting</h3>
@@ -1807,6 +1809,16 @@
         $("#appleCount").text(p.inv.apples)
         p.genHP(3)
       })
+      const eatBread = function(){
+        if(p.inv.bread==0){
+          return
+        }
+        p.inv.bread--
+        $('#wbc').children('.bread').last().remove()
+        $("#breadCount").text(p.inv.bread)
+        p.genHP(5)
+      }
+      $("#eatBread").click(eatBread)
       function eatPork(el){
         el.remove()
         p.inv.cookedPork--
@@ -1833,6 +1845,11 @@
         p.inv.apples=0
         $("#appleCount").text(p.inv.apples)
         
+      })
+      $("#eatMaxBread").click(function(){
+        for(let i = 0; i < p.inv.bread; i++){
+          eatBread()
+        }
       })
       function drinkSyrup(){
         $("#bucket").attr("src", "empty-bucket.png")
