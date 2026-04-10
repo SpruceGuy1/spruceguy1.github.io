@@ -72,6 +72,7 @@
         <li>Pork: <span id="rawPorkCount">0</span> raw, <span id="cookedPorkCount">0</span> cooked</li>
         <li>Flour: <span id="flourCount">0</span></li>
         <li>Bread: <span id="breadCount">0</span></li>
+        <li>Oranges: <span id="orangeCount">0</span></li>
       </ul>
       Building Material<br>
       <ul>
@@ -762,6 +763,10 @@
                 treepos.push([ix, iy])
                 //treeTypes.birch++
                 $("#cc").append("<img src='birch-tree.png' class='tree' onclick='cut(this, \"birch\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+              }else if(Math.floor(5*Math.random())==3){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='orange-tree.png' class='tree' onclick='cut(this, \"orange\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+                 
               }
               break
             case "6":
@@ -779,6 +784,10 @@
                 treepos.push([ix, iy])
                // treeTypes.birch++
                 $("#cc").append("<img src='birch-tree.png' class='tree' onclick='cut(this, \"birch\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+              }else if(Math.floor(5*Math.random())==3){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='orange-tree.png' class='tree' onclick='cut(this, \"orange\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+                 
               }
               break
             case "7":
@@ -816,6 +825,10 @@
                 treepos.push([ix, iy])
                 //treeTypes.maple++
                 $("#cc").append("<img src='maple-tree.png' class='tree' onclick='cut(this, \"maple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+              }else if(Math.floor(5*Math.random())==4){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='orange-tree.png' class='tree' onclick='cut(this, \"orange\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+                 
               }
               break
             case "e":
@@ -833,6 +846,10 @@
                 treepos.push([ix, iy])
                 //treeTypes.maple++
                 $("#cc").append("<img src='maple-tree.png' class='tree' onclick='cut(this, \"maple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+              }else if(Math.floor(5*Math.random())==4){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='orange-tree.png' class='tree' onclick='cut(this, \"orange\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+                 
               }
               break
             case "f":
@@ -1750,6 +1767,7 @@
         }
         $("#time").text(month+"-"+day+"-"+year)
       }
+      var orangeCooldown = 0
       function cut(a,b){
         if(b=="spruce" || b=="birch"){
           a.remove()
@@ -1784,6 +1802,17 @@
             
         }
         return
+        }else if(b=="orange"){
+          if(orangeCooldown==0){
+            var n = Math.floor(Math.random()*5)+1
+            alert("You got "+n+" oranges.")
+            p.inv.oranges += n
+            $("#orangeCount").text(p.inv.oranges)
+            for(let i=0; i<n; i++){
+              $("#wbc").append("<img class='1x1-icon orange' src='orange.png' onclick='eatOrange(this)'/>")
+            }
+            orangeCooldown += 2000
+          }
         }
       
         var q = prompt("Would you like to cut or harvest from the "+b+" tree? (say 'cut' or 'harvest')")
@@ -1835,12 +1864,7 @@
         $("#cookedBeefCount").text(p.inv.cookedBeef)
         p.genHP(8)
       }
-        function eatChicken(el){
-        el.remove()
-        p.inv.cookedChicken--
-        $("#cookedChickenCount").text(p.inv.cookedChicken)
-        p.genHP(4)
-      }
+         
       $("#eatMaxApples").click(function(){
         if(p.inv.apples==0){
           return
@@ -1860,6 +1884,12 @@
         $("#bucket").removeAttr("onclick")
         p.genHP(3)
 
+      }
+      function eatOrange(el){
+        el.remove()
+        p.inv.oranges--
+        $("#orangeCount").text(p.inv.oranges)
+        p.genHP(4)
       }
       $("#tSound").click(function(){
         soundStatus = !soundStatus
@@ -1995,6 +2025,9 @@
       setInterval(function(){
         if(msucmi>0){
           msucmi--
+        }
+        if(orangeCooldown>0){
+          orangeCooldown--
         }
       },1)
       setInterval(function(){
