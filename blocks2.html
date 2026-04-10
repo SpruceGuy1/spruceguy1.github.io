@@ -719,6 +719,10 @@
                 treepos.push([ix, iy])
                 //treeTypes.maple++
                 $("#cc").append("<img src='maple-tree.png' class='tree' onclick='cut(this, \"maple\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+              }else if(Math.floor(20*Math.random())==4){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='orange-tree.png' class='tree' onclick='cut(this, \"orange\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+                 
               }
               break
             case "3":
