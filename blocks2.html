@@ -482,6 +482,7 @@
           wheat:0,
           flour:0,
           bread:0,
+          oranges:0,
         },
         hp:20,
         takeDamage:function(t){ 
@@ -1812,6 +1813,7 @@
               $("#wbc").append("<img class='1x1-icon orange' src='orange.png' onclick='eatOrange(this)'/>")
             }
             orangeCooldown += 2000
+            return
           }
         }
       
