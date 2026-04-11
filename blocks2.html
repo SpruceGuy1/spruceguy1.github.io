@@ -1866,7 +1866,12 @@
         $("#cookedBeefCount").text(p.inv.cookedBeef)
         p.genHP(8)
       }
-         
+        function eatChicken(el){
+        el.remove()
+        p.inv.cookedChicken--
+        $("#cookedChickenCount").text(p.inv.cookedChicken)
+        p.genHP(6)
+      }
       $("#eatMaxApples").click(function(){
         if(p.inv.apples==0){
           return
