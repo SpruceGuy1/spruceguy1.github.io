@@ -73,6 +73,7 @@
         <li>Flour: <span id="flourCount">0</span></li>
         <li>Bread: <span id="breadCount">0</span></li>
         <li>Oranges: <span id="orangeCount">0</span></li>
+        <li>Blueberries: <span id="blueberryCount">0</span></li>
       </ul>
       Building Material<br>
       <ul>
@@ -107,7 +108,7 @@
     <h3>Crafting</h3>
     <select id="menu3">
       <option value="woodenSword">Wooden sword - 3 wood (needs workbench)</option>
-      <option value="arrow">6 arrows - 2 wood (needs workbench)</option>
+      <option value="arrow">6 arrows - 2 wood (needs workbench)</option> 
       <option value="bow">Bow - 5 wood (needs workbench)</option>
       <option value="workbench">Workbench - 4 wood</option>
       <option value="woodhut">Wooden hut (comes with furnace) - 5 wood</option>
@@ -483,6 +484,7 @@
           flour:0,
           bread:0,
           oranges:0,
+          blueberries:0,
         },
         hp:20,
         takeDamage:function(t){ 
@@ -767,6 +769,10 @@
               }else if(Math.floor(5*Math.random())==3){
                 treepos.push([ix, iy])
                 $("#cc").append("<img src='orange-tree.png' class='tree' onclick='cut(this, \"orange\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+                 
+              }else if(Math.floor(5*Math.random())==4){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='blueberry-bush.png' class='tree' onclick='cut(this, \"blueberry\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
                  
               }
               break
@@ -1769,6 +1775,7 @@
         $("#time").text(month+"-"+day+"-"+year)
       }
       var orangeCooldown = 0
+      var blueberryCooldown = 0
       function cut(a,b){
         if(b=="spruce" || b=="birch"){
           a.remove()
@@ -1813,6 +1820,17 @@
               $("#wbc").append("<img class='1x1-icon orange' src='orange.png' onclick='eatOrange(this)'/>")
             }
             orangeCooldown += 2000
+            
+          }else if(b=="blueberry"){
+          if(blueberryCooldown==0){
+            var n = Math.floor(Math.random()*15)+6
+            alert("You got "+n+" blueberries.")
+            p.inv.blueberries += n
+            $("#blueberryCount").text(p.inv.blueberries)
+            for(let i=0; i<n; i++){
+              $("#wbc").append("<img class='1x1-icon blueberry' src='blueberry.png' onclick='eatBlueberry(this)'/>")
+            }
+            blueberryCooldown += 2000
             
           }
           return
@@ -1900,6 +1918,12 @@
         p.inv.oranges--
         $("#orangeCount").text(p.inv.oranges)
         p.genHP(4)
+      }
+      function eatBlueberry(el){
+        el.remove()
+        p.inv.blueberries--
+        $("#blueberryCount").text(p.inv.blueberries)
+        p.genHP(0.5)
       }
       $("#tSound").click(function(){
         soundStatus = !soundStatus
