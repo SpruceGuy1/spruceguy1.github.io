@@ -1,2 +1,7 @@
 reviews:
   poem: true
+  auto_review:
+    enabled: true
+    base_branches:
+      - ".*" # Use regex to target all base branches
+    drafts: true
