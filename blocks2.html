@@ -1776,8 +1776,16 @@
       }
       var orangeCooldown = 0
       var blueberryCooldown = 0
+      function removeTreePosition(el) {  
+  const x = parseInt(el.style.left, 10) / 16  
+  const y = parseInt(el.style.top, 10) / 16  
+  treepos = treepos.filter(function(pos) {  
+    return pos[0] !== x || pos[1] !== y  
+  })  
+}
       function cut(a,b){
         if(b=="spruce" || b=="birch"){
+          removeTreePosition(a)
           a.remove()
             var n = Math.floor(Math.random()*5)+1
             alert("You got "+n+" wood.")
@@ -1788,6 +1796,7 @@
           var q = prompt("Would you like to cut or get syrup from the "+b+" tree? (say 'cut' or 'syrup')")
         switch(q){
           case "cut":
+            removeTreePosition(a)
             a.remove()
             var n = Math.floor(Math.random()*5)+1
             alert("You got "+n+" wood.")
@@ -1839,6 +1848,7 @@
         var q = prompt("Would you like to cut or harvest from the "+b+" tree? (say 'cut' or 'harvest')")
         switch(q){
           case "cut":
+            removeTreePosition(a)
             a.remove()
             var n = Math.floor(Math.random()*5)+1
             alert("You got "+n+" wood.")
