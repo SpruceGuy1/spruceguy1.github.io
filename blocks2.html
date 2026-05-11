@@ -74,6 +74,7 @@
         <li>Bread: <span id="breadCount">0</span></li>
         <li>Oranges: <span id="orangeCount">0</span></li>
         <li>Blueberries: <span id="blueberryCount">0</span></li>
+        <li>Blueberry pie: <span id="blueberryPieCount">0</span></li>
       </ul>
       Building Material<br>
       <ul>
@@ -103,6 +104,8 @@
     <button id="buyCoal">Buy 2 coal for 3 apples</button>
     <button id="eatBread">Eat a piece of bread</button>
     <button id="eatMaxBread">Eat all of your bread</button>
+    <button id="eatBlueberryPie">Eat a piece of blueberry pie</button>
+    <button id="eatMaxBlueberryPie">Eat all of your blueberry pie</button>
     <button id="buySeeds">Buy 6 wheat seeds for $5</button>
     Click on cooked pork to eat it.
     <h3>Crafting</h3>
@@ -485,6 +488,7 @@
           bread:0,
           oranges:0,
           blueberries:0,
+          blueberryPie:0,
         },
         hp:20,
         takeDamage:function(t){ 
