@@ -609,6 +609,44 @@
         }
         
       }
+      function bakePie(element,type){
+        var item
+        switch(type){
+          case "blueberry":
+            item = "blueberries"
+            icon = "blueberry"
+            count = 10
+            counter = "blueberry"
+            image = "blueberry-pie"
+            item2 = "flour"
+            count2 = 3
+            counter2 = "flour"
+            hp = 10
+            break
+          default:
+            return
+        }
+        if(hasFurnace){
+          if(p.inv.coal>0){
+            p.inv.coal--
+            $('#wbc').children('.coal').last().remove()
+            $("#coalCount").text(p.inv.coal)
+            element.remove()
+            p.inv[item]-=count
+            p.inv[item2]-=count2
+            $("#"+counter+"Count").text(p.inv.[item])
+            $("#"+counter2+"Count").text(p.inv.[item2])
+            $(".furnace").attr("src", "lit-furnace.png")
+            setTimeout(function(){
+              $(".furnace").attr("src", "empty-furnace.png")
+              $("#wbc").append("<img class='1x1-icon "+image+"' src='"+image+".png' onclick='eatPie(this, "+item+","+image+","+hp+")'/>")
+              p.inv[type+"Pie"]++
+              $("#"+type+"PieCount").text(p.inv[type+"Pie"])
+            },1500)
+          }
+        }
+        
+      }
       var noise = new Noise(Math.random())
       for(let i = 0; i<=63; i++){
           for(let j = 0; j<=63; j++){
@@ -1886,6 +1924,15 @@
         $('#wbc').children('.bread').last().remove()
         $("#breadCount").text(p.inv.bread)
         p.genHP(5)
+      }
+      const eatPie = function(element, inv, className, counter, hp){
+        if(p.inv[inv]==0){
+          return
+        }
+        p.inv[inv]--
+        $('#wbc').children('.'+className).last().remove()
+        $("#"+counter+"Count").text(p.inv[inv])
+        p.genHP(hp)
       }
       $("#eatBread").click(eatBread)
       function eatPork(el){
