@@ -640,7 +640,7 @@
             $(".furnace").attr("src", "lit-furnace.png")
             setTimeout(function(){
               $(".furnace").attr("src", "empty-furnace.png")
-              $("#wbc").append("<img class='1x1-icon "+image+"' src='"+image+".png' onclick='eatPie(this, \""+item+"\",\""+image+"\",\""+type+"Pie\",\""+nutrition+"\")'/>")
+              $("#wbc").append("<img class='1x1-icon "+image+"' src='"+image+".png' onclick='eatPie(this, \""+type+"Pie\",\""+image+"\",\""+type+"Pie\","+nutrition+")'/>")
               p.inv[type+"Pie"]++
               $("#"+type+"PieCount").text(p.inv[type+"Pie"])
             },1500)
