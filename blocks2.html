@@ -610,7 +610,7 @@
         
       }
       function bakePie(type){
-        var item
+        let item, icon, count, counter, image, item2, count2, counter2, nutrition
         switch(type){
           case "blueberry":
             item = "blueberries"
@@ -622,7 +622,7 @@
             count2 = 3
             counter2 = "flour"
             
-            hp = 10
+            nutrition = 10
             break
           default:
             return
@@ -640,7 +640,7 @@
             $(".furnace").attr("src", "lit-furnace.png")
             setTimeout(function(){
               $(".furnace").attr("src", "empty-furnace.png")
-              $("#wbc").append("<img class='1x1-icon "+image+"' src='"+image+".png' onclick='eatPie(this, "+item+","+image+","+type+","+hp+")'/>")
+              $("#wbc").append("<img class='1x1-icon "+image+"' src='"+image+".png' onclick='eatPie(this, \""+item+"\",\""+image+"\",\""+type+"Pie\",\""+nutrition+"\")'/>")
               p.inv[type+"Pie"]++
               $("#"+type+"PieCount").text(p.inv[type+"Pie"])
             },1500)
@@ -1518,8 +1518,8 @@
         }
             break
             case "blueberryPie":
-            if(p.inv.wheat < 3){
-                  alert("You need 3 wheat.")
+            if(p.inv.flour < 3){
+                  alert("You need 3 flour.")
                 }else if(p.inv.blueberries < 10){
                   alert("You need 10 blueberries.")
                 }else if(p.inv.coal < 1){
@@ -1528,9 +1528,9 @@
                   alert("You need a furnace.")
                 }else{
                   
-                  $("#wbc").children(".inv-wheat").last().remove()
-              $("#wbc").children(".inv-wheat").last().remove()
-              $("#wbc").children(".inv-wheat").last().remove()
+                  $("#wbc").children(".flour").last().remove()
+              $("#wbc").children(".flour").last().remove()
+              $("#wbc").children(".flour").last().remove()
                  
                   $("#wbc").children(".blueberry").last().remove()
               $("#wbc").children(".blueberry").last().remove()
@@ -1966,7 +1966,7 @@
           return
         }
         p.inv[inv]--
-        $('#wbc').children('.'+className).last().remove()
+        $(element).remove()
         $("#"+counter+"Count").text(p.inv[inv])
         p.genHP(hp)
       }
