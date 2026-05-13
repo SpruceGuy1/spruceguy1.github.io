@@ -609,7 +609,7 @@
         }
         
       }
-      function bakePie(element,type){
+      function bakePie(type){
         var item
         switch(type){
           case "blueberry":
@@ -632,7 +632,7 @@
             p.inv.coal--
             $('#wbc').children('.coal').last().remove()
             $("#coalCount").text(p.inv.coal)
-            element.remove()
+            
             p.inv[item]-=count
             p.inv[item2]-=count2
             $("#"+counter+"Count").text(p.inv[item])
@@ -1514,6 +1514,40 @@
                     $("#wbc").append("<img class='flour 1x1-icon' src='flour.png' onclick='bakeBread(this)'>")
                   p.inv.flour++
                   $("#flourCount").text(p.inv.flour)
+                  
+        }
+            break
+            case "blueberryPie":
+            if(p.inv.wheat < 3){
+                  alert("You need 3 wheat.")
+                }else if(p.inv.blueberries < 10){
+                  alert("You need 10 blueberries.")
+                }else if(p.inv.coal < 1){
+                  alert("You need fuel.")
+                }else if(!hasFurnace){
+                  alert("You need a furnace.")
+                }else{
+                  
+                  $("#wbc").children(".inv-wheat").last().remove()
+              $("#wbc").children(".inv-wheat").last().remove()
+              $("#wbc").children(".inv-wheat").last().remove()
+                 
+                  $("#wbc").children(".blueberry").last().remove()
+              $("#wbc").children(".blueberry").last().remove()
+              $("#wbc").children(".blueberry").last().remove()
+              $("#wbc").children(".blueberry").last().remove()
+              $("#wbc").children(".blueberry").last().remove()
+              $("#wbc").children(".blueberry").last().remove()
+              $("#wbc").children(".blueberry").last().remove()
+              $("#wbc").children(".blueberry").last().remove()
+              $("#wbc").children(".blueberry").last().remove()
+              $("#wbc").children(".blueberry").last().remove()
+              bakePie("blueberry")
+
+                  
+                    
+                  
+              
                   
         }
             break
