@@ -122,6 +122,7 @@
       <option value="ironArmor">Iron armor - 5 iron (needs workbench)</option>
       <option value="bucket">Bucket - 3 iron (needs workbench)</option>
       <option value="flour">Flour - 1 wheat (needs workbench)</option>
+      <option value="blueberryPie">Blueberry pie - 10 blueberries, 3 flour</option>
     </select>
     <button id="craftButton">Craft</button>
     <button id="mine">Mine</button>
@@ -620,6 +621,7 @@
             item2 = "flour"
             count2 = 3
             counter2 = "flour"
+            
             hp = 10
             break
           default:
@@ -633,12 +635,12 @@
             element.remove()
             p.inv[item]-=count
             p.inv[item2]-=count2
-            $("#"+counter+"Count").text(p.inv.[item])
-            $("#"+counter2+"Count").text(p.inv.[item2])
+            $("#"+counter+"Count").text(p.inv[item])
+            $("#"+counter2+"Count").text(p.inv[item2])
             $(".furnace").attr("src", "lit-furnace.png")
             setTimeout(function(){
               $(".furnace").attr("src", "empty-furnace.png")
-              $("#wbc").append("<img class='1x1-icon "+image+"' src='"+image+".png' onclick='eatPie(this, "+item+","+image+","+hp+")'/>")
+              $("#wbc").append("<img class='1x1-icon "+image+"' src='"+image+".png' onclick='eatPie(this, "+item+","+image+","+type+","+hp+")'/>")
               p.inv[type+"Pie"]++
               $("#"+type+"PieCount").text(p.inv[type+"Pie"])
             },1500)
