@@ -1555,6 +1555,21 @@
                   
         }
             break
+            case "rawBJam":
+            if(p.inv.blueberries<10){
+              alert("You need 10blueberries.")
+            }else if(!hasBucket){
+              alert("You need a bucket.")
+            }else{
+              p.inv.blueberries -= 10
+              $("#blueberryCount").text(p.inv.blueberries)
+              hasBucket = false
+              p.inv.rawBJam ++
+              $("#bucket").attr("src", "blueberry-bucket.png")
+              $("#bucket").attr("onclick", "cookJam(this)")
+              
+            }
+            break
         }
       })
       setInterval(function(){
