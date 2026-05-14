@@ -75,6 +75,7 @@
         <li>Oranges: <span id="orangeCount">0</span></li>
         <li>Blueberries: <span id="blueberryCount">0</span></li>
         <li>Blueberry pie: <span id="blueberryPieCount">0</span></li>
+        <li>Blueberry jam: <span id="rawBJamCount">0</span> raw, <span id="BJamCount">0</span> cooked</li>
       </ul>
       Building Material<br>
       <ul>
@@ -123,6 +124,7 @@
       <option value="bucket">Bucket - 3 iron (needs workbench)</option>
       <option value="flour">Flour - 1 wheat (needs workbench)</option>
       <option value="blueberryPie">Blueberry pie - 10 blueberries, 3 flour</option>
+      <option value="rawBJam">Uncooked blueberry jam - 10 blueberries, 1 bucket</option>
     </select>
     <button id="craftButton">Craft</button>
     <button id="mine">Mine</button>
@@ -489,6 +491,8 @@
           oranges:0,
           blueberries:0,
           blueberryPie:0,
+          rawBJam: 0,
+          BJam: 0
         },
         hp:20,
         takeDamage:function(t){ 
