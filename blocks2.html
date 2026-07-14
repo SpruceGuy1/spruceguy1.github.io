@@ -73,6 +73,9 @@
         <li>Flour: <span id="flourCount">0</span></li>
         <li>Bread: <span id="breadCount">0</span></li>
         <li>Oranges: <span id="orangeCount">0</span></li>
+        <li>Blueberries: <span id="blueberryCount">0</span></li>
+        <li>Blueberry pie: <span id="blueberryPieCount">0</span></li>
+        <li>Blueberry jam: <span id="rawBJamCount">0</span> raw, <span id="BJamCount">0</span> cooked</li>
       </ul>
       Building Material<br>
       <ul>
@@ -102,12 +105,13 @@
     <button id="buyCoal">Buy 2 coal for 3 apples</button>
     <button id="eatBread">Eat a piece of bread</button>
     <button id="eatMaxBread">Eat all of your bread</button>
+    
     <button id="buySeeds">Buy 6 wheat seeds for $5</button>
     Click on cooked pork to eat it.
     <h3>Crafting</h3>
     <select id="menu3">
       <option value="woodenSword">Wooden sword - 3 wood (needs workbench)</option>
-      <option value="arrow">6 arrows - 2 wood (needs workbench)</option>
+      <option value="arrow">6 arrows - 2 wood (needs workbench)</option> 
       <option value="bow">Bow - 5 wood (needs workbench)</option>
       <option value="workbench">Workbench - 4 wood</option>
       <option value="woodhut">Wooden hut (comes with furnace) - 5 wood</option>
@@ -119,6 +123,8 @@
       <option value="ironArmor">Iron armor - 5 iron (needs workbench)</option>
       <option value="bucket">Bucket - 3 iron (needs workbench)</option>
       <option value="flour">Flour - 1 wheat (needs workbench)</option>
+      <option value="blueberryPie">Blueberry pie - 10 blueberries, 3 flour</option>
+      <option value="rawBJam">Uncooked blueberry jam - 10 blueberries, 1 bucket</option>
     </select>
     <button id="craftButton">Craft</button>
     <button id="mine">Mine</button>
@@ -483,6 +489,10 @@
           flour:0,
           bread:0,
           oranges:0,
+          blueberries:0,
+          blueberryPie:0,
+          rawBJam: 0,
+          BJam: 0
         },
         hp:20,
         takeDamage:function(t){ 
@@ -598,6 +608,45 @@
               $("#wbc").append("<img class='1x1-icon bread' src='bread.png'/>")
               p.inv.bread++
               $("#breadCount").text(p.inv.bread)
+            },1500)
+          }
+        }
+        
+      }
+      function bakePie(type){
+        let item, icon, count, counter, image, item2, count2, counter2, nutrition
+        switch(type){
+          case "blueberry":
+            item = "blueberries"
+            icon = "blueberry"
+            count = 10
+            counter = "blueberry"
+            image = "blueberry-pie"
+            item2 = "flour"
+            count2 = 3
+            counter2 = "flour"
+            
+            nutrition = 10
+            break
+          default:
+            return
+        }
+        if(hasFurnace){
+          if(p.inv.coal>0){
+            p.inv.coal--
+            $('#wbc').children('.coal').last().remove()
+            $("#coalCount").text(p.inv.coal)
+            
+            p.inv[item]-=count
+            p.inv[item2]-=count2
+            $("#"+counter+"Count").text(p.inv[item])
+            $("#"+counter2+"Count").text(p.inv[item2])
+            $(".furnace").attr("src", "lit-furnace.png")
+            setTimeout(function(){
+              $(".furnace").attr("src", "empty-furnace.png")
+              $("#wbc").append("<img class='1x1-icon "+image+"' src='"+image+".png' onclick='eatPie(this, \""+type+"Pie\",\""+image+"\",\""+type+"Pie\","+nutrition+")'/>")
+              p.inv[type+"Pie"]++
+              $("#"+type+"PieCount").text(p.inv[type+"Pie"])
             },1500)
           }
         }
@@ -767,6 +816,10 @@
               }else if(Math.floor(5*Math.random())==3){
                 treepos.push([ix, iy])
                 $("#cc").append("<img src='orange-tree.png' class='tree' onclick='cut(this, \"orange\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
+                 
+              }else if(Math.floor(5*Math.random())==4){
+                treepos.push([ix, iy])
+                $("#cc").append("<img src='blueberry-bush.png' class='tree' onclick='cut(this, \"blueberry\")' style='position:absolute; top:"+16*iy+"px; left: "+ix*16+"px;'>")
                  
               }
               break
@@ -1468,6 +1521,55 @@
                   
         }
             break
+            case "blueberryPie":
+            if(p.inv.flour < 3){
+                  alert("You need 3 flour.")
+                }else if(p.inv.blueberries < 10){
+                  alert("You need 10 blueberries.")
+                }else if(p.inv.coal < 1){
+                  alert("You need fuel.")
+                }else if(!hasFurnace){
+                  alert("You need a furnace.")
+                }else{
+                  
+                  $("#wbc").children(".flour").last().remove()
+              $("#wbc").children(".flour").last().remove()
+              $("#wbc").children(".flour").last().remove()
+                 
+                  $("#wbc").children(".blueberry").last().remove()
+              $("#wbc").children(".blueberry").last().remove()
+              $("#wbc").children(".blueberry").last().remove()
+              $("#wbc").children(".blueberry").last().remove()
+              $("#wbc").children(".blueberry").last().remove()
+              $("#wbc").children(".blueberry").last().remove()
+              $("#wbc").children(".blueberry").last().remove()
+              $("#wbc").children(".blueberry").last().remove()
+              $("#wbc").children(".blueberry").last().remove()
+              $("#wbc").children(".blueberry").last().remove()
+              bakePie("blueberry")
+
+                  
+                    
+                  
+              
+                  
+        }
+            break
+            case "rawBJam":
+            if(p.inv.blueberries<10){
+              alert("You need 10blueberries.")
+            }else if(!hasBucket){
+              alert("You need a bucket.")
+            }else{
+              p.inv.blueberries -= 10
+              $("#blueberryCount").text(p.inv.blueberries)
+              hasBucket = false
+              p.inv.rawBJam ++
+              $("#bucket").attr("src", "blueberry-bucket.png")
+              $("#bucket").attr("onclick", "cookJam(this)")
+              
+            }
+            break
         }
       })
       setInterval(function(){
@@ -1769,8 +1871,17 @@
         $("#time").text(month+"-"+day+"-"+year)
       }
       var orangeCooldown = 0
+      var blueberryCooldown = 0
+      function removeTreePosition(el) {  
+  const x = parseInt(el.style.left, 10) / 16  
+  const y = parseInt(el.style.top, 10) / 16  
+  treepos = treepos.filter(function(pos) {  
+    return pos[0] !== x || pos[1] !== y  
+  })  
+}
       function cut(a,b){
         if(b=="spruce" || b=="birch"){
+          removeTreePosition(a)
           a.remove()
             var n = Math.floor(Math.random()*5)+1
             alert("You got "+n+" wood.")
@@ -1781,6 +1892,7 @@
           var q = prompt("Would you like to cut or get syrup from the "+b+" tree? (say 'cut' or 'syrup')")
         switch(q){
           case "cut":
+            removeTreePosition(a)
             a.remove()
             var n = Math.floor(Math.random()*5)+1
             alert("You got "+n+" wood.")
@@ -1813,6 +1925,19 @@
               $("#wbc").append("<img class='1x1-icon orange' src='orange.png' onclick='eatOrange(this)'/>")
             }
             orangeCooldown += 2000
+            return
+          }
+          return
+          }else if(b=="blueberry"){
+          if(blueberryCooldown==0){
+            var n = Math.floor(Math.random()*15)+6
+            alert("You got "+n+" blueberries.")
+            p.inv.blueberries += n
+            $("#blueberryCount").text(p.inv.blueberries)
+            for(let i=0; i<n; i++){
+              $("#wbc").append("<img class='1x1-icon blueberry' src='blueberry.png' onclick='eatBlueberry(this)'/>")
+            }
+            blueberryCooldown += 2000
             
           }
           return
@@ -1821,6 +1946,7 @@
         var q = prompt("Would you like to cut or harvest from the "+b+" tree? (say 'cut' or 'harvest')")
         switch(q){
           case "cut":
+            removeTreePosition(a)
             a.remove()
             var n = Math.floor(Math.random()*5)+1
             alert("You got "+n+" wood.")
@@ -1853,6 +1979,15 @@
         $('#wbc').children('.bread').last().remove()
         $("#breadCount").text(p.inv.bread)
         p.genHP(5)
+      }
+      const eatPie = function(element, inv, className, counter, hp){
+        if(p.inv[inv]==0){
+          return
+        }
+        p.inv[inv]--
+        $(element).remove()
+        $("#"+counter+"Count").text(p.inv[inv])
+        p.genHP(hp)
       }
       $("#eatBread").click(eatBread)
       function eatPork(el){
@@ -1900,6 +2035,12 @@
         p.inv.oranges--
         $("#orangeCount").text(p.inv.oranges)
         p.genHP(4)
+      }
+      function eatBlueberry(el){
+        el.remove()
+        p.inv.blueberries--
+        $("#blueberryCount").text(p.inv.blueberries)
+        p.genHP(0.5)
       }
       $("#tSound").click(function(){
         soundStatus = !soundStatus
@@ -2038,6 +2179,9 @@
         }
         if(orangeCooldown>0){
           orangeCooldown--
+        }
+        if(blueberryCooldown>0){
+          blueberryCooldown--
         }
       },1)
       setInterval(function(){
