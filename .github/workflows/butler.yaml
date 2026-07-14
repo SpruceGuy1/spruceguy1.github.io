@@ -15,7 +15,7 @@ jobs:
       - name: Prepare build directory
         run: |
           mkdir -p build
-          cp blocks2.html build/index.html
+          cp blocks.html build/index.html
           cp *.png build/
           cp *.mp3 build/
           cp *.m4a build/
