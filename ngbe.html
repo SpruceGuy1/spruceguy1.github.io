@@ -11,22 +11,23 @@
     console.log = function(msg){
       $("body").append("<p>"+msg+"</p>")
     }
-    var t = {
+    var position = {
 	x:0,
 	y:5,
 	z:0
 
 }
 var time = 0
+	  
 var player = {
 	name:prompt("enter your player's name"),
-	coords:t,
+	coords:position,
 	stats:{
-		speed:5,
+		speed:Math.floor(Math.random()*3)+4,
 
 	},
-	inventory:[],
-	newDesignInventory:{
+	
+	inventory:{
 		trees:0,
 		wood:0,
 		apples:0,
@@ -35,11 +36,9 @@ var player = {
 	}
 }
 
-var biomes = ["classicForest", "FruitForest", "classicForest"]
+var biomes = ["classicForest", "FruitForest"]
 var biomeGenerator = () => {
-	if(t.x == 0 && t.x == 5&& t.y == 0 ){
-		return "classicForest"
-	}
+	
 	var random = Math.floor(Math.random() * biomes.length)
 	return biomes[random]
 }
