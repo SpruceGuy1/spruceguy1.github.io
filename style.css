@@ -38,3 +38,21 @@ body{
     background:white;
     color:black;
 }
+.style2{
+    border:2px solid black;
+    border-radius:15px;
+    font-family: "Roboto Mono", sans-serif, monospace;
+}
+@keyframes bounce{
+    0%{
+        transform: translate(0px, 20px);
+    }
+    100%{
+        transform: translate(0px, -20px);
+    }
+}
+#package{
+    background-color:#004000;
+    color:#8080ff;
+    animation: bounce 2s infinite;
+}
