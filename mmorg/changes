@@ -1,0 +1,2 @@
+$("#denial").text(denial)
+<br> <span class="hint">Get +1 denial.</span>
