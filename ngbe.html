@@ -5,9 +5,249 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   </head>
   <body style="font-family:monospace;">
-    
+  <b>NOTE: This code is the original version and hasn't yet benn updated. It isprobably buggy.</b>
   </body>
   <script>
-    
+    console.log = function(msg){
+      $("body").append("<p>"+msg+"</p>")
+    }
+    var t = {
+	x:0,
+	y:5,
+	z:0
+
+}
+var time = 0
+var player = {
+	name:prompt("enter your player's name"),
+	coords:t,
+	stats:{
+		speed:5,
+
+	},
+	inventory:[],
+	newDesignInventory:{
+		trees:0,
+		wood:0,
+		apples:0,
+		fruit_trees:0,
+
+	}
+}
+
+var biomes = ["classicForest", "FruitForest", "classicForest"]
+var biomeGenerator = () => {
+	if(t.x == 0 && t.x == 5&& t.y == 0 ){
+		return "classicForest"
+	}
+	var random = Math.floor(Math.random() * biomes.length)
+	return biomes[random]
+}
+var T
+class Block{
+	constructor(x,y,z,material,data,stateOfMatter){
+
+		this.material=material
+		this.data = data;
+		this.stateOfMatter = stateOfMatter;
+
+	}
+	remove(){
+		this.material=new Block("air",{});
+
+		if(this.material="tree"){
+			player.inventory.push("log","log","log","log","log","log","tree")
+			player.newDesignInventory.wood+=6
+			player.newDesignInventory.trees++
+
+		}
+		if(this.material="fruit tree"){
+			player.inventory.push("apple","apple","apple","apple","apple","log","log","log","log","log","log","log","log","log","tree")
+			player.newDesignInventory.apples+=5
+			player.newDesignInventory.wood+=9
+			player.newDesignInventory.fruit_trees++
+		}
+	}
+	place(material,data){
+		if(this.material=="air"){
+			this.material=material;
+			this.data = data;
+			if(material == "tree"){
+				player.newDesignInventory.trees--
+			}
+			if(material == "fruit tree"){
+				player.newDesignInventory.fruit_trees--
+			}
+			if(material == "wood"){
+				player.newDesignInventory.wood--
+			}
+
+		}else{
+			console.log("error placing block")
+		}
+	}
+}
+class MobData{
+  test1ficates = 0
+	
+}
+class Coordinates{
+	constructor(x,y,z){
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.biome = biomeGenerator()
+		this.mobData = new MobData()
+		var $$ = ""
+		if (this.y>5) {
+			var randomTreeGenerator = Math.floor(Math.random() * 15) + 1;
+			if (randomTreeGenerator == 1){
+				if(this.biome=="FruitForest"){
+					$$ = "fruit tree"
+				}else if(this.biome=="classicForest"){
+					$$ = "tree"
+				}
+
+			}else{
+				$$ = "air"
+			}
+
+		}
+		if(this.y==5){
+			$$ = "dirt"
+		}
+		if(this.y<=4&&y>=1){
+			$$ = "stone"
+		}
+		this.block = new Block(x,y,z,$$,{});
+
+
+	}
+}
+t = new Coordinates(0,5,0)
+class Mob{
+	constructor(name,coords,stats,inventory){
+		this.name = name;
+		this.coords = coords;
+		this.stats = stats;
+		this.inventory = inventory;
+		
+	}
+}
+class Testificate1 extends Mob{
+	constructor(name,coords,stats,inventory){
+		super(name,coords,stats,inventory);
+		this.name = "testificate1"
+		
+	}
+}
+
+function command(){
+	var e = prompt(">>>")
+	switch(e){
+		case "w":
+			t.z++
+			break
+		case "s":
+			t.z--
+			break
+		case "a":
+			t.x--
+			break
+		case "d":
+			t.x++
+			break
+		case "r":
+			t.y++
+			break
+		case "f":
+			t.y--
+			break
+		case "p":
+			console.log(t.x)
+			console.log(t.y)
+			console.log(t.z)
+			break
+		case "i":
+			console.log("speed: "+player.stats.speed)
+			break
+		case "b":
+			console.log("block: "+t.block.material)
+			break;
+		case "c":
+			t.block.place(prompt("enter material"),{generated:false})
+			break;
+		case "x":
+			t.block.remove()
+			break;
+		case "e":
+
+				if(player.newDesignInventory.apples){
+					console.log("You have "+player.newDesignInventory.apples+" apples.")
+				}
+			if(player.newDesignInventory.fruit_trees){
+				console.log("You have "+player.newDesignInventory.fruit_trees+" fruit trees.")
+			}
+			if(player.newDesignInventory.trees){
+				console.log("You have "+player.newDesignInventory.trees+" trees.")
+			}
+			if(player.newDesignInventory.wood){
+				console.log("You have "+player.newDesignInventory.wood+" wood.")
+			}
+			break;
+		case "m":
+			console.log(Error("^_^"))
+			break;
+		case "B":
+			console.log("biome: "+t.biome)
+				break;
+		case "q":
+			console.log("w: forward")
+			console.log("s: backward")
+			console.log("a: left")
+			console.log("d: right")
+			console.log("r: up")
+			console.log("f: down")
+			console.log("p: coords")
+			console.log("i: stats")
+			console.log("b: block")
+			console.log("c: place")
+			console.log("x: destroy")
+			console.log("e: inventory list")
+			console.log("m: massive block array")
+			console.log("B: biome")
+			break;
+
+
+	}
+}
+console.log("press q to see commands")
+console.log("press q or another command.")
+console.log("if you see '>>>', that means you can type a command like q.")
+// modules
+
+setInterval(()=>{
+	command()
+	var randomTreeGenerator = Math.floor(Math.random() * 15) + 1;
+	if(t.y>5){
+		if(randomTreeGenerator == 1){
+			t.block.material="tree"
+		}else{
+			t.block.material="air"
+		}
+	}
+	
+	time += 1
+	if(time==1000){
+		time = 0
+
+	}
+	if(time>500){
+		console.log("night")
+	}
+	
+	
+},100*player.stats.speed)
+
   </script>
 </html>
