@@ -5,11 +5,15 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   </head>
   <body style="font-family:monospace;">
-  <b>NOTE: This code is the original version and hasn't yet benn updated. It isprobably buggy.</b>
+  <b>NOTE: This version of the code is in development. Bugs may occur.</b>
   </body>
   <script>
+	  var prompting = true
+	  $("#resume").click(function(){
+		  prompting=true
+	  })
     console.log = function(msg){
-      $("body").append("<p>"+msg+"</p>")
+      $("#messages").append("<br>"+msg)
     }
     var position = {
 	x:0,
@@ -199,6 +203,8 @@ function command(){
 		case "B":
 			console.log("biome: "+t.biome)
 				break;
+		case "pause":
+			promping=false
 		case "q":
 			console.log("w: forward")
 			console.log("s: backward")
@@ -214,6 +220,8 @@ function command(){
 			console.log("e: inventory list")
 			console.log("m: massive block array")
 			console.log("B: biome")
+			console.log("pause: exit command interface")
+			
 			break;
 
 
@@ -225,7 +233,10 @@ console.log("if you see '>>>', that means you can type a command like q.")
 // modules
 
 setInterval(()=>{
-	command()
+	if(prompting){
+		command()
+	}
+	
 	var randomTreeGenerator = Math.floor(Math.random() * 15) + 1;
 	if(t.y>5){
 		if(randomTreeGenerator == 1){
