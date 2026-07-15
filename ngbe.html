@@ -56,15 +56,14 @@ class Block{
 
 		if(this.material="tree"){
 			player.inventory.push("log","log","log","log","log","log","tree")
-			player.newDesignInventory.wood+=6
-			player.newDesignInventory.trees++
+			player.inventory.wood+=6
+			player.inventory.trees++
 
 		}
 		if(this.material="fruit tree"){
-			player.inventory.push("apple","apple","apple","apple","apple","log","log","log","log","log","log","log","log","log","tree")
-			player.newDesignInventory.apples+=5
-			player.newDesignInventory.wood+=9
-			player.newDesignInventory.fruit_trees++
+			player.inventory.apples+=5
+			player.inventory.wood+=9
+			player.inventory.fruit_trees++
 		}
 	}
 	place(material,data){
@@ -72,13 +71,13 @@ class Block{
 			this.material=material;
 			this.data = data;
 			if(material == "tree"){
-				player.newDesignInventory.trees--
+				player.inventory.trees--
 			}
 			if(material == "fruit tree"){
-				player.newDesignInventory.fruit_trees--
+				player.inventory.fruit_trees--
 			}
 			if(material == "wood"){
-				player.newDesignInventory.wood--
+				player.inventory.wood--
 			}
 
 		}else{
@@ -97,7 +96,7 @@ class Coordinates{
 		this.z = z;
 		this.biome = biomeGenerator()
 		this.mobData = new MobData()
-		var $$ = ""
+		var block = ""
 		if (this.y>5) {
 			var randomTreeGenerator = Math.floor(Math.random() * 15) + 1;
 			if (randomTreeGenerator == 1){
@@ -181,17 +180,17 @@ function command(){
 			break;
 		case "e":
 
-				if(player.newDesignInventory.apples){
-					console.log("You have "+player.newDesignInventory.apples+" apples.")
+				if(player.inventory.apples){
+					console.log("You have "+player.inventory.apples+" apples.")
 				}
-			if(player.newDesignInventory.fruit_trees){
-				console.log("You have "+player.newDesignInventory.fruit_trees+" fruit trees.")
+			if(player.inventory.fruit_trees){
+				console.log("You have "+player.inventory.fruit_trees+" fruit trees.")
 			}
-			if(player.newDesignInventory.trees){
-				console.log("You have "+player.newDesignInventory.trees+" trees.")
+			if(player.inventory.trees){
+				console.log("You have "+player.inventory.trees+" trees.")
 			}
-			if(player.newDesignInventory.wood){
-				console.log("You have "+player.newDesignInventory.wood+" wood.")
+			if(player.inventory.wood){
+				console.log("You have "+player.inventory.wood+" wood.")
 			}
 			break;
 		case "m":
