@@ -43,53 +43,44 @@ var player = {
 
 	}
 }
-
-var biomes = ["classicForest", "FruitForest"]
-var biomeGenerator = () => {
+var bba = []
+var mba = []
+var biomes = ["forest", "fruitForest"]
+var biomeGenerator = (x,y,z) => {
 	
 	var random = Math.floor(Math.random() * biomes.length)
-	return biomes[random]
+	 bba[x][y][z].biome=biomes[random]
 }
-var T
-class Block{
-	constructor(x,y,z,material,data,stateOfMatter){
 
-		this.material=material
-		this.data = data;
-		this.stateOfMatter = stateOfMatter;
-
-	}
-	remove(){
-		this.material=new Block("air",{});
-
-		if(this.material="tree"){
-			player.inventory.push("log","log","log","log","log","log","tree")
-			player.inventory.wood+=6
-			player.inventory.trees++
-
-		}
-		if(this.material="fruit tree"){
-			player.inventory.apples+=5
-			player.inventory.wood+=9
-			player.inventory.fruit_trees++
-		}
-	}
-	place(material,data){
-		if(this.material=="air"){
-			this.material=material;
-			this.data = data;
-			if(material == "tree"){
-				player.inventory.trees--
+class BasicBlockGenerator{
+	constructor(x,y,z){
+		this.x = x
+		this.y = y
+		this.z = z
+		this.biome = bba[x][y][z]
+		if(y==6){
+			switch(this.biome){
+				case "forest":
+					var random = Math.floor(Math.random() * 2)
+					if(random==0){
+						this.block="tree"
+					}else{
+						this.block="air""
+					}
+				case "fruitForest":
+					var random = Math.floor(Math.random() * 2)
+					if(random==0){
+						this.block="fruit-tree"
+					}else{
+						this.block="air""
+					}
 			}
-			if(material == "fruit tree"){
-				player.inventory.fruit_trees--
-			}
-			if(material == "wood"){
-				player.inventory.wood--
-			}
-
+		}else if(y>6){
+			this.block="air"
+		}else if(y<6&&y>3){
+			this.block="dirt"
 		}else{
-			console.log("error placing block")
+			this.block="stoe"
 		}
 	}
 }
@@ -97,7 +88,7 @@ class MobData{
   test1ficates = 0
 	
 }
-class Coordinates{
+/*class Coordinates{
 	constructor(x,y,z){
 		this.x = x;
 		this.y = y;
@@ -130,7 +121,7 @@ class Coordinates{
 
 	}
 }
-t = new Coordinates(0,5,0)
+t = new Coordinates(0,5,0)*/
 class Mob{
 	constructor(name,coords,stats,inventory){
 		this.name = name;
