@@ -47,7 +47,9 @@ var bba = []
 var mba = []
 var biomes = ["forest", "fruitForest"]
 var biomeGenerator = (x,y,z) => {
-	
+	bba[x] ??= []
+  bba[x][y] ??= []
+  bba[x][y][z] ??= {}
 	var random = Math.floor(Math.random() * biomes.length)
 	 bba[x][y][z].biome=biomes[random]
 }
@@ -57,6 +59,7 @@ class BasicBlockGenerator{
 		this.x = x
 		this.y = y
 		this.z = z
+		biomeGenerator(x,y,z)
 		this.biome = bba[x][y][z]
 		if(y==6){
 			switch(this.biome){
