@@ -172,10 +172,10 @@ function command(){
 			console.log("block: "+t.block.material)
 			break;
 		case "c":
-			t.block.place(prompt("enter material"),{generated:false})
+			console.log("in dev")
 			break;
 		case "x":
-			t.block.remove()
+			console.log("in dev")
 			break;
 		case "e":
 
@@ -192,9 +192,7 @@ function command(){
 				console.log("You have "+player.inventory.wood+" wood.")
 			}
 			break;
-		case "m":
-			console.log(Error("^_^"))
-			break;
+		
 		case "B":
 			console.log("biome: "+t.biome)
 				break;
@@ -214,7 +212,7 @@ function command(){
 			console.log("c: place")
 			console.log("x: destroy")
 			console.log("e: inventory list")
-			console.log("m: massive block array")
+			
 			console.log("B: biome")
 			console.log("pause: exit command interface")
 			
