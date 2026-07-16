@@ -60,7 +60,7 @@ class BasicBlockGenerator{
 		this.y = y
 		this.z = z
 		biomeGenerator(x,y,z)
-		this.biome = bba[x][y][z]
+		this.biome = bba[x][y][z].biome
 		if(y==6){
 			switch(this.biome){
 				case "forest":
@@ -70,6 +70,7 @@ class BasicBlockGenerator{
 					}else{
 						this.block="air""
 					}
+					break
 				case "fruitForest":
 					var random = Math.floor(Math.random() * 2)
 					if(random==0){
@@ -77,6 +78,7 @@ class BasicBlockGenerator{
 					}else{
 						this.block="air""
 					}
+					break
 			}
 		}else if(y>6){
 			this.block="air"
