@@ -151,33 +151,33 @@ function command(){
 	var e = prompt(">>>")
 	switch(e){
 		case "w":
-			t.z++
+			position.z++
 			break
 		case "s":
-			t.z--
+			position.z--
 			break
 		case "a":
-			t.x--
+			position.x--
 			break
 		case "d":
-			t.x++
+			position.x++
 			break
 		case "r":
-			t.y++
+			position.y++
 			break
 		case "f":
-			t.y--
+			position.y--
 			break
 		case "p":
-			console.log(t.x)
-			console.log(t.y)
-			console.log(t.z)
+			console.log(position.x)
+			console.log(position.y)
+			console.log(position.z)
 			break
 		case "i":
 			console.log("speed: "+player.stats.speed)
 			break
 		case "b":
-			console.log("block: "+new BasicBlockGenerator(t.x,t.y,t.z).block)
+			console.log("block: "+new BasicBlockGenerator(position.x,position.y,position.z).block)
 			break;
 		case "c":
 			console.log("in dev")
@@ -202,7 +202,7 @@ function command(){
 			break;
 		
 		case "B":
-			console.log("biome: "+new BasicBlockGenerator(t.x,t.y,t.z).biome)
+			console.log("biome: "+new BasicBlockGenerator(position.x,position.y,position.z).biome)
 				break;
 		case "pause":
 			prompting=false;
@@ -239,14 +239,7 @@ setInterval(()=>{
 		command()
 	}
 	
-	var randomTreeGenerator = Math.floor(Math.random() * 15) + 1;
-	if(t.y>5){
-		if(randomTreeGenerator == 1){
-			t.block.material="tree"
-		}else{
-			t.block.material="air"
-		}
-	}
+	\
 	
 	time += 1
 	if(time==1000){
