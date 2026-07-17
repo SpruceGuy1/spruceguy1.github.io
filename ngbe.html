@@ -174,7 +174,7 @@ function command(){
 			console.log("speed: "+player.stats.speed)
 			break
 		case "b":
-			console.log("block: "+t.block.material)
+			console.log("block: "+new BasicBlockGenerator(t.x,t.y,t.z).block)
 			break;
 		case "c":
 			console.log("in dev")
@@ -199,7 +199,7 @@ function command(){
 			break;
 		
 		case "B":
-			console.log("biome: "+t.biome)
+			console.log("biome: "+new BasicBlockGenerator(t.x,t.y,t.z).biome)
 				break;
 		case "pause":
 			prompting=false;
