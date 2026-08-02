@@ -187,7 +187,22 @@ function deserializeBba(serialized) {
 
                 if (docSnap.exists()) {
                     const data = docSnap.data()
-					player = data.player,
+					player = data.player?data.player:{
+	name:player.name,
+	coords:position,
+	stats:{
+		speed:Math.floor(Math.random()*3)+4,
+
+	},
+	
+	inventory:{
+		trees:0,
+		wood:0,
+		apples:0,
+		fruit_trees:0,
+
+	}
+},
 					bba = deserializeBba(data.bba),
 					mba = data.mba
                     document.getElementById('status').innerText = `Loaded save from ${data.lastSaved}`;
