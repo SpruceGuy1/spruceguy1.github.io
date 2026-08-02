@@ -16,12 +16,16 @@
 <script src="https://apis.google.com/js/api.js" onload="gapiLoaded()" async defer></script>
 	  <h1>Cloud Save Demo</h1>
     <form id="login">
-		Email <input id="log-email"/>
-		Password <input type="pass" id="log-pword"/>
+		Login
+		Email <input id="log-email" type="email"/>
+		Password <input type="password" id="log-pword"/>
+		<input type="submit"/>  
 	</form>
 	   <form id="register">
-		Email <input id="reg-email"/>
-		Password <input type="pass" id="reg-pword"/>
+		   Register
+		Email <input id="reg-email" type="email"/>
+		Password <input type="password" id="reg-pword"/>
+		   <input type="submit"/>
 	</form>
     <button id="save-btn" onclick="saveGameData()" disabled>Save Game</button>
     <button id="load-btn" onclick="loadGameData()" disabled>Load Game</button>
