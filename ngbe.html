@@ -15,7 +15,14 @@
 	 <script src="https://accounts.google.com/gsi/client" onload="gisLoaded()" async defer></script>
 <script src="https://apis.google.com/js/api.js" onload="gapiLoaded()" async defer></script>
 	  <h1>Cloud Save Demo</h1>
-    <button id="auth-btn" onclick="loginPlayer()">Start Game / Connect</button>
+    <form id="login">
+		Email <input id="log-email"/>
+		Password <input type="pass" id="log-pword"/>
+	</form>
+	   <form id="register">
+		Email <input id="reg-email"/>
+		Password <input type="pass" id="reg-pword"/>
+	</form>
     <button id="save-btn" onclick="saveGameData()" disabled>Save Game</button>
     <button id="load-btn" onclick="loadGameData()" disabled>Load Game</button>
     <div id="status">Loading modules...</div>
@@ -29,7 +36,9 @@
   import {
   getAuth,
   onAuthStateChanged,
-  signInAnonymously
+  signInAnonymously,
+	  createUserWithEmailAndPassword,
+	  signInWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-auth.js";
 
 import {
@@ -76,15 +85,41 @@ import {
                 document.getElementById('status').innerText = "Not connected. Click Play to start.";
             }
         });
+        async function registerWithEmail(email, password) {
+    try {
+        const credential = await createUserWithEmailAndPassword(
+            auth,
+            email,
+            password
+        );
 
+        document.getElementById("status").innerText =
+            `Registered as ${credential.user.email}.`;
+    } catch (error) {
+        console.error("Registration failed:", error);
+        document.getElementById("status").innerText =
+            `Registration error: ${error.code}`;
+    }
+}
+
+async function loginWithEmail(email, password) {
+    try {
+        const credential = await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+        );
+
+        document.getElementById("status").innerText =
+            `Signed in as ${credential.user.email}.`;
+    } catch (error) {
+        console.error("Login failed:", error);
+        document.getElementById("status").innerText =
+            `Login error: ${error.code}`;
+    }
+}
         // 3. Trigger Silent/Anonymous Login
-        window.loginPlayer = function() {
-            document.getElementById('status').innerText = "Connecting to server...";
-            signInAnonymously(auth).catch((error) => {
-                console.error("Login failed:", error);
-                document.getElementById('status').innerText = "Login error.";
-            });
-        };
+
 function serializeBba() {
   const serialized = {};
 
@@ -169,6 +204,18 @@ function deserializeBba(serialized) {
     console.log = function(msg){
       $("#messages").append("<br>"+msg)
     }
+		 $("#register").submit(function(){
+			 var mail = $("#reg-email").val()
+			 var pass = $("#reg-pword").val()
+			 registerWithEmail(mail,pass)
+			 
+		 })
+		 $("#login").submit(function(){
+			 var mail = $("#log-email").val()
+			 var pass = $("#log-pword").val()
+			 loginWithEmail(mail,pass)
+			 
+		 })
     var position = {
 	x:0,
 	y:5,
