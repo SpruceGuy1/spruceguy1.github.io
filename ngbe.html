@@ -19,73 +19,60 @@
     <button id="save-btn" onclick="saveGameData()" disabled>Save Game</button>
     <button id="load-btn" onclick="loadGameData()" disabled>Load Game</button>
     <div id="status">Not connected.</div>
+	
   </body>
-  <script>
-	  const CLIENT_ID = '749880999520-k7l7cujukqftu4ia9lb14kggd5rq9vd6.apps.googleusercontent.com';
-        // SCOPE allows reading/writing ONLY to a hidden app folder on the user's drive
-    const SCOPES = 'https://www.googleapis.com/auth/drive.appdata';
-    
-    let tokenClient = null;
-    let accessToken = null;
-    let gapiInitialized = false;
+  
+	 <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
 
-    // Fired automatically ONLY when api.js finishes loading
-    function gapiLoaded() {
-        gapi.load('client', async () => {
-            try {
-                await gapi.client.init({});
-                gapiInitialized = true;
-                checkReadyStatus();
-            } catch (err) {
-                console.error("Error initializing gapi client:", err);
-                document.getElementById('status').innerText = "Failed to load Google client.";
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyAeINE31darFq72BB4N1WtWDARk9YPxJzY",
+    authDomain: "sapient-origin-462411-t7.firebaseapp.com",
+    projectId: "sapient-origin-462411-t7",
+    storageBucket: "sapient-origin-462411-t7.firebasestorage.app",
+    messagingSenderId: "749880999520",
+    appId: "1:749880999520:web:9246df43f9ecb2279fcd05",
+    measurementId: "G-2HT9YKBXV4"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+
+
+        // 1. PASTE YOUR FIREBASE CONFIG HERE
+        
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = null;
+
+        // 2. Handle Player Login Status
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                document.getElementById('status').innerText = "Logged in anonymously! (Age bypass active)";
+                document.getElementById('save-btn').disabled = false;
+                document.getElementById('load-btn').disabled = false;
+            } else {
+                document.getElementById('status').innerText = "Not connected. Click Play to start.";
             }
         });
-    }
 
-    // Fired automatically ONLY when gsi/client finishes loading
-    function gisLoaded() {
-        try {
-            tokenClient = google.accounts.oauth2.initTokenClient({
-                client_id: CLIENT_ID,
-                scope: SCOPES,
-                callback: (tokenResponse) => {
-                    if (tokenResponse.error !== undefined) {
-                        throw (tokenResponse);
-                    }
-                    accessToken = tokenResponse.access_token;
-                    document.getElementById('save-btn').disabled = false;
-                    document.getElementById('load-btn').disabled = false;
-                    document.getElementById('auth-btn').innerText = "Connected";
-                    document.getElementById('status').innerText = "Successfully authenticated!";
-                },
+        // 3. Trigger Silent/Anonymous Login
+        window.loginPlayer = function() {
+            document.getElementById('status').innerText = "Connecting to server...";
+            signInAnonymously(auth).catch((error) => {
+                console.error("Login failed:", error);
+                document.getElementById('status').innerText = "Login error.";
             });
-            checkReadyStatus();
-        } catch (err) {
-            console.error("Error initializing token client:", err);
-        }
-    }
-
-    // Inform user when both background dependencies are active
-    function checkReadyStatus() {
-        if (gapiInitialized && tokenClient) {
-            document.getElementById('status').innerText = "Google API Ready. Click Connect!";
-        }
-    }
-
-    // Safe trigger wrapper
-    function handleAuthClick() {
-        if (!tokenClient) {
-            document.getElementById('status').innerText = "Google scripts are still loading. Please wait...";
-            return;
-        }
-        
-        if (accessToken === null) {
-            tokenClient.requestAccessToken({prompt: 'consent'});
-        } else {
-            tokenClient.requestAccessToken({prompt: ''});
-        }
-    }
+        };
 
     // --- GAME SAVING FUNCTIONS ---
     function getGameData() {
@@ -97,99 +84,45 @@
         };
     }
 
-    async function saveGameData() {
-        if (!accessToken) return;
-        document.getElementById('status').innerText = "Saving...";
-        const gameData = getGameData();
-        
-        try {
-            const searchResponse = await fetch(`https://googleapis.com'`, {
-                headers: { 'Authorization': `Bearer ${accessToken}` }
-            });
-            const searchResult = await searchResponse.json();
-            const isUpdate = Boolean(searchResult.files && searchResult.files.length > 0);
-            const metadata = isUpdate
-                ? { name: 'savegame.json' }
-                : { name: 'savegame.json', parents: ['appDataFolder'] };
-
-            const fileContent = JSON.stringify(gameData);
-            const boundary = '34asdf92';
-            const delimiter = `\r\n--${boundary}\r\n`;
-            const close_delim = `\r\n--${boundary}--`;
-
-            let url = 'https://googleapis.com';
-            let method = 'POST';
-
-            // If file exists, update it instead of creating a new one
-            if (searchResult.files && searchResult.files.length > 0) {
-                const fileId = searchResult.files[0].id;
-                url = `https://googleapis.com{fileId}?uploadType=multipart`;
-                method = 'PATCH';
+    window.saveGameData = async function() {
+            if (!currentUser) return;
+            document.getElementById('status').innerText = "Saving data securely...";
+            
+            try {
+                // Saves to a collection named 'player_saves' using their unique user ID
+                const userSaveRef = doc(db, "player_saves", currentUser.uid);
+                await setDoc(userSaveRef, getGameData());
+                document.getElementById('status').innerText = "Game progress cloud-saved!";
+            } catch (error) {
+                console.error("Save error:", error);
+                document.getElementById('status').innerText = "Failed to write to database.";
             }
+        };
 
-            const multipartRequestBody =
-                delimiter +
-                'Content-Type: application/json\r\n\r\n' +
-                JSON.stringify(metadata) +
-                delimiter +
-                'Content-Type: application/json\r\n\r\n' +
-                fileContent +
-                close_delim;
+        // 5. Load Progress from Firestore
+        window.loadGameData = async function() {
+            if (!currentUser) return;
+            document.getElementById('status').innerText = "Fetching save file...";
+            
+            try {
+                const userSaveRef = doc(db, "player_saves", currentUser.uid);
+                const docSnap = await getDoc(userSaveRef);
 
-            const response = await fetch(url, {
-                method: method,
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`,
-                    'Content-Type': `multipart/related; boundary=${boundary}`
-                },
-                body: multipartRequestBody
-            });
-
-            if (response.ok) {
-                document.getElementById('status').innerText = "Game saved successfully!";
-            } else {
-                document.getElementById('status').innerText = "Error saving game.";
-            }
-        } catch (e) {
-            console.error(e);
-            document.getElementById('status').innerText = "Network error while saving.";
-        }
-    }
-
-    async function loadGameData() {
-        if (!accessToken) return;
-        document.getElementById('status').innerText = "Loading...";
-        
-        try {
-            const searchResponse = await fetch(`https://googleapis.com'`, {
-                headers: { 'Authorization': `Bearer ${accessToken}` }
-            });
-            const searchResult = await searchResponse.json();
-
-            if (searchResult.files && searchResult.files.length > 0) {
-                const fileId = searchResult.files[0].id; // Fixed index bug from previous block
-                
-                const fileResponse = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`, {
-                    headers: { 'Authorization': `Bearer ${accessToken}` }
-                });
-                if (!fileResponse.ok) {
-                    document.getElementById('status').innerText = "Error loading save file.";
-                    return;
+                if (docSnap.exists()) {
+                    const data = docSnap.data()
+					player = data.player,
+					bba = data.bba,
+					mba = data.mba
+                    document.getElementById('status').innerText = `Loaded save from ${data.lastSaved}`;
+                    console.log("Firebase Game State Data:", data);
+                } else {
+                    document.getElementById('status').innerText = "No cloud save found for this device.";
                 }
-                const data = await fileResponse.json();
-                player = data.player
-				bba = data.bba
-				mba = data.mba
-                document.getElementById('status').innerText = `Loaded! Score: ${data.score}, Level: ${data.level}`;
-                console.log("Loaded Game State:", data);
-            } else {
-                document.getElementById('status').innerText = "No save file found.";
+            } catch (error) {
+                console.error("Load error:", error);
+                document.getElementById('status').innerText = "Failed to retrieve database file.";
             }
-        } catch (e) {
-            console.error(e);
-            document.getElementById('status').innerText = "Network error while loading.";
-        }
-    }
+        };
 	  var prompting = true
 	  $("#resume").click(function(){
 		  command()
