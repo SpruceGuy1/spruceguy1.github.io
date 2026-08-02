@@ -91,9 +91,9 @@
     // --- GAME SAVING FUNCTIONS ---
     function getGameData() {
         return {
-            level: 5,
-            score: 15200,
-            inventory: ['sword', 'shield', 'potion'],
+            player: player,
+            bba: bba,
+			mba: mba,
             lastSaved: new Date().toISOString()
         };
     }
@@ -178,7 +178,9 @@
                     return;
                 }
                 const data = await fileResponse.json();
-                
+                player = data.player
+				bba = data.bba
+				mba = data.mba
                 document.getElementById('status').innerText = `Loaded! Score: ${data.score}, Level: ${data.level}`;
                 console.log("Loaded Game State:", data);
             } else {
