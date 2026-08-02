@@ -367,33 +367,33 @@ function command(){
 	var e = prompt(">>>")
 	switch(e){
 		case "w":
-			position.z++
+			player.coords.z++
 			break
 		case "s":
-			position.z--
+			player.coords.z--
 			break
 		case "a":
-			position.x--
+			player.coords.x--
 			break
 		case "d":
-			position.x++
+			player.coords.x++
 			break
 		case "r":
-			position.y++
+			player.coords.y++
 			break
 		case "f":
-			position.y--
+			player.coords.y--
 			break
 		case "p":
-			console.log(position.x)
-			console.log(position.y)
-			console.log(position.z)
+			console.log(player.coords.x)
+			console.log(player.coords.y)
+			console.log(player.coords.z)
 			break
 		case "i":
 			console.log("speed: "+player.stats.speed)
 			break
 		case "b":
-			console.log("block: "+new BasicBlockGenerator(position.x,position.y,position.z).block)
+			console.log("block: "+new BasicBlockGenerator(player.coords.x,player.coords.y,player.coords.z).block)
 			break;
 		case "c":
 			console.log("in dev")
@@ -418,7 +418,7 @@ function command(){
 			break;
 		
 		case "B":
-			console.log("biome: "+new BasicBlockGenerator(position.x,position.y,position.z).biome)
+			console.log("biome: "+new BasicBlockGenerator(player.coords.x,player.coords.y,player.coords.z).biome)
 				break;
 		case "pause":
 			prompting=false;
