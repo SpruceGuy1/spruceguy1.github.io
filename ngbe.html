@@ -82,7 +82,7 @@ import {
             if (user) {
                 currentUser = user;
                 document.getElementById('status').innerText = "Logged in anonymously! (Age bypass active)";
-				console.log(currentUser)
+				console.info(currentUser)
                 document.getElementById('save-btn').disabled = false;
                 document.getElementById('load-btn').disabled = false;
             } else {
