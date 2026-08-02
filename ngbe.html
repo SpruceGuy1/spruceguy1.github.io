@@ -208,7 +208,7 @@ function deserializeBba(serialized) {
     console.log = function(msg){
       $("#messages").append("<br>"+msg)
     }
-		 $("`#register`").submit(function (event) {
+		 $("#register").submit(function (event) {
     event.preventDefault();
 
     const mail = $("`#reg-email`").val();
