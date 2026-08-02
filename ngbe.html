@@ -170,9 +170,13 @@
             if (searchResult.files && searchResult.files.length > 0) {
                 const fileId = searchResult.files[0].id; // Fixed index bug from previous block
                 
-                const fileResponse = await fetch(`https://googleapis.com{fileId}?alt=media`, {
+                const fileResponse = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`, {
                     headers: { 'Authorization': `Bearer ${accessToken}` }
                 });
+                if (!fileResponse.ok) {
+                    document.getElementById('status').innerText = "Error loading save file.";
+                    return;
+                }
                 const data = await fileResponse.json();
                 
                 document.getElementById('status').innerText = `Loaded! Score: ${data.score}, Level: ${data.level}`;
