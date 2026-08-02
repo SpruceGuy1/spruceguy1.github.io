@@ -12,8 +12,151 @@
 	  <div id="messages">
 		  
 	  </div>
+	  <script src="https://google.com" async defer></script>
+    <script src="https://google.com" async defer></script>
+	  <h1>Cloud Save Demo</h1>
+    <button id="auth-btn" onclick="handleAuthClick()">Connect Google Account</button>
+    <button id="save-btn" onclick="saveGameData()" disabled>Save Game</button>
+    <button id="load-btn" onclick="loadGameData()" disabled>Load Game</button>
+    <div id="status">Not connected.</div>
   </body>
   <script>
+	  const CLIENT_ID = '749880999520-k7l7cujukqftu4ia9lb14kggd5rq9vd6.apps.googleusercontent.com';
+        // SCOPE allows reading/writing ONLY to a hidden app folder on the user's drive
+        const SCOPES = 'https://googleapis.com'; 
+        
+        let tokenClient;
+        let accessToken = null;
+
+        // Initialize Google Auth Client
+        function gapiLoaded() {
+            gapi.load('client', async () => {
+                await gapi.client.init({});
+                document.getElementById('status').innerText = "Google API Ready. Please connect.";
+            });
+        }
+
+        function gisLoaded() {
+            tokenClient = google.accounts.oauth2.initTokenClient({
+                client_id: CLIENT_ID,
+                scope: SCOPES,
+                callback: (tokenResponse) => {
+                    if (tokenResponse.error !== undefined) {
+                        throw (tokenResponse);
+                    }
+                    accessToken = tokenResponse.access_token;
+                    document.getElementById('save-btn').disabled = false;
+                    document.getElementById('load-btn').disabled = false;
+                    document.getElementById('auth-btn').innerText = "Connected";
+                    document.getElementById('status').innerText = "Successfully authenticated!";
+                },
+            });
+        }
+
+        // Trigger the OAuth login popup
+        function handleAuthClick() {
+            if (accessToken === null) {
+                tokenClient.requestAccessToken({prompt: 'consent'});
+            } else {
+                tokenClient.requestAccessToken({prompt: ''});
+            }
+        }
+
+        // Example game state to save
+        function getGameData() {
+            return {
+                level: 5,
+                score: 15200,
+                inventory: ['sword', 'shield', 'potion'],
+                lastSaved: new Date().toISOString()
+            };
+        }
+
+        // Save data to Google Drive (App Data folder)
+        async function saveGameData() {
+            document.getElementById('status').innerText = "Saving...";
+            const gameData = getGameData();
+            
+            // Step 1: Check if save file already exists
+            const searchResponse = await fetch(`https://googleapis.com'`, {
+                headers: { 'Authorization': `Bearer ${accessToken}` }
+            });
+            const searchResult = await searchResponse.json();
+            
+            const metadata = {
+                name: 'savegame.json',
+                parents: ['appDataFolder']
+            };
+
+            const fileContent = JSON.stringify(gameData);
+            const boundary = '34asdf92';
+            const delimiter = `\r\n--${boundary}\r\n`;
+            const close_delim = `\r\n--${boundary}--`;
+
+            let url = 'https://googleapis.com';
+            let method = 'POST';
+
+            // If file exists, update it instead of creating a new one
+            if (searchResult.files && searchResult.files.length > 0) {
+                const fileId = searchResult.files[0].id;
+                url = `https://googleapis.com{fileId}?uploadType=multipart`;
+                method = 'PATCH';
+            }
+
+            const multipartRequestBody =
+                delimiter +
+                'Content-Type: application/json\r\n\r\n' +
+                JSON.stringify(metadata) +
+                delimiter +
+                'Content-Type: application/json\r\n\r\n' +
+                fileContent +
+                close_delim;
+
+            const response = await fetch(url, {
+                method: method,
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': `multipart/related; boundary=${boundary}`
+                },
+                body: multipartRequestBody
+            });
+
+            if (response.ok) {
+                document.getElementById('status').innerText = "Game saved successfully!";
+            } else {
+                document.getElementById('status').innerText = "Error saving game.";
+            }
+        }
+
+        // Load data from Google Drive
+        async function loadGameData() {
+            document.getElementById('status').innerText = "Loading...";
+            
+            const searchResponse = await fetch(`https://googleapis.com'`, {
+                headers: { 'Authorization': `Bearer ${accessToken}` }
+            });
+            const searchResult = await searchResponse.json();
+
+            if (searchResult.files && searchResult.files.length > 0) {
+                const fileId = searchResult.files[0].id;
+                
+                const fileResponse = await fetch(`https://googleapis.com{fileId}?alt=media`, {
+                    headers: { 'Authorization': `Bearer ${accessToken}` }
+                });
+                const data = await fileResponse.json();
+                
+                document.getElementById('status').innerText = `Loaded! Score: ${data.score}, Level: ${data.level}`;
+                console.log("Loaded Game State:", data);
+            } else {
+                document.getElementById('status').innerText = "No save file found.";
+            }
+        }
+
+        // Script loading orchestration
+        window.onload = function() {
+            gapiLoaded();
+            gisLoaded();
+        }
 	  var prompting = true
 	  $("#resume").click(function(){
 		  command()
