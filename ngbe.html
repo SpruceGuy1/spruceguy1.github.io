@@ -12,8 +12,7 @@
 	  <div id="messages">
 		  
 	  </div>
-	 <script src="https://accounts.google.com/gsi/client" onload="gisLoaded()" async defer></script>
-<script src="https://apis.google.com/js/api.js" onload="gapiLoaded()" async defer></script>
+	 
 	  <h1>Cloud Save Demo</h1>
     <form id="login">
 		Login
@@ -208,18 +207,21 @@ function deserializeBba(serialized) {
     console.log = function(msg){
       $("#messages").append("<br>"+msg)
     }
-		 $("#register").submit(function(){
-			 var mail = $("#reg-email").val()
-			 var pass = $("#reg-pword").val()
-			 registerWithEmail(mail,pass)
-			 
-		 })
-		 $("#login").submit(function(){
-			 var mail = $("#log-email").val()
-			 var pass = $("#log-pword").val()
-			 loginWithEmail(mail,pass)
-			 
-		 })
+		 $("`#register`").submit(function (event) {
+    event.preventDefault();
+
+    const mail = $("`#reg-email`").val();
+    const pass = $("`#reg-pword`").val();
+    registerWithEmail(mail, pass);
+});
+
+$("`#login`").submit(function (event) {
+    event.preventDefault();
+
+    const mail = $("`#log-email`").val();
+    const pass = $("`#log-pword`").val();
+    loginWithEmail(mail, pass);
+});
     var position = {
 	x:0,
 	y:5,
