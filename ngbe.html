@@ -85,12 +85,38 @@ import {
                 document.getElementById('status').innerText = "Login error.";
             });
         };
+function serializeBba() {
+  const serialized = {};
 
+  for (const [x, xData] of Object.entries(bba)) {
+    for (const [y, yData] of Object.entries(xData)) {
+      for (const [z, blockData] of Object.entries(yData)) {
+        serialized[`${x},${y},${z}`] = blockData;
+      }
+    }
+  }
+
+  return serialized;
+}
+
+function deserializeBba(serialized) {
+  const restored = [];
+
+  for (const [key, blockData] of Object.entries(serialized || {})) {
+    const [x, y, z] = key.split(",").map(Number);
+
+    restored[x] ??= [];
+    restored[x][y] ??= [];
+    restored[x][y][z] = blockData;
+  }
+
+  return restored;
+}
     // --- GAME SAVING FUNCTIONS ---
     function getGameData() {
         return {
             player: player,
-            bba: bba,
+            bba: serializeBba(),
 			mba: mba,
             lastSaved: new Date().toISOString()
         };
@@ -123,7 +149,7 @@ import {
                 if (docSnap.exists()) {
                     const data = docSnap.data()
 					player = data.player,
-					bba = data.bba,
+					bba = deserializeBba(data.bba),
 					mba = data.mba
                     document.getElementById('status').innerText = `Loaded save from ${data.lastSaved}`;
                     console.log("Firebase Game State Data:", data);
