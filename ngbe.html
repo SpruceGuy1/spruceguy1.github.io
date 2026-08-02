@@ -226,16 +226,16 @@ function deserializeBba(serialized) {
 		 $("#register").submit(function (event) {
     event.preventDefault();
 
-    const mail = $("`#reg-email`").val();
-    const pass = $("`#reg-pword`").val();
+    const mail = $("#reg-email").val();
+    const pass = $("#reg-pword").val();
     registerWithEmail(mail, pass);
 });
 
-$("`#login`").submit(function (event) {
+$("#login").submit(function (event) {
     event.preventDefault();
 
-    const mail = $("`#log-email`").val();
-    const pass = $("`#log-pword`").val();
+    const mail = $("#log-email").val();
+    const pass = $("#log-pword").val();
     loginWithEmail(mail, pass);
 });
     var position = {
@@ -415,6 +415,17 @@ function command(){
 			if(player.inventory.wood){
 				console.log("You have "+player.inventory.wood+" wood.")
 			}
+			var empty = true
+			for (i of player.inventory){
+				if(i!==0){
+					empty=false
+				}
+			}
+			if(empty){
+				console.log("empty inventory")
+			}
+
+			
 			break;
 		
 		case "B":
