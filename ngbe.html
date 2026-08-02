@@ -108,11 +108,10 @@
                 headers: { 'Authorization': `Bearer ${accessToken}` }
             });
             const searchResult = await searchResponse.json();
-            
-            const metadata = {
-                name: 'savegame.json',
-                parents: ['appDataFolder']
-            };
+            const isUpdate = Boolean(searchResult.files && searchResult.files.length > 0);
+            const metadata = isUpdate
+                ? { name: 'savegame.json' }
+                : { name: 'savegame.json', parents: ['appDataFolder'] };
 
             const fileContent = JSON.stringify(gameData);
             const boundary = '34asdf92';
@@ -122,8 +121,9 @@
             let url = 'https://googleapis.com';
             let method = 'POST';
 
+            // If file exists, update it instead of creating a new one
             if (searchResult.files && searchResult.files.length > 0) {
-                const fileId = searchResult.files[0].id; // Fixed index bug from previous block
+                const fileId = searchResult.files[0].id;
                 url = `https://googleapis.com{fileId}?uploadType=multipart`;
                 method = 'PATCH';
             }
