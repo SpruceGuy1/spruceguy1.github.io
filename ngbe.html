@@ -481,7 +481,7 @@ setInterval(()=>{
 		console.log("night")
 	}
 	
-	$("#11").css("background-image", "images/"+new BasicBlockGenerator(player.coords.x,player.coords.y,player.coords.z).block+".png")
+	$("#11").css("background-image", `url("images/${new BasicBlockGenerator(player.coords.x, player.coords.y, player.coords.z).block}.png")`)
 },100*player.stats.speed)
 
   </script>
