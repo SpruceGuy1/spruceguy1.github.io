@@ -12,7 +12,11 @@
 	  <div id="messages">
 		  
 	  </div>
-	 
+	 <table>
+		 <tr><td id="00"></td><td id="01"></td><td id="02"></td></tr>
+		 <tr><td id="10"></td><td id="11"></td><td id="12"></td></tr>
+		 <tr><td id="20"></td><td id="21"></td><td id="22"></td></tr>
+	 </table>
 	  <h1>Cloud Save Demo</h1>
     <form id="login">
 		Login
@@ -477,7 +481,7 @@ setInterval(()=>{
 		console.log("night")
 	}
 	
-	
+	$("#11").css("background-image", "images/"+new BasicBlockGenerator(player.coords.x,player.coords.y,player.coords.z).block+".png")
 },100*player.stats.speed)
 
   </script>
