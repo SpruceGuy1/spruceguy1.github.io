@@ -57,6 +57,7 @@ body{
    /*animation: bounce 2s infinite;*/
 }
 .\31 6px td{
-    height:16px;
-    width:16px;
+    background-position: center, center;
+    background-repeat: no-repeat, no-repeat;
+    background-size: 16px 16px, 16px 16px;
 }

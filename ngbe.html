@@ -390,6 +390,21 @@ function getBlock(x, y, z) {
 
     return result;
 }
+function renderSurfaceCell(cellId, x, y, z) {
+	if(player.coords.y!==5){
+		    $(`#${cellId}`).css("background-image", `url("images/${getBlock(x,y,z).block}.png")`);
+			return
+	}
+    const ground = getBlock(x, 5, z).block;
+    const overlay = getBlock(x, 6, z).block;
+
+    const backgrounds =
+        overlay === "tree" || overlay === "fruit-tree"
+            ? `url("images/${overlay}.png"), url("images/${ground}.png")`
+            : `url("images/${ground}.png")`;
+
+    $(`#${cellId}`).css("background-image", backgrounds);
+}
 /*class Coordinates{
 	constructor(x,y,z){
 		this.x = x;
@@ -554,15 +569,17 @@ setInterval(()=>{
 	if(time>500){
 		console.log("night")
 	}
-	$("#00").css("background-image", `url("images/${ getBlock(player.coords.x-1, player.coords.y, player.coords.z-1).block}.png")`)
-	$("#01").css("background-image", `url("images/${ getBlock(player.coords.x-1, player.coords.y, player.coords.z).block}.png")`)
-	$("#02").css("background-image", `url("images/${ getBlock(player.coords.x-1, player.coords.y, player.coords.z+1).block}.png")`)
-	$("#10").css("background-image", `url("images/${ getBlock(player.coords.x, player.coords.y, player.coords.z-1).block}.png")`)
-	$("#11").css("background-image", `url("images/${ getBlock(player.coords.x, player.coords.y, player.coords.z).block}.png")`)
-	$("#12").css("background-image", `url("images/${ getBlock(player.coords.x, player.coords.y, player.coords.z+1).block}.png")`)
-	$("#20").css("background-image", `url("images/${ getBlock(player.coords.x+1, player.coords.y, player.coords.z-1).block}.png")`)
-	$("#21").css("background-image", `url("images/${ getBlock(player.coords.x+1, player.coords.y, player.coords.z).block}.png")`)
-	$("#22").css("background-image", `url("images/${ getBlock(player.coords.x+1, player.coords.y, player.coords.z+1).block}.png")`)
+	renderSurfaceCell("00", player.coords.x - 1, player.coords.y, player.coords.z - 1);
+renderSurfaceCell("01", player.coords.x - 1,player.coords.y, player.coords.z);
+renderSurfaceCell("02", player.coords.x - 1, player.coords.y,player.coords.z + 1);
+
+renderSurfaceCell("10", player.coords.x, player.coords.y,player.coords.z - 1);
+renderSurfaceCell("11", player.coords.x, player.coords.y, player.coords.z);
+renderSurfaceCell("12", player.coords.x, player.coords.y, player.coords.z + 1);
+
+renderSurfaceCell("20", player.coords.x + 1, player.coords.y, player.coords.z - 1);
+renderSurfaceCell("21", player.coords.x + 1, player.coords.y, player.coords.z);
+renderSurfaceCell("22", player.coords.x + 1, player.coords.y, player.coords.z + 1);
 },100*player.stats.speed)
 
   </script>
