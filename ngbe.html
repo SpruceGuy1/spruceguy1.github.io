@@ -155,12 +155,40 @@ function deserializeBba(serialized) {
 
   return restored;
 }
+function serializeMba() {
+  const serialized = {};
+
+  for (const [x, xData] of Object.entries(mba)) {
+    for (const [y, yData] of Object.entries(xData)) {
+      for (const [z, blockData] of Object.entries(yData)) {
+        serialized[`${x},${y},${z}`] = blockData;
+      }
+    }
+  }
+
+  return serialized;
+}
+
+function deserializeMba(serialized) {
+  const restored = [];
+
+  for (const [key, blockData] of Object.entries(serialized || {})) {
+    const [x, y, z] = key.split(",").map(Number);
+
+    restored[x] ??= [];
+    restored[x][y] ??= [];
+    restored[x][y][z] = blockData;
+  }
+
+  return restored;
+}
+
     // --- GAME SAVING FUNCTIONS ---
     function getGameData() {
         return {
             player: player,
             bba: serializeBba(),
-			mba: mba,
+			mba: serializeMba(),
             lastSaved: new Date().toISOString()
         };
     }
@@ -207,8 +235,8 @@ function deserializeBba(serialized) {
 
 	}
 },
-					bba = deserializeBba(data.bba),
-					mba = data.mba
+					bba = deserializeBba(data.bba)
+					mba = deserializeMba(data.mba)
                     document.getElementById('status').innerText = `Loaded save from ${data.lastSaved}`;
                     console.log("Firebase Game State Data:", data);
                 } else {
@@ -330,11 +358,42 @@ class BasicBlockGenerator{
 		}else{
 			this.block="stone"
 		}
+		mba[x][y][z] = this.block
 	}
 }
 class MobData{
   test1ficates = 0
 	
+}
+function getBlock(x,y,z){
+	var retval = {
+		x:x,
+		y:y,
+		z:z,
+	}
+	var job
+	if(bba[x][y][z]){
+		retval.biome=bba[x][y][z]
+	}else{
+		job=new BasicBlockGenerator(x,y,z)
+		retval.biome=job.biome
+		bba[x][y][z]=job.biome
+	}
+
+	if(mba[x][y][z]){
+		retval.block = mba[x][y][z]
+	}else{
+		if(job.biome){
+			retval.block = job.block
+			mba[x][y][z] = job.block
+		}else{
+					job=new BasicBlockGenerator(x,y,z)
+		retval.block=job.block
+		mba[x][y][z]=job.block
+
+		}
+	}
+	return retval
 }
 /*class Coordinates{
 	constructor(x,y,z){
@@ -417,7 +476,7 @@ function command(){
 			console.log("speed: "+player.stats.speed)
 			break
 		case "b":
-			console.log("block: "+new BasicBlockGenerator(player.coords.x,player.coords.y,player.coords.z).block)
+			console.log("block: "+getBlock(player.coords.x,player.coords.y,player.coords.z).block)
 			break;
 		case "c":
 			console.log("in dev")
@@ -453,7 +512,7 @@ function command(){
 			break;
 		
 		case "B":
-			console.log("biome: "+new BasicBlockGenerator(player.coords.x,player.coords.y,player.coords.z).biome)
+			console.log("biome: "+getBlock(player.coords.x,player.coords.y,player.coords.z).biome)
 				break;
 		case "pause":
 			prompting=false;
@@ -500,15 +559,15 @@ setInterval(()=>{
 	if(time>500){
 		console.log("night")
 	}
-	$("#00").css("background-image", `url("images/${new BasicBlockGenerator(player.coords.x-1, player.coords.y, player.coords.z-1).block}.png")`)
-	$("#01").css("background-image", `url("images/${new BasicBlockGenerator(player.coords.x-1, player.coords.y, player.coords.z).block}.png")`)
-	$("#02").css("background-image", `url("images/${new BasicBlockGenerator(player.coords.x-1, player.coords.y, player.coords.z+1).block}.png")`)
-	$("#10").css("background-image", `url("images/${new BasicBlockGenerator(player.coords.x, player.coords.y, player.coords.z-1).block}.png")`)
-	$("#11").css("background-image", `url("images/${new BasicBlockGenerator(player.coords.x, player.coords.y, player.coords.z).block}.png")`)
-	$("#12").css("background-image", `url("images/${new BasicBlockGenerator(player.coords.x, player.coords.y, player.coords.z+1).block}.png")`)
-	$("#20").css("background-image", `url("images/${new BasicBlockGenerator(player.coords.x+1, player.coords.y, player.coords.z-1).block}.png")`)
-	$("#21").css("background-image", `url("images/${new BasicBlockGenerator(player.coords.x+1, player.coords.y, player.coords.z).block}.png")`)
-	$("#22").css("background-image", `url("images/${new BasicBlockGenerator(player.coords.x+1, player.coords.y, player.coords.z+1).block}.png")`)
+	$("#00").css("background-image", `url("images/${ getBlock(player.coords.x-1, player.coords.y, player.coords.z-1).block}.png")`)
+	$("#01").css("background-image", `url("images/${ getBlock(player.coords.x-1, player.coords.y, player.coords.z).block}.png")`)
+	$("#02").css("background-image", `url("images/${ getBlock(player.coords.x-1, player.coords.y, player.coords.z+1).block}.png")`)
+	$("#10").css("background-image", `url("images/${ getBlock(player.coords.x, player.coords.y, player.coords.z-1).block}.png")`)
+	$("#11").css("background-image", `url("images/${ getBlock(player.coords.x, player.coords.y, player.coords.z).block}.png")`)
+	$("#12").css("background-image", `url("images/${ getBlock(player.coords.x, player.coords.y, player.coords.z+1).block}.png")`)
+	$("#20").css("background-image", `url("images/${ getBlock(player.coords.x+1, player.coords.y, player.coords.z-1).block}.png")`)
+	$("#21").css("background-image", `url("images/${ getBlock(player.coords.x+1, player.coords.y, player.coords.z).block}.png")`)
+	$("#22").css("background-image", `url("images/${ getBlock(player.coords.x+1, player.coords.y, player.coords.z+1).block}.png")`)
 },100*player.stats.speed)
 
   </script>
