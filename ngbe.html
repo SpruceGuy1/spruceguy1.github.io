@@ -310,8 +310,17 @@ var biomeGenerator = (x,y,z) => {
 	var random = Math.floor(Math.random() * biomes.length)
 	 bba[x][y][z].biome=biomes[random]
 }
-var path = [] //TODO: make randomly generating paths with format [x,z] 
-path.push([Math.floor(Math.random()*3), Math.floor(Math.random()*3)])
+const path = new Set();
+
+function pathKey(x, z) {
+    return `${x},${z}`;
+}
+
+function hasPath(x, z) {
+    return path.has(pathKey(x, z));
+}
+
+path.add(pathKey(player.coords.x, player.coords.z));
 
 class BasicBlockGenerator{
 	constructor(x,y,z){
@@ -320,11 +329,15 @@ class BasicBlockGenerator{
 		this.z = z
 		biomeGenerator(x,y,z)
 		this.biome = bba[x][y][z].biome
-		if(path.includes([x+1,z])||path.includes([x,z+1])||path.includes([x-1,z])||path.includes([x,z-1])){
-			var rand = Math.floor(Math.random()*7)
-			if(rand==0){
-				path.push([x,z])
-			}
+		if (
+		    hasPath(x + 1, z) ||
+		    hasPath(x, z + 1) ||
+		    hasPath(x - 1, z) ||
+		    hasPath(x, z - 1)
+		) {
+		    if (Math.floor(Math.random() * 7) === 0) {
+		        path.add(pathKey(x, z));
+		    }
 		}
 		if(y==6){
 			switch(this.biome){
@@ -350,9 +363,9 @@ class BasicBlockGenerator{
 		}else if(y==4){
 			this.block="dirt"
 		}else if(y==5){
-			if(path.includes([x,z])){
-				this.block="path"
-			}else{
+			if (hasPath(x, z)) {
+			    this.block = "path";
+			} else {
 				var randy = Math.floor(Math.random()*3)
 				switch(randy){
 					case 0:
