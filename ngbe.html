@@ -278,7 +278,8 @@ var biomeGenerator = (x,y,z) => {
 	var random = Math.floor(Math.random() * biomes.length)
 	 bba[x][y][z].biome=biomes[random]
 }
-
+var pathX = [] //TODO: make randomly generating paths
+var pathZ = []
 class BasicBlockGenerator{
 	constructor(x,y,z){
 		this.x = x
@@ -307,8 +308,25 @@ class BasicBlockGenerator{
 			}
 		}else if(y>6){
 			this.block="air"
-		}else if(y<6&&y>3){
+		}else if(y==4){
 			this.block="dirt"
+		}else if(y==5){
+			if(pathX.includes(x) && pathZ.includes(z)){
+				this.block="path"
+			}else{
+				var randy = Math.floor(Math.random()*3)
+				switch(randy){
+					case 0:
+						this.block="dirt"
+						break
+					case 1:
+						this.block="grass"
+						break
+					case 2:
+						this.block="moss"
+						break
+				}
+			}
 		}else{
 			this.block="stone"
 		}
