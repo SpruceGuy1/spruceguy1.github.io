@@ -480,8 +480,15 @@ setInterval(()=>{
 	if(time>500){
 		console.log("night")
 	}
-	
+	$("#00").css("background-image", `url("images/${new BasicBlockGenerator(player.coords.x-1, player.coords.y, player.coords.z-1).block}.png")`)
+	$("#01").css("background-image", `url("images/${new BasicBlockGenerator(player.coords.x-1, player.coords.y, player.coords.z).block}.png")`)
+	$("#02").css("background-image", `url("images/${new BasicBlockGenerator(player.coords.x-1, player.coords.y, player.coords.z+1).block}.png")`)
+	$("#10").css("background-image", `url("images/${new BasicBlockGenerator(player.coords.x, player.coords.y, player.coords.z-1).block}.png")`)
 	$("#11").css("background-image", `url("images/${new BasicBlockGenerator(player.coords.x, player.coords.y, player.coords.z).block}.png")`)
+	$("#12").css("background-image", `url("images/${new BasicBlockGenerator(player.coords.x, player.coords.y, player.coords.z+1).block}.png")`)
+	$("#20").css("background-image", `url("images/${new BasicBlockGenerator(player.coords.x+1, player.coords.y, player.coords.z-1).block}.png")`)
+	$("#21").css("background-image", `url("images/${new BasicBlockGenerator(player.coords.x+1, player.coords.y, player.coords.z).block}.png")`)
+	$("#22").css("background-image", `url("images/${new BasicBlockGenerator(player.coords.x+1, player.coords.y, player.coords.z+1).block}.png")`)
 },100*player.stats.speed)
 
   </script>
