@@ -1,6 +1,27 @@
 table, tr, td{
     border:1px solid black;
 }
+.game-grid {
+    border-collapse: collapse;
+    border-spacing: 0;
+    background: transparent;
+}
+
+.game-grid tr,
+.game-grid td {
+    box-sizing: border-box;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+}
+
+.game-grid td {
+    background-position: center, center;
+    background-repeat: no-repeat, no-repeat;
+    background-size: 16px 16px, 16px 16px;
+}
 td{
     height:50px;
     width:50px;
