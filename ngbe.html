@@ -14,7 +14,7 @@
 	  </div>
 	 <table class="16px">
 		 <tr><td id="00"></td><td id="01"></td><td id="02"></td></tr>
-		 <tr><td id="10"></td><td id="11"></td><td id="12"></td></tr>
+		 <tr>`<td id="10"></td><td id="11"></td><td id="12"></td></tr>
 		 <tr><td id="20"></td><td id="21"></td><td id="22"></td></tr>
 	 </table>
 	  <h1>Cloud Save Demo</h1>
@@ -85,7 +85,7 @@ import {
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 currentUser = user;
-                document.getElementById('status').innerText = "Logged in as"+user.email;
+                document.getElementById('status').innerText = "Email: "+user.email;
 				
                 document.getElementById('save-btn').disabled = false;
                 document.getElementById('load-btn').disabled = false;
@@ -266,6 +266,8 @@ var player = {
 
 	}
 }
+		 $("#status").append("Name: "+player.name)
+		 $("#status").append("Speed: "+player.stats.speed)
 var bba = []
 var mba = []
 var biomes = ["forest", "fruitForest"]
