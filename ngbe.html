@@ -455,27 +455,47 @@ class Testificate1 extends Mob{
 		
 	}
 }
+function render(){
+		renderSurfaceCell("00", player.coords.x - 1, player.coords.y, player.coords.z - 1);
+renderSurfaceCell("01", player.coords.x - 1,player.coords.y, player.coords.z);
+renderSurfaceCell("02", player.coords.x - 1, player.coords.y,player.coords.z + 1);
 
+renderSurfaceCell("10", player.coords.x, player.coords.y,player.coords.z - 1);
+renderSurfaceCell("11", player.coords.x, player.coords.y, player.coords.z);
+renderSurfaceCell("12", player.coords.x, player.coords.y, player.coords.z + 1);
+
+renderSurfaceCell("20", player.coords.x + 1, player.coords.y, player.coords.z - 1);
+renderSurfaceCell("21", player.coords.x + 1, player.coords.y, player.coords.z);
+renderSurfaceCell("22", player.coords.x + 1, player.coords.y, player.coords.z + 1);
+
+}
+render()
 function command(){
 	var e = prompt(">>>")
 	switch(e){
 		case "w":
 			player.coords.z++
+			render()
 			break
 		case "s":
 			player.coords.z--
+			render()
 			break
 		case "a":
 			player.coords.x--
+			render()
 			break
 		case "d":
 			player.coords.x++
+			render()
 			break
 		case "r":
 			player.coords.y++
+			render()
 			break
 		case "f":
 			player.coords.y--
+			render()
 			break
 		case "p":
 			console.log(player.coords.x)
@@ -569,17 +589,7 @@ setInterval(()=>{
 	if(time>500){
 		console.log("night")
 	}
-	renderSurfaceCell("00", player.coords.x - 1, player.coords.y, player.coords.z - 1);
-renderSurfaceCell("01", player.coords.x - 1,player.coords.y, player.coords.z);
-renderSurfaceCell("02", player.coords.x - 1, player.coords.y,player.coords.z + 1);
-
-renderSurfaceCell("10", player.coords.x, player.coords.y,player.coords.z - 1);
-renderSurfaceCell("11", player.coords.x, player.coords.y, player.coords.z);
-renderSurfaceCell("12", player.coords.x, player.coords.y, player.coords.z + 1);
-
-renderSurfaceCell("20", player.coords.x + 1, player.coords.y, player.coords.z - 1);
-renderSurfaceCell("21", player.coords.x + 1, player.coords.y, player.coords.z);
-renderSurfaceCell("22", player.coords.x + 1, player.coords.y, player.coords.z + 1);
+	render()
 },100*player.stats.speed)
 
   </script>
