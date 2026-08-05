@@ -13,9 +13,12 @@
 		  
 	  </div>
 	 <table class="game-grid">
-		 <tr><td id="00"></td><td id="01"></td><td id="02"></td></tr>
-		 <tr><td id="10"></td><td id="11"></td><td id="12"></td></tr>
-		 <tr><td id="20"></td><td id="21"></td><td id="22"></td></tr>
+		 <tr><td id="00"></td><td id="01"></td><td id="02"></td><td id="03"></td><td id="04"></td></tr>
+		 <tr><td id="10"></td><td id="11"></td><td id="12"></td><td id="13"></td><td id="14"></td></tr>
+		 <tr><td id="20"></td><td id="21"></td><td id="22"></td><td id="23"></td><td id="24"></td></tr>
+		 <tr><td id="30"></td><td id="31"></td><td id="32"></td><td id="33"></td><td id="34"></td></tr>
+		 <tr><td id="40"></td><td id="41"></td><td id="42"></td><td id="43"></td><td id="44"></td></tr>
+
 	 </table>
 	  <h1>Cloud Save Demo</h1>
     <form id="login">
@@ -456,7 +459,7 @@ class Testificate1 extends Mob{
 	}
 }
 function render(){
-		renderSurfaceCell("00", player.coords.x - 1, player.coords.y, player.coords.z - 1);
+		/*renderSurfaceCell("00", player.coords.x - 1, player.coords.y, player.coords.z - 1);
 renderSurfaceCell("01", player.coords.x - 1,player.coords.y, player.coords.z);
 renderSurfaceCell("02", player.coords.x - 1, player.coords.y,player.coords.z + 1);
 
@@ -466,7 +469,13 @@ renderSurfaceCell("12", player.coords.x, player.coords.y, player.coords.z + 1);
 
 renderSurfaceCell("20", player.coords.x + 1, player.coords.y, player.coords.z - 1);
 renderSurfaceCell("21", player.coords.x + 1, player.coords.y, player.coords.z);
-renderSurfaceCell("22", player.coords.x + 1, player.coords.y, player.coords.z + 1);
+renderSurfaceCell("22", player.coords.x + 1, player.coords.y, player.coords.z + 1);*/
+	for(let i = 0;i<5;i++){
+		for(let j = 0;j<5;j++){
+		renderSurfaceCell(i+""+j,player.coords.x+i-2,player.coords.y,player.coords.z+j-2)
+	}
+
+	}
 
 }
 render()
