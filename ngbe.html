@@ -503,19 +503,19 @@ function command(){
 	var e = prompt(">>>")
 	switch(e){
 		case "w":
-			player.coords.z++
+			player.coords.x++
 			render()
 			break
 		case "s":
-			player.coords.z--
-			render()
-			break
-		case "a":
 			player.coords.x--
 			render()
 			break
+		case "a":
+			player.coords.z--
+			render()
+			break
 		case "d":
-			player.coords.x++
+			player.coords.z++
 			render()
 			break
 		case "r":
@@ -601,7 +601,26 @@ function command(){
 console.log("press q to see commands")
 console.log("press q or another command.")
 console.log("if you see '>>>', that means you can type a command like q.")
-// modules
+$( document ).on( "keydown", function( event ) {
+  if ( event.key.toLowerCase() === "w" ) {
+    player.coords.x++
+  }else   if ( event.key.toLowerCase() === "a" ) {
+    player.coords.z--
+  }else   if ( event.key.toLowerCase() === "s" ) {
+    player.coords.x--
+  }else   if ( event.key.toLowerCase() === "d" ) {
+    player.coords.z++
+  }else   if ( event.key.toLowerCase() === "r" ) {
+    player.coords.y++
+  }else   if ( event.key.toLowerCase() === "f" ) {
+    player.coords.y--
+  }
+  render()
+
+
+
+
+});
 
 setInterval(()=>{
 	if(prompting){
