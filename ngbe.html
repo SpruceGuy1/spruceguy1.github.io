@@ -303,6 +303,7 @@ var biomeGenerator = (x,y,z) => {
 	bba[x] ??= []
   bba[x][y] ??= []
   bba[x][y][z] ??= {}
+  
 	var random = Math.floor(Math.random() * biomes.length)
 	 bba[x][y][z].biome=biomes[random]
 }
@@ -358,42 +359,36 @@ class BasicBlockGenerator{
 		}else{
 			this.block="stone"
 		}
-		mba[x][y][z] = this.block
+		mba[x] ??= [];
+mba[x][y] ??= [];
+mba[x][y][z] = this.block;
+		
 	}
 }
 class MobData{
   test1ficates = 0
 	
 }
-function getBlock(x,y,z){
-	var retval = {
-		x:x,
-		y:y,
-		z:z,
-	}
-	var job
-	if(bba[x][y][z]){
-		retval.biome=bba[x][y][z]
-	}else{
-		job=new BasicBlockGenerator(x,y,z)
-		retval.biome=job.biome
-		bba[x][y][z]=job.biome
-	}
+function getBlock(x, y, z) {
+    bba[x] ??= [];
+    bba[x][y] ??= [];
 
-	if(mba[x][y][z]){
-		retval.block = mba[x][y][z]
-	}else{
-		if(job.biome){
-			retval.block = job.block
-			mba[x][y][z] = job.block
-		}else{
-					job=new BasicBlockGenerator(x,y,z)
-		retval.block=job.block
-		mba[x][y][z]=job.block
+    mba[x] ??= [];
+    mba[x][y] ??= [];
 
-		}
-	}
-	return retval
+    const result = { x, y, z };
+
+    if (bba[x][y][z] === undefined || mba[x][y][z] === undefined) {
+        const generatedBlock = new BasicBlockGenerator(x, y, z);
+
+        bba[x][y][z] = { biome: generatedBlock.biome };
+        mba[x][y][z] = generatedBlock.block;
+    }
+
+    result.biome = bba[x][y][z].biome;
+    result.block = mba[x][y][z];
+
+    return result;
 }
 /*class Coordinates{
 	constructor(x,y,z){
