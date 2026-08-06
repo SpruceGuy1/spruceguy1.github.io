@@ -310,8 +310,13 @@ var biomeGenerator = (x,y,z) => {
 	var random = Math.floor(Math.random() * biomes.length)
 	 bba[x][y][z].biome=biomes[random]
 }
+function coordinateRandom(x, z) {
+    const value = Math.sin(x * 12.9898 + z * 78.233) * 43758.5453;
+    return value - Math.floor(value);
+}
+
 function hasPath(x, z) {
-    return x % 12 === 0 || z % 12 === 0;
+    return coordinateRandom(x, z) < 0.08;
 }
 
 class BasicBlockGenerator{
