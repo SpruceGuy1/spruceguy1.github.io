@@ -315,8 +315,44 @@ function coordinateRandom(x, z) {
     return value - Math.floor(value);
 }
 
+// Connected, deterministic Layer-5 path generation.
+// Roads run in bands along one axis and wobble by at most 1 tile per band,
+// so consecutive path segments are always orthogonally adjacent.
+const PATH_BAND = 12;
+const PATH_CONTROL_SPACING = 6;
+const PATH_MAX_WOBBLE = 2;
+
+function pathControlOffset(controlIndex, baseline, axisSalt) {
+    const r = coordinateRandom(controlIndex, baseline * 131 + axisSalt);
+    return Math.round((r * 2 - 1) * PATH_MAX_WOBBLE);
+}
+
+function pathLaneAt(bandIndex, baseline, axisSalt) {
+    const c0 = Math.floor(bandIndex / PATH_CONTROL_SPACING);
+    const c1 = c0 + 1;
+    const localStep = bandIndex - c0 * PATH_CONTROL_SPACING;
+    const off0 = pathControlOffset(c0, baseline, axisSalt);
+    const off1 = pathControlOffset(c1, baseline, axisSalt);
+    const t = localStep / PATH_CONTROL_SPACING;
+    return baseline + Math.round(off0 + (off1 - off0) * t);
+}
+
+function onPathAxisRoad(mainCoord, crossCoord, axisSalt) {
+    const baseline = Math.round(crossCoord / PATH_BAND) * PATH_BAND;
+    const bandIndex = Math.floor(mainCoord / PATH_BAND);
+    const colInBand = mainCoord - bandIndex * PATH_BAND;
+    const lane = pathLaneAt(bandIndex, baseline, axisSalt);
+    if (colInBand !== 0) {
+        return crossCoord === lane;
+    }
+    // Band boundary: include both the previous and current lane so the
+    // segment that jogs between them shares an edge with each neighbor.
+    const prevLane = pathLaneAt(bandIndex - 1, baseline, axisSalt);
+    return crossCoord === lane || crossCoord === prevLane;
+}
+
 function hasPath(x, z) {
-    return coordinateRandom(x, z) < 0.08;
+    return onPathAxisRoad(x, z, 1) || onPathAxisRoad(z, x, 2);
 }
 
 class BasicBlockGenerator{
