@@ -310,9 +310,17 @@ var biomeGenerator = (x,y,z) => {
 	var random = Math.floor(Math.random() * biomes.length)
 	 bba[x][y][z].biome=biomes[random]
 }
-function hasPath(x, z) {
-    return x % 12 === 0 || z % 12 === 0;
+const path = new Set();
+
+function pathKey(x, z) {
+    return `${x},${z}`;
 }
+
+function hasPath(x, z) {
+    return path.has(pathKey(x, z));
+}
+
+path.add(pathKey(player.coords.x, player.coords.z));
 
 class BasicBlockGenerator{
 	constructor(x,y,z){
@@ -321,6 +329,16 @@ class BasicBlockGenerator{
 		this.z = z
 		biomeGenerator(x,y,z)
 		this.biome = bba[x][y][z].biome
+		if (
+		    hasPath(x + 1, z) ||
+		    hasPath(x, z + 1) ||
+		    hasPath(x - 1, z) ||
+		    hasPath(x, z - 1)
+		) {
+		    if (Math.floor(Math.random() * 3) === 0) {
+		        path.add(pathKey(x, z));
+		    }
+		}
 		if(y==6){
 			switch(this.biome){
 				case "forest":
