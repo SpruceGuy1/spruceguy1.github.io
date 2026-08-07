@@ -335,16 +335,72 @@ function hasPath(x, z) {
     return path.has(pathKey(x, z));
 }
 
-path.add(pathKey(player.coords.x, player.coords.z));
 function generatePathsFromOrigin(ox,oz){
+
+
 	path.add(ox,oz)
 	var random
 	function randomize3(){
 		random = Math.floor(Math.random()*3)
 		//randomizes to 0, 1, or 2
 	}
-	var 
+		function randomize4(){
+		random = Math.floor(Math.random()*4)
+		//randomizes to 0, 1, 2, or 3
+	}
+
+	var x = ox
+	var z = oz
+	randomize4()
+	var dir = random
+	for(let i = 0; i>20; i++){
+		randomize3()
+      		
+		switch(random){
+
+			case 0:
+				switch(dir){
+					case 0:
+						x++
+						dir=2
+						break
+					default:
+						z++
+						dir=0
+				}
+			break
+						case 1:
+				switch(dir){
+					case 1:
+						z++
+						dir=0
+						break
+					default:
+						z--
+						dir=1
+				}
+			break
+									case 2:
+				switch(dir){
+					case 2:
+						z--
+						dir=1
+						break
+					default:
+						x++
+						dir=2
+				}
+			break
+		}
+	    path.add(x,z)
+	}
+			mba[x] ??= [];
+mba[x][6] ??= [];
+mba[x][6][z] = "temple"
+
 }
+generatePathsFromOrigin(player.coords.x, player.coords.z)
+
 class BasicBlockGenerator{
 	constructor(x,y,z){
 		this.x = x
