@@ -320,21 +320,6 @@ function hasPath(x, z) {
     return path.has(pathKey(x, z));
 }
 
-const TEMPLE_CHANCE = 0.01;
-
-function coordinateRandom(x, z, seed = 0) {
-    const value = Math.sin(
-        x * 12.9898 + z * 78.233 + seed * 37.719
-    ) * 43758.5453;
-
-    return value - Math.floor(value);
-}
-
-function hasTemple(x, z) {
-    return hasPath(x, z) &&
-        coordinateRandom(x, z, 1) < TEMPLE_CHANCE;
-}
-
 path.add(pathKey(player.coords.x, player.coords.z));
 
 class BasicBlockGenerator{
@@ -354,9 +339,7 @@ class BasicBlockGenerator{
 		        path.add(pathKey(x, z));
 		    }
 		}
-		if(y==6 && hasTemple(x,z)){
-			this.block="temple"
-		}else if(y==6){
+		if(y==6){
 			switch(this.biome){
 				case "forest":
 					var random = Math.floor(Math.random() * 2)
@@ -438,14 +421,10 @@ function renderSurfaceCell(cellId, x, y, z) {
     const ground = getBlock(x, 5, z).block;
     const overlay = getBlock(x, 6, z).block;
 
-    const hasOverlay =
-        overlay === "tree" ||
-        overlay === "fruit-tree" ||
-        overlay === "temple";
-
-    const backgrounds = hasOverlay
-        ? `url("images/${overlay}.png"), url("images/${ground}.png")`
-        : `url("images/${ground}.png")`;
+    const backgrounds =
+        overlay === "tree" || overlay === "fruit-tree"
+            ? `url("images/${overlay}.png"), url("images/${ground}.png")`
+            : `url("images/${ground}.png")`;
 
     $(`#${cellId}`).css("background-image", backgrounds);
 }
