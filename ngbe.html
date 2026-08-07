@@ -344,15 +344,17 @@ class BasicBlockGenerator{
 		this.z = z
 		biomeGenerator(x,y,z)
 		this.biome = bba[x][y][z].biome
-		if (
-		    hasPath(x + 1, z) ||
-		    hasPath(x, z + 1) ||
-		    hasPath(x - 1, z) ||
-		    hasPath(x, z - 1)
-		) {
+		if (y === 5) {
+			if (
+			    hasPath(x + 1, z) ||
+			    hasPath(x, z + 1) ||
+			    hasPath(x - 1, z) ||
+			    hasPath(x, z - 1)
+			) {
 if (randomFor(x, 5, z, 0x12345678) < 1 / 3) {
     path.add(pathKey(x, z));
-}		}
+}			}
+		}
 		if(y==6){
 			switch(this.biome){
 				case "forest":
