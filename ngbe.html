@@ -320,6 +320,10 @@ function hasPath(x, z) {
     return path.has(pathKey(x, z));
 }
 
+function hasTemple(x, z) {
+    return hasPath(x, z);
+}
+
 path.add(pathKey(player.coords.x, player.coords.z));
 
 class BasicBlockGenerator{
@@ -340,23 +344,27 @@ class BasicBlockGenerator{
 		    }
 		}
 		if(y==6){
-			switch(this.biome){
-				case "forest":
-					var random = Math.floor(Math.random() * 2)
-					if(random==0){
-						this.block="tree"
-					}else{
-						this.block="air"
-					}
-					break
-				case "fruitForest":
-					var random = Math.floor(Math.random() * 2)
-					if(random==0){
-						this.block="fruit-tree"
-					}else{
-						this.block="air"
-					}
-					break
+			if(hasTemple(x,z)){
+				this.block="temple"
+			}else{
+				switch(this.biome){
+					case "forest":
+						var random = Math.floor(Math.random() * 2)
+						if(random==0){
+							this.block="tree"
+						}else{
+							this.block="air"
+						}
+						break
+					case "fruitForest":
+						var random = Math.floor(Math.random() * 2)
+						if(random==0){
+							this.block="fruit-tree"
+						}else{
+							this.block="air"
+						}
+						break
+				}
 			}
 		}else if(y>6){
 			this.block="air"
@@ -422,7 +430,7 @@ function renderSurfaceCell(cellId, x, y, z) {
     const overlay = getBlock(x, 6, z).block;
 
     const backgrounds =
-        overlay === "tree" || overlay === "fruit-tree"
+        overlay === "tree" || overlay === "fruit-tree" || overlay === "temple"
             ? `url("images/${overlay}.png"), url("images/${ground}.png")`
             : `url("images/${ground}.png")`;
 
