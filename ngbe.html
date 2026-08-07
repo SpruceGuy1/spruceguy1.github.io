@@ -335,7 +335,7 @@ function hasPath(x, z) {
     return path.has(pathKey(x, z));
 }
 
-function generatePathsFromOrigin(ox,oz){
+function generatePathsFromOrigin(ox,oz, flag){
 
 
 	path.add(pathKey(ox,oz))
@@ -391,6 +391,9 @@ function generatePathsFromOrigin(ox,oz){
 						dir=2
 				}
 			break
+		}
+		if(i==5 &&(!flag)){
+			generatePathsFromOrigin(x,z,false)
 		}
 	    path.add(pathKey(x,z))
 	}
