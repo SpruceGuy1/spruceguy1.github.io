@@ -321,7 +321,7 @@ function hasPath(x, z) {
 }
 
 function hasTemple(x, z) {
-    return hasPath(x, z);
+    return hasPath(x, z) && Math.floor(Math.random() * 20) === 0;
 }
 
 path.add(pathKey(player.coords.x, player.coords.z));
