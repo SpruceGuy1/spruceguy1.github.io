@@ -330,10 +330,13 @@ class BasicBlockGenerator{
 		biomeGenerator(x,y,z)
 		this.biome = bba[x][y][z].biome
 		if (
-		    hasPath(x + 1, z) ||
-		    hasPath(x, z + 1) ||
-		    hasPath(x - 1, z) ||
-		    hasPath(x, z - 1)
+		    y === 5 &&
+		    (
+		        hasPath(x + 1, z) ||
+		        hasPath(x, z + 1) ||
+		        hasPath(x - 1, z) ||
+		        hasPath(x, z - 1)
+		    )
 		) {
 		    if (Math.floor(Math.random() * 3) === 0) {
 		        path.add(pathKey(x, z));
