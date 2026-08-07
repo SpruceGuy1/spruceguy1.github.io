@@ -338,7 +338,7 @@ function hasPath(x, z) {
 function generatePathsFromOrigin(ox,oz){
 
 
-	path.add(ox,oz)
+	path.add(pathKey(ox,oz))
 	var random
 	function randomize3(){
 		random = Math.floor(Math.random()*3)
@@ -353,7 +353,7 @@ function generatePathsFromOrigin(ox,oz){
 	var z = oz
 	randomize4()
 	var dir = random
-	for(let i = 0; i>20; i++){
+	for(let i = 0; i<20; i++){
 		randomize3()
       		
 		switch(random){
