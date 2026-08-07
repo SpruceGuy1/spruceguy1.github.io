@@ -315,7 +315,7 @@ const path = new Set();
 function pathKey(x, z) {
     return `${x},${z}`;
 }
-function randomFor(x, y, z, salt) {
+/*function randomFor(x, y, z, salt) {
     let hash = (
         Math.imul(x, 73856093) ^
         Math.imul(y, 19349663) ^
@@ -330,13 +330,21 @@ function randomFor(x, y, z, salt) {
     hash ^= hash >>> 16;
 
     return hash / 0x100000000;
-}
+}*/
 function hasPath(x, z) {
     return path.has(pathKey(x, z));
 }
 
 path.add(pathKey(player.coords.x, player.coords.z));
-
+function generatePathsFromOrigin(ox,oz){
+	path.add(ox,oz)
+	var random
+	function randomize3(){
+		random = Math.floor(Math.random()*3)
+		//randomizes to 0, 1, or 2
+	}
+	var 
+}
 class BasicBlockGenerator{
 	constructor(x,y,z){
 		this.x = x
@@ -344,17 +352,19 @@ class BasicBlockGenerator{
 		this.z = z
 		biomeGenerator(x,y,z)
 		this.biome = bba[x][y][z].biome
-		if (y === 5) {
+		
+			/*
+			path generation below doesn't work with temples
 			if (
 			    hasPath(x + 1, z) ||
 			    hasPath(x, z + 1) ||
 			    hasPath(x - 1, z) ||
 			    hasPath(x, z - 1)
 			) {
-if (randomFor(x, 5, z, 0x12345678) < 1 / 3) {
+if (Math.random()<(1/3)) {
     path.add(pathKey(x, z));
-}			}
-		}
+}			}*/
+		
 		if(y==6){
 			switch(this.biome){
 				case "forest":
@@ -374,10 +384,10 @@ if (randomFor(x, 5, z, 0x12345678) < 1 / 3) {
 					}
 					break
 			}
-			if(mba[x][5][z]=="path"){
+			/*if(mba[x][5][z]=="path"){
 if (randomFor(x, 6, z, 0x87654321) < 1 / 20) {
     this.block = "temple";
-}			}
+}			}*/
 		}else if(y>6){
 			this.block="air"
 		}else if(y==4){
