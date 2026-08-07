@@ -315,7 +315,22 @@ const path = new Set();
 function pathKey(x, z) {
     return `${x},${z}`;
 }
+function randomFor(x, y, z, salt) {
+    let hash = (
+        Math.imul(x, 73856093) ^
+        Math.imul(y, 19349663) ^
+        Math.imul(z, 83492791) ^
+        salt
+    ) >>> 0;
 
+    hash ^= hash >>> 16;
+    hash = Math.imul(hash, 0x7feb352d) >>> 0;
+    hash ^= hash >>> 15;
+    hash = Math.imul(hash, 0x846ca68b) >>> 0;
+    hash ^= hash >>> 16;
+
+    return hash / 0x100000000;
+}
 function hasPath(x, z) {
     return path.has(pathKey(x, z));
 }
@@ -335,10 +350,9 @@ class BasicBlockGenerator{
 		    hasPath(x - 1, z) ||
 		    hasPath(x, z - 1)
 		) {
-		    if (Math.floor(Math.random() * 3) === 0) {
-		        path.add(pathKey(x, z));
-		    }
-		}
+if (randomFor(x, 5, z, 0x12345678) < 1 / 3) {
+    path.add(pathKey(x, z));
+}		}
 		if(y==6){
 			switch(this.biome){
 				case "forest":
@@ -359,10 +373,9 @@ class BasicBlockGenerator{
 					break
 			}
 			if(mba[x][5][z]=="path"){
-				if(Math.floor(Math.random()*20)==0){
-					this.block="temple"
-				}
-			}
+if (randomFor(x, 6, z, 0x87654321) < 1 / 20) {
+    this.block = "temple";
+}			}
 		}else if(y>6){
 			this.block="air"
 		}else if(y==4){
