@@ -392,7 +392,7 @@ function generatePathsFromOrigin(ox,oz, flag){
 				}
 			break
 		}
-		if(i==15 &&(!flag)){
+		if(i==15 &&(flag)){
 			generatePathsFromOrigin(x,z,false)
 		}
 	    path.add(pathKey(x,z))
@@ -402,9 +402,9 @@ mba[x][6] ??= [];
 mba[x][6][z] = "temple"
 
 }
-generatePathsFromOrigin(player.coords.x, player.coords.z)
-generatePathsFromOrigin(player.coords.x+10, player.coords.z+10)
-generatePathsFromOrigin(player.coords.x-10, player.coords.z-10)
+generatePathsFromOrigin(player.coords.x, player.coords.z, true)
+generatePathsFromOrigin(player.coords.x+10, player.coords.z+10, true)
+generatePathsFromOrigin(player.coords.x-10, player.coords.z-10, true)
 
 
 class BasicBlockGenerator{
