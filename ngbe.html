@@ -358,6 +358,11 @@ class BasicBlockGenerator{
 					}
 					break
 			}
+			if(mba[x][5][z]=="path"){
+				if(Math.floor(Math.random()*20)==0){
+					this.block="temple"
+				}
+			}
 		}else if(y>6){
 			this.block="air"
 		}else if(y==4){
@@ -422,7 +427,7 @@ function renderSurfaceCell(cellId, x, y, z) {
     const overlay = getBlock(x, 6, z).block;
 
     const backgrounds =
-        overlay === "tree" || overlay === "fruit-tree"
+        overlay === "tree" || overlay === "fruit-tree" || overlay === "temple"
             ? `url("images/${overlay}.png"), url("images/${ground}.png")`
             : `url("images/${ground}.png")`;
 
@@ -602,6 +607,16 @@ console.log("press q to see commands")
 console.log("press q or another command.")
 console.log("if you see '>>>', that means you can type a command like q.")
 $( document ).on( "keydown", function( event ) {
+  const target = event.target;
+  if (
+    target instanceof HTMLInputElement ||
+    target instanceof HTMLTextAreaElement ||
+    target instanceof HTMLSelectElement ||
+    (target instanceof HTMLElement && target.isContentEditable)
+  ) {
+    return;
+  }
+
   if ( event.key.toLowerCase() === "w" ) {
     player.coords.x++
   }else   if ( event.key.toLowerCase() === "a" ) {
