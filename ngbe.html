@@ -408,8 +408,6 @@ function getBlock(x, y, z) {
         mba[x][y][z] = generatedBlock.block;
     }
 
-    result.biome = bba[x][y][z].biome;
-    result.block = mba[x][y][z];
     		if (
 		    hasPath(x + 1, z) ||
 		    hasPath(x, z + 1) ||
@@ -418,8 +416,16 @@ function getBlock(x, y, z) {
 		) {
 		    if (Math.floor(Math.random() * 3) === 0) {
 		        path.add(pathKey(x, z));
+				if(Math.floor(Math.random() * 20)==0 && y==5){
+					        bba[x][6][z] = { biome: "temple" };
+        mba[x][6][z] = "temple"
+
+				}
+
 		    }
 		}
+		    result.biome = bba[x][y][z].biome;
+    result.block = mba[x][y][z];
 
     return result;
 }
