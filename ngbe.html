@@ -417,9 +417,14 @@ function getBlock(x, y, z) {
 		    if (Math.floor(Math.random() * 3) === 0) {
 		        path.add(pathKey(x, z));
 				if(Math.floor(Math.random() * 20)==0 && y==5){
-					        bba[x][6][z] = { biome: "temple" };
-        mba[x][6][z] = "temple"
+					bba[x] ??= [];
+					bba[x][6] ??= [];
 
+					mba[x] ??= [];
+					mba[x][6] ??= [];
+
+					bba[x][6][z] = { biome: "temple" };
+					mba[x][6][z] = "temple";
 				}
 
 		    }
@@ -437,10 +442,14 @@ function renderSurfaceCell(cellId, x, y, z) {
     const ground = getBlock(x, 5, z).block;
     const overlay = getBlock(x, 6, z).block;
 
-    const backgrounds =
-        overlay === "tree" || overlay === "fruit-tree"
-            ? `url("images/${overlay}.png"), url("images/${ground}.png")`
-            : `url("images/${ground}.png")`;
+    const hasOverlay =
+        overlay === "tree" ||
+        overlay === "fruit-tree" ||
+        overlay === "temple";
+
+    const backgrounds = hasOverlay
+        ? `url("images/${overlay}.png"), url("images/${ground}.png")`
+        : `url("images/${ground}.png")`;
 
     $(`#${cellId}`).css("background-image", backgrounds);
 }
