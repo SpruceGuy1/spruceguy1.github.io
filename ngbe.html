@@ -320,6 +320,9 @@ function hasPath(x, z) {
     return path.has(pathKey(x, z));
 }
 
+const PATH_GROWTH_ROLLS = 6;
+const PATH_GROWTH_CHANCE = 1 / 3;
+
 const TEMPLE_CHANCE = 0.01;
 
 function coordinateRandom(x, z, seed = 0) {
@@ -345,13 +348,19 @@ class BasicBlockGenerator{
 		biomeGenerator(x,y,z)
 		this.biome = bba[x][y][z].biome
 		if (
-		    hasPath(x + 1, z) ||
-		    hasPath(x, z + 1) ||
-		    hasPath(x - 1, z) ||
-		    hasPath(x, z - 1)
+		    y === 5 &&
+		    (
+		        hasPath(x + 1, z) ||
+		        hasPath(x, z + 1) ||
+		        hasPath(x - 1, z) ||
+		        hasPath(x, z - 1)
+		    )
 		) {
-		    if (Math.floor(Math.random() * 3) === 0) {
-		        path.add(pathKey(x, z));
+		    for (let attempt = 0; attempt < PATH_GROWTH_ROLLS; attempt++) {
+		        if (Math.random() < PATH_GROWTH_CHANCE) {
+		            path.add(pathKey(x, z));
+		            break;
+		        }
 		    }
 		}
 		if(y==6 && hasTemple(x,z)){
