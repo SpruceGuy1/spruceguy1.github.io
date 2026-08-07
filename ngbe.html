@@ -353,7 +353,7 @@ function generatePathsFromOrigin(ox,oz, flag){
 	var z = oz
 	randomize4()
 	var dir = random
-	for(let i = 0; i<20; i++){
+	for(let i = 0; i<30; i++){
 		randomize3()
       		
 		switch(random){
@@ -392,7 +392,7 @@ function generatePathsFromOrigin(ox,oz, flag){
 				}
 			break
 		}
-		if(i==5 &&(!flag)){
+		if(i==15 &&(!flag)){
 			generatePathsFromOrigin(x,z,false)
 		}
 	    path.add(pathKey(x,z))
@@ -403,6 +403,9 @@ mba[x][6][z] = "temple"
 
 }
 generatePathsFromOrigin(player.coords.x, player.coords.z)
+generatePathsFromOrigin(player.coords.x+10, player.coords.z+10)
+generatePathsFromOrigin(player.coords.x-10, player.coords.z-10)
+
 
 class BasicBlockGenerator{
 	constructor(x,y,z){
