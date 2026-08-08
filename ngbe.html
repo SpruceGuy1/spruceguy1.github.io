@@ -237,14 +237,20 @@ function deserializeMba(serialized) {
 	coords:position,
 	stats:{
 		speed:Math.floor(Math.random()*3)+4,
+		restaurantluck:1,
+		fishingluck:1,
+		miningluck:1,
 
 	},
 	
 	inventory:{
-		trees:0,
+		
 		wood:0,
 		apples:0,
-		fruit_trees:0,
+		fish:0,
+		iron:0,
+		gold:0,
+		hyperstone:0
 
 	}
 },
@@ -291,22 +297,28 @@ $("#login").submit(function (event) {
 }
 var time = 0
 	  
-var player = {
-	name:prompt("enter your player's name"),
+					var player = {
+	name:player.name,
 	coords:position,
 	stats:{
 		speed:Math.floor(Math.random()*3)+4,
+				restaurantluck:1,
+		fishingluck:1,
+		miningluck:1,
 
 	},
 	
 	inventory:{
-		trees:0,
+		
 		wood:0,
 		apples:0,
-		fruit_trees:0,
+		fish:0,
+		iron:0,
+		gold:0,
+		hyperstone:0
 
 	}
-}
+},
 		 $("#status").append("Name: "+player.name)
 		 $("#status").append("Speed: "+player.stats.speed)
 		 $("#templeinterface").hide()
@@ -525,17 +537,39 @@ function templeCallback(){
 	//add later
 			 $("#templeinterface").show()
     $("#cast").click(function(){
+		if(player.inventory.apples==0){
+			console.log("no apples")
+		}else{
+			player.inventory.apples--
+		}
 		switch($("#spellopt").val()){
 			case 'ristorante':
-                
+                if(player.inventory.fish>=1 && player.inventory.wood>=1){
+					player.inventory.fish--
+					player.inventory.wood--
+					player.stats.restaurantluck++
+				}
 			break
-						case 'sleepingsardine':
+			case 'sleepingsardine':
+				if(player.inventory.fish>=2){
+					player.inventory.fish-=2
+					player.stats.fishingluck++
+				}
 
 			break
 			case 'speedy':
+				if(player.inventory.apples>=2){
+					player.inventory.apples-=2
+					player.stats.speed+=5
+				}
 
 			break
 			case 'goldenspell':
+                 if(player.inventory.iron>=1 && player.inventory.gold>=1){
+					player.inventory.iron--
+					player.inventory.gold--
+					player.stats.miningluck ++
+				}
 
 			break
 
