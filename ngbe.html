@@ -314,7 +314,7 @@ $("gwfs").click(function(){
 	
 })
 const biomeNoise = new Noise(WORLD_SEED);
-
+var hasGeneratedFreePath = false
 var biomeGenerator = function(x,y,z){
 	bba[x] ??= []
   bba[x][y] ??= []
@@ -832,6 +832,10 @@ setInterval(()=>{
 	}
 	if(time>500){
 		console.log("night")
+	}
+	if(!hasGeneratedFreePath && getBlock(player.coords.x, player.coords.y, player.coords.z).biome == "water"){
+		generatePathsFromOrigin(player.coords.x,player.coords.z,true)
+		hasGeneratedFreePath = true
 	}
 	render()
 },100*player.stats.speed)
