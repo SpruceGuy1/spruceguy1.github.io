@@ -307,7 +307,7 @@ var bba = []
 var mba = []
 var biomes = ["forest", "fruitForest"]
 const WORLD_SEED = Math.floor(Math.random()*10000);
-const BIOME_SCALE = 100;
+const BIOME_SCALE = 20;
 const biomeNoise = new Noise(WORLD_SEED);
 var biomeGenerator = (x,y,z) => {
 	bba[x] ??= []
@@ -753,6 +753,9 @@ function command(){
 		case "pause":
 			prompting=false;
 			break;
+		case "seed":
+			console.log(WORLD_SEED)
+			break
 		case "q":
 			console.log("w: forward")
 			console.log("s: backward")
