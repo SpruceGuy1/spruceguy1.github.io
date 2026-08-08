@@ -539,6 +539,7 @@ function templeCallback(){
     $("#cast").click(function(){
 		if(player.inventory.apples==0){
 			console.log("no apples")
+			return
 		}else{
 			player.inventory.apples--
 		}
