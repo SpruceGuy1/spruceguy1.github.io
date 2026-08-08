@@ -510,6 +510,10 @@ function getBlock(x, y, z) {
 
     return result;
 }
+function templeCallback(){
+	//add later
+	console.log("entring temple")
+}
 function renderSurfaceCell(cellId, x, y, z) {
 	if(player.coords.y!==5){
 		    $(`#${cellId}`).css("background-image", `url("images/${getBlock(x,y,z).block}.png")`);
@@ -522,6 +526,9 @@ function renderSurfaceCell(cellId, x, y, z) {
         overlay === "tree" || overlay === "fruit-tree" || overlay === "temple"
             ? `url("images/${overlay}.png"), url("images/${ground}.png")`
             : `url("images/${ground}.png")`;
+    	if(overlay=="temple"){
+			$(`#${cellId}`).click(templeCallback)
+		}
 
     $(`#${cellId}`).css("background-image", backgrounds);
 }
