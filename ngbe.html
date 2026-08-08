@@ -319,15 +319,15 @@ var time = 0
 		hyperstone:0
 
 	}
-},
+}
 		 $("#status").append("Name: "+player.name)
 		 $("#status").append("Speed: "+player.stats.speed)
 		 $("#templeinterface").hide()
 var bba = []
 var mba = []
 var biomes = ["forest", "fruitForest"]
-const WORLD_SEED = 12345;
-const BIOME_SCALE = 24;
+const WORLD_SEED = Math.floor(Math.random()*10000);
+const BIOME_SCALE = 100;
 const biomeNoise = new Noise(WORLD_SEED);
 var biomeGenerator = (x,y,z) => {
 	bba[x] ??= []
@@ -336,12 +336,15 @@ var biomeGenerator = (x,y,z) => {
 
 	const biomeValue = biomeNoise.perlin2(x / BIOME_SCALE, z / BIOME_SCALE);
 
-	if (biomeValue < -0.2) {
-	    bba[x][y][z].biome = "forest";
-	} else if (biomeValue < 0.35) {
-	    bba[x][y][z].biome = "fruitForest";
-	} else {
+	if (biomeValue < -0.5) {
+	    bba[x][y][z].biome = "water";
+	} else if (biomeValue < 0) {
 	    bba[x][y][z].biome = "plains";
+	} else if (biomeValue < 0.5) {
+	    bba[x][y][z].biome = "forest";
+	} else {
+ 
+	    bba[x][y][z].biome = "fruitForest";
 	}
 }
 const path = new Set();
