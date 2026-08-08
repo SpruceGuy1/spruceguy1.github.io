@@ -48,6 +48,7 @@
 		<button id="cast">Cast spell</button>
 	</div>
   </body>
+	 <script src="https://cdn.jsdelivr.net/npm/noisejs@2.1.0/index.min.js"></script>
 	 <script type="module">
 		
   // Import the functions you need from the SDKs you need
@@ -325,13 +326,23 @@ var time = 0
 var bba = []
 var mba = []
 var biomes = ["forest", "fruitForest"]
+const WORLD_SEED = 12345;
+const BIOME_SCALE = 24;
+const biomeNoise = new Noise(WORLD_SEED);
 var biomeGenerator = (x,y,z) => {
 	bba[x] ??= []
   bba[x][y] ??= []
   bba[x][y][z] ??= {}
-  
-	var random = Math.floor(Math.random() * biomes.length)
-	 bba[x][y][z].biome=biomes[random]
+
+	const biomeValue = biomeNoise.perlin2(x / BIOME_SCALE, z / BIOME_SCALE);
+
+	if (biomeValue < -0.2) {
+	    bba[x][y][z].biome = "forest";
+	} else if (biomeValue < 0.35) {
+	    bba[x][y][z].biome = "fruitForest";
+	} else {
+	    bba[x][y][z].biome = "plains";
+	}
 }
 const path = new Set();
 const temples = new Set();
