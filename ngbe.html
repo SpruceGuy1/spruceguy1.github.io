@@ -233,28 +233,8 @@ function deserializeMba(serialized) {
 
                 if (docSnap.exists()) {
                     const data = docSnap.data()
-					player = data.player?data.player:{
-	name:player.name,
-	coords:position,
-	stats:{
-		speed:Math.floor(Math.random()*3)+4,
-		restaurantluck:1,
-		fishingluck:1,
-		miningluck:1,
-
-	},
-	
-	inventory:{
-		
-		wood:0,
-		apples:0,
-		fish:0,
-		iron:0,
-		gold:0,
-		hyperstone:0
-
-	}
-},
+					player = data.player ?? createDefaultPlayer();
+					player.coords ??= { ...position };
 					bba = deserializeBba(data.bba)
 					mba = deserializeMba(data.mba)
                     document.getElementById('status').innerText = `Loaded save from ${data.lastSaved}`;
@@ -297,29 +277,29 @@ $("#login").submit(function (event) {
 
 }
 var time = 0
-	  
-					var player = {
-	name:player.name,
-	coords:position,
-	stats:{
-		speed:Math.floor(Math.random()*3)+4,
-				restaurantluck:1,
-		fishingluck:1,
-		miningluck:1,
 
-	},
-	
-	inventory:{
-		
-		wood:0,
-		apples:0,
-		fish:0,
-		iron:0,
-		gold:0,
-		hyperstone:0
-
-	}
+function createDefaultPlayer(name = prompt("enter your player's name")) {
+    return {
+        name,
+        coords: { ...position },
+        stats: {
+            speed: Math.floor(Math.random() * 3) + 4,
+            restaurantluck: 1,
+            fishingluck: 1,
+            miningluck: 1
+        },
+        inventory: {
+            wood: 0,
+            apples: 0,
+            fish: 0,
+            iron: 0,
+            gold: 0,
+            hyperstone: 0
+        }
+    };
 }
+
+					var player = createDefaultPlayer();
 		 $("#status").append("Name: "+player.name)
 		 $("#status").append("Speed: "+player.stats.speed)
 		 $("#templeinterface").hide()
