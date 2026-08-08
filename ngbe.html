@@ -36,10 +36,20 @@
     <button id="save-btn" onclick="saveGameData()" disabled>Save Game</button>
     <button id="load-btn" onclick="loadGameData()" disabled>Load Game</button>
     <div id="status">Loading modules...</div>
-	
+	<div id="templeinterface">
+		<h1>Temple</h1>
+		<button id="applein">Put in an apple</button><bba x="d" class="dj8f" id="skimd">yee yee</bba>
+		<select id="spellopt">
+			<option value="sleepingsardine">Sleeping Sardine for 2 fish</option>
+			<option value="ristorante">Ristorante for a fish and a wood</option>
+			<option value="goldenspell">Golden spell for 1 iron and 1 gold</option>
+			<option value="speedy">Speedy for 2 apples</option>
+		</select>
+		<button id="cast">Cast spell</button>
+	</div>
   </body>
-  
 	 <script type="module">
+		
   // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-analytics.js";
@@ -299,6 +309,7 @@ var player = {
 }
 		 $("#status").append("Name: "+player.name)
 		 $("#status").append("Speed: "+player.stats.speed)
+		 $("#templeinterface").hide()
 var bba = []
 var mba = []
 var biomes = ["forest", "fruitForest"]
@@ -512,6 +523,25 @@ function getBlock(x, y, z) {
 }
 function templeCallback(){
 	//add later
+			 $("#templeinterface").show()
+    $("#cast").click(function(){
+		switch($("#spellopt").val()){
+			case 'ristorante':
+                
+			break
+						case 'sleepingsardine':
+
+			break
+			case 'speedy':
+
+			break
+			case 'goldenspell':
+
+			break
+
+
+		}
+	})
 	console.log("entering temple")
 }
 function renderSurfaceCell(cellId, x, y, z) {
