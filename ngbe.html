@@ -560,7 +560,7 @@ function getBlock(x, y, z) {
 function templeCallback(){
 	//add later
 			 $("#templeinterface").show()
-    $("#cast").click(function(){
+    $("#cast").off('click.cast').on('click.cast', function(){
 		if(player.inventory.apples==0){
 			console.log("no apples")
 			return
