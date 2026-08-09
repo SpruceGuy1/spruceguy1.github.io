@@ -310,10 +310,19 @@ var biomes = ["forest", "fruitForest"]
 var WORLD_SEED = Math.floor(Math.random()*10000);
 const BIOME_SCALE = 20;
 $("#gwfs").click(function(){
-	WORLD_SEED = Number(prompt("paste in seed"))
-	
+	const enteredSeed = Number(prompt("paste in seed"))
+
+	if (!Number.isFinite(enteredSeed)) {
+		return;
+	}
+
+	WORLD_SEED = enteredSeed;
+	biomeNoise = new Noise(WORLD_SEED);
+	bba = [];
+	mba = [];
+	render();
 })
-const biomeNoise = new Noise(WORLD_SEED);
+let biomeNoise = new Noise(WORLD_SEED);
 var hasGeneratedFreePath = false
 var biomeGenerator = function(x,y,z){
 	bba[x] ??= []
