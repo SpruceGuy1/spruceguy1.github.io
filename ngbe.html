@@ -827,7 +827,7 @@ $( document ).on( "keydown", function( event ) {
 
 
 });
-
+var hasnightlogged = false
 setInterval(()=>{
 	if(prompting){
 		command()
@@ -838,9 +838,9 @@ setInterval(()=>{
 	time += 1
 	if(time==1000){
 		time = 0
-
+        hasnightlogged=true
 	}
-	if(time>500){
+	if(time>500 && !hasnightlogged){
 		console.log("night")
 	}
 	if(!hasGeneratedFreePath && getBlock(player.coords.x, player.coords.y, player.coords.z).biome == "water"){
