@@ -101,7 +101,7 @@ import {
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 currentUser = user;
-                document.getElementById('status').innerText = "Email: "+user.email;
+                document.getElementById('status').innerText += "Email: "+user.email;
 				
                 document.getElementById('save-btn').disabled = false;
                 document.getElementById('load-btn').disabled = false;
@@ -279,7 +279,54 @@ $("#login").submit(function (event) {
 
 }
 var time = 0
+function grt(material, bait){
+			var text = "You have "
+		
+		switch(material){
+			case 0:
+				text += "a wooden"
+				break
+			case 1:
+				text += "an iron"
+				break
+			case 2:
+				text += "an artifact"
+				break
 
+		}
+		text += " with "
+		switch(bait){
+			case 0:
+				text += "no bait."
+				break
+			case 1:
+				text+="worms as bait."
+				break
+			case 2:
+				text+="a minnow as bait."
+				break
+			case 3:
+				text+="crafted bait."
+				break
+		}
+return text
+}
+class Rod{
+	constructor(material, bait){
+		this.material=material
+		this.bait=bait
+        this.text=grt(material,bait)
+	}
+	upgradeMaterial(){
+		this.material++
+		this.text=grt(this.material,this.bait)
+	}
+	upgradeBait(){
+				this.bait++
+		this.text=grt(this.material,this.bait)
+
+	}
+}
 function createDefaultPlayer(name = prompt("enter your player's name")) {
     return {
         name,
@@ -297,7 +344,8 @@ function createDefaultPlayer(name = prompt("enter your player's name")) {
             iron: 0,
             gold: 0,
             hyperstone: 0
-        }
+        },
+		fishingrod:new Rod(0,0)
     };
 }
 
@@ -305,6 +353,7 @@ function createDefaultPlayer(name = prompt("enter your player's name")) {
 		 $("#status").append("Name: "+player.name)
 		 $("#status").append("Speed: "+player.stats.speed)
 		 $("#templeinterface").hide()
+		 $("#status").append(player.fishingrod.text)
 var bba = []
 var mba = []
 var biomes = ["forest", "fruitForest"]
