@@ -1,461 +1,507 @@
 <!doctype html>
 <html>
-    <head>
-        <title>Ceci n'est pas une pipe. - A wise human</title>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/themes/smoothness/jquery-ui.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js"></script>
-        <link rel="stylesheet" href="style.css">
-        <script src="touch.js"></script>
-    </head>
-    <body>
-        <div id="timer"><span id="timerc"></span><button id="playpause">Pause</button></div>
-        <button id ="click_me" title="Get +1 denial.">Ceci n'est pas un jeu de clic</button>
-        <br> <span class="hint">Get denial.</span>
-        <br> 
-       <br> Denial: <span id="denial"></span>
-       <br> <button id="bone">Buy a bone of denial</button>for <span id="cost_bone">15</span>
-       <br> <span class="hint">Get +1 denial per second.</span>
-       <br> Bones: <span id="bones">0</span>
-       <br> <button id="paper">Buy a paper of denial</button>for <span id="cost_paper">100</span>
-       <br> <span class="hint">Use to print paintings.</span>
-       <br>  <button id="paper_max">Buy as much paper as you can</button>
-       <br> <button id="printer">Buy a printer of denial</button>for <span id="cost_printer">250</span>
-       <br> <span class="hint">Allows you to print paintings on paper</span>
-       <br> <button id="buy_gold">
-           Buy gold for <span class="gPrice">10</span> denial
-       </button>
-       <br> <button id="sell_gold">
-           Sell gold for <span class="gPrice">10</span> denial
-       </button>
-       <br> You have <span id="gAmount">0</span> gold.
-       <br> <span class="hint">Gold is a resource. The value of gold goes up and down. You should buy gold when its value is low and sell it when high.</span>
-       <br> Denial/second: <span id="dps">0</span>
-       <br> <span class="hint">You get this much denial passively every second</span>
-       <br> Paper: <span id="paper_">0</span>
-       <br> <span id="has_printer"></span>
-       <br> <button id="print">print a "Ceci n'est pas une pipe" painting</button> for 1 paper (requires a printer)
-       <br> <span class="hint">Make a painting, which can be sold to get more denial</span>
-       <br> Paintings: <span id="paintings">0</span>
-       <br> <button id="sell">Sell a painting</button>
-       <br> <button id="sell_all">Sell all paintings</button>
-       <br> <button id="print_all">Print as much paintings as you can</button>
-       <br> <button id="gen_real">Generate reality for 1000000000 denial</button>
-       <br> <span class="hint">Get +1 reality, which can help you get a universe.</span>
-       <br> <button id="qgr">Generate 100 reality</button>
-       <br> <button id="qqgr">Generate 1000 reality</button>
-       <br> You have <span id="reality">0</span> reality
-       <br> <button id="gen_fab">Generate a piece of the fabric of the universe for 100 reality</button>
-       <br> <span class="hint">Get fabric, your final step in creating a universe.</span>
-       <br> You have <span id="fab">0%</span> of the fabric required to ascend.
-       <br> <button id="ascend">Ascend</button>
-       <br> <span class="hint">resets every thing except for: printer survives, +1 universe, x5 denial/second</span>
-       <br> Universes: <span id="uno">0</span>
-       <br><a href="speedrun.html" target="_blank">Speedrunning</a>
-       <br> Submit a speedrun either:
-       <br><ul><li>With footage to <a href="mailto:mikeyvs33@gmail.com">here</a></li><li>or in person to mikey</li></ul>
-       <div id="midbar">
-           <h3 id="midh3">Unlock at 1 universe</h3>
-           <h2 id = "a">*******</h2>
-           <button id="b">*** ** *** *** *,***,***,***,*** ******</button>
-           <button id="c">*** **** *** *** *** ******</button>
-           <a href="" id="msgo" target="_blank">Minigame - locked</a>
-           
-       </div>
-       <div id="sidebar">
-           <h3>Stats</h3>
-           Achievements completed: <span id="achievements">0</span>
-           <div id="dem_bones"></div>
-           <div id="embroidery"></div>
-           <div id="high_scorer"></div>
-           <div id="universe_man"></div>
-          
-       </div>
-       <br><h1>Beta Testing, Art, and Other Games</h1>
-       <a href="lucky2.html" target="_blank">Try the Lucky minigame</a>
-       <a href="img.html" target="_blank">Mikey's art</a>
-       <a href="cooki.html" target="_blank">Cooki</a>
-    </body>
-    <script>
-    var dpc = 1
-    var universes = 0
-    var denial = 0
+  <head>
+    <title>Ceci n'est pas une pipe. - A wise human</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/themes/smoothness/jquery-ui.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="style.css" />
+    <script src="touch.js"></script>
+  </head>
+  <body>
+    <div id="timer">
+      <span id="timerc"></span><button id="playpause">Pause</button>
+    </div>
+    <button id="click_me" title="Get +1 denial.">
+      Ceci n'est pas un jeu de clic
+    </button>
+    <br />
+    <span class="hint">Get denial.</span>
+    <br />
+    <br />
+    Denial: <span id="denial"></span> <br />
+    <button id="bone">Buy a bone of denial</button>for
+    <span id="cost_bone">15</span> <br />
+    <span class="hint">Get +1 denial per second.</span> <br />
+    Bones: <span id="bones">0</span> <br />
+    <button id="paper">Buy a paper of denial</button>for
+    <span id="cost_paper">100</span> <br />
+    <span class="hint">Use to print paintings.</span> <br />
+    <button id="paper_max">Buy as much paper as you can</button> <br />
+    <button id="printer">Buy a printer of denial</button>for
+    <span id="cost_printer">250</span> <br />
+    <span class="hint">Allows you to print paintings on paper</span> <br />
+    <button id="buy_gold">
+      Buy gold for <span class="gPrice">10</span> denial
+    </button>
+    <br />
+    <button id="sell_gold">
+      Sell gold for <span class="gPrice">10</span> denial
+    </button>
+    <br />
+    You have <span id="gAmount">0</span> gold. <br />
+    <span class="hint"
+      >Gold is a resource. The value of gold goes up and down. You should buy
+      gold when its value is low and sell it when high.</span
+    >
+    <br />
+    Denial/second: <span id="dps">0</span> <br />
+    <span class="hint">You get this much denial passively every second</span>
+    <br />
+    Paper: <span id="paper_">0</span> <br />
+    <span id="has_printer"></span> <br />
+    <button id="print">print a "Ceci n'est pas une pipe" painting</button> for 1
+    paper (requires a printer) <br />
+    <span class="hint"
+      >Make a painting, which can be sold to get more denial</span
+    >
+    <br />
+    Paintings: <span id="paintings">0</span> <br />
+    <button id="sell">Sell a painting</button> <br />
+    <button id="sell_all">Sell all paintings</button> <br />
+    <button id="print_all">Print as much paintings as you can</button> <br />
+    <button id="gen_real">Generate reality for 1000000000 denial</button> <br />
+    <span class="hint">Get +1 reality, which can help you get a universe.</span>
+    <br />
+    <button id="qgr">Generate 100 reality</button> <br />
+    <button id="qqgr">Generate 1000 reality</button> <br />
+    You have <span id="reality">0</span> reality <br />
+    <button id="gen_fab">
+      Generate a piece of the fabric of the universe for 100 reality
+    </button>
+    <br />
+    <span class="hint"
+      >Get fabric, your final step in creating a universe.</span
+    >
+    <br />
+    You have <span id="fab">0%</span> of the fabric required to ascend. <br />
+    <button id="ascend">Ascend</button> <br />
+    <span class="hint"
+      >resets every thing except for: printer survives, +1 universe, x5
+      denial/second</span
+    >
+    <br />
+    Universes: <span id="uno">0</span> <br /><a
+      href="speedrun.html"
+      target="_blank"
+      >Speedrunning</a
+    >
+    <br />
+    Submit a speedrun either: <br />
+    <ul>
+      <li>With footage to <a href="mailto:mikeyvs33@gmail.com">here</a></li>
+      <li>or in person to mikey</li>
+    </ul>
+    <div id="midbar">
+      <h3 id="midh3">Unlock at 1 universe</h3>
+      <h2 id="a">*******</h2>
+      <button id="b">*** ** *** *** *,***,***,***,*** ******</button>
+      <button id="c">*** **** *** *** *** ******</button>
+      <a href="" id="msgo" target="_blank">Minigame - locked</a>
+    </div>
+    <div id="sidebar">
+      <h3>Stats</h3>
+      Achievements completed: <span id="achievements">0</span>
+      <div id="dem_bones"></div>
+      <div id="embroidery"></div>
+      <div id="high_scorer"></div>
+      <div id="universe_man"></div>
+    </div>
+    <br />
+    <h1>Beta Testing, Art, and Other Games</h1>
+    <a href="lucky2.html" target="_blank">Try the Lucky minigame</a>
+    <a href="img.html" target="_blank">Mikey's art</a>
+    <a href="cooki.html" target="_blank">Cooki</a>
+  </body>
+  <script>
+    var dpc = 1;
+    var universes = 0;
+    var denial = 0;
 
-    var dps= 0
-    
-    var bone_cost = 15
-    
-    var paper_cost = 100
-    
-    var printer_cost = 250
-    var paper_sheets = 0
-    var has_printer = false
-    var paintings = 0
-    var reality = 0
-    var fabric = 0
-    var req = 5
-    
-    var bones = 0
-    var time = 0
-    var dt = "0:00"
-    var sec = "00"
-    var timerStatus = true
-    var gold = 0
-    var gcost = 10
-    function TIMER(){
-        if(timerStatus){
-            time++
-        
-            dt = (Math.floor(time/60))+" min "+time%60+" sec"
-            $("#timerc").text(dt)
-        }
-    }
-    function rx5dpc(){
-        if(denial>=(10**12)){
-        dpc *= 5
-        denial -= 1000000000000
-        $("#denial").text(denial)
-        
-        }
-    }
-    function fx5dpc(){
-        alert("unlock first")
-    }
-    function rp1hdps(){
-        if(denial>=10**20){
-            dps *= 100
-            denial -= 10**20
-            $("#dps").text(dps)
-            $("#denial").text(denial)
-        }
-        
-        
-    }
-    function fp1hdps(){
-        alert("unlock it")
-    }
-    function runTimer(){}
+    var dps = 0;
 
-    var timerExists = prompt("Would you like a timer? (y/n)")
-    if(timerExists=="y"){
-        runTimer = TIMER
+    var bone_cost = 15;
+
+    var paper_cost = 100;
+
+    var printer_cost = 250;
+    var paper_sheets = 0;
+    var has_printer = false;
+    var paintings = 0;
+    var reality = 0;
+    var fabric = 0;
+    var req = 5;
+
+    var bones = 0;
+    var time = 0;
+    var dt = "0:00";
+    var sec = "00";
+    var timerStatus = true;
+    var gold = 0;
+    var gcost = 10;
+    function TIMER() {
+      if (timerStatus) {
+        time++;
+
+        dt = Math.floor(time / 60) + " min " + (time % 60) + " sec";
+        $("#timerc").text(dt);
+      }
     }
-    $("#playpause").click(()=>{
-        timerStatus = !timerStatus
-        var t = timerStatus ? "Pause" : "Play"
-        $("#playpause").text(t)
-    })
-    function percent(num, den){
-        return (100*num)/den
+    function rx5dpc() {
+      if (denial >= 10 ** 12) {
+        dpc *= 5;
+        denial -= 1000000000000;
+        $("#denial").text(denial);
+      }
     }
-    function getTrophy(c,j,n,h,caption){
-        if(c&&(!j)){
-                    alert("Achievement completed: "+n)
-                    dps*=1.5
-                    achievements.correct++
-                    achievements[j]=true
-                    $("#achievements").text(achievements.correct)
-                    $(h).html("<figure><img src='trophy.png'><figcaption> "+caption+" </figcaption></figure>")
-                }
+    function fx5dpc() {
+      alert("unlock first");
+    }
+    function rp1hdps() {
+      if (denial >= 10 ** 20) {
+        dps *= 100;
+        denial -= 10 ** 20;
+        $("#dps").text(dps);
+        $("#denial").text(denial);
+      }
+    }
+    function fp1hdps() {
+      alert("unlock it");
+    }
+    function runTimer() {}
+
+    var timerExists = prompt("Would you like a timer? (y/n)");
+    if (timerExists == "y") {
+      runTimer = TIMER;
+    }
+    $("#playpause").click(() => {
+      timerStatus = !timerStatus;
+      var t = timerStatus ? "Pause" : "Play";
+      $("#playpause").text(t);
+    });
+    function percent(num, den) {
+      return (100 * num) / den;
+    }
+    function getTrophy(c, j, n, h, caption) {
+      if (c && !j) {
+        alert("Achievement completed: " + n);
+        dps *= 1.5;
+        achievements.correct++;
+        achievements[j] = true;
+        $("#achievements").text(achievements.correct);
+        $(h).html(
+          "<figure><img src='trophy.png'><figcaption> " +
+            caption +
+            " </figcaption></figure>",
+        );
+      }
     }
     var achievements = {
-        correct: 0,
-        demBones: false,
-        embroidery: false,
-        "highScorer": false,
-        "universeMan": false,
-    }
-        $("#click_me").click(()=>{
-            
-            denial+= dpc
-            
-            $("#denial").text(denial)
-           
-            
-        })
-        $("#bone").click(()=>{
-            if(denial>=bone_cost){
-                
-                 denial -= bone_cost
-                bone_cost = bone_cost*1.01
-                bones++
-                $("#bones").text(bones)
-                if(bones==25&&!achievements.demBones){
-                    alert("Achievement completed: Dem Bones")
-                    dps*=1.5
-                    achievements.correct++
-                    achievements.demBones=true
-                    $("#achievements").text(achievements.correct)
-                    $("#dem_bones").html("<figure><img src='trophy.png'><figcaption>Dem bones - get 25 bones of denial.</figcaption></figure>")
-                }
-                
-                console.log("a")
-                dps++
-                console.log("b")
-                
-                
-                 $("#denial").text(denial)
-                 $("#cost_bone").text(bone_cost)
-                 $("#dps").text(dps)
-                
-            }else{
-                alert("The bone of denial costs "+bone_cost+" denial")
-            }
-        })
-        $("#paper").click(()=>{
-            if(denial>=paper_cost){
-                  denial -= paper_cost
-                paper_cost = paper_cost*1.1
-              
-                paper_sheets+=15
-                
-               
-                 $("#denial").text(denial)
-                 $("#cost_paper").text(paper_cost)
-                 $("#dps").text(dps)
-                 $("#paper_").text(paper_sheets)
-               
-                
-            }else{
-                alert("The paper of denial costs "+paper_cost+" denial")
-            }
-        })
-        $("#printer").click(()=>{
-            if(denial>=printer_cost){
-                 denial -= printer_cost
-                 
-                printer_cost = printer_cost*1.5
-               
-                if(!has_printer){
-                    has_printer=true
-                }
-                
-                 $("#denial").text(denial)
-                 $("#has_printer").text("You have a printer.")
-                 $("#cost_printer").text(printer_cost)
-                 $("#dps").text(dps)
-                
-            }else{
-                alert("The printer of denial costs "+printer_cost+" denial")
-            }
-        })
-        $("#print").click(()=>{
-            if(paper_sheets>=1&&has_printer){
-                paper_sheets--
-                paintings++
-                dps*=1.0001
-                
-                 $("#dps").text(dps)
-                 $("#paper_").text(paper_sheets)
-                 $("#paintings").text(paintings)
-                 $("body").css("background-image", "url('ogceci.png')")
-            }else{
-                alert("You need at least 1 paper and a printer.")
-            }
-        })
-        $("#sell").click(function(){
-            if(paintings>=1){
-                denial += dps + 5
-               
-                paintings--
-                $("#denial").text(denial)
-               
-                $("#paintings").text(paintings)
-            }else{
-                alert("You need a painting to sell it.")
-            }
-        })
-        $("#sell_all").click(()=>{
-            if(paintings>=1){
-                denial += (dps + 5)*paintings
+      correct: 0,
+      demBones: false,
+      embroidery: false,
+      highScorer: false,
+      universeMan: false,
+    };
+    $("#click_me").click(() => {
+      denial += dpc;
 
-                paintings=0
-                
-                $("#denial").text(denial)
-                
-                $("#paintings").text(paintings)
-                                        getTrophy((denial>=1000000000000), "highScorer", "High Scorer", "#high_scorer", "High Scorer - Get 1 trillion denial")
+      $("#denial").text(denial);
+    });
+    $("#bone").click(() => {
+      if (denial >= bone_cost) {
+        denial -= bone_cost;
+        bone_cost = bone_cost * 1.01;
+        bones++;
+        $("#bones").text(bones);
+        if (bones == 25 && !achievements.demBones) {
+          alert("Achievement completed: Dem Bones");
+          dps *= 1.5;
+          achievements.correct++;
+          achievements.demBones = true;
+          $("#achievements").text(achievements.correct);
+          $("#dem_bones").html(
+            "<figure><img src='trophy.png'><figcaption>Dem bones - get 25 bones of denial.</figcaption></figure>",
+          );
+        }
 
-            }else{
-                alert("You need a painting to sell it.")
-            }
-        })
-        $("#print_all").click(()=>{
-            if(paper_sheets>=1&&has_printer){
-                paintings+=paper_sheets
-                dps*=1.1*paper_sheets
-                paper_sheets=0
-                $("body").css("background-image", "url('ogceci.png')")
-                
-               
-                 
-                $("#dps").text(dps)
-                
-                 $("#paper_").text(paper_sheets)
-                 $("#paintings").text(paintings)
-            }else{
-                alert("You need at least 1 paper and a printer.")
-            }
-        })
-       $("#paper_max").click(()=>{
-           console.log("1")
-            if(denial>=paper_cost){
-                console.log("2")
-                var q = Math.floor(denial/paper_cost)
-                 console.log("3")
-                 denial -= paper_cost*q
-                 console.log(4)
-                paper_cost = paper_cost*(1.1*q)
-                console.log(5)
-               
-                console.log(6)
-                paper_sheets+=15*q
-               console.log(7)
-                $("#denial").text(denial)
-                console.log(8)
-                $("#cost_paper").text(paper_cost)
-             console.log(9)
-                 $("#dps").text(dps)
-                
+        console.log("a");
+        dps++;
+        console.log("b");
 
-                console.log(10)
-                 $("#paper_").text(paper_sheets)
-            }else{
-                alert("The paper of denial costs "+paper_cost+" denial")
-            }
-        })
-        $("#gen_real").click(()=>{
-            if(denial>=(10**9)){
-               reality++
-               denial -= (10**9)
-               
-               dps *= 1+(10**(-10))
-               
-               $("#reality").text(reality)
-               $("#dps").text(dps)
-               $("#denial").text(denial)
-               
-            }else{
-               alert('"You need more denial to unlock the reality of our omniverse." -Somebody, circa -2025 BCE')
-            }
-        })
-        $("#qgr").click(()=>{
-            if(denial>=(10**11)){
-               reality+=100
-               denial -= (10**11)
-               
-               dps *= 1+(10**(-8))
-               
-               $("#reality").text(reality)
-               $("#dps").text(dps)
-               $("#denial").text(denial)
-                
-            }else{
-                alert('"You need more denial to unlock the reality of our omniverse." -Somebody, circa -2025 BCE')
-            }
-        })
-        $("#qqgr").click(()=>{
-            if(denial>=(10**12)){
-               reality+=1000
-               denial -= (10**12)
-               
-               dps *= 1+(10**(-7))
-               
-               $("#reality").text(reality)
-               $("#dps").text(dps)
-               $("#denial").text(denial)
-                
-            }else{
-                alert('"You need more denial to unlock the reality of our omniverse." -Somebody, circa -2025 BCE')
-            }
-        })
-       $("#gen_fab").click(()=>{
-            if(reality>=100){
-               fabric++
-               reality -= 100
-               
-               dps *= 1+(10**(-10))
-               
-               $("#reality").text(reality)
-               $("#dps").text(dps)
-               $("#denial").text(denial)
-               $("#fab").text(percent(fabric,req)+"%")
-               if(percent(fabric,req)>100&&!achievements.embroidery){
-                   alert("Achievement completed: Embroidery")
-                    dps*=1.5
-                    achievements.correct++
-                   achievements.embroidery=true
-                   $("#achievements").text(achievements.correct)
-                   $("#embroidery").html("<figure><img src='trophy.png'><figcaption>Embroidery - get more fabric than neccesary</figcaption></figure>")
+        $("#denial").text(denial);
+        $("#cost_bone").text(bone_cost);
+        $("#dps").text(dps);
+      } else {
+        alert("The bone of denial costs " + bone_cost + " denial");
+      }
+    });
+    $("#paper").click(() => {
+      if (denial >= paper_cost) {
+        denial -= paper_cost;
+        paper_cost = paper_cost * 1.1;
 
-               }
-              
-            }else{
-               alert('"You need more reality to unlock the fabric of our omniverse." -Somebody, circa -2025 BCE')
-            }
-        })
-        $("#ascend").click(()=>{
-             if(fabric>=req){
-                 universes++
-                 if(universes==1){
-                     $("#midh3").text("Explore!")
-                     $("#a").text("UniShop")
-                     $("#b").text("Get x5 dpc for 1 trillion denial")
-                     fx5dpc = rx5dpc
-                     $("#c").text("Get x100 dps for e20 denial")
-                     fp1hdps = rp1hdps
-                     $("#msgo").text("Monka Stick")
-                     $("#msgo").attr("href", "ms.html")
-                 }
-                 dps *= 5
-                 denial = 0
-                 reality=0
-                 fabric=0
-                 req += 3
-                 
-                   $("#reality").text(reality)
-               $("#dps").text(dps)
-               $("#denial").text(denial)
-               $("#fab").text(percent(fabric,req))
-               $("#uno").text(universes)
-               getTrophy(universes==20, "universeMan", "Universe Man", "#universe_man", "Universe Man - get 20 universes")
-             }else{
-                 alert("you need more fabric")
-             }                      
-        })
-        $("#b").click(()=>{
-            fx5dpc()
-        })
-        $("#c").click(()=>{
-            fp1hdps()
-        })
-        $("#buy_gold").click(()=>{
-            if(denial>=gcost){
-                denial -=gcost
-                gcost += 30
-                gold++
-                $("#gAmount").text(gold)
-                $(".gPrice").text(gcost)
-            }
-        })
-        $("#sell_gold").click(()=>{
-            if(gold>=1){
-                denial +=gcost
-                gcost -= 7
-                gold--
-                $("#gAmount").text(gold)
-                $(".gPrice").text(gcost)
-            }
-        })
-        setInterval(()=>{
-            denial += dps
-            runTimer()
-            gcost += Math.floor((Math.random()*(denial/50))-3)
-            if(gcost<=0){
-                gcost+=12
-            }
-            $("#denial").text(denial)
-            $(".gPrice").text(gcost)
-        }, 1000)
-    </script>
+        paper_sheets += 15;
+
+        $("#denial").text(denial);
+        $("#cost_paper").text(paper_cost);
+        $("#dps").text(dps);
+        $("#paper_").text(paper_sheets);
+      } else {
+        alert("The paper of denial costs " + paper_cost + " denial");
+      }
+    });
+    $("#printer").click(() => {
+      if (denial >= printer_cost) {
+        denial -= printer_cost;
+
+        printer_cost = printer_cost * 1.5;
+
+        if (!has_printer) {
+          has_printer = true;
+        }
+
+        $("#denial").text(denial);
+        $("#has_printer").text("You have a printer.");
+        $("#cost_printer").text(printer_cost);
+        $("#dps").text(dps);
+      } else {
+        alert("The printer of denial costs " + printer_cost + " denial");
+      }
+    });
+    $("#print").click(() => {
+      if (paper_sheets >= 1 && has_printer) {
+        paper_sheets--;
+        paintings++;
+        dps *= 1.0001;
+
+        $("#dps").text(dps);
+        $("#paper_").text(paper_sheets);
+        $("#paintings").text(paintings);
+        $("body").css("background-image", "url('ogceci.png')");
+      } else {
+        alert("You need at least 1 paper and a printer.");
+      }
+    });
+    $("#sell").click(function () {
+      if (paintings >= 1) {
+        denial += dps + 5;
+
+        paintings--;
+        $("#denial").text(denial);
+
+        $("#paintings").text(paintings);
+      } else {
+        alert("You need a painting to sell it.");
+      }
+    });
+    $("#sell_all").click(() => {
+      if (paintings >= 1) {
+        denial += (dps + 5) * paintings;
+
+        paintings = 0;
+
+        $("#denial").text(denial);
+
+        $("#paintings").text(paintings);
+        getTrophy(
+          denial >= 1000000000000,
+          "highScorer",
+          "High Scorer",
+          "#high_scorer",
+          "High Scorer - Get 1 trillion denial",
+        );
+      } else {
+        alert("You need a painting to sell it.");
+      }
+    });
+    $("#print_all").click(() => {
+      if (paper_sheets >= 1 && has_printer) {
+        paintings += paper_sheets;
+        dps *= 1.1 * paper_sheets;
+        paper_sheets = 0;
+        $("body").css("background-image", "url('ogceci.png')");
+
+        $("#dps").text(dps);
+
+        $("#paper_").text(paper_sheets);
+        $("#paintings").text(paintings);
+      } else {
+        alert("You need at least 1 paper and a printer.");
+      }
+    });
+    $("#paper_max").click(() => {
+      console.log("1");
+      if (denial >= paper_cost) {
+        console.log("2");
+        var q = Math.floor(denial / paper_cost);
+        console.log("3");
+        denial -= paper_cost * q;
+        console.log(4);
+        paper_cost = paper_cost * (1.1 * q);
+        console.log(5);
+
+        console.log(6);
+        paper_sheets += 15 * q;
+        console.log(7);
+        $("#denial").text(denial);
+        console.log(8);
+        $("#cost_paper").text(paper_cost);
+        console.log(9);
+        $("#dps").text(dps);
+
+        console.log(10);
+        $("#paper_").text(paper_sheets);
+      } else {
+        alert("The paper of denial costs " + paper_cost + " denial");
+      }
+    });
+    $("#gen_real").click(() => {
+      if (denial >= 10 ** 9) {
+        reality++;
+        denial -= 10 ** 9;
+
+        dps *= 1 + 10 ** -10;
+
+        $("#reality").text(reality);
+        $("#dps").text(dps);
+        $("#denial").text(denial);
+      } else {
+        alert(
+          '"You need more denial to unlock the reality of our omniverse." -Somebody, circa -2025 BCE',
+        );
+      }
+    });
+    $("#qgr").click(() => {
+      if (denial >= 10 ** 11) {
+        reality += 100;
+        denial -= 10 ** 11;
+
+        dps *= 1 + 10 ** -8;
+
+        $("#reality").text(reality);
+        $("#dps").text(dps);
+        $("#denial").text(denial);
+      } else {
+        alert(
+          '"You need more denial to unlock the reality of our omniverse." -Somebody, circa -2025 BCE',
+        );
+      }
+    });
+    $("#qqgr").click(() => {
+      if (denial >= 10 ** 12) {
+        reality += 1000;
+        denial -= 10 ** 12;
+
+        dps *= 1 + 10 ** -7;
+
+        $("#reality").text(reality);
+        $("#dps").text(dps);
+        $("#denial").text(denial);
+      } else {
+        alert(
+          '"You need more denial to unlock the reality of our omniverse." -Somebody, circa -2025 BCE',
+        );
+      }
+    });
+    $("#gen_fab").click(() => {
+      if (reality >= 100) {
+        fabric++;
+        reality -= 100;
+
+        dps *= 1 + 10 ** -10;
+
+        $("#reality").text(reality);
+        $("#dps").text(dps);
+        $("#denial").text(denial);
+        $("#fab").text(percent(fabric, req) + "%");
+        if (percent(fabric, req) > 100 && !achievements.embroidery) {
+          alert("Achievement completed: Embroidery");
+          dps *= 1.5;
+          achievements.correct++;
+          achievements.embroidery = true;
+          $("#achievements").text(achievements.correct);
+          $("#embroidery").html(
+            "<figure><img src='trophy.png'><figcaption>Embroidery - get more fabric than neccesary</figcaption></figure>",
+          );
+        }
+      } else {
+        alert(
+          '"You need more reality to unlock the fabric of our omniverse." -Somebody, circa -2025 BCE',
+        );
+      }
+    });
+    $("#ascend").click(() => {
+      if (fabric >= req) {
+        universes++;
+        if (universes == 1) {
+          $("#midh3").text("Explore!");
+          $("#a").text("UniShop");
+          $("#b").text("Get x5 dpc for 1 trillion denial");
+          fx5dpc = rx5dpc;
+          $("#c").text("Get x100 dps for e20 denial");
+          fp1hdps = rp1hdps;
+          $("#msgo").text("Monka Stick");
+          $("#msgo").attr("href", "ms.html");
+        }
+        dps *= 5;
+        denial = 0;
+        reality = 0;
+        fabric = 0;
+        req += 3;
+
+        $("#reality").text(reality);
+        $("#dps").text(dps);
+        $("#denial").text(denial);
+        $("#fab").text(percent(fabric, req));
+        $("#uno").text(universes);
+        getTrophy(
+          universes == 20,
+          "universeMan",
+          "Universe Man",
+          "#universe_man",
+          "Universe Man - get 20 universes",
+        );
+      } else {
+        alert("you need more fabric");
+      }
+    });
+    $("#b").click(() => {
+      fx5dpc();
+    });
+    $("#c").click(() => {
+      fp1hdps();
+    });
+    $("#buy_gold").click(() => {
+      if (denial >= gcost) {
+        denial -= gcost;
+        gcost += 30;
+        gold++;
+        $("#gAmount").text(gold);
+        $(".gPrice").text(gcost);
+      }
+    });
+    $("#sell_gold").click(() => {
+      if (gold >= 1) {
+        denial += gcost;
+        gcost -= 7;
+        gold--;
+        $("#gAmount").text(gold);
+        $(".gPrice").text(gcost);
+      }
+    });
+    setInterval(() => {
+      denial += dps;
+      runTimer();
+      gcost += Math.floor(Math.random() * (denial / 50) - 3);
+      if (gcost <= 0) {
+        gcost += 12;
+      }
+      $("#denial").text(denial);
+      $(".gPrice").text(gcost);
+    }, 1000);
+  </script>
 </html>

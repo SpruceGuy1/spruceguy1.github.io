@@ -1,62 +1,80 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
-	<head>
-		<title>MONKA STICK-MMORG</title>
-		<link rel="stylesheet" href="/style.css"/>
-	</head>
-	<body>
-	<script   src="https://code.jquery.com/jquery-3.7.0.js"   integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="   crossorigin="anonymous"></script>
-	<script   src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"   integrity="sha256-6XMVI0zB8cRzfZjqKcD01PBsAy3FlDASrlC8SxCpInY="   crossorigin="anonymous"></script>
-	<a href="/index.html">home</a>
-		<br>
-		<h1>Monka Stick</h1>
-		<br>
-		Monka Stick is a MMORG game where you give the stick a command and it does something. A command list is below. <br>
-		<ul>
-			<li>spin:  makes the monka stick spin around 10 times.</li>
-			<li>colorchanger: like the spin command, but it turns magenta.</li>
-			<li>Kristen: makes it turn red.</li>
-			<li>apple: makes a green circle appear. (click "hide apple" to hide it.)</li>
-			<li>snake: makes a yellow snake image pop up. (click "hide snake" to hide it.)</li>
-			<li>heart: makes a red heart pop up. (click "hide heart" to hide it).</li>
-			<li>tardi: makes a tardigrade pop up. (click "hide tardigrade" to hide it.)</li>
-		</ul>
-		<div id="ms"></div>
-		<button  onclick="ask()">enter word</button>
-		<button onclick="$('#apple').remove()">hide apple</button>
-		<button onclick="$('#snake').remove()">hide snake</button>
-		<button onclick="$('#heart').remove()">hide heart</button>
-		<button onclick="$('#tardi').remove()">hide tardigrade</button>
-	</body>
-	<script>
-		$("#ms").draggable()
-		$("body").droppable()
+  <head>
+    <title>MONKA STICK-MMORG</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <script
+      src="https://code.jquery.com/jquery-3.7.0.js"
+      integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"
+      integrity="sha256-6XMVI0zB8cRzfZjqKcD01PBsAy3FlDASrlC8SxCpInY="
+      crossorigin="anonymous"
+    ></script>
+    <a href="/index.html">home</a>
+    <br />
+    <h1>Monka Stick</h1>
+    <br />
+    Monka Stick is a MMORG game where you give the stick a command and it does
+    something. A command list is below. <br />
+    <ul>
+      <li>spin: makes the monka stick spin around 10 times.</li>
+      <li>colorchanger: like the spin command, but it turns magenta.</li>
+      <li>Kristen: makes it turn red.</li>
+      <li>
+        apple: makes a green circle appear. (click "hide apple" to hide it.)
+      </li>
+      <li>
+        snake: makes a yellow snake image pop up. (click "hide snake" to hide
+        it.)
+      </li>
+      <li>heart: makes a red heart pop up. (click "hide heart" to hide it).</li>
+      <li>
+        tardi: makes a tardigrade pop up. (click "hide tardigrade" to hide it.)
+      </li>
+    </ul>
+    <div id="ms"></div>
+    <button onclick="ask()">enter word</button>
+    <button onclick="$('#apple').remove()">hide apple</button>
+    <button onclick="$('#snake').remove()">hide snake</button>
+    <button onclick="$('#heart').remove()">hide heart</button>
+    <button onclick="$('#tardi').remove()">hide tardigrade</button>
+  </body>
+  <script>
+    $("#ms").draggable();
+    $("body").droppable();
 
-		function ask(){
-			var ta = prompt("[][][][][][][]")
+    function ask() {
+      var ta = prompt("[][][][][][][]");
 
-			switch(ta){
-				case 'spin':
-					$("#ms").css("animation","spinms 1s 10")
-					break;
-				case 'colorchanger':
-					$("#ms").css("animation","spinmscc 1s 10")
-					break;
-				case 'Kristen':
-					$("#ms").css("animation","kristen 1s 10")
-					break;
-				case 'apple':
-					$("body").append("<div id='apple'></div>")
-					break;
-				case 'snake':
-					$("body").append("<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUl_vvW6fTi5SefFq8MCmSU-twipPwuFs64w&s' id='snake'/>")
-					break;
-				case 'heart':
-					$("body").append("<img src='heart.jpg' id='heart'/>")
-					break;
-				case "tardi":
-					$("body").append("<img src='tardi.jpeg' id='tardi'/>")
-			}
-		}
-	</script>
+      switch (ta) {
+        case "spin":
+          $("#ms").css("animation", "spinms 1s 10");
+          break;
+        case "colorchanger":
+          $("#ms").css("animation", "spinmscc 1s 10");
+          break;
+        case "Kristen":
+          $("#ms").css("animation", "kristen 1s 10");
+          break;
+        case "apple":
+          $("body").append("<div id='apple'></div>");
+          break;
+        case "snake":
+          $("body").append(
+            "<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUl_vvW6fTi5SefFq8MCmSU-twipPwuFs64w&s' id='snake'/>",
+          );
+          break;
+        case "heart":
+          $("body").append("<img src='heart.jpg' id='heart'/>");
+          break;
+        case "tardi":
+          $("body").append("<img src='tardi.jpeg' id='tardi'/>");
+      }
+    }
+  </script>
 </html>

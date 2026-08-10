@@ -1,419 +1,475 @@
 <!doctype html>
 <html>
   <head>
-     <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./style.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-	  <script src="//cdn.jsdelivr.net/npm/eruda"></script>
-<script>eruda.init();</script>
+    <script src="//cdn.jsdelivr.net/npm/eruda"></script>
+    <script>
+      eruda.init();
+    </script>
   </head>
-  <body style="font-family:monospace;">
-  <b>NOTE: This version of the code is in development. Bugs may occur.</b>
-	  <button id="resume">Re-enter prompt interface</button>
-	  <div id="messages">
-		  
-	  </div>
-	 <table class="game-grid">
-		 <tr><td id="00"></td><td id="01"></td><td id="02"></td><td id="03"></td><td id="04"></td><td id="05"></td><td id="06"></td></tr>
-		 <tr><td id="10"></td><td id="11"></td><td id="12"></td><td id="13"></td><td id="14"></td><td id="15"></td><td id="16"></td></tr>
-		 <tr><td id="20"></td><td id="21"></td><td id="22"></td><td id="23"></td><td id="24"></td><td id="25"></td><td id="26"></td></tr>
-		 <tr><td id="30"></td><td id="31"></td><td id="32"></td><td id="33"><img src="images/player.png"></td><td id="34"></td><td id="35"></td><td id="36"></td></tr>
-		 <tr><td id="40"></td><td id="41"></td><td id="42"></td><td id="43"></td><td id="44"></td><td id="45"></td><td id="46"></td></tr>
-         <tr><td id="50"></td><td id="51"></td><td id="52"></td><td id="53"></td><td id="54"></td><td id="55"></td><td id="56"></td></tr>
-		 <tr><td id="60"></td><td id="61"></td><td id="62"></td><td id="63"></td><td id="64"></td><td id="65"></td><td id="66"></td></tr>
-	 </table>
-	  <h1>Cloud Save Demo</h1>
+  <body style="font-family: monospace">
+    <b>NOTE: This version of the code is in development. Bugs may occur.</b>
+    <button id="resume">Re-enter prompt interface</button>
+    <div id="messages"></div>
+    <table class="game-grid">
+      <tr>
+        <td id="00"></td>
+        <td id="01"></td>
+        <td id="02"></td>
+        <td id="03"></td>
+        <td id="04"></td>
+        <td id="05"></td>
+        <td id="06"></td>
+      </tr>
+      <tr>
+        <td id="10"></td>
+        <td id="11"></td>
+        <td id="12"></td>
+        <td id="13"></td>
+        <td id="14"></td>
+        <td id="15"></td>
+        <td id="16"></td>
+      </tr>
+      <tr>
+        <td id="20"></td>
+        <td id="21"></td>
+        <td id="22"></td>
+        <td id="23"></td>
+        <td id="24"></td>
+        <td id="25"></td>
+        <td id="26"></td>
+      </tr>
+      <tr>
+        <td id="30"></td>
+        <td id="31"></td>
+        <td id="32"></td>
+        <td id="33"><img src="images/player.png" /></td>
+        <td id="34"></td>
+        <td id="35"></td>
+        <td id="36"></td>
+      </tr>
+      <tr>
+        <td id="40"></td>
+        <td id="41"></td>
+        <td id="42"></td>
+        <td id="43"></td>
+        <td id="44"></td>
+        <td id="45"></td>
+        <td id="46"></td>
+      </tr>
+      <tr>
+        <td id="50"></td>
+        <td id="51"></td>
+        <td id="52"></td>
+        <td id="53"></td>
+        <td id="54"></td>
+        <td id="55"></td>
+        <td id="56"></td>
+      </tr>
+      <tr>
+        <td id="60"></td>
+        <td id="61"></td>
+        <td id="62"></td>
+        <td id="63"></td>
+        <td id="64"></td>
+        <td id="65"></td>
+        <td id="66"></td>
+      </tr>
+    </table>
+    <h1>Cloud Save Demo</h1>
     <form id="login">
-		Login
-		Email <input id="log-email" type="email"/>
-		Password <input type="password" id="log-pword"/>
-		<input type="submit"/>  
-	</form>
-	   <form id="register">
-		   Register
-		Email <input id="reg-email" type="email"/>
-		Password <input type="password" id="reg-pword"/>
-		   <input type="submit"/>
-	</form>
+      Login Email <input id="log-email" type="email" /> Password
+      <input type="password" id="log-pword" />
+      <input type="submit" />
+    </form>
+    <form id="register">
+      Register Email <input id="reg-email" type="email" /> Password
+      <input type="password" id="reg-pword" />
+      <input type="submit" />
+    </form>
     <button id="save-btn" onclick="saveGameData()" disabled>Save Game</button>
     <button id="load-btn" onclick="loadGameData()" disabled>Load Game</button>
-	<button id = "gwfs">Generate world from seed</button>
+    <button id="gwfs">Generate world from seed</button>
     <div id="status">Loading modules...</div>
-	<div id="templeinterface">
-		<h1>Temple</h1>
-		<button id="applein">Put in an apple</button>		<select id="spellopt">
-			<option value="sleepingsardine">Sleeping Sardine for 2 fish</option>
-			<option value="ristorante">Ristorante for a fish and a wood</option>
-			<option value="goldenspell">Golden spell for 1 iron and 1 gold</option>
-			<option value="speedy">Speedy for 2 apples</option>
-		</select>
-		<button id="cast">Cast spell</button>
-	</div>
+    <div id="templeinterface">
+      <h1>Temple</h1>
+      <button id="applein">Put in an apple</button>
+      <select id="spellopt">
+        <option value="sleepingsardine">Sleeping Sardine for 2 fish</option>
+        <option value="ristorante">Ristorante for a fish and a wood</option>
+        <option value="goldenspell">Golden spell for 1 iron and 1 gold</option>
+        <option value="speedy">Speedy for 2 apples</option>
+      </select>
+      <button id="cast">Cast spell</button>
+    </div>
   </body>
-	 <script src="https://cdn.jsdelivr.net/npm/noisejs@2.1.0/index.min.js"></script>
-	 <script type="module">
-		
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-analytics.js";
-  import {
-  getAuth,
-  onAuthStateChanged,
-  signInAnonymously,
-	  createUserWithEmailAndPassword,
-	  signInWithEmailAndPassword
-} from "https://www.gstatic.com/firebasejs/12.17.0/firebase-auth.js";
+  <script src="https://cdn.jsdelivr.net/npm/noisejs@2.1.0/index.min.js"></script>
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-analytics.js";
+    import {
+      getAuth,
+      onAuthStateChanged,
+      signInAnonymously,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+    } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-auth.js";
 
-import {
-  getFirestore,
-  doc,
-  setDoc,
-  getDoc
-} from "https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+    import {
+      getFirestore,
+      doc,
+      setDoc,
+      getDoc,
+    } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyAeINE31darFq72BB4N1WtWDARk9YPxJzY",
-    authDomain: "sapient-origin-462411-t7.firebaseapp.com",
-    projectId: "sapient-origin-462411-t7",
-    storageBucket: "sapient-origin-462411-t7.firebasestorage.app",
-    messagingSenderId: "749880999520",
-    appId: "1:749880999520:web:9246df43f9ecb2279fcd05",
-    measurementId: "G-2HT9YKBXV4"
-  };
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyAeINE31darFq72BB4N1WtWDARk9YPxJzY",
+      authDomain: "sapient-origin-462411-t7.firebaseapp.com",
+      projectId: "sapient-origin-462411-t7",
+      storageBucket: "sapient-origin-462411-t7.firebasestorage.app",
+      messagingSenderId: "749880999520",
+      appId: "1:749880999520:web:9246df43f9ecb2279fcd05",
+      measurementId: "G-2HT9YKBXV4",
+    };
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
 
+    // 1. PASTE YOUR FIREBASE CONFIG HERE
 
-        // 1. PASTE YOUR FIREBASE CONFIG HERE
-        
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-        let currentUser = null;
+    let currentUser = null;
 
-        // 2. Handle Player Login Status
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                currentUser = user;
-                document.getElementById('status').innerText += "Email: "+user.email;
-				
-                document.getElementById('save-btn').disabled = false;
-                document.getElementById('load-btn').disabled = false;
-            } else {
-                document.getElementById('status').innerText = "Not connected. Click Play to start.";
-            }
-        });
-        async function registerWithEmail(email, password) {
-    try {
+    // 2. Handle Player Login Status
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        currentUser = user;
+        document.getElementById("status").innerText += "Email: " + user.email;
+
+        document.getElementById("save-btn").disabled = false;
+        document.getElementById("load-btn").disabled = false;
+      } else {
+        document.getElementById("status").innerText =
+          "Not connected. Click Play to start.";
+      }
+    });
+    async function registerWithEmail(email, password) {
+      try {
         const credential = await createUserWithEmailAndPassword(
-            auth,
-            email,
-            password
+          auth,
+          email,
+          password,
         );
 
         document.getElementById("status").innerText =
-            `Registered as ${credential.user.email}.`;
-    } catch (error) {
+          `Registered as ${credential.user.email}.`;
+      } catch (error) {
         console.error("Registration failed:", error);
         document.getElementById("status").innerText =
-            `Registration error: ${error.code}`;
+          `Registration error: ${error.code}`;
+      }
     }
-}
 
-async function loginWithEmail(email, password) {
-    try {
+    async function loginWithEmail(email, password) {
+      try {
         const credential = await signInWithEmailAndPassword(
-            auth,
-            email,
-            password
+          auth,
+          email,
+          password,
         );
 
         document.getElementById("status").innerText =
-            `Signed in as ${credential.user.email}.`;
-    } catch (error) {
+          `Signed in as ${credential.user.email}.`;
+      } catch (error) {
         console.error("Login failed:", error);
         document.getElementById("status").innerText =
-            `Login error: ${error.code}`;
-    }
-}
-        // 3. Trigger Silent/Anonymous Login
-
-function serializeBba() {
-  const serialized = {};
-
-  for (const [x, xData] of Object.entries(bba)) {
-    for (const [y, yData] of Object.entries(xData)) {
-      for (const [z, blockData] of Object.entries(yData)) {
-        serialized[`${x},${y},${z}`] = blockData;
+          `Login error: ${error.code}`;
       }
     }
-  }
+    // 3. Trigger Silent/Anonymous Login
 
-  return serialized;
-}
+    function serializeBba() {
+      const serialized = {};
 
-function deserializeBba(serialized) {
-  const restored = [];
-
-  for (const [key, blockData] of Object.entries(serialized || {})) {
-    const [x, y, z] = key.split(",").map(Number);
-
-    restored[x] ??= [];
-    restored[x][y] ??= [];
-    restored[x][y][z] = blockData;
-  }
-
-  return restored;
-}
-function serializeMba() {
-  const serialized = {};
-
-  for (const [x, xData] of Object.entries(mba)) {
-    for (const [y, yData] of Object.entries(xData)) {
-      for (const [z, blockData] of Object.entries(yData)) {
-        serialized[`${x},${y},${z}`] = blockData;
+      for (const [x, xData] of Object.entries(bba)) {
+        for (const [y, yData] of Object.entries(xData)) {
+          for (const [z, blockData] of Object.entries(yData)) {
+            serialized[`${x},${y},${z}`] = blockData;
+          }
+        }
       }
+
+      return serialized;
     }
-  }
 
-  return serialized;
-}
+    function deserializeBba(serialized) {
+      const restored = [];
 
-function deserializeMba(serialized) {
-  const restored = [];
+      for (const [key, blockData] of Object.entries(serialized || {})) {
+        const [x, y, z] = key.split(",").map(Number);
 
-  for (const [key, blockData] of Object.entries(serialized || {})) {
-    const [x, y, z] = key.split(",").map(Number);
+        restored[x] ??= [];
+        restored[x][y] ??= [];
+        restored[x][y][z] = blockData;
+      }
 
-    restored[x] ??= [];
-    restored[x][y] ??= [];
-    restored[x][y][z] = blockData;
-  }
+      return restored;
+    }
+    function serializeMba() {
+      const serialized = {};
 
-  return restored;
-}
+      for (const [x, xData] of Object.entries(mba)) {
+        for (const [y, yData] of Object.entries(xData)) {
+          for (const [z, blockData] of Object.entries(yData)) {
+            serialized[`${x},${y},${z}`] = blockData;
+          }
+        }
+      }
+
+      return serialized;
+    }
+
+    function deserializeMba(serialized) {
+      const restored = [];
+
+      for (const [key, blockData] of Object.entries(serialized || {})) {
+        const [x, y, z] = key.split(",").map(Number);
+
+        restored[x] ??= [];
+        restored[x][y] ??= [];
+        restored[x][y][z] = blockData;
+      }
+
+      return restored;
+    }
 
     // --- GAME SAVING FUNCTIONS ---
     function getGameData() {
-        return {
-            player: player,
-            bba: serializeBba(),
-			mba: serializeMba(),
-            lastSaved: new Date().toISOString()
-        };
+      return {
+        player: player,
+        bba: serializeBba(),
+        mba: serializeMba(),
+        lastSaved: new Date().toISOString(),
+      };
     }
 
-    window.saveGameData = async function() {
-            if (!currentUser) return;
-            document.getElementById('status').innerText = "Saving data securely...";
-            
-            try {
-                // Saves to a collection named 'player_saves' using their unique user ID
-                const userSaveRef = doc(db, "player_saves", currentUser.uid);
-                await setDoc(userSaveRef, getGameData());
-                document.getElementById('status').innerText = "Game progress cloud-saved!";
-            } catch (error) {
-                console.error("Save error:", error);
-                document.getElementById('status').innerText = "Failed to write to database.";
-            }
-        };
+    window.saveGameData = async function () {
+      if (!currentUser) return;
+      document.getElementById("status").innerText = "Saving data securely...";
 
-        // 5. Load Progress from Firestore
-        window.loadGameData = async function() {
-            if (!currentUser) return;
-            document.getElementById('status').innerText = "Fetching save file...";
-            
-            try {
-                const userSaveRef = doc(db, "player_saves", currentUser.uid);
-                const docSnap = await getDoc(userSaveRef);
+      try {
+        // Saves to a collection named 'player_saves' using their unique user ID
+        const userSaveRef = doc(db, "player_saves", currentUser.uid);
+        await setDoc(userSaveRef, getGameData());
+        document.getElementById("status").innerText =
+          "Game progress cloud-saved!";
+      } catch (error) {
+        console.error("Save error:", error);
+        document.getElementById("status").innerText =
+          "Failed to write to database.";
+      }
+    };
 
-                if (docSnap.exists()) {
-                    const data = docSnap.data()
-					player = data.player ?? createDefaultPlayer();
-					player.coords ??= { ...position };
-					bba = deserializeBba(data.bba)
-					mba = deserializeMba(data.mba)
-                    document.getElementById('status').innerText = `Loaded save from ${data.lastSaved}`;
-                    console.log("Firebase Game State Data:", data);
-                } else {
-                    document.getElementById('status').innerText = "No cloud save found for this device.";
-                }
-            } catch (error) {
-                console.error("Load error:", error);
-                document.getElementById('status').innerText = "Failed to retrieve database file.";
-            }
-        };
-	  var prompting = true
-	  $("#resume").click(function(){
-		  command()
-		  prompting=true
-	  })
-    console.log = function(msg){
-      $("#messages").append("<br>"+msg)
-    }
-		 $("#register").submit(function (event) {
-    event.preventDefault();
+    // 5. Load Progress from Firestore
+    window.loadGameData = async function () {
+      if (!currentUser) return;
+      document.getElementById("status").innerText = "Fetching save file...";
 
-    const mail = $("#reg-email").val();
-    const pass = $("#reg-pword").val();
-    registerWithEmail(mail, pass);
-});
+      try {
+        const userSaveRef = doc(db, "player_saves", currentUser.uid);
+        const docSnap = await getDoc(userSaveRef);
 
-$("#login").submit(function (event) {
-    event.preventDefault();
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          player = data.player ?? createDefaultPlayer();
+          player.coords ??= { ...position };
+          bba = deserializeBba(data.bba);
+          mba = deserializeMba(data.mba);
+          document.getElementById("status").innerText =
+            `Loaded save from ${data.lastSaved}`;
+          console.log("Firebase Game State Data:", data);
+        } else {
+          document.getElementById("status").innerText =
+            "No cloud save found for this device.";
+        }
+      } catch (error) {
+        console.error("Load error:", error);
+        document.getElementById("status").innerText =
+          "Failed to retrieve database file.";
+      }
+    };
+    var prompting = true;
+    $("#resume").click(function () {
+      command();
+      prompting = true;
+    });
+    console.log = function (msg) {
+      $("#messages").append("<br>" + msg);
+    };
+    $("#register").submit(function (event) {
+      event.preventDefault();
 
-    const mail = $("#log-email").val();
-    const pass = $("#log-pword").val();
-    loginWithEmail(mail, pass);
-});
+      const mail = $("#reg-email").val();
+      const pass = $("#reg-pword").val();
+      registerWithEmail(mail, pass);
+    });
+
+    $("#login").submit(function (event) {
+      event.preventDefault();
+
+      const mail = $("#log-email").val();
+      const pass = $("#log-pword").val();
+      loginWithEmail(mail, pass);
+    });
     var position = {
-	x:0,
-	y:5,
-	z:0
+      x: 0,
+      y: 5,
+      z: 0,
+    };
+    var time = 0;
+    function grt(material, bait) {
+      var text = "You have ";
 
-}
-var time = 0
-function grt(material, bait){
-			var text = "You have "
-		
-		switch(material){
-			case 0:
-				text += "a wooden"
-				break
-			case 1:
-				text += "an iron"
-				break
-			case 2:
-				text += "an artifact"
-				break
-
-		}
-		text += " fishing rod with "
-		switch(bait){
-			case 0:
-				text += "no bait."
-				break
-			case 1:
-				text+="worms as bait."
-				break
-			case 2:
-				text+="a minnow as bait."
-				break
-			case 3:
-				text+="crafted bait."
-				break
-		}
-return text
-}
-class Rod{
-	constructor(material, bait){
-		this.material=material
-		this.bait=bait
-        this.text=grt(material,bait)
-	}
-	upgradeMaterial(){
-		if (this.material < 2) {
-			this.material++
-			this.text=grt(this.material,this.bait)
-		}
-	}
-	upgradeBait(){
-		if (this.bait < 3) {
-			this.bait++
-			this.text=grt(this.material,this.bait)
-		}
-	}
-}
-function createDefaultPlayer(name = prompt("enter your player's name")) {
-    return {
+      switch (material) {
+        case 0:
+          text += "a wooden";
+          break;
+        case 1:
+          text += "an iron";
+          break;
+        case 2:
+          text += "an artifact";
+          break;
+      }
+      text += " fishing rod with ";
+      switch (bait) {
+        case 0:
+          text += "no bait.";
+          break;
+        case 1:
+          text += "worms as bait.";
+          break;
+        case 2:
+          text += "a minnow as bait.";
+          break;
+        case 3:
+          text += "crafted bait.";
+          break;
+      }
+      return text;
+    }
+    class Rod {
+      constructor(material, bait) {
+        this.material = material;
+        this.bait = bait;
+        this.text = grt(material, bait);
+      }
+      upgradeMaterial() {
+        if (this.material < 2) {
+          this.material++;
+          this.text = grt(this.material, this.bait);
+        }
+      }
+      upgradeBait() {
+        if (this.bait < 3) {
+          this.bait++;
+          this.text = grt(this.material, this.bait);
+        }
+      }
+    }
+    function createDefaultPlayer(name = prompt("enter your player's name")) {
+      return {
         name,
         coords: { ...position },
         stats: {
-            speed: Math.floor(Math.random() * 3) + 4,
-            restaurantluck: 1,
-            fishingluck: 1,
-            miningluck: 1
+          speed: Math.floor(Math.random() * 3) + 4,
+          restaurantluck: 1,
+          fishingluck: 1,
+          miningluck: 1,
         },
         inventory: {
-            wood: 0,
-            apples: 0,
-            cod: 0,
-			salmon:0,
-			bonito:0,
-			tuna:0,
-			minnows:0,
-			worms: 0,
-            iron: 0,
-            gold: 0,
-            hyperstone: 0
+          wood: 0,
+          apples: 0,
+          cod: 0,
+          salmon: 0,
+          bonito: 0,
+          tuna: 0,
+          minnows: 0,
+          worms: 0,
+          iron: 0,
+          gold: 0,
+          hyperstone: 0,
         },
-		fishingrod:new Rod(0,0)
+        fishingrod: new Rod(0, 0),
+      };
+    }
+
+    var player = createDefaultPlayer();
+    $("#status").append("Name: " + player.name);
+    $("#status").append("Speed: " + player.stats.speed);
+    $("#templeinterface").hide();
+    $("#status").append(player.fishingrod.text);
+    var bba = [];
+    var mba = [];
+    var biomes = ["forest", "fruitForest"];
+    var WORLD_SEED = Math.floor(Math.random() * 10000);
+    const BIOME_SCALE = 20;
+    $("#gwfs").click(function () {
+      const enteredSeed = Number(prompt("paste in seed"));
+
+      if (!Number.isFinite(enteredSeed)) {
+        return;
+      }
+
+      WORLD_SEED = enteredSeed;
+      biomeNoise = new Noise(WORLD_SEED);
+      bba = [];
+      mba = [];
+      render();
+    });
+    let biomeNoise = new Noise(WORLD_SEED);
+    var hasGeneratedFreePath = false;
+    var biomeGenerator = function (x, y, z) {
+      bba[x] ??= [];
+      bba[x][y] ??= [];
+      bba[x][y][z] ??= {};
+
+      const biomeValue = biomeNoise.perlin2(x / BIOME_SCALE, z / BIOME_SCALE);
+
+      if (biomeValue < -0.5) {
+        bba[x][y][z].biome = "water";
+      } else if (biomeValue < 0) {
+        bba[x][y][z].biome = "plains";
+      } else if (biomeValue < 0.5) {
+        bba[x][y][z].biome = "forest";
+      } else {
+        bba[x][y][z].biome = "fruitForest";
+      }
     };
-}
+    const path = new Set();
+    const temples = new Set();
 
-					var player = createDefaultPlayer();
-		 $("#status").append("Name: "+player.name)
-		 $("#status").append("Speed: "+player.stats.speed)
-		 $("#templeinterface").hide()
-		 $("#status").append(player.fishingrod.text)
-var bba = []
-var mba = []
-var biomes = ["forest", "fruitForest"]
-var WORLD_SEED = Math.floor(Math.random()*10000);
-const BIOME_SCALE = 20;
-$("#gwfs").click(function(){
-	const enteredSeed = Number(prompt("paste in seed"))
+    function templeKey(x, z) {
+      return `${x},${z}`;
+    }
 
-	if (!Number.isFinite(enteredSeed)) {
-		return;
-	}
+    function hasTemple(x, z) {
+      return temples.has(templeKey(x, z));
+    }
 
-	WORLD_SEED = enteredSeed;
-	biomeNoise = new Noise(WORLD_SEED);
-	bba = [];
-	mba = [];
-	render();
-})
-let biomeNoise = new Noise(WORLD_SEED);
-var hasGeneratedFreePath = false
-var biomeGenerator = function(x,y,z){
-	bba[x] ??= []
-  bba[x][y] ??= []
-  bba[x][y][z] ??= {}
-
-	const biomeValue = biomeNoise.perlin2(x / BIOME_SCALE, z / BIOME_SCALE);
-
-	if (biomeValue < -0.5) {
-	    bba[x][y][z].biome = "water";
-	} else if (biomeValue < 0) {
-	    bba[x][y][z].biome = "plains";
-	} else if (biomeValue < 0.5) {
-	    bba[x][y][z].biome = "forest";
-	} else {
- 
-	    bba[x][y][z].biome = "fruitForest";
-	}
-}
-const path = new Set();
-const temples = new Set();
-
-function templeKey(x, z) {
-    return `${x},${z}`;
-}
-
-function hasTemple(x, z) {
-    return temples.has(templeKey(x, z));
-}
-
-function pathKey(x, z) {
-    return `${x},${z}`;
-}
-/*function randomFor(x, y, z, salt) {
+    function pathKey(x, z) {
+      return `${x},${z}`;
+    }
+    /*function randomFor(x, y, z, salt) {
     let hash = (
         Math.imul(x, 73856093) ^
         Math.imul(y, 19349663) ^
@@ -429,89 +485,84 @@ function pathKey(x, z) {
 
     return hash / 0x100000000;
 }*/
-function hasPath(x, z) {
-    return path.has(pathKey(x, z));
-}
+    function hasPath(x, z) {
+      return path.has(pathKey(x, z));
+    }
 
-function generatePathsFromOrigin(ox,oz, flag){
+    function generatePathsFromOrigin(ox, oz, flag) {
+      path.add(pathKey(ox, oz));
+      var random;
+      function randomize3() {
+        random = Math.floor(Math.random() * 3);
+        //randomizes to 0, 1, or 2
+      }
+      function randomize4() {
+        random = Math.floor(Math.random() * 4);
+        //randomizes to 0, 1, 2, or 3
+      }
 
+      var x = ox;
+      var z = oz;
+      randomize4();
+      var dir = random;
+      for (let i = 0; i < 30; i++) {
+        randomize3();
 
-	path.add(pathKey(ox,oz))
-	var random
-	function randomize3(){
-		random = Math.floor(Math.random()*3)
-		//randomizes to 0, 1, or 2
-	}
-		function randomize4(){
-		random = Math.floor(Math.random()*4)
-		//randomizes to 0, 1, 2, or 3
-	}
+        switch (random) {
+          case 0:
+            switch (dir) {
+              case 0:
+                x++;
+                dir = 2;
+                break;
+              default:
+                z++;
+                dir = 0;
+            }
+            break;
+          case 1:
+            switch (dir) {
+              case 1:
+                z++;
+                dir = 0;
+                break;
+              default:
+                z--;
+                dir = 1;
+            }
+            break;
+          case 2:
+            switch (dir) {
+              case 2:
+                z--;
+                dir = 1;
+                break;
+              default:
+                x++;
+                dir = 2;
+            }
+            break;
+        }
+        if (i == 15 && flag) {
+          generatePathsFromOrigin(x, z, false);
+        }
+        path.add(pathKey(x, z));
+      }
+      temples.add(templeKey(x, z));
+    }
+    generatePathsFromOrigin(player.coords.x, player.coords.z, true);
+    generatePathsFromOrigin(player.coords.x + 10, player.coords.z + 10, true);
+    generatePathsFromOrigin(player.coords.x - 10, player.coords.z - 10, true);
 
-	var x = ox
-	var z = oz
-	randomize4()
-	var dir = random
-	for(let i = 0; i<30; i++){
-		randomize3()
-      		
-		switch(random){
+    class BasicBlockGenerator {
+      constructor(x, y, z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        biomeGenerator(x, y, z);
+        this.biome = bba[x][y][z].biome;
 
-			case 0:
-				switch(dir){
-					case 0:
-						x++
-						dir=2
-						break
-					default:
-						z++
-						dir=0
-				}
-			break
-						case 1:
-				switch(dir){
-					case 1:
-						z++
-						dir=0
-						break
-					default:
-						z--
-						dir=1
-				}
-			break
-									case 2:
-				switch(dir){
-					case 2:
-						z--
-						dir=1
-						break
-					default:
-						x++
-						dir=2
-				}
-			break
-		}
-		if(i==15 &&(flag)){
-			generatePathsFromOrigin(x,z,false)
-		}
-	    path.add(pathKey(x,z))
-	}
-			temples.add(templeKey(x, z));
-
-}
-generatePathsFromOrigin(player.coords.x, player.coords.z, true)
-generatePathsFromOrigin(player.coords.x+10, player.coords.z+10, true)
-generatePathsFromOrigin(player.coords.x-10, player.coords.z-10, true)
-
-
-class BasicBlockGenerator{
-	constructor(x,y,z){
-		this.x = x
-		this.y = y
-		this.z = z
-		biomeGenerator(x,y,z)
-		this.biome = bba[x][y][z].biome
-		
-			/*
+        /*
 			path generation below doesn't work with temples
 			if (
 			    hasPath(x + 1, z) ||
@@ -522,162 +573,164 @@ class BasicBlockGenerator{
 if (Math.random()<(1/3)) {
     path.add(pathKey(x, z));
 }			}*/
-		
-		if(y===6 && hasTemple(x,z)){
-			this.block="temple"
-		}else if(y==6){
-			switch(this.biome){
-				case "forest":
-					var random = Math.floor(Math.random() * 2)
-					if(random==0){
-						this.block="tree"
-					}else{
-						this.block="air"
-					}
-					break
-				case "fruitForest":
-					var random = Math.floor(Math.random() * 2)
-					if(random==0){
-						this.block="fruit-tree"
-					}else{
-						this.block="air"
-					}
-					break
-			}
-		}else if(y>6){
-			this.block="air"
-		}else if(y==4){
-			this.block="dirt"
-		}else if(y==5){
-			if (hasPath(x, z)) {
-			    this.block = "path";
-			} else {
-				switch (this.biome) {
-					case "water":
-						this.block = "water";
-						break;
 
-					case "plains":
-						this.block = Math.floor(Math.random() * 2) === 0
-							? "dirt"
-							: "grass";
-						break;
+        if (y === 6 && hasTemple(x, z)) {
+          this.block = "temple";
+        } else if (y == 6) {
+          switch (this.biome) {
+            case "forest":
+              var random = Math.floor(Math.random() * 2);
+              if (random == 0) {
+                this.block = "tree";
+              } else {
+                this.block = "air";
+              }
+              break;
+            case "fruitForest":
+              var random = Math.floor(Math.random() * 2);
+              if (random == 0) {
+                this.block = "fruit-tree";
+              } else {
+                this.block = "air";
+              }
+              break;
+          }
+        } else if (y > 6) {
+          this.block = "air";
+        } else if (y == 4) {
+          this.block = "dirt";
+        } else if (y == 5) {
+          if (hasPath(x, z)) {
+            this.block = "path";
+          } else {
+            switch (this.biome) {
+              case "water":
+                this.block = "water";
+                break;
 
-					case "forest":
-					case "fruitForest": {
-						const groundRoll = Math.floor(Math.random() * 3);
+              case "plains":
+                this.block =
+                  Math.floor(Math.random() * 2) === 0 ? "dirt" : "grass";
+                break;
 
-						this.block =
-							groundRoll === 0 ? "dirt" :
-							groundRoll === 1 ? "grass" :
-							"moss";
-						break;
-					}
+              case "forest":
+              case "fruitForest": {
+                const groundRoll = Math.floor(Math.random() * 3);
 
-					default:
-						this.block = "grass";
-						break;
-				}
-			}
-		}else{
-			this.block="stone"
-		}
-		mba[x] ??= [];
-mba[x][y] ??= [];
-mba[x][y][z] = this.block;
-		
-	}
-}
-class MobData{
-  test1ficates = 0
-	
-}
-function getBlock(x, y, z) {
-    bba[x] ??= [];
-    bba[x][y] ??= [];
+                this.block =
+                  groundRoll === 0
+                    ? "dirt"
+                    : groundRoll === 1
+                      ? "grass"
+                      : "moss";
+                break;
+              }
 
-    mba[x] ??= [];
-    mba[x][y] ??= [];
+              default:
+                this.block = "grass";
+                break;
+            }
+          }
+        } else {
+          this.block = "stone";
+        }
+        mba[x] ??= [];
+        mba[x][y] ??= [];
+        mba[x][y][z] = this.block;
+      }
+    }
+    class MobData {
+      test1ficates = 0;
+    }
+    function getBlock(x, y, z) {
+      bba[x] ??= [];
+      bba[x][y] ??= [];
 
-    const result = { x, y, z };
+      mba[x] ??= [];
+      mba[x][y] ??= [];
 
-    if (bba[x][y][z] === undefined || mba[x][y][z] === undefined) {
+      const result = { x, y, z };
+
+      if (bba[x][y][z] === undefined || mba[x][y][z] === undefined) {
         const generatedBlock = new BasicBlockGenerator(x, y, z);
 
         bba[x][y][z] = { biome: generatedBlock.biome };
         mba[x][y][z] = generatedBlock.block;
+      }
+
+      result.biome = bba[x][y][z].biome;
+      result.block = mba[x][y][z];
+
+      return result;
     }
+    function templeCallback() {
+      //add later
+      $("#templeinterface").show();
+      $("#cast")
+        .off("click.cast")
+        .on("click.cast", function () {
+          if (player.inventory.apples == 0) {
+            console.log("no apples");
+            return;
+          } else {
+            player.inventory.apples--;
+          }
+          switch ($("#spellopt").val()) {
+            case "ristorante":
+              if (player.inventory.fish >= 1 && player.inventory.wood >= 1) {
+                player.inventory.fish--;
+                player.inventory.wood--;
+                player.stats.restaurantluck++;
+              }
+              break;
+            case "sleepingsardine":
+              if (player.inventory.fish >= 2) {
+                player.inventory.fish -= 2;
+                player.stats.fishingluck++;
+              }
 
-    result.biome = bba[x][y][z].biome;
-    result.block = mba[x][y][z];
+              break;
+            case "speedy":
+              if (player.inventory.apples >= 2) {
+                player.inventory.apples -= 2;
+                player.stats.speed += 5;
+              }
 
-    return result;
-}
-function templeCallback(){
-	//add later
-			 $("#templeinterface").show()
-    $("#cast").off('click.cast').on('click.cast', function(){
-		if(player.inventory.apples==0){
-			console.log("no apples")
-			return
-		}else{
-			player.inventory.apples--
-		}
-		switch($("#spellopt").val()){
-			case 'ristorante':
-                if(player.inventory.fish>=1 && player.inventory.wood>=1){
-					player.inventory.fish--
-					player.inventory.wood--
-					player.stats.restaurantluck++
-				}
-			break
-			case 'sleepingsardine':
-				if(player.inventory.fish>=2){
-					player.inventory.fish-=2
-					player.stats.fishingluck++
-				}
+              break;
+            case "goldenspell":
+              if (player.inventory.iron >= 1 && player.inventory.gold >= 1) {
+                player.inventory.iron--;
+                player.inventory.gold--;
+                player.stats.miningluck++;
+              }
 
-			break
-			case 'speedy':
-				if(player.inventory.apples>=2){
-					player.inventory.apples-=2
-					player.stats.speed+=5
-				}
+              break;
+          }
+        });
+      console.log("entering temple");
+    }
+    function renderSurfaceCell(cellId, x, y, z) {
+      if (player.coords.y !== 5) {
+        $(`#${cellId}`).css(
+          "background-image",
+          `url("images/${getBlock(x, y, z).block}.png")`,
+        );
+        return;
+      }
+      const ground = getBlock(x, 5, z).block;
+      const overlay = getBlock(x, 6, z).block;
 
-			break
-			case 'goldenspell':
-                 if(player.inventory.iron>=1 && player.inventory.gold>=1){
-					player.inventory.iron--
-					player.inventory.gold--
-					player.stats.miningluck ++
-				}
-
-			break
-
-
-		}
-	})
-	console.log("entering temple")
-}
-function renderSurfaceCell(cellId, x, y, z) {
-	if(player.coords.y!==5){
-		    $(`#${cellId}`).css("background-image", `url("images/${getBlock(x,y,z).block}.png")`);
-			return
-	}
-    const ground = getBlock(x, 5, z).block;
-    const overlay = getBlock(x, 6, z).block;
-
-    const backgrounds =
+      const backgrounds =
         overlay === "tree" || overlay === "fruit-tree" || overlay === "temple"
-            ? `url("images/${overlay}.png"), url("images/${ground}.png")`
-            : `url("images/${ground}.png")`;
-    	if(overlay=="temple"){
-			$(`#${cellId}`).click(templeCallback)
-		}
+          ? `url("images/${overlay}.png"), url("images/${ground}.png")`
+          : `url("images/${ground}.png")`;
+      if (overlay == "temple") {
+        $(`#${cellId}`).click(templeCallback);
+      }
 
-    $(`#${cellId}`).css("background-image", backgrounds);
-}
-/*class Coordinates{
+      $(`#${cellId}`).css("background-image", backgrounds);
+    }
+    /*class Coordinates{
 	constructor(x,y,z){
 		this.x = x;
 		this.y = y;
@@ -711,24 +764,22 @@ function renderSurfaceCell(cellId, x, y, z) {
 	}
 }
 t = new Coordinates(0,5,0)*/
-class Mob{
-	constructor(name,coords,stats,inventory){
-		this.name = name;
-		this.coords = coords;
-		this.stats = stats;
-		this.inventory = inventory;
-		
-	}
-}
-class Testificate1 extends Mob{
-	constructor(name,coords,stats,inventory){
-		super(name,coords,stats,inventory);
-		this.name = "testificate1"
-		
-	}
-}
-function render(){
-		/*renderSurfaceCell("00", player.coords.x - 1, player.coords.y, player.coords.z - 1);
+    class Mob {
+      constructor(name, coords, stats, inventory) {
+        this.name = name;
+        this.coords = coords;
+        this.stats = stats;
+        this.inventory = inventory;
+      }
+    }
+    class Testificate1 extends Mob {
+      constructor(name, coords, stats, inventory) {
+        super(name, coords, stats, inventory);
+        this.name = "testificate1";
+      }
+    }
+    function render() {
+      /*renderSurfaceCell("00", player.coords.x - 1, player.coords.y, player.coords.z - 1);
 renderSurfaceCell("01", player.coords.x - 1,player.coords.y, player.coords.z);
 renderSurfaceCell("02", player.coords.x - 1, player.coords.y,player.coords.z + 1);
 
@@ -739,172 +790,176 @@ renderSurfaceCell("12", player.coords.x, player.coords.y, player.coords.z + 1);
 renderSurfaceCell("20", player.coords.x + 1, player.coords.y, player.coords.z - 1);
 renderSurfaceCell("21", player.coords.x + 1, player.coords.y, player.coords.z);
 renderSurfaceCell("22", player.coords.x + 1, player.coords.y, player.coords.z + 1);*/
-	for(let i = 0;i<7;i++){
-		for(let j = 0;j<7;j++){
-		renderSurfaceCell(i+""+j,player.coords.x+i-2,player.coords.y,player.coords.z+j-2)
-	}
+      for (let i = 0; i < 7; i++) {
+        for (let j = 0; j < 7; j++) {
+          renderSurfaceCell(
+            i + "" + j,
+            player.coords.x + i - 2,
+            player.coords.y,
+            player.coords.z + j - 2,
+          );
+        }
+      }
+    }
+    render();
+    function command() {
+      var e = prompt(">>>");
+      switch (e) {
+        case "w":
+          player.coords.x++;
+          render();
+          break;
+        case "s":
+          player.coords.x--;
+          render();
+          break;
+        case "a":
+          player.coords.z--;
+          render();
+          break;
+        case "d":
+          player.coords.z++;
+          render();
+          break;
+        case "r":
+          player.coords.y++;
+          render();
+          break;
+        case "f":
+          player.coords.y--;
+          render();
+          break;
+        case "p":
+          console.log(player.coords.x);
+          console.log(player.coords.y);
+          console.log(player.coords.z);
+          break;
+        case "i":
+          console.log("speed: " + player.stats.speed);
+          break;
+        case "b":
+          console.log(
+            "block: " +
+              getBlock(player.coords.x, player.coords.y, player.coords.z).block,
+          );
+          break;
+        case "c":
+          console.log("in dev");
+          break;
+        case "x":
+          console.log("in dev");
+          break;
+        case "e":
+          if (player.inventory.apples) {
+            console.log("You have " + player.inventory.apples + " apples.");
+          }
+          if (player.inventory.fruit_trees) {
+            console.log(
+              "You have " + player.inventory.fruit_trees + " fruit trees.",
+            );
+          }
+          if (player.inventory.trees) {
+            console.log("You have " + player.inventory.trees + " trees.");
+          }
+          if (player.inventory.wood) {
+            console.log("You have " + player.inventory.wood + " wood.");
+          }
+          var empty = true;
+          for (i of player.inventory) {
+            if (i !== 0) {
+              empty = false;
+            }
+          }
+          if (empty) {
+            console.log("empty inventory");
+          }
 
-	}
+          break;
 
-}
-render()
-function command(){
-	var e = prompt(">>>")
-	switch(e){
-		case "w":
-			player.coords.x++
-			render()
-			break
-		case "s":
-			player.coords.x--
-			render()
-			break
-		case "a":
-			player.coords.z--
-			render()
-			break
-		case "d":
-			player.coords.z++
-			render()
-			break
-		case "r":
-			player.coords.y++
-			render()
-			break
-		case "f":
-			player.coords.y--
-			render()
-			break
-		case "p":
-			console.log(player.coords.x)
-			console.log(player.coords.y)
-			console.log(player.coords.z)
-			break
-		case "i":
-			console.log("speed: "+player.stats.speed)
-			break
-		case "b":
-			console.log("block: "+getBlock(player.coords.x,player.coords.y,player.coords.z).block)
-			break;
-		case "c":
-			console.log("in dev")
-			break;
-		case "x":
-			console.log("in dev")
-			break;
-		case "e":
+        case "B":
+          console.log(
+            "biome: " +
+              getBlock(player.coords.x, player.coords.y, player.coords.z).biome,
+          );
+          break;
+        case "pause":
+          prompting = false;
+          break;
+        case "seed":
+          console.log(WORLD_SEED);
+          break;
+        case "q":
+          console.log("w: forward");
+          console.log("s: backward");
+          console.log("a: left");
+          console.log("d: right");
+          console.log("r: up");
+          console.log("f: down");
+          console.log("p: coords");
+          console.log("i: stats");
+          console.log("b: block");
+          console.log("c: place");
+          console.log("x: destroy");
+          console.log("e: inventory list");
 
-				if(player.inventory.apples){
-					console.log("You have "+player.inventory.apples+" apples.")
-				}
-			if(player.inventory.fruit_trees){
-				console.log("You have "+player.inventory.fruit_trees+" fruit trees.")
-			}
-			if(player.inventory.trees){
-				console.log("You have "+player.inventory.trees+" trees.")
-			}
-			if(player.inventory.wood){
-				console.log("You have "+player.inventory.wood+" wood.")
-			}
-			var empty = true
-			for (i of player.inventory){
-				if(i!==0){
-					empty=false
-				}
-			}
-			if(empty){
-				console.log("empty inventory")
-			}
+          console.log("B: biome");
+          console.log("pause: exit command interface");
 
-			
-			break;
-		
-		case "B":
-			console.log("biome: "+getBlock(player.coords.x,player.coords.y,player.coords.z).biome)
-				break;
-		case "pause":
-			prompting=false;
-			break;
-		case "seed":
-			console.log(WORLD_SEED)
-			break
-		case "q":
-			console.log("w: forward")
-			console.log("s: backward")
-			console.log("a: left")
-			console.log("d: right")
-			console.log("r: up")
-			console.log("f: down")
-			console.log("p: coords")
-			console.log("i: stats")
-			console.log("b: block")
-			console.log("c: place")
-			console.log("x: destroy")
-			console.log("e: inventory list")
-			
-			console.log("B: biome")
-			console.log("pause: exit command interface")
-			
-			break;
+          break;
+      }
+    }
+    console.log("press q to see commands");
+    console.log("press q or another command.");
+    console.log("if you see '>>>', that means you can type a command like q.");
+    $(document).on("keydown", function (event) {
+      const target = event.target;
+      if (
+        target instanceof HTMLInputElement ||
+        target instanceof HTMLTextAreaElement ||
+        target instanceof HTMLSelectElement ||
+        (target instanceof HTMLElement && target.isContentEditable)
+      ) {
+        return;
+      }
 
+      if (event.key.toLowerCase() === "w") {
+        player.coords.x++;
+      } else if (event.key.toLowerCase() === "a") {
+        player.coords.z--;
+      } else if (event.key.toLowerCase() === "s") {
+        player.coords.x--;
+      } else if (event.key.toLowerCase() === "d") {
+        player.coords.z++;
+      } else if (event.key.toLowerCase() === "r") {
+        player.coords.y++;
+      } else if (event.key.toLowerCase() === "f") {
+        player.coords.y--;
+      }
+      render();
+    });
+    var hasnightlogged = false;
+    setInterval(() => {
+      if (prompting) {
+        command();
+      }
 
-	}
-}
-console.log("press q to see commands")
-console.log("press q or another command.")
-console.log("if you see '>>>', that means you can type a command like q.")
-$( document ).on( "keydown", function( event ) {
-  const target = event.target;
-  if (
-    target instanceof HTMLInputElement ||
-    target instanceof HTMLTextAreaElement ||
-    target instanceof HTMLSelectElement ||
-    (target instanceof HTMLElement && target.isContentEditable)
-  ) {
-    return;
-  }
-
-  if ( event.key.toLowerCase() === "w" ) {
-    player.coords.x++
-  }else   if ( event.key.toLowerCase() === "a" ) {
-    player.coords.z--
-  }else   if ( event.key.toLowerCase() === "s" ) {
-    player.coords.x--
-  }else   if ( event.key.toLowerCase() === "d" ) {
-    player.coords.z++
-  }else   if ( event.key.toLowerCase() === "r" ) {
-    player.coords.y++
-  }else   if ( event.key.toLowerCase() === "f" ) {
-    player.coords.y--
-  }
-  render()
-
-
-
-
-});
-var hasnightlogged = false
-setInterval(()=>{
-	if(prompting){
-		command()
-	}
-	
-	
-	
-	time += 1
-	if(time==1000){
-		time = 0
-        hasnightlogged=true
-	}
-	if(time>500 && !hasnightlogged){
-		console.log("night")
-	}
-	if(!hasGeneratedFreePath && getBlock(player.coords.x, player.coords.y, player.coords.z).biome == "water"){
-		generatePathsFromOrigin(player.coords.x,player.coords.z,true)
-		hasGeneratedFreePath = true
-	}
-	render()
-},100*player.stats.speed)
-
+      time += 1;
+      if (time == 1000) {
+        time = 0;
+        hasnightlogged = true;
+      }
+      if (time > 500 && !hasnightlogged) {
+        console.log("night");
+      }
+      if (
+        !hasGeneratedFreePath &&
+        getBlock(player.coords.x, player.coords.y, player.coords.z).biome ==
+          "water"
+      ) {
+        generatePathsFromOrigin(player.coords.x, player.coords.z, true);
+        hasGeneratedFreePath = true;
+      }
+      render();
+    }, 100 * player.stats.speed);
   </script>
 </html>

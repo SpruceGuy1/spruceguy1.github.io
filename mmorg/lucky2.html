@@ -1,190 +1,166 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-	<head>
-		<link rel="stylesheet" href="/style.css"/>
-		<title>LUCKY-MMORG</title>
-		 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/themes/smoothness/jquery-ui.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js"></script>
-    
-	</head>
-	<body>
-		<a href="/index.html" target="_blank">home</a>
+  <head>
+    <link rel="stylesheet" href="/style.css" />
+    <title>LUCKY-MMORG</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/themes/smoothness/jquery-ui.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.14.1/jquery-ui.min.js"></script>
+  </head>
+  <body>
+    <a href="/index.html" target="_blank">home</a>
 
-		<br>
-		<h1>Lucky</h1>
-		Lucky is a MMORG game where one random yellow square is chosen to be the lucky one. If you click on it, you get a point. <br>
-		If you have enough PX, you can buy stuff.<br>
-		<table>
-			<tr>
-				<th>PX</th>
-				<th>Deal name</th>
-				<th>Effect</th>
-			</tr>
-			
-			<tr>
-				<td>5</td>
-				<td>Doubler</td>
-				<td>Adds 2px if you get the lucky square.</td>
-			</tr>
-			<tr>
-				<td>10</td>
-				<td>Item 2</td>
-				<td>Adds 0.5px if you aren't lucky</td>
-			</tr>
-			<tr>
-				<td>20</td>
-				<td>Quadrupler</td>
-				<td>Adds 4px if you get the lucky square</td>
-			</tr>
-		</table>
-		<div id="px">
-			
-		</div>
-		<div class="block" onclick="luckypick(1)"></div>
-		<div class="block" onclick="luckypick(2)"></div>
-		<div class="block" onclick="luckypick(3)"></div>
-		<div class="block" onclick="luckypick(4)"></div>
-		<div class="block" onclick="luckypick(5)"></div>
-		<button onclick="display()">Display px</button>
-		<button onclick="shop()">Go To Shop</button>
-		<!--<button onclick="options.toggles.moo()">Toggle "No points for you this time!" alerts</button>-->
-	</body>
-	<script>
-		const options = {
-			moo: true,
-			toggles:{
-				moo: ()=>{
-					options.moo = !options.moo
-				}
-			}
-			
-		}
-		var dbl = !true;
-		var itm2 = false;
-		var qdp = false;
-		var itm4 = false;
-		var enormous8 = false;
-		var t = ""	
-		function buy(j,c){
-		    if(points>=c){
-		        points -= c
-		        j=true
-		    }
-		    else
-		    {
-		        alert("get more px")
-		    }
-		}
-		function shop(){
-		    t = prompt("what u want?")
-		    switch(t){
-		        case "doubler":
-		            if(points>=5){
-		                dbl=true
-		                points-=5
-		            }else{
-		                alert("get more px")
-		            }
-		        case "item 2":
-		            buy(itm2, 10)
-		       case "quadrupler":
-		           buy(qdp, 20)
-		       case "item 4":
-		           buy(itm4, 30)
-		       case "enormous 8":
-		           buy(enormous8, 50)
-		  
-		           
-		 
-				
-		}}
-		 var lucky = Math.floor(Math.random()*5)+1
-		var points = 0
-		function luckypick(e){
-			if(lucky==e){
-				if(!dbl){
-				points++;
-				alert("+1px")
-					document.getElementById("px").innerHTML = ""
-					$("#px").append("px: "+points)
-					function display(){
-						alert(points)
-						$("body").append(points+'<br>')
-					}
-				}else{
-					if(!qdp){
-					points+=2;
+    <br />
+    <h1>Lucky</h1>
+    Lucky is a MMORG game where one random yellow square is chosen to be the
+    lucky one. If you click on it, you get a point. <br />
+    If you have enough PX, you can buy stuff.<br />
+    <table>
+      <tr>
+        <th>PX</th>
+        <th>Deal name</th>
+        <th>Effect</th>
+      </tr>
 
-						
-					alert("+1x2px")
-						document.getElementById("px").innerHTML = ""
-						$("#px").append("px: "+points)
-						function display(){
-							alert(points)
-							$("body").append(points+'<br>')
-						}
-					}else{
-						if(!enormous8){
-						points += 4
-						alert("+1x4px")
-							document.getElementById("px").innerHTML = ""
-							$("#px").append("px: "+points)
-							function display(){
-								alert(points)
-								$("body").append(points+'<br>')
-							}
-						}else{
-							points += 8
-							alert("+1x8px")
-							document.getElementById("px").innerHTML = ""
-							$("#px").append("px: "+points)
-							function display(){
-								alert(points)
-								$("body").append(points+'<br>')
-							}
-						}
-					}
-					
-						
-				
-				}
-			}else{
-				if(itm2){
-					points += 0.5
-					alert("half point boost with item 2!")
-				}else{
-					if(itm4){
-						points += 1
-						alert("+1px with item 4!")
-					}else{
-				
-					alert("No points for you this time!")
-				
-					
-	
-					}
-				}
-			}
-			lucky = Math.floor(Math.random()*5)+1
-		}
-		document.getElementById("px").innerHTML = ""
-		$("#px").append("px: "+points)
-		function display(){
-			alert(points)
-			$("body").append(points+'<br>')
-		}
-     //shop code
-		
-	
+      <tr>
+        <td>5</td>
+        <td>Doubler</td>
+        <td>Adds 2px if you get the lucky square.</td>
+      </tr>
+      <tr>
+        <td>10</td>
+        <td>Item 2</td>
+        <td>Adds 0.5px if you aren't lucky</td>
+      </tr>
+      <tr>
+        <td>20</td>
+        <td>Quadrupler</td>
+        <td>Adds 4px if you get the lucky square</td>
+      </tr>
+    </table>
+    <div id="px"></div>
+    <div class="block" onclick="luckypick(1)"></div>
+    <div class="block" onclick="luckypick(2)"></div>
+    <div class="block" onclick="luckypick(3)"></div>
+    <div class="block" onclick="luckypick(4)"></div>
+    <div class="block" onclick="luckypick(5)"></div>
+    <button onclick="display()">Display px</button>
+    <button onclick="shop()">Go To Shop</button>
+    <!--<button onclick="options.toggles.moo()">Toggle "No points for you this time!" alerts</button>-->
+  </body>
+  <script>
+    const options = {
+      moo: true,
+      toggles: {
+        moo: () => {
+          options.moo = !options.moo;
+        },
+      },
+    };
+    var dbl = !true;
+    var itm2 = false;
+    var qdp = false;
+    var itm4 = false;
+    var enormous8 = false;
+    var t = "";
+    function buy(j, c) {
+      if (points >= c) {
+        points -= c;
+        j = true;
+      } else {
+        alert("get more px");
+      }
+    }
+    function shop() {
+      t = prompt("what u want?");
+      switch (t) {
+        case "doubler":
+          if (points >= 5) {
+            dbl = true;
+            points -= 5;
+          } else {
+            alert("get more px");
+          }
+        case "item 2":
+          buy(itm2, 10);
+        case "quadrupler":
+          buy(qdp, 20);
+        case "item 4":
+          buy(itm4, 30);
+        case "enormous 8":
+          buy(enormous8, 50);
+      }
+    }
+    var lucky = Math.floor(Math.random() * 5) + 1;
+    var points = 0;
+    function luckypick(e) {
+      if (lucky == e) {
+        if (!dbl) {
+          points++;
+          alert("+1px");
+          document.getElementById("px").innerHTML = "";
+          $("#px").append("px: " + points);
+          function display() {
+            alert(points);
+            $("body").append(points + "<br>");
+          }
+        } else {
+          if (!qdp) {
+            points += 2;
 
-
-
-
-
-
-
-		
-	</script>
-	
+            alert("+1x2px");
+            document.getElementById("px").innerHTML = "";
+            $("#px").append("px: " + points);
+            function display() {
+              alert(points);
+              $("body").append(points + "<br>");
+            }
+          } else {
+            if (!enormous8) {
+              points += 4;
+              alert("+1x4px");
+              document.getElementById("px").innerHTML = "";
+              $("#px").append("px: " + points);
+              function display() {
+                alert(points);
+                $("body").append(points + "<br>");
+              }
+            } else {
+              points += 8;
+              alert("+1x8px");
+              document.getElementById("px").innerHTML = "";
+              $("#px").append("px: " + points);
+              function display() {
+                alert(points);
+                $("body").append(points + "<br>");
+              }
+            }
+          }
+        }
+      } else {
+        if (itm2) {
+          points += 0.5;
+          alert("half point boost with item 2!");
+        } else {
+          if (itm4) {
+            points += 1;
+            alert("+1px with item 4!");
+          } else {
+            alert("No points for you this time!");
+          }
+        }
+      }
+      lucky = Math.floor(Math.random() * 5) + 1;
+    }
+    document.getElementById("px").innerHTML = "";
+    $("#px").append("px: " + points);
+    function display() {
+      alert(points);
+      $("body").append(points + "<br>");
+    }
+    //shop code
+  </script>
 </html>
