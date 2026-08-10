@@ -40,8 +40,8 @@ td {
   position: absolute;
 }
 @font-face {
-  font-family: "handwriting"; /*a name to be used later*/
-  src: url("DillyDally.ttf"); /*URL to font*/
+  font-family: handwriting; /* a name to be used later */
+  src: url("DillyDally.ttf"); /* URL to font */
 }
 #pizza {
   height: 49px;
@@ -81,7 +81,7 @@ body {
 #package {
   background-color: #004000;
   color: #8080ff;
-  /*animation: bounce 2s infinite;*/
+  /* animation: bounce 2s infinite; */
 }
 .\31 6px td {
   background-position: center, center;

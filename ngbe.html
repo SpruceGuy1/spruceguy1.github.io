@@ -317,13 +317,16 @@ class Rod{
         this.text=grt(material,bait)
 	}
 	upgradeMaterial(){
-		this.material++
-		this.text=grt(this.material,this.bait)
+		if (this.material < 2) {
+			this.material++
+			this.text=grt(this.material,this.bait)
+		}
 	}
 	upgradeBait(){
-				this.bait++
-		this.text=grt(this.material,this.bait)
-
+		if (this.bait < 3) {
+			this.bait++
+			this.text=grt(this.material,this.bait)
+		}
 	}
 }
 function createDefaultPlayer(name = prompt("enter your player's name")) {
@@ -344,7 +347,7 @@ function createDefaultPlayer(name = prompt("enter your player's name")) {
 			bonito:0,
 			tuna:0,
 			minnows:0,
-			<worms:0></worms:0> ,
+			worms: 0,
             iron: 0,
             gold: 0,
             hyperstone: 0
