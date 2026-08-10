@@ -1,179 +1,189 @@
-#sidebar{
-    top:0;
-    right:10px;
-    position:absolute;
-    overflow:scroll;
+#sidebar {
+  top: 0;
+  right: 10px;
+  position: absolute;
+  overflow: scroll;
 }
-.hint{
-    font-size:10px;
-    border: 2px solid red;
-    background-color: lightgray;
-    color:#0000C0;
+.hint {
+  font-size: 10px;
+  border: 2px solid red;
+  background-color: lightgray;
+  color: #0000c0;
 }
-#midbar{
-    
-    position:absolute;
-    top:0;
-    width:20%;
-    right:40%;
-    left:40%;
+#midbar {
+  position: absolute;
+  top: 0;
+  width: 20%;
+  right: 40%;
+  left: 40%;
 }
-#playpause{
-    border-radius:0;
-    background:lime;
-}
-
-.block{
-	height: 15px;
-	width: 15px;
-	background-color: yellow;
-	margin: 30px 30px 30px 30px;
-}
-#ms{
-	width:1cm;
-	height:10cm;
-	transform:rotate(-45deg);
-	background-color:#964B00;
-	margin:256px;
-}
-@keyframes spinms{
-	50%{transform: rotate(30deg);}
-}
-@keyframes spinmscc{
-	50%{transform: rotate(30deg);
-			background-color: magenta
-			
-	}
-}
-@keyframes kristen{
-	50%{background-color:red}
-}
-#apple{
-	height:128px;
-	width:128px;
-	background-color:lime;
-	border-radius:64px;
-}
-iframe,img{
-	height:256px;
-	width:256px;
-}
-table,tr,th,td{
-	border:1px solid black;
-}
-#divanimation{
-	height: 50px;
-	width: 50px;
-	animation: panda 0.5s infinite;;
-}
-@keyframes panda{
-	0%{
-		background-color: red;
-		transform: rotate(0deg);
-	}
-	50%{
-		background-color: blue;
-		transform: rotate(180deg);
-	}
-	100%{
-		background-color: red;
-		transform: rotate(360deg);
-	}
-}
-#cookie{
-	height: 50px;
-	width: 50px;
-	
-}
-#cookisidebar{
-	height: fit-content;
-	width: 400px;
-	background-color: red;
-	position: absolute;
-	right: 0px;
-	top: 0px;
-	border: 15px inset red;
-	border-radius: 15px;
-}
-.pack, #gum{
-	height: 100px;
-	width: 100px;
-}
-#hello{
-	height: 100px;
-	width: 100px;
-	background-color: green;
-}
-#middlebar{
-	height: 100%;
-	width: 33%;
-	background-color: blue;
-	position: absolute;
-	right: 33%;
-	top: 0px;
-}
-.building{
-	height: 150px;
-	width: 150px;
-	background-color: black;
-	color: white;
-}
-.button2{
-	border: 1px solid #8000ff;
-	background-color: lime;
-	color: white;
-	padding: 15px 20px;
-}
-.farm_harvest{
-	background-color: magenta;
-	height: fit-content;
-	width: 75px;
-}
-#bakee, #minee, #special, #forest{
-	height: fit-content;
-	width: fit-content;
-	background-color: black;
-	color: white;
-}
-.bread{
-	height: fit-content;
-	width: fit-content;
-	background-color: red;
-	margin: 10px;
-}
-.what{
-	height: 150px;
-	width: 150px;
-	
+#playpause {
+  border-radius: 0;
+  background: lime;
 }
 
+.block {
+  height: 15px;
+  width: 15px;
+  background-color: yellow;
+  margin: 30px 30px 30px 30px;
+}
+#ms {
+  width: 1cm;
+  height: 10cm;
+  transform: rotate(-45deg);
+  background-color: #964b00;
+  margin: 256px;
+}
+@keyframes spinms {
+  50% {
+    transform: rotate(30deg);
+  }
+}
+@keyframes spinmscc {
+  50% {
+    transform: rotate(30deg);
+    background-color: magenta;
+  }
+}
+@keyframes kristen {
+  50% {
+    background-color: red;
+  }
+}
+#apple {
+  height: 128px;
+  width: 128px;
+  background-color: lime;
+  border-radius: 64px;
+}
+iframe,
+img {
+  height: 256px;
+  width: 256px;
+}
+table,
+tr,
+th,
+td {
+  border: 1px solid black;
+}
+#divanimation {
+  height: 50px;
+  width: 50px;
+  animation: panda 0.5s infinite;
+}
+@keyframes panda {
+  0% {
+    background-color: red;
+    transform: rotate(0deg);
+  }
+  50% {
+    background-color: blue;
+    transform: rotate(180deg);
+  }
+  100% {
+    background-color: red;
+    transform: rotate(360deg);
+  }
+}
+#cookie {
+  height: 50px;
+  width: 50px;
+}
+#cookisidebar {
+  height: fit-content;
+  width: 400px;
+  background-color: red;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  border: 15px inset red;
+  border-radius: 15px;
+}
+.pack,
+#gum {
+  height: 100px;
+  width: 100px;
+}
+#hello {
+  height: 100px;
+  width: 100px;
+  background-color: green;
+}
+#middlebar {
+  height: 100%;
+  width: 33%;
+  background-color: blue;
+  position: absolute;
+  right: 33%;
+  top: 0px;
+}
+.building {
+  height: 150px;
+  width: 150px;
+  background-color: black;
+  color: white;
+}
+.button2 {
+  border: 1px solid #8000ff;
+  background-color: lime;
+  color: white;
+  padding: 15px 20px;
+}
+.farm_harvest {
+  background-color: magenta;
+  height: fit-content;
+  width: 75px;
+}
+#bakee,
+#minee,
+#special,
+#forest {
+  height: fit-content;
+  width: fit-content;
+  background-color: black;
+  color: white;
+}
+.bread {
+  height: fit-content;
+  width: fit-content;
+  background-color: red;
+  margin: 10px;
+}
+.what {
+  height: 150px;
+  width: 150px;
+}
 
-.mob-icon{
-	height: 150px;
-	width: 150px;
+.mob-icon {
+  height: 150px;
+  width: 150px;
 }
-ul{
-	background-color: black;
-	color: white;
-	border: 10px dashed blue;
+ul {
+  background-color: black;
+  color: white;
+  border: 10px dashed blue;
 }
-#buildings{
-	height: fit-content;
-	width: fit-content;
-	background-color: blue;
-	color: lime;
-	border: 10px dashed red;
+#buildings {
+  height: fit-content;
+  width: fit-content;
+  background-color: blue;
+  color: lime;
+  border: 10px dashed red;
 }
-.build{
-	height: 150px;
-	width: 150px;
-	border-radius: 37.5px;
-	border: 5px dashed lime;
+.build {
+  height: 150px;
+  width: 150px;
+  border-radius: 37.5px;
+  border: 5px dashed lime;
 }
-table, td, tr{
-	border: 5px dashed black;
-	background: red;
+table,
+td,
+tr {
+  border: 5px dashed black;
+  background: red;
 }
-li ul li{
-	border: 10px solid red;
+li ul li {
+  border: 10px solid red;
 }
