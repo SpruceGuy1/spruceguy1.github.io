@@ -91,7 +91,8 @@
     <button id="save-btn" onclick="saveGameData()" disabled>Save Game</button>
     <button id="load-btn" onclick="loadGameData()" disabled>Load Game</button>
     <button id="gwfs">Generate world from seed</button>
-    <div id="status">Loading modules...</div><button id="deployRod">Cast fishing rod</button>
+    <div id="status">Loading modules...</div>
+    <button id="deployRod">Cast fishing rod</button>
     <div id="templeinterface">
       <h1>Temple</h1>
       <button id="applein">Put in an apple</button>
@@ -959,13 +960,14 @@ renderSurfaceCell("22", player.coords.x + 1, player.coords.y, player.coords.z + 
         generatePathsFromOrigin(player.coords.x, player.coords.z, true);
         hasGeneratedFreePath = true;
       }
-	  if(        getBlock(player.coords.x, player.coords.y, player.coords.z).biome ==
-          "water"
-){
-	$("#deployRod").show()
-}else{
-	$("#deployRod").hide()
-}
+      if (
+        getBlock(player.coords.x, player.coords.y, player.coords.z).biome ==
+        "water"
+      ) {
+        $("#deployRod").show();
+      } else {
+        $("#deployRod").hide();
+      }
       render();
     }, 100 * player.stats.speed);
   </script>
