@@ -66,10 +66,19 @@
     var itm4 = false;
     var enormous8 = false;
     var t = "";
-    function buy(j, c) {
+    var purchasables = {
+      itm2: { ref: () => itm2, set: (v) => (itm2 = v) },
+      qdp: { ref: () => qdp, set: (v) => (qdp = v) },
+      itm4: { ref: () => itm4, set: (v) => (itm4 = v) },
+      enormous8: { ref: () => enormous8, set: (v) => (enormous8 = v) },
+    };
+    function buy(key, c) {
       if (points >= c) {
         points -= c;
-        j = true;
+        if (key === "itm2") itm2 = true;
+        else if (key === "qdp") qdp = true;
+        else if (key === "itm4") itm4 = true;
+        else if (key === "enormous8") enormous8 = true;
       } else {
         alert("get more px");
       }
@@ -84,14 +93,19 @@
           } else {
             alert("get more px");
           }
+          break;
         case "item 2":
-          buy(itm2, 10);
+          buy("itm2", 10);
+          break;
         case "quadrupler":
-          buy(qdp, 20);
+          buy("qdp", 20);
+          break;
         case "item 4":
-          buy(itm4, 30);
+          buy("itm4", 30);
+          break;
         case "enormous 8":
-          buy(enormous8, 50);
+          buy("enormous8", 50);
+          break;
       }
     }
     var lucky = Math.floor(Math.random() * 5) + 1;

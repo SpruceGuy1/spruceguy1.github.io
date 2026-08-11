@@ -186,7 +186,7 @@
       return (100 * num) / den;
     }
     function getTrophy(c, j, n, h, caption) {
-      if (c && !j) {
+      if (c && !achievements[j]) {
         alert("Achievement completed: " + n);
         dps *= 1.5;
         achievements.correct++;

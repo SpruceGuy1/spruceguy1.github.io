@@ -378,7 +378,7 @@
     function goof() {
       var n = document.createElement("div");
       n.id = "hello";
-      n.onclick = goof2();
+      n.onclick = goof2;
       document.getElementById("cookisidebar").appendChild(n);
       setTimeout(() => {
         n.id = "";
@@ -449,7 +449,7 @@
         case "level_up":
           if (achievements.bakes > 50) {
             levl_upz += levl_increase;
-            levl_upz_div.innerHTML = "Level ups: " + levl_upz;
+            levl_ups_div.innerHTML = "Level ups: " + levl_upz;
             achievements.bakes -= 50;
           } else {
             alert("too expensive");
@@ -576,8 +576,8 @@
             if (minee.stone >= 5 && minee.coal >= 5) {
               smokes += 1;
               smokehouse_unlock = true;
-              __harvest.stone -= 5;
-              __harvest.coal -= 5;
+              minee.stone -= 5;
+              minee.coal -= 5;
               __special.smokehouses += 1;
               stone.innerHTML = "Stone: " + minee.stone;
               coal.innerHTML = "Coal: " + minee.coal;
@@ -758,8 +758,8 @@
               achievements.bakes += 1;
               bakes.innerHTML = "Baked Goods: " + achievements.bakes;
               _special.furnaces.innerHTML = "Furnaces: " + __special.furnaces;
-              minee.IronGoldAlloy += 1;
-              feau.innerHTML = "Iron Gold Alloy: " + minee.IronGoldAlloy;
+              minee.ironGoldAlloy += 1;
+              feau.innerHTML = "Iron Gold Alloy: " + minee.ironGoldAlloy;
             }
         }
       }
@@ -775,6 +775,7 @@
           } else {
             alert("not enough BLTs");
           }
+          break;
         case "bread":
           if (bakee.bread >= 1) {
             bakee.bread -= 1;
@@ -784,6 +785,7 @@
           } else {
             alert("no bread");
           }
+          break;
         case "choco_cooki":
           if (bakee.ChocolateCooki >= 1) {
             bakee.ChocolateCooki -= 1;
@@ -794,6 +796,7 @@
           } else {
             alert("no chocolate cookis");
           }
+          break;
         case "corn_biskit":
           if (bakee.CornBiskit >= 1) {
             bakee.CornBiskit -= 1;
@@ -803,6 +806,7 @@
           } else {
             alert("not enough corn Biskits");
           }
+          break;
         case "jamsam":
           if (bakee.JamSandwich >= 1) {
             bakee.JamSandwich -= 1;
@@ -812,6 +816,7 @@
           } else {
             alert("not enough jam sandwiches");
           }
+          break;
         case "PBJ":
           if (bakee.PBJ >= 1) {
             bakee.PBJ -= 1;
@@ -821,6 +826,7 @@
           } else {
             alert("not enough PB&Js");
           }
+          break;
         case "salted_pork":
           if (bakee.SaltedPork >= 1) {
             bakee.SaltedPork -= 1;
@@ -830,6 +836,7 @@
           } else {
             alert("not enough salted pork");
           }
+          break;
       }
     }
     setInterval(() => {
