@@ -521,11 +521,13 @@
       var random;
       var seedCounter = ox * 73856093 + oz * 19349663;
       function randomize3() {
-        random = Math.floor(Math.abs(pathNoise.simplex2(seedCounter++, 0)) * 3) % 3;
+        random =
+          Math.floor(Math.abs(pathNoise.simplex2(seedCounter++, 0)) * 3) % 3;
         //randomizes to 0, 1, or 2
       }
       function randomize4() {
-        random = Math.floor(Math.abs(pathNoise.simplex2(seedCounter++, 0)) * 4) % 4;
+        random =
+          Math.floor(Math.abs(pathNoise.simplex2(seedCounter++, 0)) * 4) % 4;
         //randomizes to 0, 1, 2, or 3
       }
 
