@@ -967,43 +967,42 @@ renderSurfaceCell("22", player.coords.x + 1, player.coords.y, player.coords.z + 
       render();
     });
     var hasnightlogged = false;
-    $("#deployRod").click(function(){
-      alert("Click 'cast fishing rod' again to reel in'")
-      var fishLoc = -10
+    $("#deployRod").click(function () {
+      alert("Click 'cast fishing rod' again to reel in'");
+      var fishLoc = -10;
       var interval = setInterval(() => {
-        fishloc++
-        if(fishloc==10){
-          clearInterval(interval)
+        fishloc++;
+        if (fishloc == 10) {
+          clearInterval(interval);
         }
       }, 2000);
-      var luck = (player.fishingrod.bait+1)*player.fishingluck/5*(10-Math.abs(fishLoc))
+      var luck =
+        (((player.fishingrod.bait + 1) * player.fishingluck) / 5) *
+        (10 - Math.abs(fishLoc));
       // (1,4)*(0.2,1)*(0,10) is anywhere between 0 and 40
-      if(luck>20){
-        var t
-        switch(Math.floor(Math.random()*5)){
-          
+      if (luck > 20) {
+        var t;
+        switch (Math.floor(Math.random() * 5)) {
           case 0:
-            t="minnows"
-            break
+            t = "minnows";
+            break;
           case 1:
-            t="cod"
-            break
+            t = "cod";
+            break;
           case 2:
-            t="bonito"
-            break
+            t = "bonito";
+            break;
           case 3:
-            t="salmon"
-            break
+            t = "salmon";
+            break;
           case 4:
-            t="tuna"
-            break
-          
-          
+            t = "tuna";
+            break;
         }
-        alert("You received "+t)
-        player.inventory[t]++
+        alert("You received " + t);
+        player.inventory[t]++;
       }
-    })
+    });
     setInterval(() => {
       if (prompting) {
         command();
