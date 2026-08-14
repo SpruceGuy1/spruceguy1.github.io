@@ -77,7 +77,7 @@
         <td id="66"></td>
       </tr>
     </table>
-    <h1>Cloud Save Demo</h1>
+    <h1>Cloud Save</h1>
     <form id="login">
       Login Email <input id="log-email" type="email" /> Password
       <input type="password" id="log-pword" />
@@ -967,6 +967,43 @@ renderSurfaceCell("22", player.coords.x + 1, player.coords.y, player.coords.z + 
       render();
     });
     var hasnightlogged = false;
+    $("#deployRod").click(function(){
+      alert("Click 'cast fishing rod' again to reel in'")
+      var fishLoc = -10
+      var interval = setInterval(() => {
+        fishloc++
+        if(fishloc==10){
+          clearInterval(interval)
+        }
+      }, 2000);
+      var luck = (player.fishingrod.bait+1)*player.fishingluck/5*(10-Math.abs(fishLoc))
+      // (1,4)*(0.2,1)*(0,10) is anywhere between 0 and 40
+      if(luck>20){
+        var t
+        switch(Math.floor(Math.random()*5)){
+          
+          case 0:
+            t="minnows"
+            break
+          case 1:
+            t="cod"
+            break
+          case 2:
+            t="bonito"
+            break
+          case 3:
+            t="salmon"
+            break
+          case 4:
+            t="tuna"
+            break
+          
+          
+        }
+        alert("You received "+t)
+        player.inventory[t]++
+      }
+    })
     setInterval(() => {
       if (prompting) {
         command();
