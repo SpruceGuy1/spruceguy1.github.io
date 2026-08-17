@@ -77,19 +77,19 @@
         <td id="66"></td>
       </tr>
     </table>
-    <button onclick="runCommand('q')">q</button>
-    <button onclick="runCommand('w')">w</button>
-    <button onclick="runCommand('e')">e</button>
-    <button onclick="runCommand('r')">r</button>
-    <button onclick="runCommand('i')">i</button>
-    <button onclick="runCommand('p')">p</button><br />
-    <button onclick="runCommand('a')">a</button>
-    <button onclick="runCommand('s')">s</button>
-    <button onclick="runCommand('d')">d</button>
-    <button onclick="runCommand('f')">f</button><br />
-    <button onclick="runCommand('b')">block</button>
-    <button onclick="runCommand('B')">biome</button>
-    <button onclick="runCommand('pause')">pause</button>
+    <button data-command="q">q</button>
+    <button data-command="w">w</button>
+    <button data-command="e">e</button>
+    <button data-command="r">r</button>
+    <button data-command="i">i</button>
+    <button data-command="p">p</button><br />
+    <button data-command="a">a</button>
+    <button data-command="s">s</button>
+    <button data-command="d">d</button>
+    <button data-command="f">f</button><br />
+    <button data-command="b">block</button>
+    <button data-command="B">biome</button>
+    <button data-command="pause">pause</button>
 
     <h1>Cloud Save</h1>
     <form id="login">
@@ -320,6 +320,8 @@
               data.player.fishingrod.material,
               data.player.fishingrod.bait,
             );
+          } else {
+            player.fishingrod = new Rod(0, 0);
           }
           bba = deserializeBba(data.bba);
           mba = deserializeMba(data.mba);
@@ -756,6 +758,14 @@ if (Math.random()<(1/3)) {
         });
       console.log("entering temple");
     }
+    $("#applein").on("click", function () {
+      if (player.inventory.apples > 0) {
+        player.inventory.apples--;
+        console.log("apple added to temple");
+      } else {
+        console.log("no apples");
+      }
+    });
     function renderSurfaceCell(cellId, x, y, z) {
       if (player.coords.y !== 5) {
         $(`#${cellId}`).css(
@@ -944,6 +954,11 @@ renderSurfaceCell("22", player.coords.x + 1, player.coords.y, player.coords.z + 
           break;
       }
     }
+    document.querySelectorAll("[data-command]").forEach((button) => {
+      button.addEventListener("click", () => {
+        runCommand(button.dataset.command);
+      });
+    });
     function command() {
       var e = prompt(">>>");
       runCommand(e);
@@ -987,7 +1002,7 @@ renderSurfaceCell("22", player.coords.x + 1, player.coords.y, player.coords.z + 
           clearInterval(interval);
         }
         var luck =
-          (((player.fishingrod.bait + 1) * player.fishingluck) / 5) *
+          (((player.fishingrod.bait + 1) * player.stats.fishingluck) / 5) *
           (10 - Math.abs(fishLoc));
         // (1,4)*(0.2,1)*(0,10) is anywhere between 0 and 40
         if (luck > 20) {
