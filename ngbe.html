@@ -993,14 +993,29 @@ renderSurfaceCell("22", player.coords.x + 1, player.coords.y, player.coords.z + 
       render();
     });
     var hasnightlogged = false;
+    let fishingInterval = null;
+    let fishLoc = null;
+    let isFishing = false;
     $("#deployRod").click(function () {
-      alert("Click 'cast fishing rod' again to reel in'");
-      var fishLoc = -10;
-      var interval = setInterval(() => {
-        fishLoc++;
-        if (fishLoc == 10) {
-          clearInterval(interval);
-        }
+      if (!isFishing) {
+        isFishing = true;
+        fishLoc = -10;
+        alert("Click 'cast fishing rod' again to reel in'");
+        $("#deployRod").text("Reel in fishing rod");
+        fishingInterval = setInterval(() => {
+          fishLoc++;
+          if (fishLoc == 10) {
+            clearInterval(fishingInterval);
+            fishingInterval = null;
+            fishLoc = null;
+            isFishing = false;
+            $("#deployRod").text("Cast fishing rod");
+            alert("Your cast expired. The fish got away.");
+          }
+        }, 2000);
+      } else {
+        clearInterval(fishingInterval);
+        fishingInterval = null;
         var luck =
           (((player.fishingrod.bait + 1) * player.stats.fishingluck) / 5) *
           (10 - Math.abs(fishLoc));
@@ -1026,8 +1041,13 @@ renderSurfaceCell("22", player.coords.x + 1, player.coords.y, player.coords.z + 
           }
           alert("You received " + t);
           player.inventory[t]++;
+        } else {
+          alert("No catch this time.");
         }
-      }, 2000);
+        fishLoc = null;
+        isFishing = false;
+        $("#deployRod").text("Cast fishing rod");
+      }
     });
     setInterval(() => {
       if (prompting) {
