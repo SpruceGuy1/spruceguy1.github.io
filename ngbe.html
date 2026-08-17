@@ -77,20 +77,20 @@
         <td id="66"></td>
       </tr>
     </table>
-	  <button onclick="runCommand('q')">q</button>
-	  <button onclick="runCommand('w')">w</button>
-	  <button onclick="runCommand('e')">e</button>
-	  <button onclick="runCommand('r')">r</button>
-	  <button onclick="runCommand('i')">i</button>
-	  <button onclick="runCommand('p')">p</button><br/>
-	  <button onclick="runCommand('a')">a</button>
-	  <button onclick="runCommand('s')">s</button>
-	  <button onclick="runCommand('d')">d</button>
-	  <button onclick="runCommand('f')">f</button><br/>
-	  <button onclick="runCommand('b')">block</button>
-	  <button onclick="runCommand('B')">biome</button>
-	  <button onclick="runCommand('pause')">pause</button>
-	  
+    <button onclick="runCommand('q')">q</button>
+    <button onclick="runCommand('w')">w</button>
+    <button onclick="runCommand('e')">e</button>
+    <button onclick="runCommand('r')">r</button>
+    <button onclick="runCommand('i')">i</button>
+    <button onclick="runCommand('p')">p</button><br />
+    <button onclick="runCommand('a')">a</button>
+    <button onclick="runCommand('s')">s</button>
+    <button onclick="runCommand('d')">d</button>
+    <button onclick="runCommand('f')">f</button><br />
+    <button onclick="runCommand('b')">block</button>
+    <button onclick="runCommand('B')">biome</button>
+    <button onclick="runCommand('pause')">pause</button>
+
     <h1>Cloud Save</h1>
     <form id="login">
       Login Email <input id="log-email" type="email" /> Password
@@ -851,8 +851,8 @@ renderSurfaceCell("22", player.coords.x + 1, player.coords.y, player.coords.z + 
       }
     }
     render();
-	  function runCommand(e){
-		  switch (e) {
+    function runCommand(e) {
+      switch (e) {
         case "w":
           player.coords.x++;
           render();
@@ -891,7 +891,7 @@ renderSurfaceCell("22", player.coords.x + 1, player.coords.y, player.coords.z + 
               getBlock(player.coords.x, player.coords.y, player.coords.z).block,
           );
           break;
-        
+
         case "e":
           var empty = true;
           for (const itemCount of Object.values(player.inventory)) {
@@ -934,7 +934,7 @@ renderSurfaceCell("22", player.coords.x + 1, player.coords.y, player.coords.z + 
           console.log("f: down");
           console.log("p: coords");
           console.log("i: stats");
-          
+
           console.log("x: destroy");
           console.log("e: inventory list");
 
@@ -943,10 +943,10 @@ renderSurfaceCell("22", player.coords.x + 1, player.coords.y, player.coords.z + 
 
           break;
       }
-	  }
+    }
     function command() {
       var e = prompt(">>>");
-      runCommand(e)
+      runCommand(e);
     }
     console.log("press q to see commands");
     console.log("press q or another command.");
