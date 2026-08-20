@@ -106,7 +106,8 @@
     <button id="load-btn" onclick="loadGameData()" disabled>Load Game</button>
     <button id="gwfs">Generate world from seed</button>
     <div id="status">Loading modules...</div>
-    <button id="deployRod">Cast fishing rod</button>
+    <button id="castRod">Cast fishing rod</button>
+    <button id="reelRod" disabled>Reel in fishing rod</button>
     <div id="templeinterface">
       <h1>Temple</h1>
       <button id="applein">Put in an apple</button>
@@ -996,58 +997,65 @@ renderSurfaceCell("22", player.coords.x + 1, player.coords.y, player.coords.z + 
     let fishingInterval = null;
     let fishLoc = null;
     let isFishing = false;
-    $("#deployRod").click(function () {
-      if (!isFishing) {
-        isFishing = true;
-        fishLoc = -10;
-        alert("Click 'cast fishing rod' again to reel in'");
-        $("#deployRod").text("Reel in fishing rod");
-        fishingInterval = setInterval(() => {
-          fishLoc++;
-          if (fishLoc == 10) {
-            clearInterval(fishingInterval);
-            fishingInterval = null;
-            fishLoc = null;
-            isFishing = false;
-            $("#deployRod").text("Cast fishing rod");
-            alert("Your cast expired. The fish got away.");
-          }
-        }, 2000);
-      } else {
-        clearInterval(fishingInterval);
-        fishingInterval = null;
-        var luck =
-          (((player.fishingrod.bait + 1) * player.stats.fishingluck) / 5) *
-          (10 - Math.abs(fishLoc));
-        // (1,4)*(0.2,1)*(0,10) is anywhere between 0 and 40
-        if (luck > 20) {
-          var t;
-          switch (Math.floor(Math.random() * 5)) {
-            case 0:
-              t = "minnows";
-              break;
-            case 1:
-              t = "cod";
-              break;
-            case 2:
-              t = "bonito";
-              break;
-            case 3:
-              t = "salmon";
-              break;
-            case 4:
-              t = "tuna";
-              break;
-          }
-          alert("You received " + t);
-          player.inventory[t]++;
-        } else {
-          alert("No catch this time.");
-        }
-        fishLoc = null;
-        isFishing = false;
-        $("#deployRod").text("Cast fishing rod");
+    $("#castRod").click(function () {
+      if (isFishing) {
+        return;
       }
+      isFishing = true;
+      fishLoc = -10;
+      $("#castRod").prop("disabled", true);
+      $("#reelRod").prop("disabled", false);
+      fishingInterval = setInterval(() => {
+        fishLoc++;
+        if (fishLoc == 10) {
+          clearInterval(fishingInterval);
+          fishingInterval = null;
+          fishLoc = null;
+          isFishing = false;
+          $("#castRod").prop("disabled", false);
+          $("#reelRod").prop("disabled", true);
+          alert("Your cast expired. The fish got away.");
+        }
+      }, 2000);
+    });
+    $("#reelRod").click(function () {
+      if (!isFishing) {
+        return;
+      }
+      clearInterval(fishingInterval);
+      fishingInterval = null;
+      var luck =
+        (((player.fishingrod.bait + 1) * player.stats.fishingluck) / 5) *
+        (10 - Math.abs(fishLoc));
+      // (1,4)*(0.2,1)*(0,10) is anywhere between 0 and 40
+      if (luck > 20) {
+        var t;
+        switch (Math.floor(Math.random() * 5)) {
+          case 0:
+            t = "minnows";
+            break;
+          case 1:
+            t = "cod";
+            break;
+          case 2:
+            t = "bonito";
+            break;
+          case 3:
+            t = "salmon";
+            break;
+          case 4:
+            t = "tuna";
+            break;
+        }
+        alert("You received " + t);
+        player.inventory[t]++;
+      } else {
+        alert("No catch this time.");
+      }
+      fishLoc = null;
+      isFishing = false;
+      $("#castRod").prop("disabled", false);
+      $("#reelRod").prop("disabled", true);
     });
     setInterval(() => {
       if (prompting) {
@@ -1074,9 +1082,11 @@ renderSurfaceCell("22", player.coords.x + 1, player.coords.y, player.coords.z + 
         getBlock(player.coords.x, player.coords.y, player.coords.z).biome ==
         "water"
       ) {
-        $("#deployRod").show();
+        $("#castRod").show();
+        $("#reelRod").show();
       } else {
-        $("#deployRod").hide();
+        $("#castRod").hide();
+        $("#reelRod").hide();
       }
       render();
     }, 100 * player.stats.speed);
