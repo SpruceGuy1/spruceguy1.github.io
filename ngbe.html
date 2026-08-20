@@ -1020,7 +1020,9 @@ renderSurfaceCell("22", player.coords.x + 1, player.coords.y, player.coords.z + 
           (((player.fishingrod.bait + 1) * player.stats.fishingluck) / 5) *
           (10 - Math.abs(fishLoc));
         // (1,4)*(0.2,1)*(0,10) is anywhere between 0 and 40
-        if (luck > 20) {
+		// divide by 40 for chance
+		// if Math.random() less or equal then get fish
+        if (Math.random() <= luck/40) {
           var t;
           switch (Math.floor(Math.random() * 5)) {
             case 0:
