@@ -107,6 +107,8 @@
     <button id="gwfs">Generate world from seed</button>
     <div id="status">Loading modules...</div>
     <button id="deployRod">Cast fishing rod</button>
+	<button id="upgradeMaterial">Upgrade rod material to <span id="nextMat">iron</span></button>(not yet implemented)
+	<button id="upgradeBait">Upgrade fishing bait to <span id="nextBait">minnows</span></button>(not yet implemented)
     <div id="templeinterface">
       <h1>Temple</h1>
       <button id="applein">Put in an apple</button>
@@ -1018,8 +1020,8 @@ renderSurfaceCell("22", player.coords.x + 1, player.coords.y, player.coords.z + 
         fishingInterval = null;
         var luck =
           (((player.fishingrod.bait + 1) * player.stats.fishingluck) / 5) *
-          (10 - Math.abs(fishLoc));
-        // (1,4)*(0.2,1)*(0,10) is anywhere between 0 and 40
+          (10 - Math.abs(fishLoc)) + player.fishingrod.material;
+        // (1,4)*(0.2,1)*(0,10)+(0,2) is anywhere between 0 and 42
         // divide by 40 for chance
         // if Math.random() less or equal then get fish
         if (Math.random() <= luck / 40) {
