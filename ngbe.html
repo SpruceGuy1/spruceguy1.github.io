@@ -118,8 +118,8 @@
       <h1>Temple</h1>
       <button id="applein">Put in an apple</button>
       <select id="spellopt">
-        <option value="sleepingsardine">Sleeping Sardine for 2 fish</option>
-        <option value="ristorante">Ristorante for a fish and a wood</option>
+        <option value="sleepingsardine">Sleeping Sardine for 2 cod</option>
+        <option value="ristorante">Ristorante for a cod and a wood</option>
         <option value="goldenspell">Golden spell for 1 iron and 1 gold</option>
         <option value="speedy">Speedy for 2 apples</option>
       </select>
@@ -733,15 +733,15 @@ if (Math.random()<(1/3)) {
           }
           switch ($("#spellopt").val()) {
             case "ristorante":
-              if (player.inventory.fish >= 1 && player.inventory.wood >= 1) {
-                player.inventory.fish--;
+              if (player.inventory.cod >= 1 && player.inventory.wood >= 1) {
+                player.inventory.cod--;
                 player.inventory.wood--;
                 player.stats.restaurantluck++;
               }
               break;
             case "sleepingsardine":
-              if (player.inventory.fish >= 2) {
-                player.inventory.fish -= 2;
+              if (player.inventory.cod >= 2) {
+                player.inventory.cod -= 2;
                 player.stats.fishingluck++;
               }
 
@@ -1042,7 +1042,7 @@ renderSurfaceCell("22", player.coords.x + 1, player.coords.y, player.coords.z + 
         var luck =
           (((player.fishingrod.bait + 1) * player.stats.fishingluck) / 5) *
             (10 - Math.abs(fishLoc)) +
-          player.fishingrod.material;
+          player.fishingrod.material; + 3*Math.random()
         // (1,4)*(0.2,1)*(0,10)+(0,2) is anywhere between 0 and 42
         // divide by 40 for chance
         // if Math.random() less or equal then get fish
