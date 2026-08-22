@@ -1003,7 +1003,7 @@ renderSurfaceCell("22", player.coords.x + 1, player.coords.y, player.coords.z + 
       if (player.fishingrod.bait == 0 && player.inventory.worms >= 8) {
         $("#nextMat").text("minnows");
       } else if (player.fishingrod.bait == 0 && player.inventory.minnows >= 8) {
-        $("#nextMat").text("crafted baut");
+        $("#nextMat").text("crafted bait");
       } else if (player.fishingrod.bait == 0 && player.inventory.bait >= 8) {
         $("#upgradeMaterial").text("maxed out");
         $("#upgradeMaterial").attr("disabled", "true");
@@ -1073,6 +1073,7 @@ renderSurfaceCell("22", player.coords.x + 1, player.coords.y, player.coords.z + 
         fishLoc = null;
         isFishing = false;
         $("#deployRod").text("Cast fishing rod");
+        $("#fish").remove()
       }
     });
     setInterval(() => {
