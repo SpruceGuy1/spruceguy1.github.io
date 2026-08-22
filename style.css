@@ -96,7 +96,17 @@ button {
   color: #ffffff;
 }
 #fishing {
-  background-color: #0000ff;
+  position: relative;
   width: 336px;
+  height: 16px;
+  background-color: #0000ff;
+  overflow: hidden;
+}
+
+#fish {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 16px;
   height: 16px;
 }
