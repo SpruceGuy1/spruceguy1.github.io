@@ -998,18 +998,18 @@ renderSurfaceCell("22", player.coords.x + 1, player.coords.y, player.coords.z + 
       }
       render();
     });
-	  $("#upgradeMaterial").click(function(){
-		  if(player.fishingrod.bait==0 && player.inventory.worms >= 8){
-			  $("#nextMat").text("minnows")
-		  }else  if(player.fishingrod.bait==0 && player.inventory.minnows >= 8){
-			  $("#nextMat").text("crafted baut")
-		  }else if(player.fishingrod.bait==0 && player.inventory.bait >= 8){
-			  $("#upgradeMaterial").text("maxed out")
-			  $("#upgradeMaterial").attr("disabled", "true")
-		  }
-	  })
-	 
-	/*  $("#upgradeBait")
+    $("#upgradeMaterial").click(function () {
+      if (player.fishingrod.bait == 0 && player.inventory.worms >= 8) {
+        $("#nextMat").text("minnows");
+      } else if (player.fishingrod.bait == 0 && player.inventory.minnows >= 8) {
+        $("#nextMat").text("crafted baut");
+      } else if (player.fishingrod.bait == 0 && player.inventory.bait >= 8) {
+        $("#upgradeMaterial").text("maxed out");
+        $("#upgradeMaterial").attr("disabled", "true");
+      }
+    });
+
+    /*  $("#upgradeBait")
 	  $("#nextBait") */
     var hasnightlogged = false;
     let fishingInterval = null;
