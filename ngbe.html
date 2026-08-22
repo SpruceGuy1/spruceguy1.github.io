@@ -107,6 +107,7 @@
     <button id="gwfs">Generate world from seed</button>
     <div id="status">Loading modules...</div>
     <button id="deployRod">Cast fishing rod</button>
+	<div id="fishing"></div>
     <button id="upgradeMaterial">
       Upgrade rod material to <span id="nextMat">iron</span></button
     >(not yet implemented)
@@ -1021,15 +1022,18 @@ renderSurfaceCell("22", player.coords.x + 1, player.coords.y, player.coords.z + 
         fishLoc = -10;
         alert("Click 'cast fishing rod' again to reel in'");
         $("#deployRod").text("Reel in fishing rod");
+		$("#fishing").append("<img src='images/fish.png' id='fish'/>")
         fishingInterval = setInterval(() => {
           fishLoc++;
+		  $("#fish").css("left", (fishLoc+10)*16+"px")
           if (fishLoc == 10) {
             clearInterval(fishingInterval);
             fishingInterval = null;
             fishLoc = null;
             isFishing = false;
             $("#deployRod").text("Cast fishing rod");
-            alert("Your cast expired. The fish got away.");
+            alert("The fish got away.")
+			$("#fish").remove()
           }
         }, 2000);
       } else {
@@ -1064,7 +1068,7 @@ renderSurfaceCell("22", player.coords.x + 1, player.coords.y, player.coords.z + 
           alert("You received " + t);
           player.inventory[t]++;
         } else {
-          alert("No catch this time.");
+          alert("The hook didn't latch onto the fish.");
         }
         fishLoc = null;
         isFishing = false;
