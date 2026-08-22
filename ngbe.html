@@ -1046,7 +1046,7 @@ renderSurfaceCell("22", player.coords.x + 1, player.coords.y, player.coords.z + 
         // (1,4)*(0.2,1)*(0,10)+(0,2) is anywhere between 0 and 42
         // divide by 40 for chance
         // if Math.random() less or equal then get fish
-        if (Math.random() <= luck / 40) {
+        if (Math.random() < Math.min(1, luck / 40)) {
           var t;
           switch (Math.floor(Math.random() * 5)) {
             case 0:
