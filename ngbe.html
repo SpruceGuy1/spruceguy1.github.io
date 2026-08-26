@@ -774,30 +774,30 @@ if (Math.random()<(1/3)) {
       }
     });
     function renderSurfaceCell(cellId, x, y, z, tx, ty, tz) {
-      if(!tx){
-        tx = x
+      if (!tx) {
+        tx = x;
       }
-            if(!ty){
-        ty = y
+      if (!ty) {
+        ty = y;
       }
-      if(!tz){
-        tz = z
+      if (!tz) {
+        tz = z;
       }
 
-      if(getBlock(tx,ty,tz).block=="air" ||   ty==6){
-    renderSurfaceCell(cellId,x,y,z,tx-1,ty-1,tz-1)
+      if (getBlock(tx, ty, tz).block == "air" || ty == 6) {
+        renderSurfaceCell(cellId, x, y, z, tx - 1, ty - 1, tz - 1);
       }
-            const ground = getBlock(tx, 5, tz).block;
+      const ground = getBlock(tx, 5, tz).block;
       const overlay = getBlock(tx, 6, tz).block;
 
       var isbackgrounds =
-        overlay === "tree" || overlay === "fruit-tree" || overlay === "temple"
+        overlay === "tree" || overlay === "fruit-tree" || overlay === "temple";
 
-         var backgrounds = isbackgrounds ? `url("images/${overlay}.png"), url("images/${ground}.png")`
-          : `url("images/${ground}.png")`;
+      var backgrounds = isbackgrounds
+        ? `url("images/${overlay}.png"), url("images/${ground}.png")`
+        : `url("images/${ground}.png")`;
 
-
-      if (player.coords.y !== 5   && ty!=6) {
+      if (player.coords.y !== 5 && ty != 6) {
         $(`#${cellId}`).css(
           "background-image",
           `url("images/${getBlock(tx, ty, tz).block}.png")`,
@@ -816,12 +816,11 @@ if (Math.random()<(1/3)) {
           console.log("You got an apple.");
         });
       }
-      if(overlay=="tree"){
-                $(`#${cellId}`).on("click.tree", function () {
-          player.inventory.apples+= +(Math.random()<(1/3));
+      if (overlay == "tree") {
+        $(`#${cellId}`).on("click.tree", function () {
+          player.inventory.apples += +(Math.random() < 1 / 3);
           console.log("You may have gotten an apple.");
         });
-
       }
       $(`#${cellId}`).css("background-image", backgrounds);
     }
