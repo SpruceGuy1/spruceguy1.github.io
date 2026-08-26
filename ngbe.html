@@ -774,18 +774,13 @@ if (Math.random()<(1/3)) {
       }
     });
     function renderSurfaceCell(cellId, x, y, z, tx, ty, tz) {
-      if (!tx) {
-        tx = x;
-      }
-      if (!ty) {
-        ty = y;
-      }
-      if (!tz) {
-        tz = z;
-      }
+      tx = tx !== undefined ? tx : x;
+      ty = ty !== undefined ? ty : y;
+      tz = tz !== undefined ? tz : z;
 
       if (getBlock(tx, ty, tz).block == "air" || ty == 6) {
         renderSurfaceCell(cellId, x, y, z, tx - 1, ty - 1, tz - 1);
+        return;
       }
       const ground = getBlock(tx, 5, tz).block;
       const overlay = getBlock(tx, 6, tz).block;
@@ -806,6 +801,7 @@ if (Math.random()<(1/3)) {
       }
       $(`#${cellId}`).off("click.temple");
       $(`#${cellId}`).off("click.fruit-tree");
+      $(`#${cellId}`).off("click.tree");
 
       if (overlay == "temple") {
         $(`#${cellId}`).on("click.temple", templeCallback);
