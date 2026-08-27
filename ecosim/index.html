@@ -91,6 +91,7 @@
             behavior: "moveRight",
           }),
         );
+        o2[0].remove()
 
         co2count++;
         o2count -= 0.5;
@@ -135,17 +136,23 @@
             if (!i.addit) {
               console.error(i);
             }
-            if (i.type == "plant" && o2count < 21) {
+            if (i.type == "plant" ){if(o2count < 21) {
               o2count++;
               o2.push(
                 createSprite(loc(i), "oxygen", {
                   behavior: "moveRandom",
                 }),
               );
+            }
               co2[0].remove();
               co2count--;
-            }
+              if(n2count<=78){
+                n2count++
+              }
+
+
           }
+        }
         };
         fn();
         $("#o2count").text(o2count);
