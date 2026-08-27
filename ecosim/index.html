@@ -12,6 +12,12 @@
   <body>
     <h1>EcoSim: releasing September 2026</h1>
     <a target="_blank" href="changelog.html">Changelog</a>
+    Air composition:<br>
+    &bull; O2: <span id="o2count">21</span>%
+    &bull; N2: <span id="n2count">78</span>%
+    &bull; CO2: <span id="co2count">0</span>%
+    &bull; Other: <span id="other">1</span>%
+
     <div class="game">
       <img class="sprite" src="/images/ecosim/human.png" />
     </div>
@@ -31,6 +37,9 @@
       }
       var sprites = [];
       var index = 0;
+      var co2count = 0;
+      var o2count = 21;
+      var n2count = 79
       class Sprite {
         constructor(type, x, y, addit) {
           this.type = type;
@@ -66,6 +75,13 @@
           behavior: "moveRight",
         });
         co2count++;
+        o2count-=.5
+        n2count-=.5
+        $("#o2count").text(o2count)
+        $("#co2count").text(co2count)
+        $("#n2count").text(n2count)
+
+
         for (i of sprites) {
           if (i.addit.behavior) {
             switch (i.addit.behavior) {
