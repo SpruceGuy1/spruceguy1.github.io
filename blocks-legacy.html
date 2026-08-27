@@ -1,302 +1,295 @@
 <!doctype html>
 <html>
   <head>
-    <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="style.css" />
     <title>Blocks</title>
     <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.27.2.min.js"></script>
-        <script src="//cdn.jsdelivr.net/npm/eruda"></script>
+    <script src="//cdn.jsdelivr.net/npm/eruda"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script>eruda.init();</script>
+    <script>
+      eruda.init();
+    </script>
   </head>
   <body>
     <h1>Blocks</h1>
-    <p>Blocks Legacy<br>Play the full version <a href="blocks.html">Here</a></p>
-    
-    <canvas id="game" height="160" width="160">
-      
-    </canvas>
-    <img style="position:absolute; top:0px; left:0px;" src="player.png" id="player">
+    <p>
+      Blocks Legacy<br />Play the full version <a href="blocks.html">Here</a>
+    </p>
+
+    <canvas id="game" height="160" width="160"> </canvas>
+    <img
+      style="position: absolute; top: 0px; left: 0px"
+      src="player.png"
+      id="player"
+    />
     <button id="changemap">Change map</button>
-    Current map: <span id="cmap">Two Islands</span><br>
+    Current map: <span id="cmap">Two Islands</span><br />
     If you see magenta, there was an error
     <button id="up">Up</button>
     <button id="dn">Down</button>
     <button id="lf">Left</button>
     <button id="rg">Right</button>
-    <br>
+    <br />
     <button id="togCM">Toggle Country Mode</button>
     Currently <span id="cm">off</span>.
     <script type="module">
-      var x = 1
-      var y = 11
-      var mx = 0
-      var my = 0
-      var t = "w"
-      var cm = false
-      $("#togCM").click(()=>{
-        cm = !cm
-        if(cm){
-          $("#cm").text("on")
-        }else{
-          $("#cm").text("off")
+      var x = 1;
+      var y = 11;
+      var mx = 0;
+      var my = 0;
+      var t = "w";
+      var cm = false;
+      $("#togCM").click(() => {
+        cm = !cm;
+        if (cm) {
+          $("#cm").text("on");
+        } else {
+          $("#cm").text("off");
         }
-      })
+      });
       var ct = {
-        terr: [[mx,my]],
+        terr: [[mx, my]],
         name: "",
-        color: "#ff00ff80"
-        
-      }
-      import {RMG} from "./rmg.js"
-      import {italy} from "./italy.js"
+        color: "#ff00ff80",
+      };
+      import { RMG } from "./rmg.js";
+      import { italy } from "./italy.js";
       var twoIslands = [
-      [..."wwwwwwwwwwwwwwww"],
-      [..."wwwwwwwwwwwwwwww"],
-      [..."wwwwwwwffwwwwwww"],
-      [..."wwwwwffffwwwwwww"],
-      [..."wwwwwwffwwwwwwww"],
-      [..."wwwwwwwwwwwwwwww"],
-      [..."wwwwwwwwwwwwwwww"],
-      [..."wwwwwwwwgwwwwwww"],
-      [..."wwwwwwwggggwwwww"],
-      [..."wwwwwgggmmggwwww"],
-      [..."wwwwwwggmfggwwww"],
-      [..."wwwwwwwgggwwwwww"],
-      [..."wwwwwwwwwgwwwwww"],
-      [..."wwwwwwwwwwwwwwww"],
-      [..."wwwwwwwwwwwwwwww"],
-      [..."wwwwwwwwwwwwwwww"]
-      
-      ]
-      var cgs = twoIslands
+        [..."wwwwwwwwwwwwwwww"],
+        [..."wwwwwwwwwwwwwwww"],
+        [..."wwwwwwwffwwwwwww"],
+        [..."wwwwwffffwwwwwww"],
+        [..."wwwwwwffwwwwwwww"],
+        [..."wwwwwwwwwwwwwwww"],
+        [..."wwwwwwwwwwwwwwww"],
+        [..."wwwwwwwwgwwwwwww"],
+        [..."wwwwwwwggggwwwww"],
+        [..."wwwwwgggmmggwwww"],
+        [..."wwwwwwggmfggwwww"],
+        [..."wwwwwwwgggwwwwww"],
+        [..."wwwwwwwwwgwwwwww"],
+        [..."wwwwwwwwwwwwwwww"],
+        [..."wwwwwwwwwwwwwwww"],
+        [..."wwwwwwwwwwwwwwww"],
+      ];
+      var cgs = twoIslands;
       var river = [
-      [..."ffffffffffffffff"],
-      [..."ffffffffffffffff"],
-      [..."ffffffffffffffff"],
-      [..."ffffffffgfffffff"],
-      [..."fffffffgggffffff"],
-      [..."ffffffwwwwwfffff"],
-      [..."fffffwwwwwwwffff"],
-      [..."ffffffwwwwwfffff"],
-      [..."ffffffffffwfffff"],
-      [..."ffffffffffwwffff"],
-      [..."fffffffffffwffff"],
-      [..."ffffffmmmmmfwwww"],
-      [..."fffmmmgggmmmffff"],
-      [..."fmmgggggggmgffff"],
-      [..."mgggggggggmggggf"],
-      [..."gggggggggggggggg"]
-      
-      ]
+        [..."ffffffffffffffff"],
+        [..."ffffffffffffffff"],
+        [..."ffffffffffffffff"],
+        [..."ffffffffgfffffff"],
+        [..."fffffffgggffffff"],
+        [..."ffffffwwwwwfffff"],
+        [..."fffffwwwwwwwffff"],
+        [..."ffffffwwwwwfffff"],
+        [..."ffffffffffwfffff"],
+        [..."ffffffffffwwffff"],
+        [..."fffffffffffwffff"],
+        [..."ffffffmmmmmfwwww"],
+        [..."fffmmmgggmmmffff"],
+        [..."fmmgggggggmgffff"],
+        [..."mgggggggggmggggf"],
+        [..."gggggggggggggggg"],
+      ];
       var delta = [
-      [..."wwwwwwwwwwwwwwww"],
-      [..."wwwwwwwwwwwwwwww"],
-      [..."gwgwgwgwgwgwgwgw"],
-      [..."ggwgggwgggwgggwg"],
-      [..."gggwgwgggggwgwgg"],
-      [..."ggggwgggggggwggg"],
-      [..."gggggwwwwgwwgggg"],
-      [..."gggggggggwgggggg"],
-      [..."gggggggggwgggggg"],
-      [..."ggggggggfwfggggg"],
-      [..."gggggggffwffgggg"],
-      [..."ggggggfffwfffggg"],
-      [..."gggggffffwffffgg"],
-      [..."ggggfffffwfffffg"],
-      [..."ggfffffffwffffff"],
-      [..."gffffffffwffffff"]
-      
-      ]
-      var cmap=0
-      console.log(cgs)
-      var i = 0
-      var j = 0
+        [..."wwwwwwwwwwwwwwww"],
+        [..."wwwwwwwwwwwwwwww"],
+        [..."gwgwgwgwgwgwgwgw"],
+        [..."ggwgggwgggwgggwg"],
+        [..."gggwgwgggggwgwgg"],
+        [..."ggggwgggggggwggg"],
+        [..."gggggwwwwgwwgggg"],
+        [..."gggggggggwgggggg"],
+        [..."gggggggggwgggggg"],
+        [..."ggggggggfwfggggg"],
+        [..."gggggggffwffgggg"],
+        [..."ggggggfffwfffggg"],
+        [..."gggggffffwffffgg"],
+        [..."ggggfffffwfffffg"],
+        [..."ggfffffffwffffff"],
+        [..."gffffffffwffffff"],
+      ];
+      var cmap = 0;
+      console.log(cgs);
+      var i = 0;
+      var j = 0;
       var c = document.getElementById("game");
-var ctx = c.getContext("2d");
-      for(i=0;i<=255;i++){
-        j = Math.floor(i/16)
-        switch(cgs[j][i%16]){
+      var ctx = c.getContext("2d");
+      for (i = 0; i <= 255; i++) {
+        j = Math.floor(i / 16);
+        switch (cgs[j][i % 16]) {
           case "w":
-            ctx.fillStyle="#0000ff"
+            ctx.fillStyle = "#0000ff";
             break;
           case "f":
-            ctx.fillStyle="#008000"
+            ctx.fillStyle = "#008000";
             break;
           case "g":
-            ctx.fillStyle="#808000"
+            ctx.fillStyle = "#808000";
             break;
           case "m":
-            ctx.fillStyle="#c0c0c0"
+            ctx.fillStyle = "#c0c0c0";
             break;
         }
-        ctx.fillRect(10*(i-(16*j)),10*j,10,10)
+        ctx.fillRect(10 * (i - 16 * j), 10 * j, 10, 10);
       }
-      $("#changemap").click(function(){
-        ctx.clearRect(0, 0, c.width, c.height)
-        cmap = (cmap+1)%5
-        
-        switch(cmap){
+      $("#changemap").click(function () {
+        ctx.clearRect(0, 0, c.width, c.height);
+        cmap = (cmap + 1) % 5;
+
+        switch (cmap) {
           case 0:
-            cgs = twoIslands
-            $("#cmap").text("Two Islands")
-            break
+            cgs = twoIslands;
+            $("#cmap").text("Two Islands");
+            break;
           case 1:
-            cgs = river
-            $("#cmap").text("River")
-            break
+            cgs = river;
+            $("#cmap").text("River");
+            break;
           case 2:
-            cgs = delta
-            $("#cmap").text("Delta")
-            break
+            cgs = delta;
+            $("#cmap").text("Delta");
+            break;
           case 3:
-            cgs = RMG()
-            $("#cmap").text("Random")
-            break
+            cgs = RMG();
+            $("#cmap").text("Random");
+            break;
           case 4:
-            cgs = italy
-            $("#cmap").text("Italy")
-            $("body").append("<img src='pizza.png' id='pizza'/>")
+            cgs = italy;
+            $("#cmap").text("Italy");
+            $("body").append("<img src='pizza.png' id='pizza'/>");
         }
-          for(i=0;i<=255;i++){
-        j = Math.floor(i/16)
-        switch(cgs[j][i%16]){
-          case "w":
-            ctx.fillStyle="#0000ff"
-            break;
-          case "f":
-            ctx.fillStyle="#008000"
-            break;
-          case "g":
-            ctx.fillStyle="#808000"
-            break;
-          case "m":
-            ctx.fillStyle="#c0c0c0"
-            break;
-          default:
-            ctx.fillStyle = "#ff00ff"
-            break;
-        }
-        ctx.fillRect(10*(i-(16*j)),10*j,10,10)
-      }
-      })
-      y -= 0.5
-      $("#player").css("top", 10*y+"px")
-      $("#player").css("left", 10*x+"px")
-      $("#up").click(function(){
-        y--
-        my--
-        $("#player").css("top", 10*y+"px")
-        t = cgs[my][mx]
-      })
-      $("#dn").click(function(){
-        y++
-        my++
-        t = cgs[my][mx]
-        $("#player").css("top", 10*y+"px")
-      })
-      $("#lf").click(function(){
-        x--
-        mx--
-        $("#player").css("left", 10*x+"px")
-        t = cgs[my][mx]
-      })
-      $("#rg").click(function(){
-        x++
-        mx++
-        $("#player").css("left", 10*x+"px")
-        t = cgs[my][mx]
-      })
-      var sl = [
-                "Th",
-                "S",
-                "T",
-                "P",
-                "H",
-                "Sh",
-                "M",
-                "B",
-                "V",
-                "J"
-                ]
-                var cons = [
-                     "b",
-                     "bb",
-                     "c",
-                     "ch",
-                     "d",
-                     "dd",
-                     "f",
-                     "g",
-                     "gh",
-                     "h",
-                     "j",
-                     "k",
-                     "kh",
-                     "l",
-                     "ll",
-                     "m",
-                     "n",
-                     "nn",
-                     "mm",
-                     "p",
-                     "ph",
-                     "qu",
-                     "r",
-                     "rr",
-                     "s",
-                     "sh",
-                     "t",
-                     "th",
-                     "v",
-                     "w",
-                     "x",
-                     "y",
-                     "z"
-                    ]
-                    
-        var vow = [
-            "a",
-            "aa",
-            "ae",
-            "ai",
-            "au",
-            "aw",
-            "e",
-            "ee",
-            "i",
-            "igh",
-            "o",
-            "oa",
-            "oo",
-            "u",
-            "uh",
-            "ue"
-            ]
-      ct.name=sl[Math.floor(Math.random()*sl.length)]+vow[Math.floor(Math.random()*vow.length)]+cons[Math.floor(Math.random()*cons.length)]
-      setInterval(()=>{
-        if(cm){
-        ct.terr[0] = [mx,my]
-        for(i of ct.terr){
-          switch(cgs[i[1]][i[0]]){
-            case "m":
-              ctx.fillStyle = "#d860d8"
-              break
-            case "f":
-              ctx.fillStyle = "#804080"
-              break
-            case "g":
-              ctx.fillStyle = "#c04080"
-              break
+        for (i = 0; i <= 255; i++) {
+          j = Math.floor(i / 16);
+          switch (cgs[j][i % 16]) {
             case "w":
-              ctx.fillStyle = "#8000ff"
-              break
+              ctx.fillStyle = "#0000ff";
+              break;
+            case "f":
+              ctx.fillStyle = "#008000";
+              break;
+            case "g":
+              ctx.fillStyle = "#808000";
+              break;
+            case "m":
+              ctx.fillStyle = "#c0c0c0";
+              break;
+            default:
+              ctx.fillStyle = "#ff00ff";
+              break;
           }
- 
-          ctx.fillRect(10*i[0],10*(i[1]-1),10,10)
-          
+          ctx.fillRect(10 * (i - 16 * j), 10 * j, 10, 10);
         }
+      });
+      y -= 0.5;
+      $("#player").css("top", 10 * y + "px");
+      $("#player").css("left", 10 * x + "px");
+      $("#up").click(function () {
+        y--;
+        my--;
+        $("#player").css("top", 10 * y + "px");
+        t = cgs[my][mx];
+      });
+      $("#dn").click(function () {
+        y++;
+        my++;
+        t = cgs[my][mx];
+        $("#player").css("top", 10 * y + "px");
+      });
+      $("#lf").click(function () {
+        x--;
+        mx--;
+        $("#player").css("left", 10 * x + "px");
+        t = cgs[my][mx];
+      });
+      $("#rg").click(function () {
+        x++;
+        mx++;
+        $("#player").css("left", 10 * x + "px");
+        t = cgs[my][mx];
+      });
+      var sl = ["Th", "S", "T", "P", "H", "Sh", "M", "B", "V", "J"];
+      var cons = [
+        "b",
+        "bb",
+        "c",
+        "ch",
+        "d",
+        "dd",
+        "f",
+        "g",
+        "gh",
+        "h",
+        "j",
+        "k",
+        "kh",
+        "l",
+        "ll",
+        "m",
+        "n",
+        "nn",
+        "mm",
+        "p",
+        "ph",
+        "qu",
+        "r",
+        "rr",
+        "s",
+        "sh",
+        "t",
+        "th",
+        "v",
+        "w",
+        "x",
+        "y",
+        "z",
+      ];
+
+      var vow = [
+        "a",
+        "aa",
+        "ae",
+        "ai",
+        "au",
+        "aw",
+        "e",
+        "ee",
+        "i",
+        "igh",
+        "o",
+        "oa",
+        "oo",
+        "u",
+        "uh",
+        "ue",
+      ];
+      ct.name =
+        sl[Math.floor(Math.random() * sl.length)] +
+        vow[Math.floor(Math.random() * vow.length)] +
+        cons[Math.floor(Math.random() * cons.length)];
+      setInterval(() => {
+        if (cm) {
+          ct.terr[0] = [mx, my];
+          for (i of ct.terr) {
+            switch (cgs[i[1]][i[0]]) {
+              case "m":
+                ctx.fillStyle = "#d860d8";
+                break;
+              case "f":
+                ctx.fillStyle = "#804080";
+                break;
+              case "g":
+                ctx.fillStyle = "#c04080";
+                break;
+              case "w":
+                ctx.fillStyle = "#8000ff";
+                break;
+            }
+
+            ctx.fillRect(10 * i[0], 10 * (i[1] - 1), 10, 10);
+          }
         }
-      },100)
+      }, 100);
     </script>
   </body>
 </html>

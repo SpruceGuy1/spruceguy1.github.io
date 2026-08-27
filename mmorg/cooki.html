@@ -1,724 +1,697 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Cooki Game</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <link
+      rel="stylesheet"
+      href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.3/themes/smoothness/jquery-ui.css"
+    />
+  </head>
 
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width">
-	<title>Cooki Game</title>
-	<link href="style.css" rel="stylesheet" type="text/css" />
-	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.3/themes/smoothness/jquery-ui.css">
+  <body>
+    <h1>Cooki</h1>
+    <h2><s> Pie </s><b>Pi</b> Update</h2>
+    <button class="button2" onclick="bakes.innerHTML = achievements.bakes">
+      debug tool
+    </button>
+    <a href="index.html" target="_blank">home</a>
+    <br />
+    <a href="cookilog.html" target="_blank">Updates since 2.0</a>
+    <br />
+    Current Version 4.2
+    <br />
+    1003 codelines in file
+    <br />
+    1307 codelines total
+    <br />
+    Recent Milestones:
+    <p>1000 codelines in index, 6/28/24</p>
+    <br />
+    This is a game about clicking squares and crafting food.
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis .com/ajax/libs/jqueryui/1.13.3/jquery-ui.min.js"></script>
+    <div id="buildings">
+      <div id="bakee">
+        This is where your baked goods are.
 
+        <div id="bread" class="bakee">bread: 0</div>
+        <div id="breadeat"></div>
+        <div id="corn_biskit" class="bakee">Corn Biskits: 0</div>
+        <div id="corn_biskit_eat"></div>
+        <div id="BLT" class="bakee">BLT: 0</div>
+        <div id="BLT_eat"></div>
+        <div id="ChocolateCooki" class="bakee">Chocolate Cookies: 0</div>
+        <div id="ChocolateCooki_eat"></div>
+        <div id="PeanutButter" class="bakee">Peanut Butter: 0</div>
 
-</head>
+        <div id="JamSandwich" class="bakee">Jam Sandwiches: 0</div>
+        <div id="JamSandwich_eat"></div>
+        <div id="PBJ" class="bakee">PB&J Sandwiches: 0</div>
+        <div id="PBJ_eat"></div>
+        <div id="SaltedPork" class="bakee">Salted Pork: 0</div>
+        <div id="SaltedPork_eat"></div>
+      </div>
+      <div id="minee">
+        This is where your minerals are.
+        <div id="stone">Stone: 1</div>
+        <div id="coal">Coal: 0</div>
+        <div id="copper">Copper: 0</div>
+        <div id="iron">Iron: 0</div>
+        <div id="silver">Silver: 0</div>
+        <div id="gold">Gold: 0</div>
+        <div id="feau">Iron + Gold alloy: 0</div>
+      </div>
+      <div id="special">
+        This is where your special machines, tools, and buildings are.
+        <div id="smokehouses">Smokehouses: 0</div>
+        <div id="IronRobot">Iron Robots: 0</div>
+        <div id="furnaces">Furnaces: 0</div>
+      </div>
+      <div id="forest">
+        This is where forest-only items are stored.
+        <div id="oak_wood">Oak: 0</div>
+        <div id="birch_wood">Birch: 0</div>
+        <div id="apples">Apples: 0</div>
+      </div>
+      <button class="button2" onclick="toggleChallenge()">
+        Toggle Challenge
+      </button>
+      <div id="energee">Energee: 0</div>
+    </div>
+    <div id="cookisidebar">
+      <img src="pack1.png" class="pack" onclick="buy('pack1')" />
+      <p>
+        Pack 1: bps +1, bpc +1<br />
+        Cost: 50 Baked Goods
+      </p>
+      <img src="farm.png" class="pack" onclick="buy('farm')" />
+      <p>
+        Farm: bps +10, bpc +1<br />
+        Cost: 100 Baked Goods
+      </p>
+      <button class="button2" onclick="rlu('farm')">Level up farm</button>
+      <br />
+      <img src="level_up.png" class="pack" onclick="buy('level_up')" />
+      <p>
+        Level Up Buy: levl upz +levl increase<br />
+        Cost: 50 Baked Goods
+      </p>
+      <img src="lvlI.png" class="pack" onclick="buy('lvlI')" />
+      <p>
+        *UPGRADE* Level Increase: levl increase +1<br />
+        Cost: 150 Baked Goods
+      </p>
+      <img src="mine.png" class="pack" onclick="buy('mine')" />
+      <p>
+        Mine: bps +100, bpc +10<br />
+        Cost: 200 Baked Goods
+      </p>
+      <img src="butcher.png" class="pack" onclick="buy('butcher')" />
+      <p>
+        Butcher Shop: bps +1000, bpc +100<br />
+        Cost: 250 Baked Goods
+      </p>
+      <img src="forest.png" id="buyforest" class="pack" />
+      <p>Forest: Get birch, oak, and apple</p>
+      <p>Cost: 100K baked goods</p>
+    </div>
+    &copy; 2024 Mikey and the team at MMORG
+    <div id="bakes"></div>
+    <div id="deletes"></div>
+    <div id="persec"></div>
+    <div id="levl_upz"></div>
+    <form id="crafting" onsubmit="return false;">
+      <label for="crafting_dropdown">Crafting</label>
+      <select name="crafting_dropdown" id="crafting_dropdown">
+        <optgroup label="Baked Goods">
+          <option value="bread">Bread: 3 wheat</option>
+          <option value="corn_biskit">Corn Biskit: 2 wheat, 1 corn</option>
+          <option value="choco_cooki">Chocolate Cooki: 2 wheat, 1 cocoa</option>
+        </optgroup>
+        <optgroup label="Sandwiches">
+          <option value="BLT">
+            BLT: 2 bread, 1 bacon, 1 lettuce, 1 tomato
+          </option>
+          <option value="jamsam">Jam Sandwich: 2 bread, 1 dingberry</option>
+          <option value="PBJ">
+            PB&J: 2 bread, 1 peanut butter, 1 dingberry
+          </option>
+        </optgroup>
+        <optgroup label="Buildings">
+          <option value="smokehouse">Smokehouse: 5 stone, 5 coal</option>
+          <option value="iron_robot">Iron Robot: 10 iron, 1 stone</option>
+          <option value="furnace">Furnace: 13 stone</option>
+        </optgroup>
 
-<body>
+        <optgroup label="Other Foods">
+          <option value="peanut_butter">Peanut Butter: 1 peanut</option>
 
-	<h1>Cooki</h1>
-	<h2><s>
-		Pie
-	</s><b>Pi</b> Update</h2>
-	<button class="button2" onclick="bakes.innerHTML = achievements.bakes">debug tool</button>
-	<a href="index.html" target="_blank">home</a>
-	<br>
-	<a href="cookilog.html" target="_blank">Updates since 2.0</a>
-	<br>
-	Current Version 4.2
-	<br>
-  1003 codelines in file
-	<br>
-	1307 codelines total
-	<br>
-	Recent Milestones:
-	<p>1000 codelines in index, 6/28/24</p>
-	<br>
-	This is a game about clicking squares and crafting food.
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-	<script src="https://ajax.googleapis .com/ajax/libs/jqueryui/1.13.3/jquery-ui.min.js"></script>
-	<div id="buildings">
-		<div id="bakee">
-			This is where your baked goods are.
+          <option value="salted_pork">Salted Pork: 1 raw pork, 1 salt</option>
+        </optgroup>
+      </select>
 
-			<div id="bread" class="bakee">
-				bread: 0
+      <br />
+      <button type="submit" onclick="craft()">Craft</button>
+    </form>
+    <form id="smelting" onsubmit="return false;">
+      <label for="smelting_dropdown">Smelting</label>
+      <select id="smelting_dropdown" name="smelting_dropdown">
+        <option value="irongoldalloy">Iron gold alloy: 1 iron, 1 gold</option>
+      </select>
+      <button type="submit">Smelt for 1 coal</button>
+    </form>
 
-			</div>
-			<div id="breadeat"></div>
-			<div id="corn_biskit" class="bakee">
-				Corn Biskits: 0
-			</div>
-			<div id="corn_biskit_eat"></div>
-			<div id="BLT" class="bakee">
-				BLT: 0
-			</div>
-			<div id="BLT_eat"></div>
-			<div id="ChocolateCooki" class="bakee">
-				Chocolate Cookies: 0
-			</div>
-			<div id="ChocolateCooki_eat"></div>
-			<div id="PeanutButter" class="bakee">
-				Peanut Butter: 0
-			</div>
+    <br />
+    <button class="button2" onclick="toggleMode()">Toggle Mode</button>
+    <br />
+    <p id="mode"></p>
 
-			<div id="JamSandwich" class="bakee">
-				Jam Sandwiches: 0
-			</div>
-			<div id="JamSandwich_eat"></div>
-			<div id="PBJ" class="bakee">
-				PB&J Sandwiches: 0
-			</div>
-			<div id="PBJ_eat"></div>
-			<div id="SaltedPork" class="bakee">
-				Salted Pork: 0
-			</div>
-			<div id="SaltedPork_eat"></div>
-		</div>
-		<div id="minee">
-			This is where your minerals are.
-			<div id="stone">
-				Stone: 1
-			</div>
-			<div id="coal">
-				Coal: 0
-			</div>
-			<div id="copper">
-				Copper: 0
-			</div>
-			<div id="iron">
-				Iron: 0
-			</div>
-			<div id="silver">
-				Silver: 0
-			</div>
-			<div id="gold">
-				Gold: 0
-			</div>
-			<div id="feau">
-				Iron + Gold alloy: 0
-			</div>
-		</div>
-		<div id="special">
-			This is where your special machines, tools, and buildings are.
-			<div id="smokehouses">
-				Smokehouses: 0
-			</div>
-			<div id="IronRobot">
-				Iron Robots: 0
-			</div>
-			<div id="furnaces">
-				Furnaces: 0
-			</div>
-		</div>
-		<div id="forest">
-		    This is where forest-only items are stored.
-		    <div id="oak_wood">Oak: 0</div>
-		    <div id="birch_wood">Birch: 0</div>
-		    <div id="apples">Apples: 0</div>
-		</div>
-		<button class="button2" onclick="toggleChallenge()">Toggle Challenge</button>
-		<div id="energee">Energee: 0</div>
-	</div>
-	<div id="cookisidebar">
-		<img src="pack1.png" class="pack" onclick="buy('pack1')" />
-		<p>Pack 1: bps +1, bpc +1<br>
-			Cost: 50 Baked Goods
-		</p>
-		<img src="farm.png" class="pack" onclick="buy('farm')" />
-		<p>Farm: bps +10, bpc +1<br>
-			Cost: 100 Baked Goods
-		</p>
-		<button class="button2" onclick="rlu('farm')">Level up farm</button>
-		<br>
-		<img src="level_up.png" class="pack" onclick="buy('level_up')" />
-		<p>Level Up Buy: levl upz +levl increase<br>
-			Cost: 50 Baked Goods
-		</p>
-		<img src="lvlI.png" class="pack" onclick="buy('lvlI')" />
-		<p> *UPGRADE* Level Increase: levl increase +1<br>
-			Cost: 150 Baked Goods
-		</p>
-		<img src="mine.png" class="pack" onclick="buy('mine')" />
-		<p>Mine: bps +100, bpc +10<br>
-			Cost: 200 Baked Goods
-		</p>
-		<img src="butcher.png" class="pack" onclick="buy('butcher')" />
-		<p>Butcher Shop: bps +1000, bpc +100<br>
-			Cost: 250 Baked Goods
-		</p>
-	    <img src="forest.png" id="buyforest" class="pack"/>
-	    <p>Forest: Get birch, oak, and apple</p>
-	    <p>Cost: 100K baked goods</p>
-	</div>
-	&copy; 2024 Mikey and the team at MMORG
-	<div id="bakes"></div>
-	<div id="deletes"></div>
-	<div id="persec"></div>
-	<div id="levl_upz"></div>
-	<form id="crafting" onsubmit="return false">
-		<label for="crafting_dropdown">Crafting</label>
-		<select name="crafting_dropdown" id="crafting_dropdown">
-			<optgroup label="Baked Goods">
-				<option value="bread">Bread: 3 wheat</option>
-				<option value="corn_biskit">Corn Biskit: 2 wheat, 1 corn</option>
-				<option value="choco_cooki">Chocolate Cooki: 2 wheat, 1 cocoa</option>
-			</optgroup>
-			<optgroup label="Sandwiches">
-				<option value="BLT">BLT: 2 bread, 1 bacon, 1 lettuce, 1 tomato</option>
-				<option value="jamsam">Jam Sandwich: 2 bread, 1 dingberry</option>
-				<option value="PBJ">PB&J: 2 bread, 1 peanut butter, 1 dingberry</option>
-			</optgroup>
-			<optgroup label="Buildings">
-				<option value="smokehouse">Smokehouse: 5 stone, 5 coal</option>
-				<option value="iron_robot">Iron Robot: 10 iron, 1 stone</option>
-				<option value="furnace">Furnace: 13 stone</option>
-			</optgroup>
+    <p>&darr; Click below to get Baked Goods.</p>
+    <div id="divanimation">
+      <img src="cookie.png" id="cookie" />
+    </div>
+  </body>
 
-			<optgroup label="Other Foods">
-				<option value="peanut_butter">Peanut Butter: 1 peanut</option>
-
-				<option value="salted_pork">Salted Pork: 1 raw pork, 1 salt</option>
-				
-			</optgroup>
-		</select>
-		
-		<br>
-		<button type="submit" onclick="craft()">Craft</button>
-		
-	</form>
-	<form id="smelting" onsubmit="return false">
-		<label for="smelting_dropdown">Smelting</label>
-    <select id="smelting_dropdown" name="smelting_dropdown">
-			<option value="irongoldalloy">Iron gold alloy: 1 iron, 1 gold</option>
-		</select>
-		<button type="submit">Smelt for 1 coal</button>
-	</form>
-	
-	<br>
-	<button class="button2" onclick="toggleMode()">Toggle Mode</button>
-	<br>
-	<p id="mode"></p>
-	
-	<p>&darr; Click below to get Baked Goods.</p>
-	<div id="divanimation">
-		<img src="cookie.png" id="cookie"/>
-	</div>
-
-	
-
-
-</body>
-
-<script>
-var forest_ul = false
-    $("#buyforest").click(()=>{
-      if(achievements.bakes>=100000){
-        forest_ul = true
-        achievements.bakes-=100000
-        
-      }else{
-          alert("get more baked goods!")
+  <script>
+    var forest_ul = false;
+    $("#buyforest").click(() => {
+      if (achievements.bakes >= 100000) {
+        forest_ul = true;
+        achievements.bakes -= 100000;
+      } else {
+        alert("get more baked goods!");
       }
-    })
-	var coocoobanana = true;
-	var oof = false;
-	var modetxt=""
+    });
+    var coocoobanana = true;
+    var oof = false;
+    var modetxt = "";
 
-	var breadEat = document.getElementById("breadeat");
-	var cornBiskitEat = document.getElementById("corn_biskit_eat");
-	var BLT_eat = document.getElementById("BLT_eat");
-	var ChocolateCooki_eat = document.getElementById("ChocolateCooki_eat");
-	var JamSandwich_eat = document.getElementById("JamSandwich_eat");
-	var PBJ_eat = document.getElementById("PBJ_eat");
-	var SaltedPork_eat = document.getElementById("SaltedPork_eat");
-	
+    var breadEat = document.getElementById("breadeat");
+    var cornBiskitEat = document.getElementById("corn_biskit_eat");
+    var BLT_eat = document.getElementById("BLT_eat");
+    var ChocolateCooki_eat = document.getElementById("ChocolateCooki_eat");
+    var JamSandwich_eat = document.getElementById("JamSandwich_eat");
+    var PBJ_eat = document.getElementById("PBJ_eat");
+    var SaltedPork_eat = document.getElementById("SaltedPork_eat");
 
-	$("#cookie").click(()=>{
-	    doof('cooki')
-	})
-	
-	
+    $("#cookie").click(() => {
+      doof("cooki");
+    });
 
-	var peanut_unlock = false
-	var bread = document.getElementById("bread");
-	var corn_biskit = document.getElementById("corn_biskit");
-	var BLT = document.getElementById("BLT");
-	var choco_cooki = document.getElementById("ChocolateCooki");
-	var peanut_butter = document.getElementById("PeanutButter");
-	var JamSandwich = document.getElementById("JamSandwich");
-	var PBJ = document.getElementById("PBJ");
-	var farms = 0
-	var mines = 0
-	var butchers = 0
-	var smokes = 0
-	var furnaces = 0
-	var energee = 100
-	var _energee = document.getElementById("energee")
-	var energee_decrease = 1
-	var challenge = false
-	var minee = {
-		stone: 1,
-		coal: 0,
-		copper: 0,
-		iron: 0,
-		silver: 0,
-		gold: 0,
-		ironGoldAlloy: 0,
-		diamond: 0,
-		emerald: 0,
-		sapphire: 0,
-		ruby: 0,
-		garnet: 0,
-		amethyst: 0,
-		topaz: 0,
-		white_quartz: 0,
-		rose_quartz: 0,
-		citrine: 0,
-		berrium: 0,
-		blueberrium: 0,
-		aluminoid: 0,
-		tapioca: 0,
-		goldonium: 0,
-		goldonium_r1: 0,
-		goldonium_r2: 0,
-		goldonium_r3: 0,
-		mooncandy: 0,
-		cosmium: 0,
-		enchanted_cosmium: 0,
-		ADDIC: 0,
-		fire_cosmium: 0,
-		weird_cosmium: 0,
-	}
-	var bakee = {
-		bread: 0,
-		BLT: 0,
-		JamSandwich: 0,
-		PlainCooki: 0,
-		ChocolateCooki: 0,
-		FruitCooki: 0,
-		CornBiskit: 0,
-		PoweredFruitCooki: 0,
-		PB_J: 0,
-		PeanutButter: 0,
-		SaltedPork: 0,
-	}
-	var _bakee = {
-		bread: document.getElementById('bread'),
-		corn_biskit: document.getElementById('corn_biskit'),
-		BLT: document.getElementById('BLT'),
-		ChocolateCooki: document.getElementById('ChocolateCooki'),
-		PeanutButter: document.getElementById('PeanutButter'),
-		JamSandwich: document.getElementById('JamSandwich'),
-		PBJ: document.getElementById('PBJ'),
-		SaltedPork: document.getElementById('SaltedPork'),
-	}
-	var t_ = document.createElement("div")
-	t_.className = "farm_harvest"
-	document.getElementById("buildings").appendChild(t_)
-	var _harvest = ["wheat"]
+    var peanut_unlock = false;
+    var bread = document.getElementById("bread");
+    var corn_biskit = document.getElementById("corn_biskit");
+    var BLT = document.getElementById("BLT");
+    var choco_cooki = document.getElementById("ChocolateCooki");
+    var peanut_butter = document.getElementById("PeanutButter");
+    var JamSandwich = document.getElementById("JamSandwich");
+    var PBJ = document.getElementById("PBJ");
+    var farms = 0;
+    var mines = 0;
+    var butchers = 0;
+    var smokes = 0;
+    var furnaces = 0;
+    var energee = 100;
+    var _energee = document.getElementById("energee");
+    var energee_decrease = 1;
+    var challenge = false;
+    var minee = {
+      stone: 1,
+      coal: 0,
+      copper: 0,
+      iron: 0,
+      silver: 0,
+      gold: 0,
+      ironGoldAlloy: 0,
+      diamond: 0,
+      emerald: 0,
+      sapphire: 0,
+      ruby: 0,
+      garnet: 0,
+      amethyst: 0,
+      topaz: 0,
+      white_quartz: 0,
+      rose_quartz: 0,
+      citrine: 0,
+      berrium: 0,
+      blueberrium: 0,
+      aluminoid: 0,
+      tapioca: 0,
+      goldonium: 0,
+      goldonium_r1: 0,
+      goldonium_r2: 0,
+      goldonium_r3: 0,
+      mooncandy: 0,
+      cosmium: 0,
+      enchanted_cosmium: 0,
+      ADDIC: 0,
+      fire_cosmium: 0,
+      weird_cosmium: 0,
+    };
+    var bakee = {
+      bread: 0,
+      BLT: 0,
+      JamSandwich: 0,
+      PlainCooki: 0,
+      ChocolateCooki: 0,
+      FruitCooki: 0,
+      CornBiskit: 0,
+      PoweredFruitCooki: 0,
+      PB_J: 0,
+      PeanutButter: 0,
+      SaltedPork: 0,
+    };
+    var _bakee = {
+      bread: document.getElementById("bread"),
+      corn_biskit: document.getElementById("corn_biskit"),
+      BLT: document.getElementById("BLT"),
+      ChocolateCooki: document.getElementById("ChocolateCooki"),
+      PeanutButter: document.getElementById("PeanutButter"),
+      JamSandwich: document.getElementById("JamSandwich"),
+      PBJ: document.getElementById("PBJ"),
+      SaltedPork: document.getElementById("SaltedPork"),
+    };
+    var t_ = document.createElement("div");
+    t_.className = "farm_harvest";
+    document.getElementById("buildings").appendChild(t_);
+    var _harvest = ["wheat"];
 
-	var __harvest = {
-		wheat: 1,
-		corn: 0,
-		lettuce: 0,
-		tomato: 0,
-		raw_pork: 0,
-		bacon: 0,
-		cocoa: 0,
-		dingberry: 0,
-		farm: 0,
-		mine: 0,
-		butcher: 0,
-		peanut: 0,
-		salt: 0,
-		honey: 0,
-	}
-	var forest = {
-	    oak: 0,
-	    birch: 0,
-	    apple: 0,
-	    
-	}
-	t_.innerHTML += "<p id='wheat'> wheat: 1 </p><p id='corn'> corn: 0 </p><p id='lettuce'> lettuce: 0 </p><p id='tomato'>tomatoes: 0</p><p id='raw_pork'> raw pork: 0 </p><p id='bacon'> bacon: 0 </p><p id='cocoa'> cocoa: 0 </p><p id='dingberry'> dingberries: 0 </p><p id='peanut'> peanuts: 0 </p><p id='salt'>Salt: 0</p><p id='honey'>Honey: 0</p>"
-	var __special = {
-		smokehouses: 0,
-		IronRobots: 0,
-		furnaces: 0,
-	}
-	var _special = {
-		smokehouses: document.getElementById('smokehouses'),
-		IronRobot: document.getElementById('IronRobot'),
-		furnaces: document.getElementById('furnaces'),
-	}
-	var wheat = document.getElementById('wheat')
-	var corn = document.getElementById('corn')
-	var lettuce = document.getElementById('lettuce')
-	var tomato = document.getElementById('tomato')
-	var raw_pork = document.getElementById('raw_pork')
-	var bacon = document.getElementById('bacon')
-	var cocoa = document.getElementById('cocoa')
-	var dingberry = document.getElementById('dingberry')
-	var peanut = document.getElementById('peanut')
-	var stone = document.getElementById('stone')
-	var coal = document.getElementById('coal')
-	var copper = document.getElementById('copper')
-	var iron = document.getElementById('iron')
-	var silver = document.getElementById('silver')
-	var gold = document.getElementById('gold')
-	var feau = document.getElementById('feau')
-	
-	var farm_unlock = false
-	var mine_unlock = false
-	var butcher_unlock = false
-	var smokehouse_unlock = false
-	
-	var levl_upz = 0
-	var levl_increase = 1
-	var levl_speed = 1
-	var levl_ups_div = document.getElementById("levl_upz")
-	var e = 0
-	var id = 0
-	var builds = []
-	var _coocoo = []
-	var bpc = 1
-	var achievements = {
-		bakes: 0,
-		deletes: 0,
-	}
-	var bps = 0
-	persec.innerHTML = "BPS: " + bps
-	var bakes = document.getElementById("bakes")
-	var doof = (cooki) => {
-		$("body").append("<div id='divanimation'></div>")
+    var __harvest = {
+      wheat: 1,
+      corn: 0,
+      lettuce: 0,
+      tomato: 0,
+      raw_pork: 0,
+      bacon: 0,
+      cocoa: 0,
+      dingberry: 0,
+      farm: 0,
+      mine: 0,
+      butcher: 0,
+      peanut: 0,
+      salt: 0,
+      honey: 0,
+    };
+    var forest = {
+      oak: 0,
+      birch: 0,
+      apple: 0,
+    };
+    t_.innerHTML +=
+      "<p id='wheat'> wheat: 1 </p><p id='corn'> corn: 0 </p><p id='lettuce'> lettuce: 0 </p><p id='tomato'>tomatoes: 0</p><p id='raw_pork'> raw pork: 0 </p><p id='bacon'> bacon: 0 </p><p id='cocoa'> cocoa: 0 </p><p id='dingberry'> dingberries: 0 </p><p id='peanut'> peanuts: 0 </p><p id='salt'>Salt: 0</p><p id='honey'>Honey: 0</p>";
+    var __special = {
+      smokehouses: 0,
+      IronRobots: 0,
+      furnaces: 0,
+    };
+    var _special = {
+      smokehouses: document.getElementById("smokehouses"),
+      IronRobot: document.getElementById("IronRobot"),
+      furnaces: document.getElementById("furnaces"),
+    };
+    var wheat = document.getElementById("wheat");
+    var corn = document.getElementById("corn");
+    var lettuce = document.getElementById("lettuce");
+    var tomato = document.getElementById("tomato");
+    var raw_pork = document.getElementById("raw_pork");
+    var bacon = document.getElementById("bacon");
+    var cocoa = document.getElementById("cocoa");
+    var dingberry = document.getElementById("dingberry");
+    var peanut = document.getElementById("peanut");
+    var stone = document.getElementById("stone");
+    var coal = document.getElementById("coal");
+    var copper = document.getElementById("copper");
+    var iron = document.getElementById("iron");
+    var silver = document.getElementById("silver");
+    var gold = document.getElementById("gold");
+    var feau = document.getElementById("feau");
 
-		
-		if (cooki == "cooki") {
-			achievements.bakes += bpc
-		    $("#bakes").text("Baked Goods: " + achievements.bakes)
-		}
-	}
-	var gum = () => {
-		alert('you clicked a gum, +100 baked goods')
-		achievements.bakes += 100
-		bakes.innerHTML = "Baked Goods: " + achievements.bakes
-	}
-	function goof3() {
-		bps = Math.floor(bps / 1.5)
-		bpc = Math.floor(bpc / 1.5)
-		persec.innerHTML = "BPS: " + bps
-	}
-	function goof2() {
-		bps *= 1.5
-		bpc *= 1.5
-		persec.innerHTML = "BPS: " + bps
-		setTimeout(goof3, 2500)
-	}
+    var farm_unlock = false;
+    var mine_unlock = false;
+    var butcher_unlock = false;
+    var smokehouse_unlock = false;
 
-	function goof() {
-		var n = document.createElement("div")
-		n.id = "hello"
-		n.onclick = goof2()
-		document.getElementById("cookisidebar").appendChild(n)
-		setTimeout(() => {
-			n.id = ""
-			n.onclick = ""
-		}, 2500)
-	}
-	function rlu(cooki) {
-		switch (cooki) {
-			case 'farm':
-				var t = prompt("do you really want to upgrade this building? y/n")
-				switch (t) {
-					case "y":
-						if (levl_upz >= 1) {
-							levl_upz -= 1
-							bps *= 2
-							levl_ups_div.innerHTML = "Level ups: " + levl_upz
-							alert("leveled it up!")
+    var levl_upz = 0;
+    var levl_increase = 1;
+    var levl_speed = 1;
+    var levl_ups_div = document.getElementById("levl_upz");
+    var e = 0;
+    var id = 0;
+    var builds = [];
+    var _coocoo = [];
+    var bpc = 1;
+    var achievements = {
+      bakes: 0,
+      deletes: 0,
+    };
+    var bps = 0;
+    persec.innerHTML = "BPS: " + bps;
+    var bakes = document.getElementById("bakes");
+    var doof = (cooki) => {
+      $("body").append("<div id='divanimation'></div>");
 
-						} else {
-							alert("too expensive")
-						}
-				}
+      if (cooki == "cooki") {
+        achievements.bakes += bpc;
+        $("#bakes").text("Baked Goods: " + achievements.bakes);
+      }
+    };
+    var gum = () => {
+      alert("you clicked a gum, +100 baked goods");
+      achievements.bakes += 100;
+      bakes.innerHTML = "Baked Goods: " + achievements.bakes;
+    };
+    function goof3() {
+      bps = Math.floor(bps / 1.5);
+      bpc = Math.floor(bpc / 1.5);
+      persec.innerHTML = "BPS: " + bps;
+    }
+    function goof2() {
+      bps *= 1.5;
+      bpc *= 1.5;
+      persec.innerHTML = "BPS: " + bps;
+      setTimeout(goof3, 2500);
+    }
 
-		}
-	}
+    function goof() {
+      var n = document.createElement("div");
+      n.id = "hello";
+      n.onclick = goof2;
+      document.getElementById("cookisidebar").appendChild(n);
+      setTimeout(() => {
+        n.id = "";
+        n.onclick = "";
+      }, 2500);
+    }
+    function rlu(cooki) {
+      switch (cooki) {
+        case "farm":
+          var t = prompt("do you really want to upgrade this building? y/n");
+          switch (t) {
+            case "y":
+              if (levl_upz >= 1) {
+                levl_upz -= 1;
+                bps *= 2;
+                levl_ups_div.innerHTML = "Level ups: " + levl_upz;
+                alert("leveled it up!");
+              } else {
+                alert("too expensive");
+              }
+          }
+      }
+    }
 
-	function buy(pack) {
-		switch (pack) {
-			case "pack1":
-				if (achievements.bakes > 50) {
-					bps += 1
-					bpc += 1
-					achievements.bakes -= 50
-					bakes.innerHTML = "Baked Goods: " + achievements.bakes
-					persec.innerHTML = "BPS: " + bps
-					pak1_bps += 1
-				} else {
-					alert("too expensive")
-				}
+    function buy(pack) {
+      switch (pack) {
+        case "pack1":
+          if (achievements.bakes > 50) {
+            bps += 1;
+            bpc += 1;
+            achievements.bakes -= 50;
+            bakes.innerHTML = "Baked Goods: " + achievements.bakes;
+            persec.innerHTML = "BPS: " + bps;
+            pak1_bps += 1;
+          } else {
+            alert("too expensive");
+          }
 
-				break;
-			case "farm":
-				if (achievements.bakes > 100) {
-					farm_unlock = true
+          break;
+        case "farm":
+          if (achievements.bakes > 100) {
+            farm_unlock = true;
 
-					farms += 1
-					bpc += 1
-					bps += 10
-					achievements.bakes -= 100
-					bakes.innerHTML = "Baked Goods: " + achievements.bakes
-					persec.innerHTML = "BPS: " + bps
-					var t = document.createElement("div")
-					t.classList.add("building")
-					t.classList.add("farm")
-					t.innerHTML = "Farm: Level " + __harvest.farm
+            farms += 1;
+            bpc += 1;
+            bps += 10;
+            achievements.bakes -= 100;
+            bakes.innerHTML = "Baked Goods: " + achievements.bakes;
+            persec.innerHTML = "BPS: " + bps;
+            var t = document.createElement("div");
+            t.classList.add("building");
+            t.classList.add("farm");
+            t.innerHTML = "Farm: Level " + __harvest.farm;
 
-					id += 1
-					var T = [t, "farm", id, 0]
-					builds.push(T)
-					_coocoo.push(builds.indexOf(T))
+            id += 1;
+            var T = [t, "farm", id, 0];
+            builds.push(T);
+            _coocoo.push(builds.indexOf(T));
 
-					document.getElementById("buildings").append(t)
-					//document.getElementById("buildings").innerHTML += "<img class = 'what' src='upgrade.png' onclick = newLevlUp('farm')/>"
-					console.log("farm")
-				} else {
-					alert("too expensive")
-				}
+            document.getElementById("buildings").append(t);
+            //document.getElementById("buildings").innerHTML += "<img class = 'what' src='upgrade.png' onclick = newLevlUp('farm')/>"
+            console.log("farm");
+          } else {
+            alert("too expensive");
+          }
 
-				break;
-			case "level_up":
-				if (achievements.bakes > 50) {
-					levl_upz += levl_increase
-					levl_upz_div.innerHTML = "Level ups: " + levl_upz
-					achievements.bakes -= 50
-				} else {
-					alert("too expensive")
-				}
-				break;
-			case 'lvlI':
-				if (achievements.bakes > 150) {
-					levl_increase += 1
-					achievements.bakes -= 150
-					bakes.innerHTML = "Baked Goods: " + achievements.bakes
+          break;
+        case "level_up":
+          if (achievements.bakes > 50) {
+            levl_upz += levl_increase;
+            levl_ups_div.innerHTML = "Level ups: " + levl_upz;
+            achievements.bakes -= 50;
+          } else {
+            alert("too expensive");
+          }
+          break;
+        case "lvlI":
+          if (achievements.bakes > 150) {
+            levl_increase += 1;
+            achievements.bakes -= 150;
+            bakes.innerHTML = "Baked Goods: " + achievements.bakes;
+          } else {
+            alert("too expensive");
+          }
+          break;
+        case "mine":
+          if (achievements.bakes > 200) {
+            mines += 1;
+            mine_unlock = true;
+            bps += 100;
+            bpc += 10;
+            achievements.bakes -= 200;
+            bakes.innerHTML = "Baked Goods: " + achievements.bakes;
+            persec.innerHTML = "BPS: " + bps;
+            var TT = document.createElement("div");
+            TT.classList.add("building");
+            TT.classList.add("mine");
+            TT.innerHTML = "Mine: Level 0";
+            document.getElementById("buildings").append(TT);
+            //document.getElementById("buildings").innerHTML += "<img class = 'what' src='upgrade.png' onclick = newLevlUp('mine')/>"
+          } else {
+            alert("too expensive");
+          }
+          break;
+        case "butcher":
+          if (achievements.bakes > 250) {
+            butchers += 1;
+            butcher_unlock = true;
+            bps += 1000;
+            bpc += 100;
+            achievements.bakes -= 250;
+            bakes.innerHTML = "Baked Goods: " + achievements.bakes;
+            persec.innerHTML = "BPS: " + bps;
+            var TTT = document.createElement("div");
+            TTT.classList.add("building");
+            TTT.classList.add("butcher");
+            TTT.innerHTML = "Butcher: Level 0";
+            document.getElementById("buildings").append(TTT);
+            //document.getElementById("buildings").innerHTML += "<img class = 'what' src='upgrade.png' onclick = newLevlUp('butcher')/>"
+          }
+          break;
+        case "exploration":
+          if (achievements.bakes >= 100) {
+            exploration();
+            achievements.bakes -= 100;
+            bakes.innerHTML = "Baked Goods: " + achievements.bakes;
+            alert("you unlocked Exploration!");
+          }
+      }
+    }
 
-				} else {
-					alert("too expensive")
-				}
-				break;
-			case 'mine':
-				if (achievements.bakes > 200) {
-					mines += 1
-					mine_unlock = true
-					bps += 100
-					bpc += 10
-					achievements.bakes -= 200
-					bakes.innerHTML = "Baked Goods: " + achievements.bakes
-					persec.innerHTML = "BPS: " + bps
-					var TT = document.createElement("div")
-					TT.classList.add("building")
-					TT.classList.add("mine")
-					TT.innerHTML = "Mine: Level 0"
-					document.getElementById("buildings").append(TT)
-					//document.getElementById("buildings").innerHTML += "<img class = 'what' src='upgrade.png' onclick = newLevlUp('mine')/>"
-				} else {
-					alert("too expensive")
-				}
-				break;
-			case "butcher":
-				if (achievements.bakes > 250) {
-					butchers += 1
-					butcher_unlock = true
-					bps += 1000
-					bpc += 100
-					achievements.bakes -= 250
-					bakes.innerHTML = "Baked Goods: " + achievements.bakes
-					persec.innerHTML = "BPS: " + bps
-					var TTT = document.createElement("div")
-					TTT.classList.add("building")
-					TTT.classList.add("butcher")
-					TTT.innerHTML = "Butcher: Level 0"
-					document.getElementById("buildings").append(TTT)
-					//document.getElementById("buildings").innerHTML += "<img class = 'what' src='upgrade.png' onclick = newLevlUp('butcher')/>"
-				}
-				break;
-			case "exploration":
-				if (achievements.bakes >= 100) {
-					exploration()
-					achievements.bakes -= 100
-					bakes.innerHTML = "Baked Goods: " + achievements.bakes
-					alert("you unlocked Exploration!")
-				}
-		}
-	}
+    function cheatAdd() {
+      var oof = prompt("+ how many baked goods?");
+      achievements.bakes += parseInt(oof);
+      bakes.innerHTML = "Baked Goods: " + achievements.bakes;
+    }
+    var cheat2 = () => {
+      achievements.bakes += 100000000;
+    };
+    var craft = () => {
+      var v = document.getElementById("crafting_dropdown").value;
+      var V = prompt("do you want to craft " + v + "? y/n");
+      if (V == "y") {
+        switch (v) {
+          case "bread":
+            if (__harvest.wheat >= 3) {
+              __harvest.wheat -= 3;
+              achievements.bakes += 1;
+              bakes.innerHTML = "Baked Goods: " + achievements.bakes;
+              bakee.bread += 1;
+              _bakee.bread.innerHTML = "Bread: " + bakee.bread;
+              wheat.innerHTML = "wheat: " + __harvest.wheat;
+            } else {
+              alert("not enough crops");
+            }
+            break;
+          case "corn_biskit":
+            if (__harvest.corn >= 1 && __harvest.wheat > 2) {
+              __harvest.corn -= 1;
+              __harvest.wheat -= 2;
+              achievements.bakes += 1;
+              bakes.innerHTML = "Baked Goods: " + achievements.bakes;
+              bakee.CornBiskit += 1;
+              _bakee.corn_biskit.innerHTML = "Corn Biskit: " + bakee.CornBiskit;
+              corn.innerHTML = "Corn: " + __harvest.corn;
+              wheat.innerHTML = "Wheat: " + __harvest.wheat;
+            } else {
+              alert("not enough crops");
+            }
+            break;
+          case "BLT":
+            if (
+              bakee.bread >= 2 &&
+              __harvest.bacon >= 1 &&
+              __harvest.lettuce >= 1 &&
+              __harvest.tomato >= 1
+            ) {
+              bakee.bread -= 2;
+              __harvest.bacon -= 1;
+              __harvest.lettuce -= 1;
+              __harvest.tomato -= 1;
+              achievements.bakes += 1;
+              bakes.innerHTML = "Baked Goods: " + achievements.bakes;
+              bakee.BLT += 1;
+              _bakee.BLT.innerHTML = "BLT: " + bakee.BLT;
+              bread.innerHTML = "Bread: " + bakee.bread;
+              bacon.innerHTML = "Bacon: " + bakee.bacon;
+              lettuce.innerHTML = "Lettuce: " + bakee.lettuce;
+              tomato.innerHTML = "Tomato: " + bakee.tomato;
+            } else {
+              alert("not enough bread and crops");
+            }
+            break;
+          case "smokehouse":
+            if (minee.stone >= 5 && minee.coal >= 5) {
+              smokes += 1;
+              smokehouse_unlock = true;
+              minee.stone -= 5;
+              minee.coal -= 5;
+              __special.smokehouses += 1;
+              stone.innerHTML = "Stone: " + minee.stone;
+              coal.innerHTML = "Coal: " + minee.coal;
+              _special.smokehouses.innerHTML =
+                "Smokehouses: " + __special.smokehouses;
+            } else {
+              alert("not enough minerals");
+            }
+            break;
+          case "choco_cooki":
+            if (__harvest.wheat >= 2 && __harvest.cocoa >= 1) {
+              __harvest.cocoa -= 1;
+              achievements.bakes += 1;
+              __harvest.wheat -= 2;
+              bakes.innerHTML = "Baked Goods: " + achievements.bakes;
+              cocoa.innerHTML = "Cocoa: " + __harvest.cocoa;
+              wheat.innerHTML = "Wheat: " + __harvest.wheat;
+              bakee.ChocolateCooki += 1;
+              _bakee.ChocolateCooki.innerHTML = "Chocolate Cookies: " + bakee;
+            } else {
+              alert("not enough crops");
+            }
+            break;
+          case "jamsam":
+            if (bakee.bread >= 2 && __harvest.dingberries >= 1) {
+              bakee.bread -= 2;
+              bakee.JamSandwich += 1;
+              __harvest.dingberries -= 1;
+              dingberry.innerHTML = "Dingberries: " + __harvest.dingberries;
+              bread.innerHTML = "Bread: " + bakee.bread;
+              JamSandwich.innerHTML = "Jam Sandwich: " + bakee.JamSandwich;
+              achievements.bakes += 1;
+              bakes.innerHTML = "Baked Goods: " + achievements.bakes;
+            } else {
+              alert("not enough bread and crops");
+            }
+            break;
+          case "peanut_butter":
+            if (__harvest.peanut >= 1) {
+              __harvest.peanut -= 1;
+              achievements.bakes += 1;
+              peanut.innerHTML = "Peanuts: " + __harvest.peanut;
+              bakes.innerHTML = "Baked Goods: " + achievements.bakes;
+              bakee.PeanutButter += 1;
+              _bakee.PeanutButter.innerHTML =
+                "Peanut Butter: " + bakee.PeanutButter;
+            } else {
+              alert("not enough crops");
+            }
+            break;
+          case "PBJ":
+            if (
+              bakee.bread >= 2 &&
+              bakee.PeanutButter >= 1 &&
+              __harvest.dingberry >= 1
+            ) {
+              bakee.bread -= 2;
+              bakee.PBJ += 1;
+              bakee.PeanutButter -= 1;
+              dingberry.innerHTML = "Dingberries: " + __harvest.dingberry;
+              bread.innerHTML = "Bread: " + bakee.bread;
+              PeanutButter.innerHTML = "Peanut Butter: " + bakee.PeanutButter;
+              PBJ.innerHTML = "PB&J: " + bakee.PBJ;
+              achievements.bakes += 1;
+              bakes.innerHTML = "Baked Goods: " + achievements.bakes;
+            } else {
+              alert("not enough bread, peanut butter, and crops");
+            }
+          case "salted_pork":
+            if (__harvest.raw_pork >= 1 && __harvest.salt >= 1) {
+              __harvest.raw_pork -= 1;
+              __harvest.salt--;
+              achievements.bakes += 1;
+              bakes.innerHTML = "Baked Goods: " + achievements.bakes;
+              raw_pork.innerHTML = "Raw Pork: " + bakee.raw_pork;
 
-	function cheatAdd() {
-		var oof = prompt("+ how many baked goods?")
-		achievements.bakes += parseInt(oof)
-		bakes.innerHTML = "Baked Goods: " + achievements.bakes
-	}
-	var cheat2 = () => {
-		achievements.bakes += 100000000
-	}
-	var craft = () => {
-		var v = document.getElementById("crafting_dropdown").value
-		var V = prompt("do you want to craft " + v + "? y/n")
-		if (V == "y") {
-			switch (v) {
-				case "bread":
-					if (__harvest.wheat >= 3) {
-						__harvest.wheat -= 3
-						achievements.bakes += 1
-						bakes.innerHTML = "Baked Goods: " + achievements.bakes
-						bakee.bread += 1
-						_bakee.bread.innerHTML = "Bread: " + bakee.bread
-						wheat.innerHTML = "wheat: " + __harvest.wheat
-					} else {
-						alert("not enough crops")
-					}
-					break;
-				case "corn_biskit":
-					if (__harvest.corn >= 1 && __harvest.wheat > 2) {
-						__harvest.corn -= 1
-						__harvest.wheat -= 2
-						achievements.bakes += 1
-						bakes.innerHTML = "Baked Goods: " + achievements.bakes
-						bakee.CornBiskit += 1
-						_bakee.corn_biskit.innerHTML = "Corn Biskit: " + bakee.CornBiskit
-						corn.innerHTML = "Corn: " + __harvest.corn
-						wheat.innerHTML = "Wheat: " + __harvest.wheat
-					} else {
-						alert("not enough crops")
-					}
-					break;
-				case "BLT":
-					if (bakee.bread >= 2 && __harvest.bacon >= 1 && __harvest.lettuce >= 1 && __harvest.tomato >= 1) {
-						bakee.bread -= 2
-						__harvest.bacon -= 1
-						__harvest.lettuce -= 1
-						__harvest.tomato -= 1
-						achievements.bakes += 1
-						bakes.innerHTML = "Baked Goods: " + achievements.bakes
-						bakee.BLT += 1
-						_bakee.BLT.innerHTML = "BLT: " + bakee.BLT
-						bread.innerHTML = "Bread: " + bakee.bread
-						bacon.innerHTML = "Bacon: " + bakee.bacon
-						lettuce.innerHTML = "Lettuce: " + bakee.lettuce
-						tomato.innerHTML = "Tomato: " + bakee.tomato
-					} else {
-						alert("not enough bread and crops")
-					}
-					break;
-				case "smokehouse":
-					if (minee.stone >= 5 && minee.coal >= 5) {
-						smokes += 1
-						smokehouse_unlock = true
-						__harvest.stone -= 5
-						__harvest.coal -= 5
-						__special.smokehouses += 1
-						stone.innerHTML = "Stone: " + minee.stone
-						coal.innerHTML = "Coal: " + minee.coal
-						_special.smokehouses.innerHTML = "Smokehouses: " + __special.smokehouses
-					} else {
-						alert("not enough minerals")
-					}
-					break;
-				case "choco_cooki":
-					if (__harvest.wheat >= 2 && __harvest.cocoa >= 1) {
-						__harvest.cocoa -= 1
-						achievements.bakes += 1
-						__harvest.wheat -= 2
-						bakes.innerHTML = "Baked Goods: " + achievements.bakes
-						cocoa.innerHTML = "Cocoa: " + __harvest.cocoa
-						wheat.innerHTML = "Wheat: " + __harvest.wheat
-						bakee.ChocolateCooki += 1
-						_bakee.ChocolateCooki.innerHTML = "Chocolate Cookies: " + bakee
-					} else {
-						alert("not enough crops")
-					}
-					break;
-				case "jamsam":
-					if (bakee.bread >= 2 && __harvest.dingberries >= 1) {
-						bakee.bread -= 2
-						bakee.JamSandwich += 1
-						__harvest.dingberries -= 1
-						dingberry.innerHTML = "Dingberries: " + __harvest.dingberries
-						bread.innerHTML = "Bread: " + bakee.bread
-						JamSandwich.innerHTML = "Jam Sandwich: " + bakee.JamSandwich
-						achievements.bakes += 1
-						bakes.innerHTML = "Baked Goods: " + achievements.bakes
-					} else {
-						alert("not enough bread and crops")
-					}
-					break;
-				case "peanut_butter":
-					if (__harvest.peanut >= 1) {
-						__harvest.peanut -= 1
-						achievements.bakes += 1
-						peanut.innerHTML = "Peanuts: " + __harvest.peanut
-						bakes.innerHTML = "Baked Goods: " + achievements.bakes
-						bakee.PeanutButter += 1
-						_bakee.PeanutButter.innerHTML = "Peanut Butter: " + bakee.PeanutButter
-					} else {
-						alert("not enough crops")
-					}
-					break;
-				case "PBJ":
-					if (bakee.bread >= 2 && bakee.PeanutButter >= 1 && __harvest.dingberry >= 1) {
-						bakee.bread -= 2
-						bakee.PBJ += 1
-						bakee.PeanutButter -= 1
-						dingberry.innerHTML = "Dingberries: " + __harvest.dingberry
-						bread.innerHTML = "Bread: " + bakee.bread
-						PeanutButter.innerHTML = "Peanut Butter: " + bakee.PeanutButter
-						PBJ.innerHTML = "PB&J: " + bakee.PBJ
-						achievements.bakes += 1
-						bakes.innerHTML = "Baked Goods: " + achievements.bakes
-					} else {
-						alert("not enough bread, peanut butter, and crops")
-					}
-				case "salted_pork":
-					if (__harvest.raw_pork >= 1 && __harvest.salt >= 1) {
-						__harvest.raw_pork -= 1
-						__harvest.salt--
-						achievements.bakes += 1
-						bakes.innerHTML = "Baked Goods: " + achievements.bakes
-						raw_pork.innerHTML = "Raw Pork: " + bakee.raw_pork
-						
-						bakee.SaltedPork += 1
-						_bakee.SaltedPork.innerHTML = "Salted Pork: " + bakee.SaltedPork
-					} else {
-						alert("not enough pork and salt")
-					}
-					break;
-				case "iron_robot":
-					if (minee.iron >= 10 && minee.stone >= 1) {
-						minee.iron -= 10
-						minee.stone -= 1
+              bakee.SaltedPork += 1;
+              _bakee.SaltedPork.innerHTML = "Salted Pork: " + bakee.SaltedPork;
+            } else {
+              alert("not enough pork and salt");
+            }
+            break;
+          case "iron_robot":
+            if (minee.iron >= 10 && minee.stone >= 1) {
+              minee.iron -= 10;
+              minee.stone -= 1;
 
-						iron.innerHTML = "Iron: " + minee.iron
-						stone.innerHTML = "Stone: " + minee.stone
-						__special.IronRobots += 1
-						_special.IronRobot.innerHTML = "Iron Robots: " + __special.IronRobots
-						bps += 10**(Math.floor(Math.random()*5))
-						persec.innerHTML = "BPS: " + bps
-						document.getElementById("buildings").innerHTML += '<img class="build" src="robot.png" />'
-					} else {
-						alert("not enough iron and stone")
-					}
-        break; 
-				case "furnace": 
-					if (minee.stone >=13){
-						minee.stone -= 13
-						__special.furnaces += 1
-						_special.furnaces.innerHTML = "Furnaces: " + __special.furnaces
-					}
-			}
-		}
-	}
-	function toggleChallenge() {
-		challenge = !challenge
-		energee = 100
-	}
-	/*function newLevlUp(cooki){
+              iron.innerHTML = "Iron: " + minee.iron;
+              stone.innerHTML = "Stone: " + minee.stone;
+              __special.IronRobots += 1;
+              _special.IronRobot.innerHTML =
+                "Iron Robots: " + __special.IronRobots;
+              bps += 10 ** Math.floor(Math.random() * 5);
+              persec.innerHTML = "BPS: " + bps;
+              document.getElementById("buildings").innerHTML +=
+                '<img class="build" src="robot.png" />';
+            } else {
+              alert("not enough iron and stone");
+            }
+            break;
+          case "furnace":
+            if (minee.stone >= 13) {
+              minee.stone -= 13;
+              __special.furnaces += 1;
+              _special.furnaces.innerHTML = "Furnaces: " + __special.furnaces;
+            }
+        }
+      }
+    };
+    function toggleChallenge() {
+      challenge = !challenge;
+      energee = 100;
+    }
+    /*function newLevlUp(cooki){
 		console.info(1)
 		switch(cooki){
 
@@ -754,7 +727,7 @@ var forest_ul = false
 
 		}//h
 	}//h*/
-	/*if(s2){
+    /*if(s2){
 		document.getElementById("exploration").innerHTML += "<img class = 'exploration-icon' src='saltflats.png'/>"
 	}
 	if(b2){
@@ -764,159 +737,166 @@ var forest_ul = false
 	if(f2){
 		document.getElementById("exploration").innerHTML += "<img class = 'exploration-icon' src='forest.png'/>"
 	}*/
-	var smelt = ()=>{
-		var v = document.getElementById("smelting_dropdown").value
-		var V = prompt("do you want to smelt " + v + "? y/n")
-		if(V == "y"){
-			switch(v){
-				case "irongoldalloy":
-					if(minee.iron >= 1 && minee.gold >= 1 && __special.furnaces >=1 && minee.coal){
-						minee.iron -= 1
-						minee.gold -= 1
-						minee.coal--
-						iron.innerHTML = "Iron: "+minee.iron
-						gold.innerHTML = "Gold: "+minee.gold
-						__special.furnaces.innerHTML = "Furnaces: "+__special.furnaces
-						achievements.bakes += 1
-						bakes.innerHTML = "Baked Goods: "+achievements.bakes
-						_special.furnaces.innerHTML = "Furnaces: "+__special.furnaces
-						minee.IronGoldAlloy += 1
-						feau.innerHTML = "Iron Gold Alloy: "+minee.IronGoldAlloy
-					}
-		
-			}
-		}
-	}
-	function eat(cooki) {
-		switch (cooki) {
-			case "BLT":
-				if (bakee.BLT >= 1) {
-					bakee.BLT -= 1
-					energee += 20
-					BLT.innerHTML = "BLT: " + bakee.BLT
-					_energee.innerHTML = "Energee: " + energee
-				} else {
-					alert("not enough BLTs")
-				}
-			case "bread":
-				if (bakee.bread >= 1) {
-					bakee.bread -= 1
-					energee += 3
-					bread.innerHTML = "Bread: " + bakee.bread
-					_energee.innerHTML = "Energee: " + energee
-				} else {
-					alert("no bread")
-				}
-			case "choco_cooki":
-				if (bakee.ChocolateCooki >= 1) {
-					bakee.ChocolateCooki -= 1
-					energee += 5
-					ChocolateCooki.innerHTML = "Chocolate Cookis: " + bakee.ChocolateCooki
-					_energee.innerHTML = "Energee: " + energee
-				} else {
-					alert("no chocolate cookis")
-				}
-			case "corn_biskit":
-				if (bakee.CornBiskit >= 1) {
-					bakee.CornBiskit -= 1
-					energee += 5
-					CornBiskit.innerHTML = "Corn Biskit: " + bakee.CornBiskit
-					_energee.innerHTML = "Energee: " + energee
-				} else {
-					alert("not enough corn Biskits")
-				}
-			case "jamsam":
-				if (bakee.JamSandwich >= 1) {
-					bakee.JamSandwich -= 1
-					energee += 5
-					JamSandwich.innerHTML = "Jam Sandwich: " + bakee.JamSandwich
-					_energee.innerHTML = "Energee: " + energee
-				} else {
-					alert("not enough jam sandwiches")
-				}
-			case "PBJ":
-				if (bakee.PBJ >= 1) {
-					bakee.PBJ -= 1
-					energee += 5
-					PBJ.innerHTML = "PB&J: " + bakee.PBJ
-					_energee.innerHTML = "Energee: " + energee
-				} else {
-					alert("not enough PB&Js")
-				}
-			case "salted_pork":
-				if (bakee.SaltedPork >= 1) {
-					bakee.SaltedPork -= 1
-					energee += 5
-					SaltedPork.innerHTML = "Salted Pork: " + bakee.SaltedPork
-					_energee.innerHTML = "Energee: " + energee
-				} else {
-					alert("not enough salted pork")
-				}
-		}
-	}
-	setInterval(() => {
+    var smelt = () => {
+      var v = document.getElementById("smelting_dropdown").value;
+      var V = prompt("do you want to smelt " + v + "? y/n");
+      if (V == "y") {
+        switch (v) {
+          case "irongoldalloy":
+            if (
+              minee.iron >= 1 &&
+              minee.gold >= 1 &&
+              __special.furnaces >= 1 &&
+              minee.coal
+            ) {
+              minee.iron -= 1;
+              minee.gold -= 1;
+              minee.coal--;
+              iron.innerHTML = "Iron: " + minee.iron;
+              gold.innerHTML = "Gold: " + minee.gold;
+              __special.furnaces.innerHTML = "Furnaces: " + __special.furnaces;
+              achievements.bakes += 1;
+              bakes.innerHTML = "Baked Goods: " + achievements.bakes;
+              _special.furnaces.innerHTML = "Furnaces: " + __special.furnaces;
+              minee.ironGoldAlloy += 1;
+              feau.innerHTML = "Iron Gold Alloy: " + minee.ironGoldAlloy;
+            }
+        }
+      }
+    };
+    function eat(cooki) {
+      switch (cooki) {
+        case "BLT":
+          if (bakee.BLT >= 1) {
+            bakee.BLT -= 1;
+            energee += 20;
+            BLT.innerHTML = "BLT: " + bakee.BLT;
+            _energee.innerHTML = "Energee: " + energee;
+          } else {
+            alert("not enough BLTs");
+          }
+          break;
+        case "bread":
+          if (bakee.bread >= 1) {
+            bakee.bread -= 1;
+            energee += 3;
+            bread.innerHTML = "Bread: " + bakee.bread;
+            _energee.innerHTML = "Energee: " + energee;
+          } else {
+            alert("no bread");
+          }
+          break;
+        case "choco_cooki":
+          if (bakee.ChocolateCooki >= 1) {
+            bakee.ChocolateCooki -= 1;
+            energee += 5;
+            ChocolateCooki.innerHTML =
+              "Chocolate Cookis: " + bakee.ChocolateCooki;
+            _energee.innerHTML = "Energee: " + energee;
+          } else {
+            alert("no chocolate cookis");
+          }
+          break;
+        case "corn_biskit":
+          if (bakee.CornBiskit >= 1) {
+            bakee.CornBiskit -= 1;
+            energee += 5;
+            CornBiskit.innerHTML = "Corn Biskit: " + bakee.CornBiskit;
+            _energee.innerHTML = "Energee: " + energee;
+          } else {
+            alert("not enough corn Biskits");
+          }
+          break;
+        case "jamsam":
+          if (bakee.JamSandwich >= 1) {
+            bakee.JamSandwich -= 1;
+            energee += 5;
+            JamSandwich.innerHTML = "Jam Sandwich: " + bakee.JamSandwich;
+            _energee.innerHTML = "Energee: " + energee;
+          } else {
+            alert("not enough jam sandwiches");
+          }
+          break;
+        case "PBJ":
+          if (bakee.PBJ >= 1) {
+            bakee.PBJ -= 1;
+            energee += 5;
+            PBJ.innerHTML = "PB&J: " + bakee.PBJ;
+            _energee.innerHTML = "Energee: " + energee;
+          } else {
+            alert("not enough PB&Js");
+          }
+          break;
+        case "salted_pork":
+          if (bakee.SaltedPork >= 1) {
+            bakee.SaltedPork -= 1;
+            energee += 5;
+            SaltedPork.innerHTML = "Salted Pork: " + bakee.SaltedPork;
+            _energee.innerHTML = "Energee: " + energee;
+          } else {
+            alert("not enough salted pork");
+          }
+          break;
+      }
+    }
+    setInterval(() => {
+      achievements.bakes += bps;
+      bakes.innerHTML = "Baked Goods: " + achievements.bakes;
 
-		achievements.bakes += bps
-		bakes.innerHTML = "Baked Goods: " + achievements.bakes
-
-		var t = Math.floor(Math.random() * 25)
-		if (t == 1) {
-			goof()
-
-		}
-		if (__harvest.wheat && farm_unlock) {
-			console.info("wheat")
-			__harvest.wheat += Math.floor(Math.random() * 3) * farms
-			wheat.innerHTML = "wheat: " + __harvest.wheat
-
-		}
-		if (__harvest.wheat > 4 && farm_unlock) {
-			if (Math.floor(Math.random() * 2) == 1) {
-				__harvest.corn += Math.floor(Math.random() * 3) * farms
-				corn.innerHTML = "corn: " + __harvest.corn
-
-			}
-		}
-		if (achievements.bakes > 155 && farm_unlock) {
-			if (Math.floor(Math.random() * 2) == 1) {
-				__harvest.lettuce += Math.floor(Math.random() * 3) * farms
-				lettuce.innerHTML = "lettuce: " + __harvest.lettuce
-
-			}
-		}
-		if (__harvest.corn > 5) {
-			__harvest.tomato += Math.round(Math.random() * Math.random() * 4) * farms
-			tomato.innerHTML = "tomatoes: " + __harvest.tomato
-		}
-		if (butcher_unlock) {
-			if (Math.floor(Math.random() * 2) == 1) {
-				__harvest.raw_pork += Math.floor(Math.random() * 3) * butchers
-				raw_pork.innerHTML = "raw pork: " + __harvest.raw_pork
-			}
-		}
-		if (mine_unlock) {
-			minee.stone += 1 * mines
-			stone.innerHTML = "stone: " + minee.stone
-		}
-		if (mine_unlock) {
-			if (Math.floor(Math.random() * 2) == 1) {
-				minee.coal += Math.floor(Math.random() * 3) * mines
-				coal.innerHTML = "coal: " + minee.coal
-			}
-		}
-		if (smokehouse_unlock && __harvest.raw_pork > 0) {
-			__harvest.raw_pork -= 1 * smokes
-			__harvest.bacon += 1 * smokes
-			raw_pork.innerHTML = "raw pork: " + __harvest.raw_pork
-			bacon.innerHTML = "bacon: " + __harvest.bacon
-
-		}
-		if (challenge) {
-			$("body").css("background-color", "red")
-			$("#energee").css("color", "white")
-			energee -= energee_decrease
-			_energee.innerHTML = "Energee: " + energee
-			/*var a = '<button class="button2" onclick="eat(\"bread\")">Eat Bread</button>'
+      var t = Math.floor(Math.random() * 25);
+      if (t == 1) {
+        goof();
+      }
+      if (__harvest.wheat && farm_unlock) {
+        console.info("wheat");
+        __harvest.wheat += Math.floor(Math.random() * 3) * farms;
+        wheat.innerHTML = "wheat: " + __harvest.wheat;
+      }
+      if (__harvest.wheat > 4 && farm_unlock) {
+        if (Math.floor(Math.random() * 2) == 1) {
+          __harvest.corn += Math.floor(Math.random() * 3) * farms;
+          corn.innerHTML = "corn: " + __harvest.corn;
+        }
+      }
+      if (achievements.bakes > 155 && farm_unlock) {
+        if (Math.floor(Math.random() * 2) == 1) {
+          __harvest.lettuce += Math.floor(Math.random() * 3) * farms;
+          lettuce.innerHTML = "lettuce: " + __harvest.lettuce;
+        }
+      }
+      if (__harvest.corn > 5) {
+        __harvest.tomato +=
+          Math.round(Math.random() * Math.random() * 4) * farms;
+        tomato.innerHTML = "tomatoes: " + __harvest.tomato;
+      }
+      if (butcher_unlock) {
+        if (Math.floor(Math.random() * 2) == 1) {
+          __harvest.raw_pork += Math.floor(Math.random() * 3) * butchers;
+          raw_pork.innerHTML = "raw pork: " + __harvest.raw_pork;
+        }
+      }
+      if (mine_unlock) {
+        minee.stone += 1 * mines;
+        stone.innerHTML = "stone: " + minee.stone;
+      }
+      if (mine_unlock) {
+        if (Math.floor(Math.random() * 2) == 1) {
+          minee.coal += Math.floor(Math.random() * 3) * mines;
+          coal.innerHTML = "coal: " + minee.coal;
+        }
+      }
+      if (smokehouse_unlock && __harvest.raw_pork > 0) {
+        __harvest.raw_pork -= 1 * smokes;
+        __harvest.bacon += 1 * smokes;
+        raw_pork.innerHTML = "raw pork: " + __harvest.raw_pork;
+        bacon.innerHTML = "bacon: " + __harvest.bacon;
+      }
+      if (challenge) {
+        $("body").css("background-color", "red");
+        $("#energee").css("color", "white");
+        energee -= energee_decrease;
+        _energee.innerHTML = "Energee: " + energee;
+        /*var a = '<button class="button2" onclick="eat(\"bread\")">Eat Bread</button>'
 			var b_ = '<button class="button2" onclick="eat(\"corn_biskit\")"> Eat Corn Biskit</button>'
 			var c = '<button class="button2" onclick="eat(\"BLT\")">Eat BLT</button>'
 			var d = '<button class="button2" onclick="eat(\"jamsam\")">Eat Jam Sandwich</button>'
@@ -930,74 +910,61 @@ var forest_ul = false
 			ChocolateCooki_eat.innerHTML = g
 			breadEat.innerHTML = a
 			cornBiskitEat.innerHTML = b_*/
-			if (energee <= 0) {
-				alert("you died")
-				achievements.bakes -= 100
-				bakes.innerHTML = "Baked Goods: " + achievements.bakes
-				toggleChallenge()
+        if (energee <= 0) {
+          alert("you died");
+          achievements.bakes -= 100;
+          bakes.innerHTML = "Baked Goods: " + achievements.bakes;
+          toggleChallenge();
+        }
+        if (achievements.bakes >= 100000000000) {
+          alert("you win");
+          toggleChallenge();
+        }
+      } else {
+        $("#energee").css("color", "lime");
+        $("body").css("background-color", "lime");
+      }
+      if (mine_unlock && achievements.bakes >= 5) {
+        if (Math.floor(Math.random() * 2) == 1) {
+          minee.iron += Math.floor(Math.random() * 3) * mines;
+          minee.copper += Math.floor(Math.random() * 3) * mines;
+          iron.innerHTML = "iron: " + minee.iron;
+          copper.innerHTML = "copper: " + minee.copper;
+        }
+      }
+      if (farm_unlock && achievements.bakes >= 10) {
+        __harvest.cocoa += 3 * farms;
+        cocoa.innerHTML = "cocoa: " + __harvest.cocoa;
+      }
+      if (farm_unlock && achievements.bakes >= 100) {
+        __harvest.dingberry += Math.floor(Math.random() * 3) * farms;
+        dingberry.innerHTML = "Dingberries: " + __harvest.dingberry;
+        __harvest.salt += Math.floor(Math.random() * 3) * farms;
+        $("#salt").text("Salt: " + __harvest.salt);
+        __harvest.honey += Math.floor(Math.random() * 3) * farms;
+        $("#honey").text("Honey: " + __harvest.honey);
+      }
+      if (farm_unlock) {
+        if (Math.floor(Math.random() * 2) == 1) {
+          __harvest.peanut += Math.floor(Math.random() * 3) * farms;
+          peanut.innerHTML = "peanuts: " + __harvest.peanut;
+        }
+      }
 
-			}
-			if (achievements.bakes >= 100000000000) {
-				alert("you win")
-				toggleChallenge()
-			}
-		} else {
-			$("#energee").css("color", "lime")
-			$("body").css("background-color", "lime")
-		}
-		if (mine_unlock && achievements.bakes >= 5) {
-			if (Math.floor(Math.random() * 2) == 1) {
-				minee.iron += Math.floor(Math.random() * 3) * mines
-				minee.copper += Math.floor(Math.random() * 3) * mines
-				iron.innerHTML = "iron: " + minee.iron
-				copper.innerHTML = "copper: " + minee.copper
-			}
-		}
-		if (farm_unlock && achievements.bakes >= 10) {
-			__harvest.cocoa += 3 * farms
-			cocoa.innerHTML = "cocoa: " + __harvest.cocoa
-		}
-		if (farm_unlock && achievements.bakes >= 100) {
-			__harvest.dingberry += Math.floor(Math.random() * 3) * farms
-			dingberry.innerHTML = "Dingberries: " + __harvest.dingberry
-			__harvest.salt += Math.floor(Math.random() * 3) * farms
-			$("#salt").text("Salt: " + __harvest.salt)
-			__harvest.honey += Math.floor(Math.random() * 3) * farms
-			$("#honey").text("Honey: " + __harvest.honey)
-		}
-		if (farm_unlock) {
-			if (Math.floor(Math.random() * 2) == 1) {
-				__harvest.peanut += Math.floor(Math.random() * 3) * farms
-				peanut.innerHTML = "peanuts: " + __harvest.peanut
-			}
-		}
-	
-		if(mine_unlock){
-			minee.silver += Math.floor(Math.random() * 2)
-			minee.gold += Math.floor(Math.random() * 2)
-			silver.innerHTML = "silver: " + minee.silver
-			gold.innerHTML = "gold: " + minee.gold
-		}
-		if(forest_ul){
-		    forest.apple += Math.floor(Math.random() * 2)
-		    forest.birch += Math.floor(Math.random() * 2)
-		    forest.oak += Math.floor(Math.random() * 2)
-		    $("#oak_wood").text("Oak: "+forest.oak)
-		    $("#birch_wood").text("Birch: "+forest.birch)
-		    $("#apples").text("Apples: "+forest.apple)
-		}
-	}, 1000)
-
-
-
-
-
-
-
-
-
-</script>
-
-
-
+      if (mine_unlock) {
+        minee.silver += Math.floor(Math.random() * 2);
+        minee.gold += Math.floor(Math.random() * 2);
+        silver.innerHTML = "silver: " + minee.silver;
+        gold.innerHTML = "gold: " + minee.gold;
+      }
+      if (forest_ul) {
+        forest.apple += Math.floor(Math.random() * 2);
+        forest.birch += Math.floor(Math.random() * 2);
+        forest.oak += Math.floor(Math.random() * 2);
+        $("#oak_wood").text("Oak: " + forest.oak);
+        $("#birch_wood").text("Birch: " + forest.birch);
+        $("#apples").text("Apples: " + forest.apple);
+      }
+    }, 1000);
+  </script>
 </html>

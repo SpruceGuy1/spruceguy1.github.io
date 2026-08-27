@@ -12,6 +12,5 @@ export var italy = [
   [..."wwwwwwwwwwwgwwww"],
   [..."wwwwwwwwgggwwwww"],
   [..."gffffwwwwwgwwwww"],
-  [..."ggggwwwwwgwwwwww"]
-  
-]
+  [..."ggggwwwwwgwwwwww"],
+];

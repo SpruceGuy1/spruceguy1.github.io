@@ -1,375 +1,369 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-    <head>
-        <title>Blocks</title>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <link rel="stylesheet" href="style.css">
-        <script src="//cdn.jsdelivr.net/npm/eruda"></script>
-        <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.27.2.min.js"></script>
-        
-<script>eruda.init();</script>
-        <base target="_blank"/>
-    </head>
-    <body>Go to Blocks @ <a href="blocks.html">here</a></body>
-    <body>
-        CountrySim v2.4.4<br>
-        Alpha Version<br>
-        By SpruceGuy<br>
-        <a href="nav.html">Other projects</a>
-        <audio src="My Song 17.m4a" autoplay controls loop></audio>
-        The year is <span id="y">1</span>
-        <table>
-            <tr id="r0"></tr>
-            <tr id="r1"></tr>
-            <tr id="r2"></tr>
-            <tr id="r3"></tr>
-            <tr id="r4"></tr>
-            <tr id="r5"></tr>
-            <tr id="r6"></tr>
-            <tr id="r7"></tr>
-        </table>
-        Wanderer has <span id="wgold">0</span> gold
-        
-        <ol id="lb">
-        </ol>
-        Current font: <span id="font">Clean</span>
-        <br><button id="cf">Change font</button>
-        <script>
-        var i = 0
-        
-        var j
-        var states = []
-        var year = 1
-        class State{
-            constructor(color, name, loc){
-                this.color = color
-                this.name = name
-                this.loc = loc
-                this.alliances = [] 
-                this.area = 1
-                this.annexedTerritories = []
-                this.owner = loc
-            }
-            ally(n){
-                this.alliances.push(n.loc)
-                n.alliances.push(this.loc)
-            }
-            annex(n){
-                if(!this.alliances.includes(n.loc)){
-                    console.log(this.owner)
-                     states[n.owner].area--
-                    n.owner=states[this.owner].loc
-                   
-                    states[this.owner].annexedTerritories.push(n.loc)
-                    states[this.owner].area++
-                   
-                }
-            }
+  <head>
+    <title>Blocks</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="style.css" />
+    <script src="//cdn.jsdelivr.net/npm/eruda"></script>
+    <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.27.2.min.js"></script>
+
+    <script>
+      eruda.init();
+    </script>
+    <base target="_blank" />
+  </head>
+  <body>
+    Go to Blocks @ <a href="blocks.html">here</a>
+  </body>
+  <body>
+    CountrySim v2.4.4<br />
+    Alpha Version<br />
+    By SpruceGuy<br />
+    <a href="nav.html">Other projects</a>
+    <audio src="My Song 17.m4a" autoplay controls loop></audio>
+    The year is <span id="y">1</span>
+    <table>
+      <tr id="r0"></tr>
+      <tr id="r1"></tr>
+      <tr id="r2"></tr>
+      <tr id="r3"></tr>
+      <tr id="r4"></tr>
+      <tr id="r5"></tr>
+      <tr id="r6"></tr>
+      <tr id="r7"></tr>
+    </table>
+    Wanderer has <span id="wgold">0</span> gold
+
+    <ol id="lb"></ol>
+    Current font: <span id="font">Clean</span> <br /><button id="cf">
+      Change font
+    </button>
+    <script>
+      var i = 0;
+
+      var j;
+      var states = [];
+      var year = 1;
+      class State {
+        constructor(color, name, loc) {
+          this.color = color;
+          this.name = name;
+          this.loc = loc;
+          this.alliances = [];
+          this.area = 1;
+          this.annexedTerritories = [];
+          this.owner = loc;
         }
-        var colors=[
-            "000000",
-            "000080",
-            "0000ff",
-            "008000",
-            "008080",
-            "0080ff",
-            "00ff00",
-            "00ff80",
-            "00ffff",
-            "800000",
-            "800080",
-            "8000ff",
-            "808000",
-            "808080",
-            "8080ff",
-            "80ff00",
-            "80ff80",
-            "80ffff",
-            "ff0000",
-            "ff0080",
-            "ff00ff",
-            "ff8000",
-            "ff8080",
-            "ffff00",
-            "ffff80",
-            "ffffff",
-            Math.floor(Math.random()*16777217).toString(16),
-            Math.floor(Math.random()*16777217).toString(16),
-            Math.floor(Math.random()*16777217).toString(16),
-            Math.floor(Math.random()*16777217).toString(16),
-            Math.floor(Math.random()*16777217).toString(16),
-            Math.floor(Math.random()*16777217).toString(16),
-            Math.floor(Math.random()*16777217).toString(16),
-            Math.floor(Math.random()*16777217).toString(16),
-            Math.floor(Math.random()*16777217).toString(16),
-            Math.floor(Math.random()*16777217).toString(16),
-            Math.floor(Math.random()*16777217).toString(16),
-            Math.floor(Math.random()*16777217).toString(16),
-            Math.floor(Math.random()*16777217).toString(16),
-            Math.floor(Math.random()*16777217).toString(16),
-            Math.floor(Math.random()*16777217).toString(16),
-            Math.floor(Math.random()*16777217).toString(16),
-            Math.floor(Math.random()*16777217).toString(16),
-            Math.floor(Math.random()*16777217).toString(16),
-            Math.floor(Math.random()*16777217).toString(16),
-            Math.floor(Math.random()*16777217).toString(16),
-            Math.floor(Math.random()*16777217).toString(16),
-            Math.floor(Math.random()*16777217).toString(16),
-            Math.floor(Math.random()*16777217).toString(16),
-            Math.floor(Math.random()*16777217).toString(16),
-            Math.floor(Math.random()*16777217).toString(16),
-            Math.floor(Math.random()*16777217).toString(16),
-            Math.floor(Math.random()*16777217).toString(16),
-            Math.floor(Math.random()*16777217).toString(16),
-            Math.floor(Math.random()*16777217).toString(16),
-            "804000",
-            "408000",
-            "004080",
-            "008040",
-            "800040",
-            "400080",
-            Math.floor(Math.random()*16777217).toString(16),
-            "ffc080",
-            "4040ff"
-            
-            ]
-            var sl = [
-                "Th",
-                "S",
-                "T",
-                "P",
-                "H",
-                "Sh",
-                "M",
-                "B",
-                "V",
-                "J"
-                ]
-                var cons = [
-                     "b",
-                     "bb",
-                     "c",
-                     "ch",
-                     "d",
-                     "dd",
-                     "f",
-                     "g",
-                     "gh",
-                     "h",
-                     "j",
-                     "k",
-                     "kh",
-                     "l",
-                     "ll",
-                     "m",
-                     "n",
-                     "nn",
-                     "mm",
-                     "p",
-                     "ph",
-                     "qu",
-                     "r",
-                     "rr",
-                     "s",
-                     "sh",
-                     "t",
-                     "th",
-                     "v",
-                     "w",
-                     "x",
-                     "y",
-                     "z"
-                    ]
-                    
-        var vow = [
-            "a",
-            "aa",
-            "ae",
-            "ai",
-            "au",
-            "aw",
-            "e",
-            "ee",
-            "i",
-            "igh",
-            "o",
-            "oa",
-            "oo",
-            "u",
-            "uh",
-            "ue"
-            ]
-        var names = []
-        for(i=0;i<=63;i++){
-            j=Math.floor(i/8)
-            names[i] = sl[Math.floor(Math.random() * sl.length)]+vow[Math.floor(Math.random() * vow.length)]+cons[Math.floor(Math.random() * cons.length)]+vow[Math.floor(Math.random() * vow.length)]+cons[Math.floor(Math.random() * cons.length)]
-            $("#r"+j).append("<td id='c"+i+"' >"+names[i]+"</td>")
-            $("#c"+i).css("background", "#"+colors[i])
-            states.push(new State(colors[i], names[i], i))
+        ally(n) {
+          this.alliances.push(n.loc);
+          n.alliances.push(this.loc);
         }
-        $("td").click(function(){
-            console.log($(this).attr("id"))
-            alert(states[states[$(this).attr("id").substring(1)].owner].name+`
+        annex(n) {
+          if (!this.alliances.includes(n.loc)) {
+            console.log(this.owner);
+            states[n.owner].area--;
+            n.owner = states[this.owner].loc;
+
+            states[this.owner].annexedTerritories.push(n.loc);
+            states[this.owner].area++;
+          }
+        }
+      }
+      var colors = [
+        "000000",
+        "000080",
+        "0000ff",
+        "008000",
+        "008080",
+        "0080ff",
+        "00ff00",
+        "00ff80",
+        "00ffff",
+        "800000",
+        "800080",
+        "8000ff",
+        "808000",
+        "808080",
+        "8080ff",
+        "80ff00",
+        "80ff80",
+        "80ffff",
+        "ff0000",
+        "ff0080",
+        "ff00ff",
+        "ff8000",
+        "ff8080",
+        "ffff00",
+        "ffff80",
+        "ffffff",
+        Math.floor(Math.random() * 16777217).toString(16),
+        Math.floor(Math.random() * 16777217).toString(16),
+        Math.floor(Math.random() * 16777217).toString(16),
+        Math.floor(Math.random() * 16777217).toString(16),
+        Math.floor(Math.random() * 16777217).toString(16),
+        Math.floor(Math.random() * 16777217).toString(16),
+        Math.floor(Math.random() * 16777217).toString(16),
+        Math.floor(Math.random() * 16777217).toString(16),
+        Math.floor(Math.random() * 16777217).toString(16),
+        Math.floor(Math.random() * 16777217).toString(16),
+        Math.floor(Math.random() * 16777217).toString(16),
+        Math.floor(Math.random() * 16777217).toString(16),
+        Math.floor(Math.random() * 16777217).toString(16),
+        Math.floor(Math.random() * 16777217).toString(16),
+        Math.floor(Math.random() * 16777217).toString(16),
+        Math.floor(Math.random() * 16777217).toString(16),
+        Math.floor(Math.random() * 16777217).toString(16),
+        Math.floor(Math.random() * 16777217).toString(16),
+        Math.floor(Math.random() * 16777217).toString(16),
+        Math.floor(Math.random() * 16777217).toString(16),
+        Math.floor(Math.random() * 16777217).toString(16),
+        Math.floor(Math.random() * 16777217).toString(16),
+        Math.floor(Math.random() * 16777217).toString(16),
+        Math.floor(Math.random() * 16777217).toString(16),
+        Math.floor(Math.random() * 16777217).toString(16),
+        Math.floor(Math.random() * 16777217).toString(16),
+        Math.floor(Math.random() * 16777217).toString(16),
+        Math.floor(Math.random() * 16777217).toString(16),
+        Math.floor(Math.random() * 16777217).toString(16),
+        "804000",
+        "408000",
+        "004080",
+        "008040",
+        "800040",
+        "400080",
+        Math.floor(Math.random() * 16777217).toString(16),
+        "ffc080",
+        "4040ff",
+      ];
+      var sl = ["Th", "S", "T", "P", "H", "Sh", "M", "B", "V", "J"];
+      var cons = [
+        "b",
+        "bb",
+        "c",
+        "ch",
+        "d",
+        "dd",
+        "f",
+        "g",
+        "gh",
+        "h",
+        "j",
+        "k",
+        "kh",
+        "l",
+        "ll",
+        "m",
+        "n",
+        "nn",
+        "mm",
+        "p",
+        "ph",
+        "qu",
+        "r",
+        "rr",
+        "s",
+        "sh",
+        "t",
+        "th",
+        "v",
+        "w",
+        "x",
+        "y",
+        "z",
+      ];
+
+      var vow = [
+        "a",
+        "aa",
+        "ae",
+        "ai",
+        "au",
+        "aw",
+        "e",
+        "ee",
+        "i",
+        "igh",
+        "o",
+        "oa",
+        "oo",
+        "u",
+        "uh",
+        "ue",
+      ];
+      var names = [];
+      for (i = 0; i <= 63; i++) {
+        j = Math.floor(i / 8);
+        names[i] =
+          sl[Math.floor(Math.random() * sl.length)] +
+          vow[Math.floor(Math.random() * vow.length)] +
+          cons[Math.floor(Math.random() * cons.length)] +
+          vow[Math.floor(Math.random() * vow.length)] +
+          cons[Math.floor(Math.random() * cons.length)];
+        $("#r" + j).append("<td id='c" + i + "' >" + names[i] + "</td>");
+        $("#c" + i).css("background", "#" + colors[i]);
+        states.push(new State(colors[i], names[i], i));
+      }
+      $("td").click(function () {
+        console.log($(this).attr("id"));
+        alert(
+          states[states[$(this).attr("id").substring(1)].owner].name +
+            `
             Area: ${states[states[$(this).attr("id").substring(1)].owner].area}
             
-            `)
-        })
-        $("#c30").append("<br>Gold:<span id='g'>0</span>")
-        var ctha = []
-        var c30g = 0
-        var leaderboard = []
-        console.log(states)
-        var levels = [
-             1, 1, 1, 1, 1, 1, 1, 1,
-             1, 1, 1, 1, 1, 1, 1, 1,
-             1, 1, 1, 1, 1, 1, 1, 1,
-             1, 1, 1, 1, 1, 1, 1, 1,
-             1, 1, 1, 1, 1, 1, 1, 1,
-             1, 1, 1, 1, 1, 1, 1, 1,
-             1, 1, 1, 1, 1, 1, 1, 1,
-             1, 1, 1, 1, 1, 1, 1, 1,
-            
-            ]
-        
-        var dirs = [-9, -8, -7, -1, 1, 7, 8, 9]
-            var fonts = ["Times New Roman", "sans-serif", "handwriting"]
-            var s = 0
-            var fn = ["Classic", "Clean", "Handwriting"]
-        $("#cf").click(function(){
-            s = (s+1)%3
-            $("td").css("font-family", fonts[s])
-            $("#font").text(fn[s])
-        })
-        function reqListener() {
-  console.log(this.responseText);
-}
+            `,
+        );
+      });
+      $("#c30").append("<br>Gold:<span id='g'>0</span>");
+      var ctha = [];
+      var c30g = 0;
+      var leaderboard = [];
+      console.log(states);
+      var levels = [
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      ];
 
-const req = new XMLHttpRequest();
-req.addEventListener("load", reqListener);
-req.open("PUT", "data.json");
-req.setRequestHeader('Content-Type', 'application/json')
-var d = JSON.stringify(["apple"])
-req.send(d);
-        setInterval(()=>{
-            c30g+=levels[30]
-            $("#g").text(c30g)
-            if(Math.floor(Math.random()*6)==3){
-                var t = Math.floor(Math.random()*56)+8
-                var u = t+dirs[Math.floor(Math.random() * dirs.length)]
-                if(u>=64 || u<=-1){
-                    u = t+dirs[Math.floor(Math.random() * dirs.length)]
-                }
-                if(states[t].alliances.length<=3){
-                    $("#c"+t).append(" Allied with "+names[u])
-                    states[t].ally(states[u])
-                }
-                    
-                
-            }
-            leaderboard = []
-            for(let j of states){
-                
-                if(j.area>=2){
-                    leaderboard.push(j)
-                }
-            }
-            leaderboard.sort((a,b)=>b.area-a.area)
-            $("#lb").html("")
-            for(let k of leaderboard){
-                
-                $("#lb").append("<li>"+k.name+" with "+k.area+" area</li>")
-                
-            }
-            
-            console.log("t")
-            if(Math.floor(Math.random()*6)==2){
-                var t = Math.floor(Math.random()*64)
-                var u = Math.floor(Math.random()*6)
-                var v = t+dirs[Math.floor(Math.random() * dirs.length)]
-                switch(u){
-                    case 0:
-                        if(v>=64 || v<= -1){
-                            v = t+dirs[Math.floor(Math.random() * dirs.length)]
-                        }
-                        
-                        if(!states[v].alliances.includes(t)){
-                         $("#c"+t).css("background", $("#c"+v).css("background"))
-            $("#c"+t).text("Annexed territory of "+names[states[v].owner]+", originally "+names[t])
-                        states[states[v].owner].annex(states[t])
-                        }
-                
-                break
-                case 1:
-                    $("#c"+t).append(" Enemy of "+names[v])
-                    break
-            }
-            }
-           // console.log(leaderboard)
-            
-        },100)
-            var x
-            var y
-            var wgold = 0
-        setInterval(()=>{
-            x=Math.floor(Math.random()*900)
-            y=Math.floor(Math.random()*900)
-            $("#wanderer").css("top", x+"px")
-            $("#wanderer").css("left", y+"px")
-            var ex = $("#c6").height()+$("#c14").height()+$("#c22").height()
-            var ey = 0
-            for(let i = 25; i<30; i++){
-                ey += $("#c"+i).width()
-            }
-            if(x>=ex && y>=ey){
-                wgold++
-                $("#wgold").text(wgold)
-            }
-            
-            year++
-            $("#y").text(year)
-        },5000)
-        setTimeout(()=>{
-            if(!ctha.includes(38)){
-            $("#c38").css("background", $("#c30").css("background"))
-            $("#c38").text("Annexed territory of "+names[30])
-            }
-            $("#c"+Math.floor(Math.random()*64)).append("<img id='wanderer' src='wanderer.png'>")
-            console.info(leaderboard)
-        },10000)
-            const lobbyChannel = 'game_lobby';
-    const gameChannel = 'game_instance_'+year;
-            var ign = prompt("What would you like your IGN to be?")
-        var pubnub = new PubNub({
-            publishKey:"pub-c-327bd66c-dba9-4825-9d83-78888e2cebd1",
-            subscribeKey:"sub-c-3fef8705-c927-4394-83a3-481da882cd34",
-            uuid: ign,
-        })
-        
-         pubnub.publish({
-                   channel: gameChannel,
-            message: {
-                action: 'move',
-                player: ign,
-                position: { x: px, y: py}
-            }
-        })
-        
-        pubnub.addListener({
-        message: function(event) {
-            // Handle incoming game events (e.g., update player positions)
-            console.log('Received message:', event.message);
-        },
-        presence: function(event) {
-            // Handle player join/leave events
-            console.log('Presence event:', event);
+      var dirs = [-9, -8, -7, -1, 1, 7, 8, 9];
+      var fonts = ["Times New Roman", "sans-serif", "handwriting"];
+      var s = 0;
+      var fn = ["Classic", "Clean", "Handwriting"];
+      $("#cf").click(function () {
+        s = (s + 1) % 3;
+        $("td").css("font-family", fonts[s]);
+        $("#font").text(fn[s]);
+      });
+      function reqListener() {
+        console.log(this.responseText);
+      }
+
+      const req = new XMLHttpRequest();
+      req.addEventListener("load", reqListener);
+      req.open("PUT", "data.json");
+      req.setRequestHeader("Content-Type", "application/json");
+      var d = JSON.stringify(["apple"]);
+      req.send(d);
+      setInterval(() => {
+        c30g += levels[30];
+        $("#g").text(c30g);
+        if (Math.floor(Math.random() * 6) == 3) {
+          var t = Math.floor(Math.random() * 56) + 8;
+          var u = t + dirs[Math.floor(Math.random() * dirs.length)];
+          if (u >= 64 || u <= -1) {
+            u = t + dirs[Math.floor(Math.random() * dirs.length)];
+          }
+          if (states[t].alliances.length <= 3) {
+            $("#c" + t).append(" Allied with " + names[u]);
+            states[t].ally(states[u]);
+          }
         }
-    });
-        pubnub.subscribe({
-             channels: [gameChannel],
-             withPresence: true
-        })
-       
-        // Script tags should go at the end of the body:
-        </script>
-</body>
+        leaderboard = [];
+        for (let j of states) {
+          if (j.area >= 2) {
+            leaderboard.push(j);
+          }
+        }
+        leaderboard.sort((a, b) => b.area - a.area);
+        $("#lb").html("");
+        for (let k of leaderboard) {
+          $("#lb").append("<li>" + k.name + " with " + k.area + " area</li>");
+        }
+
+        console.log("t");
+        if (Math.floor(Math.random() * 6) == 2) {
+          var t = Math.floor(Math.random() * 64);
+          var u = Math.floor(Math.random() * 6);
+          var v = t + dirs[Math.floor(Math.random() * dirs.length)];
+          switch (u) {
+            case 0:
+              if (v >= 64 || v <= -1) {
+                v = t + dirs[Math.floor(Math.random() * dirs.length)];
+              }
+
+              if (!states[v].alliances.includes(t)) {
+                $("#c" + t).css("background", $("#c" + v).css("background"));
+                $("#c" + t).text(
+                  "Annexed territory of " +
+                    names[states[v].owner] +
+                    ", originally " +
+                    names[t],
+                );
+                states[states[v].owner].annex(states[t]);
+              }
+
+              break;
+            case 1:
+              $("#c" + t).append(" Enemy of " + names[v]);
+              break;
+          }
+        }
+        // console.log(leaderboard)
+      }, 100);
+      var x;
+      var y;
+      var wgold = 0;
+      setInterval(() => {
+        x = Math.floor(Math.random() * 900);
+        y = Math.floor(Math.random() * 900);
+        $("#wanderer").css("top", x + "px");
+        $("#wanderer").css("left", y + "px");
+        var ex = $("#c6").height() + $("#c14").height() + $("#c22").height();
+        var ey = 0;
+        for (let i = 25; i < 30; i++) {
+          ey += $("#c" + i).width();
+        }
+        if (x >= ex && y >= ey) {
+          wgold++;
+          $("#wgold").text(wgold);
+        }
+
+        year++;
+        $("#y").text(year);
+      }, 5000);
+      setTimeout(() => {
+        if (!ctha.includes(38)) {
+          $("#c38").css("background", $("#c30").css("background"));
+          $("#c38").text("Annexed territory of " + names[30]);
+        }
+        $("#c" + Math.floor(Math.random() * 64)).append(
+          "<img id='wanderer' src='wanderer.png'>",
+        );
+        console.info(leaderboard);
+      }, 10000);
+      const lobbyChannel = "game_lobby";
+      const gameChannel = "game_instance_" + year;
+      var ign = prompt("What would you like your IGN to be?");
+      var pubnub = new PubNub({
+        publishKey: "pub-c-327bd66c-dba9-4825-9d83-78888e2cebd1",
+        subscribeKey: "sub-c-3fef8705-c927-4394-83a3-481da882cd34",
+        uuid: ign,
+      });
+
+      pubnub.publish({
+        channel: gameChannel,
+        message: {
+          action: "move",
+          player: ign,
+          position: { x: px, y: py },
+        },
+      });
+
+      pubnub.addListener({
+        message: function (event) {
+          // Handle incoming game events (e.g., update player positions)
+          console.log("Received message:", event.message);
+        },
+        presence: function (event) {
+          // Handle player join/leave events
+          console.log("Presence event:", event);
+        },
+      });
+      pubnub.subscribe({
+        channels: [gameChannel],
+        withPresence: true,
+      });
+
+      // Script tags should go at the end of the body:
+    </script>
+  </body>
 </html>
