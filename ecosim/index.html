@@ -97,7 +97,7 @@
         n2count -= 0.5;
 
         for (i of sprites) {
-          if (i.addit.behavior) {
+          if (i.addit && i.addit.behavior) {
             switch (i.addit.behavior) {
               case "moveRight":
                 i.x++;
@@ -126,7 +126,11 @@
                     break;
                 }
                 break;
+                
             }
+          }
+          if(!i.addit){
+            console.error(i)
           }
           if (i.type == "plant" && o2count < 21) {
             o2count++;
