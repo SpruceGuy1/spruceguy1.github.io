@@ -1,4 +1,13 @@
 body{
     background-color: #200040;
     color:white;
+    
+}
+.game{
+    position:relative;
+}
+.sprite{
+    position:absolute;
+    height:16px;
+    width:16px;
 }
