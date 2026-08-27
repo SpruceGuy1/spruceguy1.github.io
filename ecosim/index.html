@@ -2,6 +2,13 @@
 <html>
   <head>
     <link rel="stylesheet" href="/ecosim/style.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/eruda"></script>
+
+    <script>
+      eruda.init();
+    </script>
+
   </head>
   <body>
     <h1>EcoSim: releasing September 2026</h1>
@@ -9,5 +16,53 @@
     <div class="game">
       <img class="sprite" src="/images/ecosim/human.png" />
     </div>
+    <script>
+      class Location {
+        constructor(x,y) {
+          this.x=x
+          this.y=y
+        }
+      }
+      function loc(t){
+        if(Array.isArray(t)){
+          return new Location(t[0],t[1])
+        }else{
+          return new Location(t.x,t.y)
+        }
+      }
+      var sprites = []
+      var index = 0
+      class Sprite {
+        constructor(type,x,y,addit) {
+          this.type=type
+          this.x=x
+          this.y=y
+          this.addit=addit
+          sprites[index] = this
+          this.id="sprite"+index
+          $("#game").append('<img class="sprite" href="/images/ecosim/'+type+'.png" id='+this.id+'/>')
+          index++
+          
+        }
+      }
+      function createSprite(location,type,addit){
+        new Sprite(type,location.x,location.y,addit)
+      }
+      setInterval(function(){
+        createSprite(loc(sprites[0]), "co2",{
+          behavior:"moveRight",
+        })
+        co2count ++
+        for(i of sprites){
+          if(i.addit.behavior){
+            switch(i.addit.behavior){
+              case "moveRight":
+                i.x++
+                $("#"+i.id).css("left", 16*i.x+"px")
+            }
+          }
+        }
+      },1000)
+    </script>
   </body>
 </html>
