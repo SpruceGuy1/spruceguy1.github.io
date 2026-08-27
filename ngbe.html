@@ -107,6 +107,9 @@
     <button id="gwfs">Generate world from seed</button>
     <a href="seeds.html">Cool world seeds</a>
     <div id="status">Loading modules...</div>
+    <div id="player">
+      Your player has <span id="health">20</span> health.
+    </div>
     <button id="deployRod">Cast fishing rod</button>
     <div id="fishing"></div>
     <button id="upgradeMaterial">
@@ -442,6 +445,7 @@
           restaurantluck: 1,
           fishingluck: 1,
           miningluck: 1,
+          health:20,
         },
         inventory: {
           wood: 0,
@@ -1132,6 +1136,11 @@ renderSurfaceCell("22", player.coords.x + 1, player.coords.y, player.coords.z + 
         $("#deployRod").hide();
       }
       render();
+      player.health -= Math.floor(Math.random()*4)/4
+      if(player.health==0){
+        alert("You died")
+        location.reload()
+      }
     }, 100 * player.stats.speed);
   </script>
 </html>
