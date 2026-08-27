@@ -63,13 +63,13 @@
       }
       function createSprite(location, type, addit) {
         new Sprite(type, location.x, location.y, addit);
-        console.log("Sprite created!")
+        console.log("Sprite created!");
       }
       function init() {
         createSprite(loc([0, 0]), "human", {});
-        console.log("Game initialized!")
+        console.log("Game initialized!");
       }
-      init()
+      init();
       setInterval(function () {
         createSprite(loc(sprites[0]), "co2", {
           behavior: "moveRight",
@@ -88,11 +88,10 @@
               case "moveRight":
                 i.x++;
                 $("#" + i.id).css("left", 16 * i.x + "px");
-                console.log("motion")
+                console.log("motion");
             }
           }
         }
-      
       }, 1000);
     </script>
   </body>
