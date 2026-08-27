@@ -1134,12 +1134,12 @@ renderSurfaceCell("22", player.coords.x + 1, player.coords.y, player.coords.z + 
         $("#deployRod").hide();
       }
       render();
-      player.stats.health -= Math.floor(Math.random()*4)/4
-      if(player.stats.health==0){
-        alert("You died")
-        location.reload()
+      player.stats.health -= Math.floor(Math.random() * 4) / 4;
+      if (player.stats.health == 0) {
+        alert("You died");
+        location.reload();
       }
-      $("#health").text(player.stats.health)
+      $("#health").text(player.stats.health);
     }, 100 * player.stats.speed);
   </script>
 </html>
