@@ -96,7 +96,10 @@
         o2count -= 0.5;
         n2count -= 0.5;
 
-        for (i of sprites) {
+        var fn = function(){for (i of sprites) {
+          if(!i){
+            return
+          }
           if (i.addit && i.addit.behavior) {
             switch (i.addit.behavior) {
               case "moveRight":
@@ -142,6 +145,8 @@
             co2[0].remove();
           }
         }
+      }
+      fn()
         $("#o2count").text(o2count);
         $("#co2count").text(co2count);
         $("#n2count").text(n2count);
