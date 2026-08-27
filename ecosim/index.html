@@ -35,6 +35,8 @@
         }
       }
       var sprites = [];
+      var o2 = []
+      var co2 = []
       var index = 0;
       var co2count = 0;
       var o2count = 21;
@@ -47,6 +49,7 @@
           this.addit = addit;
           sprites[index] = this;
           this.id = "sprite" + index;
+          this.num = index
           $(".game").append(
             '<img class="sprite" src="/images/ecosim/' +
               type +
@@ -59,38 +62,87 @@
 
           index++;
         }
+        remove(){
+          sprites[this.num] = undefined
+          $("#"+this.id).remove()
+        }
       }
       var throwaway;
       function createSprite(location, type, addit) {
-        throwaway = new Sprite(type, location.x, location.y, addit);
+        return new Sprite(type, location.x, location.y, addit);
         console.log("Sprite created!");
       }
       function init() {
-        createSprite(loc([0, 0]), "human", {});
+        createSprite(loc([0, 0]), "human", {
+          behavior:"moveRandom",
+        });
+              for(let i = 0; i<Math.floor(Math.random()*164); i++){
+         createSprite(loc([Math.floor(Math.random()*30), Math.random()*30]), "plant", "")
+      }
+
         console.log("Game initialized!");
       }
       init();
       setInterval(function () {
-        createSprite(loc(sprites[0]), "co2", {
+        co2.push(createSprite(loc(sprites[0]), "co2", {
           behavior: "moveRight",
-        });
+        }));
+
         co2count++;
         o2count -= 0.5;
         n2count -= 0.5;
-        $("#o2count").text(o2count);
-        $("#co2count").text(co2count);
-        $("#n2count").text(n2count);
+        
 
         for (i of sprites) {
           if (i.addit.behavior) {
+
             switch (i.addit.behavior) {
               case "moveRight":
                 i.x++;
                 $("#" + i.id).css("left", 16 * i.x + "px");
                 console.log("motion");
+                break
+              case "moveRandom":
+                switch(Math.floor(Math.random()*4)){
+                  case 0:
+                                    i.x++;
+                $("#" + i.id).css("left", 16 * i.x + "px");
+                console.log("motion");
+                break
+                  case 1:
+                i.x--;
+                $("#" + i.id).css("left", 16 * i.x + "px");
+                console.log("motion");
+                
+                                i.y++;
+                $("#" + i.id).css("top", 16 * i.y + "px");
+                console.log("motion");
+                break
+                i.y--;
+                $("#" + i.id).css("left", 16 * i.y + "px");
+                console.log("motion");
+                break
+
+
+
+                }
+                break
             }
           }
+          if (i.type=="plant" && o2count <21){
+            o2count ++
+                    o2.push(createSprite(loc(i), "oxygen", {
+                      behavior: "moveRandom",
+                    }))
+                    co2[0].remove()
+
+          }
+
         }
+                $("#o2count").text(o2count);
+        $("#co2count").text(co2count);
+        $("#n2count").text(n2count);
+
       }, 1000);
     </script>
   </body>
