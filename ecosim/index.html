@@ -60,11 +60,10 @@
           index++;
         }
       }
-      var throwaway
+      var throwaway;
       function createSprite(location, type, addit) {
         throwaway = new Sprite(type, location.x, location.y, addit);
         console.log("Sprite created!");
-        
       }
       function init() {
         createSprite(loc([0, 0]), "human", {});
