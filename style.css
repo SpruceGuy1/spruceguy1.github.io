@@ -1,47 +1,74 @@
-table, tr, td{
-    border:1px solid black;
+table,
+tr,
+td {
+  border: 1px solid black;
 }
-td{
-    height:50px;
-    width:50px;
-    color:#8040c0;
-    font-weight:bold;
-    font-family: sans-serif;
-    font-size:8pt;
+.game-grid {
+  border-collapse: collapse;
+  border-spacing: 0;
+  background: transparent;
 }
-#wanderer{
-    height:30px;
-    width:30px;
-    position:absolute;
+
+.game-grid tr,
+.game-grid td {
+  box-sizing: border-box;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+}
+
+.game-grid td {
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
+  background-size:
+    16px 16px,
+    16px 16px;
+}
+td {
+  height: 50px;
+  width: 50px;
+  color: #8040c0;
+  font-weight: bold;
+  font-family: sans-serif;
+  font-size: 8pt;
+}
+#wanderer {
+  height: 30px;
+  width: 30px;
+  position: absolute;
 }
 @font-face {
-    font-family: 'handwriting'; /*a name to be used later*/
-    src: url('DillyDally.ttf'); /*URL to font*/
+  font-family: handwriting; /* a name to be used later */
+  src: url("DillyDally.ttf"); /* URL to font */
 }
-#pizza{
-    height:49px;
-    width:49px;
+#pizza {
+  height: 49px;
+  width: 49px;
 }
-#player, .zombie, .player-size-icon{
-    height:10px;
-    width:10px;
+#player,
+.zombie,
+.player-size-icon {
+  height: 10px;
+  width: 10px;
 }
-.tree{
-    height:16px;
-    width:16px;
+.tree {
+  height: 16px;
+  width: 16px;
 }
-.\31 x1-icon{
-    height:16px;
-    width:16px;
+.\31 x1-icon {
+  height: 16px;
+  width: 16px;
 }
-body{
-    background:white;
-    color:black;
+body {
+  background: white;
+  color: black;
 }
-.style2{
-    border:2px solid black;
-    border-radius:15px;
-    font-family: "Roboto Mono", sans-serif, monospace;
+.style2 {
+  border: 2px solid black;
+  border-radius: 15px;
+  font-family: "Roboto Mono", sans-serif, monospace;
 }
 /*@keyframes bounce{
     0%{
@@ -51,12 +78,35 @@ body{
         transform: translate(0px, -20px);
     }
 }*/
-#package{
-    background-color:#004000;
-    color:#8080ff;
-   /*animation: bounce 2s infinite;*/
+#package {
+  background-color: #004000;
+  color: #8080ff;
+  /* animation: bounce 2s infinite; */
 }
-.\31 6px td{
-    height:16px;
-    width:16px;
+.\31 6px td {
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
+  background-size:
+    16px 16px,
+    16px 16px;
+}
+button {
+  background-color: #0000ff;
+  border-radius: 0;
+  color: #ffffff;
+}
+#fishing {
+  position: relative;
+  width: 336px;
+  height: 16px;
+  background-color: #0000ff;
+  overflow: hidden;
+}
+
+#fish {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 16px;
+  height: 16px;
 }

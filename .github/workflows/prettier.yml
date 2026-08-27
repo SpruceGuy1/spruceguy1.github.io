@@ -1,0 +1,18 @@
+name: Format Code
+on:
+  push
+jobs:
+  prettier:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+      - name: Run Prettier Action
+        uses: creyD/prettier_action@v4.6
+        with:
+          prettier_options: --write **/*.{js,jsx,ts,tsx,md,json,html,css}
+          commit_message: "chore: format code with Prettier"
