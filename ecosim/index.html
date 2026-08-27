@@ -96,56 +96,57 @@
         o2count -= 0.5;
         n2count -= 0.5;
 
-        var fn = function(){for (i of sprites) {
-          if(!i){
-            return
-          }
-          if (i.addit && i.addit.behavior) {
-            switch (i.addit.behavior) {
-              case "moveRight":
-                i.x++;
-                $("#" + i.id).css("left", 16 * i.x + "px");
-                console.log("motion");
-                break;
-              case "moveRandom":
-                switch (Math.floor(Math.random() * 4)) {
-                  case 0:
-                    i.x++;
-                    $("#" + i.id).css("left", 16 * i.x + "px");
-                    console.log("motion");
-                    break;
-                  case 1:
-                    i.x--;
-                    $("#" + i.id).css("left", 16 * i.x + "px");
-                    console.log("motion");
+        var fn = function () {
+          for (i of sprites) {
+            if (!i) {
+              return;
+            }
+            if (i.addit && i.addit.behavior) {
+              switch (i.addit.behavior) {
+                case "moveRight":
+                  i.x++;
+                  $("#" + i.id).css("left", 16 * i.x + "px");
+                  console.log("motion");
+                  break;
+                case "moveRandom":
+                  switch (Math.floor(Math.random() * 4)) {
+                    case 0:
+                      i.x++;
+                      $("#" + i.id).css("left", 16 * i.x + "px");
+                      console.log("motion");
+                      break;
+                    case 1:
+                      i.x--;
+                      $("#" + i.id).css("left", 16 * i.x + "px");
+                      console.log("motion");
 
-                    i.y++;
-                    $("#" + i.id).css("top", 16 * i.y + "px");
-                    console.log("motion");
-                    break;
-                    i.y--;
-                    $("#" + i.id).css("left", 16 * i.y + "px");
-                    console.log("motion");
-                    break;
-                }
-                break;
+                      i.y++;
+                      $("#" + i.id).css("top", 16 * i.y + "px");
+                      console.log("motion");
+                      break;
+                      i.y--;
+                      $("#" + i.id).css("left", 16 * i.y + "px");
+                      console.log("motion");
+                      break;
+                  }
+                  break;
+              }
+            }
+            if (!i.addit) {
+              console.error(i);
+            }
+            if (i.type == "plant" && o2count < 21) {
+              o2count++;
+              o2.push(
+                createSprite(loc(i), "oxygen", {
+                  behavior: "moveRandom",
+                }),
+              );
+              co2[0].remove();
             }
           }
-          if (!i.addit) {
-            console.error(i);
-          }
-          if (i.type == "plant" && o2count < 21) {
-            o2count++;
-            o2.push(
-              createSprite(loc(i), "oxygen", {
-                behavior: "moveRandom",
-              }),
-            );
-            co2[0].remove();
-          }
-        }
-      }
-      fn()
+        };
+        fn();
         $("#o2count").text(o2count);
         $("#co2count").text(co2count);
         $("#n2count").text(n2count);
