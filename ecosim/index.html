@@ -47,7 +47,7 @@
           this.addit = addit;
           sprites[index] = this;
           this.id = "sprite" + index;
-          $("#game").append(
+          $(".game").append(
             '<img class="sprite" href="/images/ecosim/' +
               type +
               ".png\" id='" +
@@ -60,9 +60,11 @@
           index++;
         }
       }
+      var throwaway
       function createSprite(location, type, addit) {
-        new Sprite(type, location.x, location.y, addit);
+        throwaway = new Sprite(type, location.x, location.y, addit);
         console.log("Sprite created!");
+        
       }
       function init() {
         createSprite(loc([0, 0]), "human", {});
