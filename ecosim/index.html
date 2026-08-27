@@ -17,9 +17,7 @@
     <span id="n2count">78</span>% &bull; CO2: <span id="co2count">0</span>%
     &bull; Other: <span id="other">1</span>%
 
-    <div class="game">
-      
-    </div>
+    <div class="game"></div>
     <script>
       class Location {
         constructor(x, y) {
@@ -76,11 +74,13 @@
         createSprite(loc([0, 0]), "human", {
           behavior: "moveRandom",
         });
-              for(let i = 0; i<Math.floor(Math.random()*164); i++){
-         createSprite(loc([Math.floor(Math.random()*30), Math.random()*30]), "plant", {
-
-         })
-      }
+        for (let i = 0; i < Math.floor(Math.random() * 164); i++) {
+          createSprite(
+            loc([Math.floor(Math.random() * 30), Math.random() * 30]),
+            "plant",
+            {},
+          );
+        }
 
         console.log("Game initialized!");
       }
