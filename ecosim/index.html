@@ -18,7 +18,7 @@
     &bull; Other: <span id="other">1</span>%
 
     <div class="game">
-      <img class="sprite" src="/images/ecosim/human.png" />
+      
     </div>
     <script>
       class Location {
@@ -77,7 +77,9 @@
           behavior:"moveRandom",
         });
               for(let i = 0; i<Math.floor(Math.random()*164); i++){
-         createSprite(loc([Math.floor(Math.random()*30), Math.random()*30]), "plant", "")
+         createSprite(loc([Math.floor(Math.random()*30), Math.random()*30]), "plant", {
+
+         })
       }
 
         console.log("Game initialized!");
