@@ -42,12 +42,12 @@
           $("#game").append(
             '<img class="sprite" href="/images/ecosim/' +
               type +
-              '.png" id=\'' +
+              ".png\" id='" +
               this.id +
               "'/>",
           );
-          $("#"+this.id).css("top", 16*x+"px")
-          $("#"+this.id).css("left", 16*y+"px")
+          $("#" + this.id).css("top", 16 * x + "px");
+          $("#" + this.id).css("left", 16 * y + "px");
 
           index++;
         }
@@ -55,8 +55,8 @@
       function createSprite(location, type, addit) {
         new Sprite(type, location.x, location.y, addit);
       }
-      function init(){
-        createSprite(loc([0,0]), "human", {})
+      function init() {
+        createSprite(loc([0, 0]), "human", {});
       }
       setInterval(function () {
         createSprite(loc(sprites[0]), "co2", {
