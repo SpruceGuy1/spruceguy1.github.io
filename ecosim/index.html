@@ -34,6 +34,8 @@
       }
       var sprites = [];
       var o2 = [];
+      var o2index = 0;
+      var co2index = 0;
       var co2 = [];
       var index = 0;
       var co2count = 0;
@@ -86,15 +88,39 @@
       }
       init();
       setInterval(function () {
+// ...existing code...
         co2.push(
           createSprite(loc(sprites[0]), "co2", {
             behavior: "moveRight",
           }),
         );
-        o2[0].remove();
-        o2.shift();
 
-        co2count++;
+        if (o2.length > 0) {
+          o2[o2index].remove();
+          o2index = (o2index + 1) % o2.length;
+        }
+// ...existing code...
+            if (i.type == "plant") {
+              if (o2count < 21) {
+                o2count++;
+                o2.push(
+                  createSprite(loc(i), "oxygen", {
+                    behavior: "moveRandom",
+                  }),
+                );
+              }
+
+              if (co2.length > 0) {
+                co2[co2index].remove();
+                co2index = (co2index + 1) % co2.length;
+                co2count--;
+              }
+
+              if (n2count <= 78) {
+                n2count++;
+              }
+            }
+// ...existing code...        co2count++;
         o2count -= 0.5;
         n2count -= 0.5;
 
