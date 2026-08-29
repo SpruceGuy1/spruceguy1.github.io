@@ -118,12 +118,35 @@
       setInterval(function () {
         const maxCo2Sprites = 6;
 
-        co2index = removeFromList(co2, co2index);
-        co2count = Math.max(0, co2count - 1);
+        if (co2.length >= maxCo2Sprites) {
+          co2index = removeFromList(co2, co2index);
+          co2count = Math.max(0, co2count - 1);
+        }
+
+        const human = getHumanLocation();
+        const offset = co2.length % 4;
+        const co2Location = new Location(
+          human.x + (offset % 2),
+          human.y + Math.floor(offset / 2),
+        );
 
         co2.push(
-          createSprite(getHumanLocation(), "co2", {
-            behavior: "moveRight",
+          createSprite(co2Location, "co2", {
+            behavior: "moveToPlant",
+            plantTrigger: function () {
+              const idx = co2.indexOf(this);
+              if (idx >= 0) {
+                co2.splice(idx, 1);
+              }
+              co2count = Math.max(0, co2count - 1);
+              this.remove();
+              o2count++;
+              o2.push(
+                createSprite(loc(this), "oxygen", {
+                  behavior: "moveRandom",
+                }),
+              );
+            },
           }),
         );
         co2count++;
@@ -173,26 +196,55 @@
                       break;
                   }
                   break;
+                  case "moveToPlant": {
+                    let nearestPlant = null;
+                    let nearestDistance = Infinity;
+
+                    for (const sprite of sprites) {
+                      if (!sprite || sprite.type !== "plant") {
+                        continue;
+                      }
+                      const distance = Math.abs(i.x - sprite.x) + Math.abs(i.y - sprite.y);
+                      if (distance < nearestDistance) {
+                        nearestDistance = distance;
+                        nearestPlant = sprite;
+                      }
+                    }
+
+                    if (nearestPlant) {
+                      if (i.x < nearestPlant.x) {
+                        i.x++;
+                      } else if (i.x > nearestPlant.x) {
+                        i.x--;
+                      }
+                      if (i.y < nearestPlant.y) {
+                        i.y++;
+                      } else if (i.y > nearestPlant.y) {
+                        i.y--;
+                      }
+                      $("#" + i.id).css("left", 16 * i.x + "px");
+                      $("#" + i.id).css("top", 16 * i.y + "px");
+                    }
+
+                    if (
+                      i.addit.plantTrigger &&
+                      nearestPlant &&
+                      i.x === nearestPlant.x &&
+                      i.y === nearestPlant.y
+                    ) {
+                      i.addit.plantTrigger.call(i);
+                    }
+                    break;
+                  }
               }
             }
             if (!i.addit) {
               console.error(i);
             }
-            if (i.type == "plant") {
-              if (o2count < 21) {
-                o2count++;
-                o2.push(
-                  createSprite(loc(i), "oxygen", {
-                    behavior: "moveRandom",
-                  }),
-                );
-              }
+                
+              
 
-              co2count--;
-              if (n2count <= 78) {
-                n2count++;
-              }
-            }
+            
           }
         };
         fn();
