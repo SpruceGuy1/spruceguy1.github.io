@@ -46,6 +46,18 @@
       var co2count = 0;
       var o2count = 21;
       var n2count = 79;
+
+      function removeFromList(list, idx) {
+        if (!list.length) {
+          return 0;
+        }
+        const removed = list.splice(idx, 1)[0];
+        if (removed) {
+          removed.remove();
+        }
+        return list.length ? idx % list.length : 0;
+      }
+
       class Sprite {
         constructor(type, x, y, addit) {
           this.type = type;
@@ -68,14 +80,18 @@
           index++;
         }
         remove() {
-          sprites[this.num] = undefined;
-          $("#" + this.id).remove();
+          if (this.num !== undefined) {
+            sprites[this.num] = undefined;
+          }
+          const el = document.getElementById(this.id);
+          if (el) {
+            el.remove();
+          }
         }
       }
       var throwaway;
       function createSprite(location, type, addit) {
         return new Sprite(type, location.x, location.y, addit);
-        console.log("Sprite created!");
       }
       function init() {
         createSprite(loc([0, 0]), "human", {
@@ -88,69 +104,64 @@
             {},
           );
         }
-
-        console.log("Game initialized!");
       }
       init();
       setInterval(function () {
-        // ...existing code...
+        const maxCo2Sprites = 6;
+        
+          co2index = removeFromList(co2, co2index);
+          co2count--;
+        
+
         co2.push(
           createSprite(loc(sprites[0]), "co2", {
             behavior: "moveRight",
           }),
         );
-        if (o2.length > 0) {
-          o2[o2index].remove();
-          o2index = (o2index + 1) % o2.length;
-          o2count--;
-        }
-        // ...existing code...
+        co2count++;
 
-        if (co2.length > 0) {
-          co2[co2index].remove();
-          co2index = (co2index + 1) % co2.length;
-          co2count--;
+        if (o2.length > 0) {
+          o2index = removeFromList(o2, o2index);
+          o2count--;
         }
 
         if (n2count <= 78) {
           n2count++;
         }
 
-        // ...existing code...        co2count++;
         o2count -= 0.5;
         n2count -= 0.5;
 
         var fn = function () {
           for (let i of sprites) {
             if (!i) {
-              return;
+              continue;
             }
             if (i.addit && i.addit.behavior) {
               switch (i.addit.behavior) {
                 case "moveRight":
                   i.x++;
                   $("#" + i.id).css("left", 16 * i.x + "px");
-                  console.log("motion");
                   break;
                 case "moveRandom":
                   switch (Math.floor(Math.random() * 4)) {
                     case 0:
                       i.x++;
                       $("#" + i.id).css("left", 16 * i.x + "px");
-                      console.log("motion");
                       break;
                     case 1:
                       i.x--;
                       $("#" + i.id).css("left", 16 * i.x + "px");
-                      console.log("motion");
-
                       i.y++;
                       $("#" + i.id).css("top", 16 * i.y + "px");
-                      console.log("motion");
                       break;
+                    case 2:
+                      i.y++;
+                      $("#" + i.id).css("top", 16 * i.y + "px");
+                      break;
+                    case 3:
                       i.y--;
-                      $("#" + i.id).css("left", 16 * i.y + "px");
-                      console.log("motion");
+                      $("#" + i.id).css("top", 16 * i.y + "px");
                       break;
                   }
                   break;
