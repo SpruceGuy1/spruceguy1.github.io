@@ -94,7 +94,9 @@
         return new Sprite(type, location.x, location.y, addit);
       }
       function getHumanLocation() {
-        const human = sprites.find((sprite) => sprite && sprite.type === "human");
+        const human = sprites.find(
+          (sprite) => sprite && sprite.type === "human",
+        );
         if (human) {
           return loc(human);
         }
@@ -116,10 +118,8 @@
       setInterval(function () {
         const maxCo2Sprites = 6;
 
-        
-          co2index = removeFromList(co2, co2index);
-          co2count = Math.max(0, co2count - 1);
-        
+        co2index = removeFromList(co2, co2index);
+        co2count = Math.max(0, co2count - 1);
 
         co2.push(
           createSprite(getHumanLocation(), "co2", {
