@@ -196,55 +196,52 @@
                       break;
                   }
                   break;
-                  case "moveToPlant": {
-                    let nearestPlant = null;
-                    let nearestDistance = Infinity;
+                case "moveToPlant": {
+                  let nearestPlant = null;
+                  let nearestDistance = Infinity;
 
-                    for (const sprite of sprites) {
-                      if (!sprite || sprite.type !== "plant") {
-                        continue;
-                      }
-                      const distance = Math.abs(i.x - sprite.x) + Math.abs(i.y - sprite.y);
-                      if (distance < nearestDistance) {
-                        nearestDistance = distance;
-                        nearestPlant = sprite;
-                      }
+                  for (const sprite of sprites) {
+                    if (!sprite || sprite.type !== "plant") {
+                      continue;
                     }
-
-                    if (nearestPlant) {
-                      if (i.x < nearestPlant.x) {
-                        i.x++;
-                      } else if (i.x > nearestPlant.x) {
-                        i.x--;
-                      }
-                      if (i.y < nearestPlant.y) {
-                        i.y++;
-                      } else if (i.y > nearestPlant.y) {
-                        i.y--;
-                      }
-                      $("#" + i.id).css("left", 16 * i.x + "px");
-                      $("#" + i.id).css("top", 16 * i.y + "px");
+                    const distance =
+                      Math.abs(i.x - sprite.x) + Math.abs(i.y - sprite.y);
+                    if (distance < nearestDistance) {
+                      nearestDistance = distance;
+                      nearestPlant = sprite;
                     }
-
-                    if (
-                      i.addit.plantTrigger &&
-                      nearestPlant &&
-                      i.x === nearestPlant.x &&
-                      i.y === nearestPlant.y
-                    ) {
-                      i.addit.plantTrigger.call(i);
-                    }
-                    break;
                   }
+
+                  if (nearestPlant) {
+                    if (i.x < nearestPlant.x) {
+                      i.x++;
+                    } else if (i.x > nearestPlant.x) {
+                      i.x--;
+                    }
+                    if (i.y < nearestPlant.y) {
+                      i.y++;
+                    } else if (i.y > nearestPlant.y) {
+                      i.y--;
+                    }
+                    $("#" + i.id).css("left", 16 * i.x + "px");
+                    $("#" + i.id).css("top", 16 * i.y + "px");
+                  }
+
+                  if (
+                    i.addit.plantTrigger &&
+                    nearestPlant &&
+                    i.x === nearestPlant.x &&
+                    i.y === nearestPlant.y
+                  ) {
+                    i.addit.plantTrigger.call(i);
+                  }
+                  break;
+                }
               }
             }
             if (!i.addit) {
               console.error(i);
             }
-                
-              
-
-            
           }
         };
         fn();
