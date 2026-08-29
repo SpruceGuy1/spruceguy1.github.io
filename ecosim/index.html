@@ -93,6 +93,13 @@
       function createSprite(location, type, addit) {
         return new Sprite(type, location.x, location.y, addit);
       }
+      function getHumanLocation() {
+        const human = sprites.find((sprite) => sprite && sprite.type === "human");
+        if (human) {
+          return loc(human);
+        }
+        return new Location(0, 0);
+      }
       function init() {
         createSprite(loc([0, 0]), "human", {
           behavior: "moveRandom",
@@ -109,11 +116,13 @@
       setInterval(function () {
         const maxCo2Sprites = 6;
 
-        co2index = removeFromList(co2, co2index);
-        co2count--;
+        
+          co2index = removeFromList(co2, co2index);
+          co2count = Math.max(0, co2count - 1);
+        
 
         co2.push(
-          createSprite(loc(sprites[0]), "co2", {
+          createSprite(getHumanLocation(), "co2", {
             behavior: "moveRight",
           }),
         );
