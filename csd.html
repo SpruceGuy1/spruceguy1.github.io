@@ -244,11 +244,12 @@
       var names = [];
       for (i = 0; i <= 63; i++) {
         j = Math.floor(i / 8);
-        names[i] = plosives.concat(others).concat(addits)[
-          Math.floor(
-            Math.random() * plosives.concat(others).concat(addits).length,
-          )
-        ] +
+        names[i] =
+          plosives.concat(others).concat(addits)[
+            Math.floor(
+              Math.random() * plosives.concat(others).concat(addits).length,
+            )
+          ] +
           vow[Math.floor(Math.random() * vow.length)] +
           plosives.concat(others).concat(addits)[
             Math.floor(
@@ -540,8 +541,7 @@
           if (adjacentLand.length === 0) {
             return;
           }
-          var v =
-            adjacentLand[Math.floor(Math.random() * adjacentLand.length)];
+          var v = adjacentLand[Math.floor(Math.random() * adjacentLand.length)];
           switch (u) {
             case 0:
               if (states[v] && !states[v].alliances.includes(t)) {
