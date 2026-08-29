@@ -82,6 +82,11 @@
           }
         }
       }
+      function randomColor() {
+        return Math.floor(Math.random() * 0x1000000)
+          .toString(16)
+          .padStart(6, "0");
+      }
       var colors = [
         "000000",
         "000080",
@@ -109,42 +114,14 @@
         "ffff00",
         "ffff80",
         "ffffff",
-        Math.floor(Math.random() * 16777217).toString(16),
-        Math.floor(Math.random() * 16777217).toString(16),
-        Math.floor(Math.random() * 16777217).toString(16),
-        Math.floor(Math.random() * 16777217).toString(16),
-        Math.floor(Math.random() * 16777217).toString(16),
-        Math.floor(Math.random() * 16777217).toString(16),
-        Math.floor(Math.random() * 16777217).toString(16),
-        Math.floor(Math.random() * 16777217).toString(16),
-        Math.floor(Math.random() * 16777217).toString(16),
-        Math.floor(Math.random() * 16777217).toString(16),
-        Math.floor(Math.random() * 16777217).toString(16),
-        Math.floor(Math.random() * 16777217).toString(16),
-        Math.floor(Math.random() * 16777217).toString(16),
-        Math.floor(Math.random() * 16777217).toString(16),
-        Math.floor(Math.random() * 16777217).toString(16),
-        Math.floor(Math.random() * 16777217).toString(16),
-        Math.floor(Math.random() * 16777217).toString(16),
-        Math.floor(Math.random() * 16777217).toString(16),
-        Math.floor(Math.random() * 16777217).toString(16),
-        Math.floor(Math.random() * 16777217).toString(16),
-        Math.floor(Math.random() * 16777217).toString(16),
-        Math.floor(Math.random() * 16777217).toString(16),
-        Math.floor(Math.random() * 16777217).toString(16),
-        Math.floor(Math.random() * 16777217).toString(16),
-        Math.floor(Math.random() * 16777217).toString(16),
-        Math.floor(Math.random() * 16777217).toString(16),
-        Math.floor(Math.random() * 16777217).toString(16),
-        Math.floor(Math.random() * 16777217).toString(16),
-        Math.floor(Math.random() * 16777217).toString(16),
+        ...Array.from({ length: 29 }, randomColor),
         "804000",
         "408000",
         "004080",
         "008040",
         "800040",
         "400080",
-        Math.floor(Math.random() * 16777217).toString(16),
+        randomColor(),
         "ffc080",
         "4040ff",
       ];
@@ -271,8 +248,8 @@
           Math.floor(
             Math.random() * plosives.concat(others).concat(addits).length,
           )
-        ];
-        vow[Math.floor(Math.random() * vow.length)] +
+        ] +
+          vow[Math.floor(Math.random() * vow.length)] +
           plosives.concat(others).concat(addits)[
             Math.floor(
               Math.random() * plosives.concat(others).concat(addits).length,
@@ -300,6 +277,7 @@
       $("#c30").append("<br>Gold:<span id='g'>0</span>");
       var ctha = [];
       var c30g = 0;
+      var wgold = 0;
       var leaderboard = [];
       console.log(states);
       var levels = [
@@ -308,7 +286,32 @@
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
       ];
 
-      var dirs = [-9, -8, -7, -1, 1, 7, 8, 9];
+      function getNeighboringCellIndices(index) {
+        var row = Math.floor(index / 8);
+        var column = index % 8;
+        var neighbors = [];
+
+        for (var rowOffset = -1; rowOffset <= 1; rowOffset++) {
+          for (var columnOffset = -1; columnOffset <= 1; columnOffset++) {
+            if (rowOffset === 0 && columnOffset === 0) {
+              continue;
+            }
+
+            var candidateRow = row + rowOffset;
+            var candidateColumn = column + columnOffset;
+            if (
+              candidateRow >= 0 &&
+              candidateRow < 8 &&
+              candidateColumn >= 0 &&
+              candidateColumn < 8
+            ) {
+              neighbors.push(candidateRow * 8 + candidateColumn);
+            }
+          }
+        }
+
+        return neighbors;
+      }
       var fonts = ["Times New Roman", "sans-serif", "handwriting"];
       var s = 0;
       var fn = ["Classic", "Clean", "Handwriting"];
@@ -317,26 +320,192 @@
         $("td").css("font-family", fonts[s]);
         $("#font").text(fn[s]);
       });
-      function reqListener() {
-        console.log(this.responseText);
+      const GAME_STATE_VERSION = 1;
+      const GAME_STATE_ENDPOINT = "/api/game-state";
+      const GAME_STATE_STORAGE_KEY = "countrysim.gameState";
+
+      function isValidLand(savedLand) {
+        return (
+          savedLand !== null &&
+          typeof savedLand === "object" &&
+          typeof savedLand.name === "string" &&
+          savedLand.name.length <= 100 &&
+          !/[<>]/.test(savedLand.name) &&
+          Number.isInteger(savedLand.num) &&
+          savedLand.num >= 0 &&
+          savedLand.num < 64
+        );
       }
 
-      const req = new XMLHttpRequest();
-      req.addEventListener("load", reqListener);
-      req.open("PUT", "data.json");
-      req.setRequestHeader("Content-Type", "application/json");
-      var d = JSON.stringify(["apple"]);
-      req.send(d);
+      function applyGameState(payload) {
+        if (
+          payload === null ||
+          typeof payload !== "object" ||
+          payload.version !== GAME_STATE_VERSION ||
+          !Array.isArray(payload.states) ||
+          payload.states.length !== 64 ||
+          !Array.isArray(payload.land) ||
+          payload.land.length !== 64 ||
+          !Array.isArray(payload.alliances) ||
+          payload.alliances.length !== 64 ||
+          !Number.isInteger(payload.year) ||
+          payload.year < 1 ||
+          typeof payload.gold !== "number" ||
+          !Number.isFinite(payload.gold) ||
+          payload.gold < 0 ||
+          !payload.land.every(isValidLand)
+        ) {
+          return false;
+        }
+
+        var restoredStates = [];
+        for (var stateIndex = 0; stateIndex < 64; stateIndex++) {
+          var savedState = payload.states[stateIndex];
+          var savedAlliances = payload.alliances[stateIndex];
+          if (
+            !Array.isArray(savedAlliances) ||
+            savedAlliances.length > 64 ||
+            !savedAlliances.every(
+              (ally) => Number.isInteger(ally) && ally >= 0 && ally < 64,
+            )
+          ) {
+            return false;
+          }
+
+          if (savedState === null) {
+            restoredStates.push(undefined);
+            continue;
+          }
+          if (
+            typeof savedState !== "object" ||
+            !/^[0-9a-f]{6}$/i.test(savedState.color) ||
+            typeof savedState.name !== "string" ||
+            savedState.name.length > 100 ||
+            /[<>]/.test(savedState.name) ||
+            !Number.isInteger(savedState.loc) ||
+            savedState.loc !== stateIndex ||
+            !Number.isInteger(savedState.owner) ||
+            savedState.owner < 0 ||
+            savedState.owner >= 64 ||
+            !Number.isInteger(savedState.area) ||
+            savedState.area < 1 ||
+            savedState.area > 64 ||
+            !Array.isArray(savedState.land) ||
+            savedState.land.length === 0 ||
+            savedState.land.length > 64 ||
+            !savedState.land.every(isValidLand)
+          ) {
+            return false;
+          }
+
+          var restoredState = new State(
+            savedState.color,
+            savedState.name,
+            savedState.loc,
+          );
+          restoredState.owner = savedState.owner;
+          restoredState.area = savedState.area;
+          restoredState.land = savedState.land.map(
+            (savedLand) => new Land(savedLand.name, savedLand.num),
+          );
+          restoredState.alliances = savedAlliances.slice();
+          restoredStates.push(restoredState);
+        }
+
+        states = restoredStates;
+        land = payload.land.map(
+          (savedLand) => new Land(savedLand.name, savedLand.num),
+        );
+        names = land.map((savedLand) => savedLand.name);
+        year = payload.year;
+        c30g = payload.gold;
+        $("#y").text(year);
+        $("#g").text(c30g);
+        for (var restoredState of states) {
+          if (restoredState) {
+            for (var territory of restoredState.land) {
+              $("#c" + territory.num).css(
+                "background",
+                "#" + restoredState.color,
+              );
+            }
+          }
+        }
+        return true;
+      }
+
+      function createGameStatePayload() {
+        return {
+          version: GAME_STATE_VERSION,
+          states: states,
+          land: land,
+          year: year,
+          gold: c30g,
+          alliances: states.map((state) =>
+            state ? state.alliances.slice() : [],
+          ),
+        };
+      }
+
+      async function loadGameState() {
+        try {
+          var localPayload = localStorage.getItem(GAME_STATE_STORAGE_KEY);
+          if (localPayload && applyGameState(JSON.parse(localPayload))) {
+            return;
+          }
+        } catch (error) {
+          console.warn("Unable to load local game state:", error);
+        }
+
+        try {
+          var response = await fetch(GAME_STATE_ENDPOINT);
+          if (response.ok) {
+            applyGameState(await response.json());
+          }
+        } catch (error) {
+          console.warn("Unable to load remote game state:", error);
+        }
+      }
+
+      async function saveGameState() {
+        var payload = createGameStatePayload();
+        var serializedPayload = JSON.stringify(payload);
+        try {
+          localStorage.setItem(GAME_STATE_STORAGE_KEY, serializedPayload);
+        } catch (error) {
+          console.warn("Unable to save local game state:", error);
+        }
+
+        try {
+          var response = await fetch(GAME_STATE_ENDPOINT, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: serializedPayload,
+            keepalive: true,
+          });
+          if (!response.ok) {
+            console.warn("Unable to save remote game state:", response.status);
+          }
+        } catch (error) {
+          console.warn("Unable to save remote game state:", error);
+        }
+      }
+
+      void loadGameState();
+      window.addEventListener("pagehide", () => {
+        void saveGameState();
+      });
       setInterval(() => {
         c30g += levels[30];
         $("#g").text(c30g);
         if (Math.floor(Math.random() * 6) == 3) {
           var t = Math.floor(Math.random() * 56) + 8;
-          var u = t + dirs[Math.floor(Math.random() * dirs.length)];
-          if (u >= 64 || u <= -1) {
-            u = t + dirs[Math.floor(Math.random() * dirs.length)];
-          }
-          if (states[t].alliances.length <= 3) {
+          var adjacentCells = getNeighboringCellIndices(t).filter(
+            (index) => states[index],
+          );
+          var u =
+            adjacentCells[Math.floor(Math.random() * adjacentCells.length)];
+          if (states[t] && states[u] && states[t].alliances.length <= 3) {
             $("#c" + t).append(" Allied with " + names[u]);
             states[t].ally(states[u]);
           }
@@ -357,16 +526,25 @@
         if (Math.floor(Math.random() * 6) == 2) {
           var t = Math.floor(Math.random() * 64);
           var u = Math.floor(Math.random() * 6);
+          var currentState = states[t];
+          if (!currentState) {
+            return;
+          }
+          var selectedLand =
+            currentState.land[
+              Math.floor(Math.random() * currentState.land.length)
+            ];
+          var adjacentLand = getNeighboringCellIndices(selectedLand.num).filter(
+            (index) => states[index],
+          );
+          if (adjacentLand.length === 0) {
+            return;
+          }
           var v =
-            t.land[Math.floor(Math.random() * t.land.length)].num +
-            dirs[Math.floor(Math.random() * dirs.length)];
+            adjacentLand[Math.floor(Math.random() * adjacentLand.length)];
           switch (u) {
             case 0:
-              if (v >= 64 || v <= -1) {
-                v = t + dirs[Math.floor(Math.random() * dirs.length)];
-              }
-
-              if (!states[v].alliances.includes(t)) {
+              if (states[v] && !states[v].alliances.includes(t)) {
                 $("#c" + t).css("background", $("#c" + v).css("background"));
                 $("#c" + t).text(
                   "Annexed territory of " +
@@ -387,7 +565,6 @@
       }, 100);
       var x;
       var y;
-      var wgold = 0;
       setInterval(() => {
         $("#wanderer").appendTo("#c" + Math.floor(Math.random() * 64));
         if ($("#wanderer").parent().attr("id") == "c30") {
@@ -397,6 +574,7 @@
 
         year++;
         $("#y").text(year);
+        void saveGameState();
       }, 5000);
       setTimeout(() => {
         $("#c" + Math.floor(Math.random() * 64)).append(
@@ -412,6 +590,8 @@
         subscribeKey: "sub-c-3fef8705-c927-4394-83a3-481da882cd34",
         uuid: ign,
       });
+      var px = 0;
+      var py = 0;
 
       pubnub.publish({
         channel: gameChannel,
