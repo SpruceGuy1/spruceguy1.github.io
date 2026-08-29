@@ -108,10 +108,9 @@
       init();
       setInterval(function () {
         const maxCo2Sprites = 6;
-        
-          co2index = removeFromList(co2, co2index);
-          co2count--;
-        
+
+        co2index = removeFromList(co2, co2index);
+        co2count--;
 
         co2.push(
           createSprite(loc(sprites[0]), "co2", {
