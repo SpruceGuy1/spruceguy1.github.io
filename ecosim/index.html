@@ -103,11 +103,11 @@
         return new Location(0, 0);
       }
       function init() {
-for(i=0;i<3;i++){
-        createSprite(loc([0, 0]), "human", {
-          behavior: "moveToPlant",
-        });
-      }
+        for (i = 0; i < 3; i++) {
+          createSprite(loc([0, 0]), "human", {
+            behavior: "moveToPlant",
+          });
+        }
         for (let i = 0; i < Math.floor(Math.random() * 164); i++) {
           createSprite(
             loc([Math.floor(Math.random() * 30), Math.random() * 30]),
@@ -120,51 +120,46 @@ for(i=0;i<3;i++){
       setInterval(function () {
         const maxCo2Sprites = 6;
 
-      
-
         const human = getHumanLocation();
         const offset = co2.length % 4;
         const co2Location = new Location(
           human.x + (offset % 2),
           human.y + Math.floor(offset / 2),
         );
-        for(i=0;i<3;i++){
-          
-        
-        co2.push(
-          createSprite(co2Location, "co2", {
-            behavior: "moveToPlant",
-            plantTrigger: function () {
-              const idx = co2.indexOf(this);
-              if (idx >= 0) {
-                co2.splice(idx, 1);
-              }
-              co2count = Math.max(0, co2count - 1);
-              this.remove();
-              o2count++;
-              o2.push(
-                createSprite(loc(this), "oxygen", {
-                  behavior: "moveRandom",
-                }),
-              );
-            },
-          }),
-        );
-        co2count++;
-        
+        for (i = 0; i < 3; i++) {
+          co2.push(
+            createSprite(co2Location, "co2", {
+              behavior: "moveToPlant",
+              plantTrigger: function () {
+                const idx = co2.indexOf(this);
+                if (idx >= 0) {
+                  co2.splice(idx, 1);
+                }
+                co2count = Math.max(0, co2count - 1);
+                this.remove();
+                o2count++;
+                o2.push(
+                  createSprite(loc(this), "oxygen", {
+                    behavior: "moveRandom",
+                  }),
+                );
+              },
+            }),
+          );
+          co2count++;
 
-        if (o2.length > 0) {
-          o2index = removeFromList(o2, o2index);
-          o2count--;
+          if (o2.length > 0) {
+            o2index = removeFromList(o2, o2index);
+            o2count--;
+          }
+
+          if (n2count <= 78) {
+            n2count++;
+          }
+
+          o2count -= 0.5;
+          n2count -= 0.5;
         }
-
-        if (n2count <= 78) {
-          n2count++;
-        }
-
-        o2count -= 0.5;
-        n2count -= 0.5;
-      }
         var fn = function () {
           for (let i of sprites) {
             if (!i) {
