@@ -106,23 +106,22 @@
         }
         // ...existing code...
 
-          if (co2.length > 0) {
-            co2[co2index].remove();
-            co2index = (co2index + 1) % co2.length;
-            co2count--;
-          }
+        if (co2.length > 0) {
+          co2[co2index].remove();
+          co2index = (co2index + 1) % co2.length;
+          co2count--;
+        }
 
-          if (n2count <= 78) {
-            n2count++;
-          }
-        
+        if (n2count <= 78) {
+          n2count++;
+        }
+
         // ...existing code...        co2count++;
         o2count -= 0.5;
         n2count -= 0.5;
 
         var fn = function () {
           for (let i of sprites) {
-
             if (!i) {
               return;
             }
