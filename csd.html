@@ -44,12 +44,12 @@
 
       var j;
       var states = [];
-      var land = []
+      var land = [];
       var year = 1;
       class Land {
-        constructor(ogname,num) {
-            this.num=num
-            this.name=ogname
+        constructor(ogname, num) {
+          this.num = num;
+          this.name = ogname;
         }
       }
       class State {
@@ -59,7 +59,7 @@
           this.loc = loc;
           this.alliances = [];
           this.area = 1;
-          this.land = [new Land(this.name,this.loc)];
+          this.land = [new Land(this.name, this.loc)];
           this.owner = loc;
         }
         ally(n) {
@@ -69,17 +69,15 @@
         annex(n) {
           if (!this.alliances.includes(n.loc)) {
             console.log(this.owner);
-            if(n.area>1){
-            states[n.owner].area--;
-            n.owner = states[this.owner].loc;
+            if (n.area > 1) {
+              states[n.owner].area--;
+              n.owner = states[this.owner].loc;
 
-            states[this.owner].land.push(land[n.loc]);
-            states[this.owner].area++;
-            }else{
-                states[n.owner]=undefined
-                this.land.push(land[n.owner])
-
-
+              states[this.owner].land.push(land[n.loc]);
+              states[this.owner].area++;
+            } else {
+              states[n.owner] = undefined;
+              this.land.push(land[n.owner]);
             }
           }
         }
@@ -150,9 +148,49 @@
         "ffc080",
         "4040ff",
       ];
-      var plosives = ["b",  "d", "g",  "k",  "p", "t",   ""];
-      var others = ["c", "ð", "f", "ġ", "ğ", "j", "l", "ļj", "m", "n", "q", "r", "ř", "s", "š", "þ", "v", "w", "ŵ", "x", "z", "ž"]
-      var addits = ["br", "bl", "dr", "gr", "gl", "gʷ", "kr", "kʷ", "pl", "pr", "st",  "sp", "sl", "str", "spr", "tr"]
+      var plosives = ["b", "d", "g", "k", "p", "t", ""];
+      var others = [
+        "c",
+        "ð",
+        "f",
+        "ġ",
+        "ğ",
+        "j",
+        "l",
+        "ļj",
+        "m",
+        "n",
+        "q",
+        "r",
+        "ř",
+        "s",
+        "š",
+        "þ",
+        "v",
+        "w",
+        "ŵ",
+        "x",
+        "z",
+        "ž",
+      ];
+      var addits = [
+        "br",
+        "bl",
+        "dr",
+        "gr",
+        "gl",
+        "gʷ",
+        "kr",
+        "kʷ",
+        "pl",
+        "pr",
+        "st",
+        "sp",
+        "sl",
+        "str",
+        "spr",
+        "tr",
+      ];
       var cons = [
         "b",
         "bb",
@@ -207,20 +245,47 @@
         "uh",
         "ue",
       ];
-      var vow = ["a", "â", "å", "æ", "e", "ė", "ě", "ê", "ë", "i", "ı", "ï", "o", "ö", "u", "ü", "ù"]
+      var vow = [
+        "a",
+        "â",
+        "å",
+        "æ",
+        "e",
+        "ė",
+        "ě",
+        "ê",
+        "ë",
+        "i",
+        "ı",
+        "ï",
+        "o",
+        "ö",
+        "u",
+        "ü",
+        "ù",
+      ];
       var names = [];
       for (i = 0; i <= 63; i++) {
         j = Math.floor(i / 8);
-        names[i] =
-          ((plosives.concat(others)).concat(addits))[Math.floor(Math.random() * (plosives.concat(others)).concat(addits).length)] 
+        names[i] = plosives.concat(others).concat(addits)[
+          Math.floor(
+            Math.random() * plosives.concat(others).concat(addits).length,
+          )
+        ];
+        vow[Math.floor(Math.random() * vow.length)] +
+          plosives.concat(others).concat(addits)[
+            Math.floor(
+              Math.random() * plosives.concat(others).concat(addits).length,
+            )
+          ] +
           vow[Math.floor(Math.random() * vow.length)] +
-          (plosives.concat(others)).concat(addits)[Math.floor(Math.random() * (plosives.concat(others)).concat(addits).length)] +
-          vow[Math.floor(Math.random() * vow.length)] +
-          plosives.concat(others)[Math.floor(Math.random() * plosives.concat(others).length)];
+          plosives.concat(others)[
+            Math.floor(Math.random() * plosives.concat(others).length)
+          ];
         $("#r" + j).append("<td id='c" + i + "' >" + names[i] + "</td>");
         $("#c" + i).css("background", "#" + colors[i]);
         states.push(new State(colors[i], names[i], i));
-        land.push(new Land(names[i], i))
+        land.push(new Land(names[i], i));
       }
       $("td").click(function () {
         console.log($(this).attr("id"));
@@ -292,7 +357,9 @@
         if (Math.floor(Math.random() * 6) == 2) {
           var t = Math.floor(Math.random() * 64);
           var u = Math.floor(Math.random() * 6);
-          var v = t.land[Math.floor(Math.random()*t.land.length)].num + dirs[Math.floor(Math.random() * dirs.length)];
+          var v =
+            t.land[Math.floor(Math.random() * t.land.length)].num +
+            dirs[Math.floor(Math.random() * dirs.length)];
           switch (u) {
             case 0:
               if (v >= 64 || v <= -1) {
@@ -322,11 +389,8 @@
       var y;
       var wgold = 0;
       setInterval(() => {
-        
-    
-        
-        $("#wanderer").appendTo("#c"+Math.floor(Math.random()*64))
-        if ($("#wanderer").parent().attr('id')=="c30") {
+        $("#wanderer").appendTo("#c" + Math.floor(Math.random() * 64));
+        if ($("#wanderer").parent().attr("id") == "c30") {
           wgold++;
           $("#wgold").text(wgold);
         }
