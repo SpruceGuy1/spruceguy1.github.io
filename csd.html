@@ -479,10 +479,9 @@
         for (var restoredState of states) {
           if (restoredState) {
             for (var territory of restoredState.land) {
-              $("#c" + territory.num).css(
-                "background",
-                "#" + restoredState.color,
-              );
+              $("#c" + territory.num)
+                .text(territory.name)
+                .css("background", "#" + restoredState.color);
             }
           }
         }
