@@ -68,10 +68,28 @@
           this.area = 1;
           this.land = [new Land(this.name, this.loc)];
           this.hasPort = false;
+          this.gold = 0;
         }
         ally(n) {
           this.alliances.push(n.loc);
           n.alliances.push(this.loc);
+        }
+        transferGold(recipient, amount) {
+          if (
+            !recipient ||
+            states[recipient.loc] !== recipient ||
+            recipient === this ||
+            !this.alliances.includes(recipient.loc) ||
+            !Number.isFinite(amount) ||
+            amount <= 0 ||
+            this.gold < amount
+          ) {
+            return false;
+          }
+
+          this.gold -= amount;
+          recipient.gold += amount;
+          return true;
         }
         annex(selectedLand) {
           var defenderLoc = landOwners[selectedLand.num];
@@ -297,20 +315,46 @@
         land.push(territory);
         landOwners.push(i);
       }
+      function showStateDetails(owner) {
+        var activeAllies = owner.alliances
+          .map((allyLoc) => states[allyLoc])
+          .filter((ally) => ally);
+        var details = `${owner.name}\nArea: ${owner.area}\nGold: ${owner.gold}`;
+        if (activeAllies.length === 0) {
+          alert(details + "\nNo active allies are available for a transfer.");
+          return;
+        }
+
+        var allyList = activeAllies
+          .map((ally, index) => `${index + 1}: ${ally.name} (${ally.gold} gold)`)
+          .join("\n");
+        if (!confirm(details + "\n\nGive gold to an ally?\n" + allyList)) {
+          return;
+        }
+
+        var allyNumber = Number(
+          prompt("Enter the number of the ally receiving gold:\n" + allyList),
+        );
+        var recipient = activeAllies[allyNumber - 1];
+        var amount = Number(prompt("Enter a positive amount of gold to give:"));
+        if (!owner.transferGold(recipient, amount)) {
+          alert("Gold transfer rejected. Check the ally, amount, and balance.");
+          return;
+        }
+
+        $("#g").text(states[30] ? states[30].gold : 0);
+        alert(
+          `Transfer complete.\n${owner.name}: ${owner.gold} gold\n${recipient.name}: ${recipient.gold} gold`,
+        );
+      }
+
       $("td").click(function () {
         var landNum = Number($(this).attr("id").substring(1));
         var owner = states[landOwners[landNum]];
-        alert(
-          owner.name +
-            `
-            Area: ${owner.area}
-            
-            `,
-        );
+        showStateDetails(owner);
       });
       $("#c30").append("<br>Gold:<span id='g'>0</span>");
       var ctha = [];
-      var c30g = 0;
       var wgold = 0;
       var leaderboard = [];
       console.log(states);
@@ -319,6 +363,16 @@
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
       ];
+
+      function generateCountry30Gold() {
+        if (!states[30]) {
+          $("#g").text(0);
+          return false;
+        }
+        states[30].gold += levels[30];
+        $("#g").text(states[30].gold);
+        return true;
+      }
 
       function getNeighboringCellIndices(index) {
         var row = Math.floor(index / 8);
@@ -384,9 +438,6 @@
           payload.alliances.length !== 64 ||
           !Number.isInteger(payload.year) ||
           payload.year < 1 ||
-          typeof payload.gold !== "number" ||
-          !Number.isFinite(payload.gold) ||
-          payload.gold < 0 ||
           !payload.land.every(isValidLand)
         ) {
           return false;
@@ -421,6 +472,9 @@
             !Number.isInteger(savedState.area) ||
             savedState.area < 1 ||
             savedState.area > 64 ||
+            typeof savedState.gold !== "number" ||
+            !Number.isFinite(savedState.gold) ||
+            savedState.gold < 0 ||
             !Array.isArray(savedState.land) ||
             savedState.land.length === 0 ||
             savedState.land.length > 64 ||
@@ -435,6 +489,7 @@
             savedState.loc,
           );
           restoredState.area = savedState.area;
+          restoredState.gold = savedState.gold;
           restoredState.land = savedState.land.map(
             (savedLand) => new Land(savedLand.name, savedLand.num),
           );
@@ -480,9 +535,8 @@
         }
         names = land.map((savedLand) => savedLand.name);
         year = payload.year;
-        c30g = payload.gold;
         $("#y").text(year);
-        $("#g").text(c30g);
+        $("#g").text(states[30] ? states[30].gold : 0);
         for (var restoredState of states) {
           if (restoredState) {
             for (var territory of restoredState.land) {
@@ -501,7 +555,6 @@
           states: states,
           land: land,
           year: year,
-          gold: c30g,
           alliances: states.map((state) =>
             state ? state.alliances.slice() : [],
           ),
@@ -557,8 +610,7 @@
         void saveGameState();
       });*/
       setInterval(() => {
-        c30g += levels[30];
-        $("#g").text(c30g);
+        generateCountry30Gold();
         if (Math.floor(Math.random() * 6) == 3) {
           var t = Math.floor(Math.random() * 56) + 8;
           var currentState = states[landOwners[t]];

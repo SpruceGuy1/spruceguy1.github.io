@@ -40,7 +40,6 @@ vm.runInContext(
 const GAME_STATE_VERSION = 1;
 var names = [];
 var year = 1;
-var c30g = 0;
 ${restoration}
 this.applyGameState = applyGameState;
 this.getClickedOwner = (landNum) => states[landOwners[landNum]];`,
@@ -52,7 +51,6 @@ const payload = {
   states: [],
   land: [],
   year: 42,
-  gold: 7,
   alliances: Array.from({ length: 64 }, () => []),
 };
 
@@ -67,11 +65,13 @@ for (let landNum = 0; landNum < 64; landNum++) {
     name: restoredName,
     loc: landNum,
     area: 1,
+    gold: landNum,
     land: [{ name: restoredName, num: landNum }],
   });
 }
 
 assert.equal(context.applyGameState(payload), true);
+assert.equal(context.states[30].gold, 30, "each state's gold is restored");
 
 const landNum = 12;
 assert.equal($("#c" + landNum).text(), payload.land[landNum].name);
