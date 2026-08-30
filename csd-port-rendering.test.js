@@ -13,8 +13,8 @@ const portLoop = html.slice(loopStart, loopEnd);
 const appendedCells = [];
 const context = {
   coastalLandNumbers: [
-    0, 1, 2, 3, 4, 5, 6, 7, 8, 15, 16, 23, 24, 31, 32, 39, 40, 47, 48, 55,
-    56, 57, 58, 59, 60, 61, 62, 63,
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 15, 16, 23, 24, 31, 32, 39, 40, 47, 48, 55, 56,
+    57, 58, 59, 60, 61, 62, 63,
   ],
   states: [{ loc: 0 }, undefined, { loc: 2 }],
   $(selector) {
