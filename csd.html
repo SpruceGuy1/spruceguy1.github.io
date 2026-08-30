@@ -45,6 +45,7 @@
       var j;
       var states = [];
       var land = [];
+      var landOwners = [];
       var year = 1;
       class Land {
         constructor(ogname, num) {
@@ -60,26 +61,46 @@
           this.alliances = [];
           this.area = 1;
           this.land = [new Land(this.name, this.loc)];
-          this.owner = loc;
         }
         ally(n) {
           this.alliances.push(n.loc);
           n.alliances.push(this.loc);
         }
-        annex(n) {
-          if (!this.alliances.includes(n.loc)) {
-            console.log(this.owner);
-            if (n.area > 1) {
-              states[n.owner].area--;
-              n.owner = states[this.owner].loc;
+        annex(selectedLand) {
+          var defenderLoc = landOwners[selectedLand.num];
+          var defender = states[defenderLoc];
+          if (
+            !defender ||
+            defender === this ||
+            this.alliances.includes(defender.loc)
+          ) {
+            return false;
+          }
 
-              states[this.owner].land.push(land[n.loc]);
-              states[this.owner].area++;
-            } else {
-              states[n.owner] = undefined;
-              this.land.push(land[n.owner]);
+          var defenderLandIndex = defender.land.findIndex(
+            (territory) => territory.num === selectedLand.num,
+          );
+          if (defenderLandIndex === -1) {
+            return false;
+          }
+
+          var transferredLand = defender.land.splice(defenderLandIndex, 1)[0];
+          this.land.push(transferredLand);
+          defender.area = defender.land.length;
+          this.area = this.land.length;
+          landOwners[transferredLand.num] = this.loc;
+
+          if (defender.area === 0) {
+            states[defender.loc] = undefined;
+            for (var state of states) {
+              if (state) {
+                state.alliances = state.alliances.filter(
+                  (allyLoc) => allyLoc !== defender.loc,
+                );
+              }
             }
           }
+          return true;
         }
       }
       function randomColor() {
@@ -262,15 +283,20 @@
           ];
         $("#r" + j).append("<td id='c" + i + "' >" + names[i] + "</td>");
         $("#c" + i).css("background", "#" + colors[i]);
-        states.push(new State(colors[i], names[i], i));
-        land.push(new Land(names[i], i));
+        var territory = new Land(names[i], i);
+        var state = new State(colors[i], names[i], i);
+        state.land = [territory];
+        states.push(state);
+        land.push(territory);
+        landOwners.push(i);
       }
       $("td").click(function () {
-        console.log($(this).attr("id"));
+        var landNum = Number($(this).attr("id").substring(1));
+        var owner = states[landOwners[landNum]];
         alert(
-          states[states[$(this).attr("id").substring(1)].owner].name +
+          owner.name +
             `
-            Area: ${states[states[$(this).attr("id").substring(1)].owner].area}
+            Area: ${owner.area}
             
             `,
         );
@@ -385,9 +411,6 @@
             /[<>]/.test(savedState.name) ||
             !Number.isInteger(savedState.loc) ||
             savedState.loc !== stateIndex ||
-            !Number.isInteger(savedState.owner) ||
-            savedState.owner < 0 ||
-            savedState.owner >= 64 ||
             !Number.isInteger(savedState.area) ||
             savedState.area < 1 ||
             savedState.area > 64 ||
@@ -404,7 +427,6 @@
             savedState.name,
             savedState.loc,
           );
-          restoredState.owner = savedState.owner;
           restoredState.area = savedState.area;
           restoredState.land = savedState.land.map(
             (savedLand) => new Land(savedLand.name, savedLand.num),
@@ -413,10 +435,42 @@
           restoredStates.push(restoredState);
         }
 
+        var restoredLandOwners = Array(64);
+        for (var restoredState of restoredStates) {
+          if (!restoredState) {
+            continue;
+          }
+          if (restoredState.area !== restoredState.land.length) {
+            return false;
+          }
+          for (var territory of restoredState.land) {
+            if (restoredLandOwners[territory.num] !== undefined) {
+              return false;
+            }
+            restoredLandOwners[territory.num] = restoredState.loc;
+          }
+        }
+        if (
+          !Array.from(
+            { length: 64 },
+            (_, landNum) => restoredLandOwners[landNum],
+          ).every((ownerLoc) => ownerLoc !== undefined)
+        ) {
+          return false;
+        }
+
         states = restoredStates;
+        landOwners = restoredLandOwners;
         land = payload.land.map(
           (savedLand) => new Land(savedLand.name, savedLand.num),
         );
+        for (var restoredState of states) {
+          if (restoredState) {
+            restoredState.land = restoredState.land.map(
+              (territory) => land[territory.num],
+            );
+          }
+        }
         names = land.map((savedLand) => savedLand.name);
         year = payload.year;
         c30g = payload.gold;
@@ -501,19 +555,26 @@
         $("#g").text(c30g);
         if (Math.floor(Math.random() * 6) == 3) {
           var t = Math.floor(Math.random() * 56) + 8;
+          var currentState = states[landOwners[t]];
           var adjacentCells = getNeighboringCellIndices(t).filter(
-            (index) => states[index],
+            (index) => landOwners[index] !== landOwners[t],
           );
           var u =
             adjacentCells[Math.floor(Math.random() * adjacentCells.length)];
-          if (states[t] && states[u] && states[t].alliances.length <= 3) {
-            $("#c" + t).append(" Allied with " + names[u]);
-            states[t].ally(states[u]);
+          var adjacentState = states[landOwners[u]];
+          if (
+            currentState &&
+            adjacentState &&
+            currentState.alliances.length <= 3 &&
+            !currentState.alliances.includes(adjacentState.loc)
+          ) {
+            $("#c" + t).append(" Allied with " + adjacentState.name);
+            currentState.ally(adjacentState);
           }
         }
         leaderboard = [];
         for (let j of states) {
-          if (j.area >= 2) {
+          if (j && j.area >= 2) {
             leaderboard.push(j);
           }
         }
@@ -536,7 +597,7 @@
               Math.floor(Math.random() * currentState.land.length)
             ];
           var adjacentLand = getNeighboringCellIndices(selectedLand.num).filter(
-            (index) => states[index],
+            (index) => landOwners[index] !== currentState.loc,
           );
           if (adjacentLand.length === 0) {
             return;
@@ -544,15 +605,15 @@
           var v = adjacentLand[Math.floor(Math.random() * adjacentLand.length)];
           switch (u) {
             case 0:
-              if (states[v] && !states[v].alliances.includes(t)) {
-                $("#c" + t).css("background", $("#c" + v).css("background"));
-                $("#c" + t).text(
-                  "Annexed territory of " +
-                    names[states[v].owner] +
+              var defender = states[landOwners[v]];
+              if (defender && currentState.annex(land[v])) {
+                $("#c" + v).css("background", "#" + currentState.color);
+                $("#c" + v).text(
+                  "Annexed by " +
+                    currentState.name +
                     ", originally " +
                     land[v].name,
                 );
-                states[states[v].owner].annex(states[t]);
               }
 
               break;
