@@ -9,10 +9,7 @@ const model = html.slice(
 );
 const context = { console };
 vm.createContext(context);
-vm.runInContext(
-  `${model}\nthis.Land = Land; this.State = State;`,
-  context,
-);
+vm.runInContext(`${model}\nthis.Land = Land; this.State = State;`, context);
 
 function resetModel() {
   vm.runInContext("states = []; landOwners = [];", context);
@@ -45,12 +42,20 @@ assert.equal(context.states[1], defender, "a defender with land survives");
 assert.equal(context.landOwners[9], 0);
 
 assert.equal(secondDefender.annex(capturedLand), true);
-assert.equal(context.landOwners[9], 2, "captured land can launch a later annexation");
+assert.equal(
+  context.landOwners[9],
+  2,
+  "captured land can launch a later annexation",
+);
 assert.equal(attacker.area, 1);
 
 assert.equal(attacker.annex(secondDefender.land[0]), true);
 assert.equal(attacker.annex(capturedLand), true);
-assert.equal(context.states[2], undefined, "the defender is removed after its last land");
+assert.equal(
+  context.states[2],
+  undefined,
+  "the defender is removed after its last land",
+);
 assert.equal(attacker.area, 3);
 
 console.log("annexation regression checks passed");
