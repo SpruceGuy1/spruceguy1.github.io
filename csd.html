@@ -644,10 +644,8 @@
         $("#c" + Math.floor(Math.random() * 64)).append(
           "<img id='wanderer' src='wanderer.png'>",
         );
-        for (let i of states) {
-          if (coastalLandNumbers.includes(i.loc)) {
-            $("#c" + i.loc).append("<div class='port'>port</div>");
-          }
+        for (let landNum of coastalLandNumbers) {
+          $("#c" + landNum).append("<div class='port'>port</div>");
         }
         console.info(leaderboard);
       }, 10000);
