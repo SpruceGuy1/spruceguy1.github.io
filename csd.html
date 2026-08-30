@@ -40,7 +40,7 @@
       Change font
     </button>
     <script type="module">
-      import { createBoat } from "./modules/csd/boat.js";
+      import { createBoat, moveBoat } from "./modules/csd/boat.js";
       var boat = [];
       var i = 0;
 
@@ -583,9 +583,6 @@
           if (j && j.area >= 2) {
             leaderboard.push(j);
           }
-          if (j.hasPort) {
-            createBoat(j, boat);
-          }
         }
         leaderboard.sort((a, b) => b.area - a.area);
         $("#lb").html("");
@@ -652,10 +649,24 @@
         );
         for (let landNum of coastalLandNumbers) {
           $("#c" + landNum).append("<div class='port'>port</div>");
-          states[landNum].hasPort = true;
         }
         console.info(leaderboard);
+        var statesWithBoats = new Set();
+        for (let portLandNum of coastalLandNumbers) {
+          var ownerLoc = landOwners[portLandNum];
+          var portOwner = states[ownerLoc];
+          if (portOwner && !statesWithBoats.has(ownerLoc)) {
+            portOwner.hasPort = true;
+            createBoat(portOwner, boat, portLandNum);
+            statesWithBoats.add(ownerLoc);
+          }
+        }
       }, 10000);
+      setInterval(() => {
+        for (let currentBoat of boat) {
+          moveBoat(currentBoat, coastalLandNumbers);
+        }
+      }, 5000);
       const lobbyChannel = "game_lobby";
       const gameChannel = "game_instance_" + year;
       var ign = prompt("What would you like your IGN to be?");
