@@ -39,8 +39,7 @@ export function moveBoat(
     return undefined;
   }
 
-  var destination =
-    destinations[Math.floor(random() * destinations.length)];
+  var destination = destinations[Math.floor(random() * destinations.length)];
   $("#boat-" + currentBoat.id).appendTo("#c" + destination);
   currentBoat.location = destination;
   currentBoat.y = Math.floor(destination / 8);

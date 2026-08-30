@@ -35,7 +35,11 @@ assert.equal(createdBoat.origin, 7, "the boat starts at its source port");
 assert.equal(createdBoat.location, 7);
 assert.equal(parents.get("#boat-0"), "#c7");
 
-const destination = context.moveBoat(createdBoat, coastalLandNumbers, () => 0.9);
+const destination = context.moveBoat(
+  createdBoat,
+  coastalLandNumbers,
+  () => 0.9,
+);
 assert.ok(coastalLandNumbers.includes(destination));
 assert.notEqual(destination, 7, "another available port is selected");
 assert.equal(parents.get("#boat-0"), "#c63", "the DOM boat moves cells");
