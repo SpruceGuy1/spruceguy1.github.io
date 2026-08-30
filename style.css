@@ -110,3 +110,8 @@ button {
   width: 16px;
   height: 16px;
 }
+.port{
+  height:auto;
+  width:auto;
+  border:1px dashed #204080;
+}
