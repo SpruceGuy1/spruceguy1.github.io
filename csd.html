@@ -326,7 +326,9 @@
         }
 
         var allyList = activeAllies
-          .map((ally, index) => `${index + 1}: ${ally.name} (${ally.gold} gold)`)
+          .map(
+            (ally, index) => `${index + 1}: ${ally.name} (${ally.gold} gold)`,
+          )
           .join("\n");
         if (!confirm(details + "\n\nGive gold to an ally?\n" + allyList)) {
           return;
