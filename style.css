@@ -115,3 +115,8 @@ button {
   width: auto;
   border: 1px dashed #204080;
 }
+.boat{
+  height: 16px;
+  width: 16px;
+  background-color: #c09060;
+}
