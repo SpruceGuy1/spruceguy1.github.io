@@ -39,7 +39,9 @@
     Current font: <span id="font">Clean</span> <br /><button id="cf">
       Change font
     </button>
-    <script>
+    <script type="module">
+      import {createBoat} from './modules/csd/boat.js'
+      var boat = []
       var i = 0;
 
       var j;
@@ -65,6 +67,7 @@
           this.alliances = [];
           this.area = 1;
           this.land = [new Land(this.name, this.loc)];
+          this.hasPort=false
         }
         ally(n) {
           this.alliances.push(n.loc);
@@ -580,6 +583,9 @@
           if (j && j.area >= 2) {
             leaderboard.push(j);
           }
+          if(j.hasPort){
+            createBoat(j,boat)
+          }
         }
         leaderboard.sort((a, b) => b.area - a.area);
         $("#lb").html("");
@@ -646,6 +652,7 @@
         );
         for (let landNum of coastalLandNumbers) {
           $("#c" + landNum).append("<div class='port'>port</div>");
+          states[landNum].hasPort=true
         }
         console.info(leaderboard);
       }, 10000);
