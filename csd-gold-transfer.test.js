@@ -15,7 +15,7 @@ const displayedGold = [];
 const context = {
   console,
   $(selector) {
-    assert.equal(selector, "#g");
+    assert.equal(selector, "#g30");
     return {
       text(value) {
         displayedGold.push(value);
