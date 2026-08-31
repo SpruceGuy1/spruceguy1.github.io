@@ -325,7 +325,6 @@
       }
       function showStateDetails(owner) {
         alert(`${owner.name}\nArea: ${owner.area}\nGold: ${owner.gold}`);
-        
       }
 
       $("td").click(function () {
@@ -590,7 +589,7 @@
       });*/
       setInterval(() => {
         generateCountry30Gold();
-        
+
         if (Math.floor(Math.random() * 6) == 3) {
           var t = Math.floor(Math.random() * 56) + 8;
           var currentState = states[landOwners[t]];
@@ -609,29 +608,29 @@
             $("#c" + t).append(" Allied with " + adjacentState.name);
             currentState.ally(adjacentState);
           }
-          var owner = currentState
+          var owner = currentState;
           var activeAllies = owner.alliances
-          .map((allyLoc) => states[allyLoc])
-          .filter((ally) => ally);
-        
-        if (activeAllies.length === 0) {
-          return;
-        }
+            .map((allyLoc) => states[allyLoc])
+            .filter((ally) => ally);
 
-        var allyList = activeAllies
-          .map(
-            (ally, index) => `${index + 1}: ${ally.name} (${ally.gold} gold)`,
-          )
-          .join("\n");
+          if (activeAllies.length === 0) {
+            return;
+          }
 
-        var recipient =
-          activeAllies[Math.floor(Math.random() * activeAllies.length)];
+          var allyList = activeAllies
+            .map(
+              (ally, index) => `${index + 1}: ${ally.name} (${ally.gold} gold)`,
+            )
+            .join("\n");
 
-        owner.transferGold(recipient, 1);
-        $("#g" + owner.loc).text(owner.gold);
-        $("#g" + recipient.loc).text(recipient.gold);
+          var recipient =
+            activeAllies[Math.floor(Math.random() * activeAllies.length)];
 
-        $("#g30").text(states[30] ? states[30].gold : 0);
+          owner.transferGold(recipient, 1);
+          $("#g" + owner.loc).text(owner.gold);
+          $("#g" + recipient.loc).text(recipient.gold);
+
+          $("#g30").text(states[30] ? states[30].gold : 0);
         }
         leaderboard = [];
         for (let j of states) {
