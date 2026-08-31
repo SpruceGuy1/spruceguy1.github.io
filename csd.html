@@ -306,7 +306,15 @@
           plosives.concat(others)[
             Math.floor(Math.random() * plosives.concat(others).length)
           ];
-        $("#r" + j).append("<td id='c" + i + "' >" + names[i] + "<span id='g"+i+"'>0</span></td>");
+        $("#r" + j).append(
+          "<td id='c" +
+            i +
+            "' >" +
+            names[i] +
+            "<span id='g" +
+            i +
+            "'>0</span></td>",
+        );
         $("#c" + i).css("background", "#" + colors[i]);
         var territory = new Land(names[i], i);
         var state = new State(colors[i], names[i], i);
@@ -321,7 +329,9 @@
           .filter((ally) => ally);
         console.log(`${owner.name}\nArea: ${owner.area}\nGold: ${owner.gold}`);
         if (activeAllies.length === 0) {
-          console.log(details + "\nNo active allies are available for a transfer.");
+          console.log(
+            details + "\nNo active allies are available for a transfer.",
+          );
           return;
         }
 
@@ -330,18 +340,15 @@
             (ally, index) => `${index + 1}: ${ally.name} (${ally.gold} gold)`,
           )
           .join("\n");
-     
 
-        
-        var recipient = activeAllies[Math.floor(Math.random()*activeAllies.length)];
-        
-     owner.transferGold(recipient,amount)
-        $("#g"+owner.loc).text(owner.gold)
-        $("#g"+owner.loc).text(owner.gold)
+        var recipient =
+          activeAllies[Math.floor(Math.random() * activeAllies.length)];
+
+        owner.transferGold(recipient, amount);
+        $("#g" + owner.loc).text(owner.gold);
+        $("#g" + owner.loc).text(owner.gold);
 
         $("#g30").text(states[30] ? states[30].gold : 0);
-        
-          
       }
 
       $("td").click(function () {
