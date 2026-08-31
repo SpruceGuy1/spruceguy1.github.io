@@ -329,9 +329,7 @@
           .filter((ally) => ally);
         console.log(`${owner.name}\nArea: ${owner.area}\nGold: ${owner.gold}`);
         if (activeAllies.length === 0) {
-          console.log(
-            details + "\nNo active allies are available for a transfer.",
-          );
+          
           return;
         }
 
@@ -344,9 +342,9 @@
         var recipient =
           activeAllies[Math.floor(Math.random() * activeAllies.length)];
 
-        owner.transferGold(recipient, amount);
+        owner.transferGold(recipient, 1);
         $("#g" + owner.loc).text(owner.gold);
-        $("#g" + owner.loc).text(owner.gold);
+        $("#g" + recipient.loc).text(recipient.gold);
 
         $("#g30").text(states[30] ? states[30].gold : 0);
       }
