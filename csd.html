@@ -364,9 +364,7 @@
         $("#g30").text(country30.gold);
         var activeAllies = country30.alliances
           .map((allyLoc) => states[allyLoc])
-          .filter(
-            (ally) => ally instanceof State && states[ally.loc] === ally,
-          );
+          .filter((ally) => ally instanceof State && states[ally.loc] === ally);
         if (activeAllies.length === 0) {
           $("#gold-status").text(
             `Country 30 retained ${levels[30]} gold (balance: ${country30.gold}).`,
@@ -374,7 +372,8 @@
           return true;
         }
 
-        var recipient = activeAllies[Math.floor(random() * activeAllies.length)];
+        var recipient =
+          activeAllies[Math.floor(random() * activeAllies.length)];
 
         if (country30.transferGold(recipient, 1)) {
           $("#g30").text(country30.gold);
