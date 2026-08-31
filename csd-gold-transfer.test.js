@@ -11,14 +11,30 @@ const generation = html.slice(
   html.indexOf("function generateCountry30Gold"),
   html.indexOf("function getNeighboringCellIndices"),
 );
-const displayedGold = [];
+const stateDetails = html.slice(
+  html.indexOf("function showStateDetails"),
+  html.indexOf("var ctha"),
+);
+const displayedText = new Map();
+const alerts = [];
+let clickHandler;
 const context = {
   console,
+  alert(message) {
+    alerts.push(message);
+  },
   $(selector) {
-    assert.equal(selector, "#g30");
     return {
+      attr(name) {
+        assert.equal(name, "id");
+        return selector.id;
+      },
+      click(handler) {
+        assert.equal(selector, "td");
+        clickHandler = handler;
+      },
       text(value) {
-        displayedGold.push(value);
+        displayedText.set(selector, value);
       },
     };
   },
@@ -29,12 +45,14 @@ vm.runInContext(
 var landOwners = [];
 ${model}
 var levels = Array(64).fill(1);
+${stateDetails}
 ${generation}
 this.Land = Land;
 this.State = State;
 this.states = states;
 this.landOwners = landOwners;
-this.generateCountry30Gold = generateCountry30Gold;`,
+this.generateCountry30Gold = generateCountry30Gold;
+this.showStateDetails = showStateDetails;`,
   context,
 );
 
@@ -46,12 +64,14 @@ context.states[0] = sender;
 context.states[1] = ally;
 context.states[2] = nonAlly;
 context.states[30] = country30;
+context.landOwners[30] = 30;
 
 assert.equal(sender.gold, 0, "new states start with no gold");
-context.generateCountry30Gold();
+context.generateCountry30Gold(() => 0);
 assert.equal(country30.gold, 1, "Country 30 receives generated gold");
 assert.equal(sender.gold, 0, "generation does not credit another state");
-assert.equal(displayedGold.at(-1), 1);
+assert.equal(displayedText.get("#g30"), 1);
+assert.match(displayedText.get("#gold-status"), /retained 1 gold.*balance: 1/);
 
 sender.ally(ally);
 sender.gold = 10;
@@ -75,9 +95,24 @@ assert.equal(ally.gold, 4);
 const country30Ally = new context.State("ffff00", "Country 30 Ally", 4);
 context.states[4] = country30Ally;
 country30.ally(country30Ally);
-context.generateCountry30Gold();
+context.generateCountry30Gold(() => 0);
 assert.equal(country30.gold, 1, "Country 30 transfers one generated gold");
 assert.equal(country30Ally.gold, 1, "an active ally receives one gold");
+assert.equal(displayedText.get("#g30"), 1);
+assert.equal(displayedText.get("#g4"), 1);
+assert.match(
+  displayedText.get("#gold-status"),
+  /transferred 1 gold.*Country 30 Ally/,
+);
+
+assert.equal(context.showStateDetails(country30), true);
+assert.match(alerts.at(-1), /Country 30\nArea: 1\nGold: 1/);
+assert.doesNotThrow(() => clickHandler.call({ id: "c30" }));
+assert.match(alerts.at(-1), /Country 30\nArea: 1\nGold: 1/);
+
+context.landOwners[9] = 9;
+assert.doesNotThrow(() => clickHandler.call({ id: "c9" }));
+assert.equal(alerts.at(-1), "No active state owns this territory.");
 
 const defender = new context.State("0000ff", "Defender", 3);
 const capturedLand = new context.Land("Captured", 9);

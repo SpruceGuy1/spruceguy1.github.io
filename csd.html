@@ -34,6 +34,7 @@
       <tr id="r7"></tr>
     </table>
     Wanderer has <span id="wgold">0</span> gold
+    <div id="gold-status" aria-live="polite"></div>
 
     <ol id="lb"></ol>
     Current font: <span id="font">Clean</span> <br /><button id="cf">
@@ -324,13 +325,22 @@
         landOwners.push(i);
       }
       function showStateDetails(owner) {
+        if (!(owner instanceof State) || states[owner.loc] !== owner) {
+          alert("No active state owns this territory.");
+          return false;
+        }
         alert(`${owner.name}\nArea: ${owner.area}\nGold: ${owner.gold}`);
+        return true;
+      }
+
+      function handleTerritoryClick(cell) {
+        var landNum = Number($(cell).attr("id").substring(1));
+        var owner = states[landOwners[landNum]];
+        return showStateDetails(owner);
       }
 
       $("td").click(function () {
-        var landNum = Number($(this).attr("id").substring(1));
-        var owner = states[landOwners[landNum]];
-        showStateDetails(owner);
+        handleTerritoryClick(this);
       });
       var ctha = [];
       var wgold = 0;
@@ -342,22 +352,37 @@
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
       ];
 
-      function generateCountry30Gold() {
+      function generateCountry30Gold(random = Math.random) {
         if (!states[30]) {
           $("#g30").text(0);
+          $("#gold-status").text("Country 30 is not active.");
           return false;
         }
 
         var country30 = states[30];
         country30.gold += levels[30];
+        $("#g30").text(country30.gold);
         var activeAllies = country30.alliances
           .map((allyLoc) => states[allyLoc])
-          .filter((ally) => ally);
-        var recipient =
-          activeAllies[Math.floor(Math.random() * activeAllies.length)];
+          .filter(
+            (ally) => ally instanceof State && states[ally.loc] === ally,
+          );
+        if (activeAllies.length === 0) {
+          $("#gold-status").text(
+            `Country 30 retained ${levels[30]} gold (balance: ${country30.gold}).`,
+          );
+          return true;
+        }
 
-        country30.transferGold(recipient, 1);
-        $("#g30").text(country30.gold);
+        var recipient = activeAllies[Math.floor(random() * activeAllies.length)];
+
+        if (country30.transferGold(recipient, 1)) {
+          $("#g30").text(country30.gold);
+          $("#g" + recipient.loc).text(recipient.gold);
+          $("#gold-status").text(
+            `Country 30 transferred 1 gold to ${recipient.name}.`,
+          );
+        }
         return true;
       }
 
