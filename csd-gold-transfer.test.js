@@ -72,6 +72,13 @@ assert.equal(sender.transferGold(ally, 1), false);
 assert.equal(sender.gold, 6, "an eliminated ally cannot receive gold");
 assert.equal(ally.gold, 4);
 
+const country30Ally = new context.State("ffff00", "Country 30 Ally", 4);
+context.states[4] = country30Ally;
+country30.ally(country30Ally);
+context.generateCountry30Gold();
+assert.equal(country30.gold, 1, "Country 30 transfers one generated gold");
+assert.equal(country30Ally.gold, 1, "an active ally receives one gold");
+
 const defender = new context.State("0000ff", "Defender", 3);
 const capturedLand = new context.Land("Captured", 9);
 defender.land.push(capturedLand);

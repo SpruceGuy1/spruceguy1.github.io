@@ -347,8 +347,17 @@
           $("#g30").text(0);
           return false;
         }
-        states[30].gold += levels[30];
-        $("#g30").text(states[30].gold);
+
+        var country30 = states[30];
+        country30.gold += levels[30];
+        var activeAllies = country30.alliances
+          .map((allyLoc) => states[allyLoc])
+          .filter((ally) => ally);
+        var recipient =
+          activeAllies[Math.floor(Math.random() * activeAllies.length)];
+
+        country30.transferGold(recipient, 1);
+        $("#g30").text(country30.gold);
         return true;
       }
 
@@ -608,29 +617,6 @@
             $("#c" + t).append(" Allied with " + adjacentState.name);
             currentState.ally(adjacentState);
           }
-          var owner = currentState;
-          var activeAllies = owner.alliances
-            .map((allyLoc) => states[allyLoc])
-            .filter((ally) => ally);
-
-          if (activeAllies.length === 0) {
-            return;
-          }
-
-          var allyList = activeAllies
-            .map(
-              (ally, index) => `${index + 1}: ${ally.name} (${ally.gold} gold)`,
-            )
-            .join("\n");
-
-          var recipient =
-            activeAllies[Math.floor(Math.random() * activeAllies.length)];
-
-          owner.transferGold(recipient, 1);
-          $("#g" + owner.loc).text(owner.gold);
-          $("#g" + recipient.loc).text(recipient.gold);
-
-          $("#g30").text(states[30] ? states[30].gold : 0);
         }
         leaderboard = [];
         for (let j of states) {
