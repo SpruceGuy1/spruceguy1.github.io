@@ -306,7 +306,7 @@
           plosives.concat(others)[
             Math.floor(Math.random() * plosives.concat(others).length)
           ];
-        $("#r" + j).append("<td id='c" + i + "' >" + names[i] + "</td>");
+        $("#r" + j).append("<td id='c" + i + "' >" + names[i] + "<span id='g"+i+"'>0</span></td>");
         $("#c" + i).css("background", "#" + colors[i]);
         var territory = new Land(names[i], i);
         var state = new State(colors[i], names[i], i);
@@ -319,9 +319,9 @@
         var activeAllies = owner.alliances
           .map((allyLoc) => states[allyLoc])
           .filter((ally) => ally);
-        var details = `${owner.name}\nArea: ${owner.area}\nGold: ${owner.gold}`;
+        console.log(`${owner.name}\nArea: ${owner.area}\nGold: ${owner.gold}`);
         if (activeAllies.length === 0) {
-          alert(details + "\nNo active allies are available for a transfer.");
+          console.log(details + "\nNo active allies are available for a transfer.");
           return;
         }
 
@@ -330,24 +330,18 @@
             (ally, index) => `${index + 1}: ${ally.name} (${ally.gold} gold)`,
           )
           .join("\n");
-        if (!confirm(details + "\n\nGive gold to an ally?\n" + allyList)) {
-          return;
-        }
+     
 
-        var allyNumber = Number(
-          prompt("Enter the number of the ally receiving gold:\n" + allyList),
-        );
-        var recipient = activeAllies[allyNumber - 1];
-        var amount = Number(prompt("Enter a positive amount of gold to give:"));
-        if (!owner.transferGold(recipient, amount)) {
-          alert("Gold transfer rejected. Check the ally, amount, and balance.");
-          return;
-        }
+        
+        var recipient = activeAllies[Math.floor(Math.random()*activeAllies.length)];
+        
+     owner.transferGold(recipient,amount)
+        $("#g"+owner.loc).text(owner.gold)
+        $("#g"+owner.loc).text(owner.gold)
 
-        $("#g").text(states[30] ? states[30].gold : 0);
-        alert(
-          `Transfer complete.\n${owner.name}: ${owner.gold} gold\n${recipient.name}: ${recipient.gold} gold`,
-        );
+        $("#g30").text(states[30] ? states[30].gold : 0);
+        
+          
       }
 
       $("td").click(function () {
@@ -355,7 +349,6 @@
         var owner = states[landOwners[landNum]];
         showStateDetails(owner);
       });
-      $("#c30").append("<br>Gold:<span id='g'>0</span>");
       var ctha = [];
       var wgold = 0;
       var leaderboard = [];
@@ -368,11 +361,11 @@
 
       function generateCountry30Gold() {
         if (!states[30]) {
-          $("#g").text(0);
+          $("#g30").text(0);
           return false;
         }
         states[30].gold += levels[30];
-        $("#g").text(states[30].gold);
+        $("#g30").text(states[30].gold);
         return true;
       }
 
