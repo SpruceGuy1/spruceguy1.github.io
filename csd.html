@@ -312,7 +312,7 @@
             i +
             "' >" +
             names[i] +
-            "<span id='g" +
+            "<br>Gold: <span id='g" +
             i +
             "'>0</span></td>",
         );
@@ -375,11 +375,11 @@
         var recipient =
           activeAllies[Math.floor(random() * activeAllies.length)];
 
-        if (country30.transferGold(recipient, 1)) {
+        if (country30.transferGold(recipient, 0.5)) {
           $("#g30").text(country30.gold);
           $("#g" + recipient.loc).text(recipient.gold);
           $("#gold-status").text(
-            `Country 30 transferred 1 gold to ${recipient.name}.`,
+            `Country 30 transferred 0.5 gold to ${recipient.name}.`,
           );
         }
         return true;
