@@ -121,3 +121,6 @@ button {
   background-color: #c09060;
   color: gold;
 }
+.fixtd>td{
+  height:128px;
+}
