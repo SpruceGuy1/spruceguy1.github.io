@@ -762,15 +762,10 @@
           var cargoOwner = loadBoatGold(currentBoat, states);
           if (cargoOwner) {
             $("#g" + cargoOwner.loc).text(cargoOwner.gold);
-            $("#gold-status").text(
-              `${cargoOwner.name}'s boat loaded 1 gold.`,
-            );
+            $("#gold-status").text(`${cargoOwner.name}'s boat loaded 1 gold.`);
           }
 
-          var destinationLandNum = moveBoat(
-            currentBoat,
-            coastalLandNumbers,
-          );
+          var destinationLandNum = moveBoat(currentBoat, coastalLandNumbers);
           if (destinationLandNum === undefined) {
             continue;
           }
