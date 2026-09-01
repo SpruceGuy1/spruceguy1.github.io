@@ -724,6 +724,46 @@
         }
         // console.log(leaderboard)
       }, 100);
+      setInterval(function(){
+          var t = Math.floor(Math.random() * 64);
+          var u = Math.floor(Math.random() * 6);
+          var currentState = states[t];
+          if (levels[t] <= 5) {
+            return;
+          }
+          if (!currentState) {
+            return;
+          }
+          var selectedLand =
+            currentState.land[
+              Math.floor(Math.random() * currentState.land.length)
+            ];
+          var adjacentLand = getNeighboringCellIndices(selectedLand.num).filter(
+            (index) => landOwners[index] !== currentState.loc,
+          );
+          if (adjacentLand.length === 0) {
+            return;
+          }
+          var v = adjacentLand[Math.floor(Math.random() * adjacentLand.length)];
+          switch (u) {
+            case 0:
+              var defender = states[landOwners[v]];
+              if (defender && currentState.annex(land[v])) {
+                $("#c" + v).css("background", "#" + currentState.color);
+                $("#c" + v).text(
+                  "Annexed by " +
+                    currentState.name +
+                    ", originally " +
+                    land[v].name,
+                );
+              }
+
+              break;
+            case 1:
+              $("#c" + t).append(" Enemy of " + names[v]);
+              break;
+          }
+        },10)
       var x;
       var y;
       setInterval(() => {
