@@ -668,6 +668,8 @@
           if (j && j.area >= 2) {
             leaderboard.push(j);
           }
+          levels[j.loc]=Math.floor(j.gold/100)
+          
         }
         leaderboard.sort((a, b) => b.area - a.area);
         $("#lb").html("");
@@ -680,6 +682,9 @@
           var t = Math.floor(Math.random() * 64);
           var u = Math.floor(Math.random() * 6);
           var currentState = states[t];
+          if(levels[t]>5){
+            return
+          }
           if (!currentState) {
             return;
           }
