@@ -21,7 +21,7 @@ const context = {
     return {
       append(content) {
         assert.equal(content, "<div class='port'>port</div>");
-        appendedCells.push(Number(selector.slice(2)));
+        appendedCells.push(Number(selector.slice(3)));
       },
     };
   },

@@ -23,7 +23,7 @@
     <a href="nav.html">Other projects</a>
     <audio src="My Song 17.m4a" autoplay controls loop></audio>
     The year is <span id="y">1</span>
-    <table>
+    <table class="country-sim-table">
       <tr id="r0"></tr>
       <tr id="r1"></tr>
       <tr id="r2"></tr>
@@ -308,13 +308,15 @@
             Math.floor(Math.random() * plosives.concat(others).length)
           ];
         $("#r" + j).append(
-          "<td id='c" +
+          "<td class='territory-cell' id='c" +
             i +
-            "' >" +
+            "'><div class='territory-content' id='tc" +
+            i +
+            "'>" +
             names[i] +
             "<br>Gold: <span id='g" +
             i +
-            "'>0</span></td>",
+            "'>0</span></div></td>",
         );
         $("#c" + i).css("background", "#" + colors[i]);
         var territory = new Land(names[i], i);
@@ -576,9 +578,11 @@
         for (var restoredState of states) {
           if (restoredState) {
             for (var territory of restoredState.land) {
-              $("#c" + territory.num)
-                .text(territory.name)
-                .css("background", "#" + restoredState.color);
+              $("#tc" + territory.num).text(territory.name);
+              $("#c" + territory.num).css(
+                "background",
+                "#" + restoredState.color,
+              );
             }
           }
         }
@@ -663,7 +667,7 @@
             currentState.alliances.length <= 3 &&
             !currentState.alliances.includes(adjacentState.loc)
           ) {
-            $("#c" + t).append(" Allied with " + adjacentState.name);
+            $("#tc" + t).append(" Allied with " + adjacentState.name);
             currentState.ally(adjacentState);
           }
           generateGold(t);
@@ -710,7 +714,7 @@
               var defender = states[landOwners[v]];
               if (defender && currentState.annex(land[v])) {
                 $("#c" + v).css("background", "#" + currentState.color);
-                $("#c" + v).text(
+                $("#tc" + v).text(
                   "Annexed by " +
                     currentState.name +
                     ", originally " +
@@ -720,7 +724,7 @@
 
               break;
             case 1:
-              $("#c" + t).append(" Enemy of " + names[v]);
+              $("#tc" + t).append(" Enemy of " + names[v]);
               break;
           }
         }
@@ -752,7 +756,7 @@
             var defender = states[landOwners[v]];
             if (defender && currentState.annex(land[v])) {
               $("#c" + v).css("background", "#" + currentState.color);
-              $("#c" + v).text(
+              $("#tc" + v).text(
                 "Annexed by " +
                   currentState.name +
                   ", originally " +
@@ -762,15 +766,15 @@
 
             break;
           case 1:
-            $("#c" + t).append(" Enemy of " + names[v]);
+            $("#tc" + t).append(" Enemy of " + names[v]);
             break;
         }
       }, 10);
       var x;
       var y;
       setInterval(() => {
-        $("#wanderer").appendTo("#c" + Math.floor(Math.random() * 64));
-        if ($("#wanderer").parent().attr("id") == "c30") {
+        $("#wanderer").appendTo("#tc" + Math.floor(Math.random() * 64));
+        if ($("#wanderer").parent().attr("id") == "tc30") {
           wgold++;
           $("#wgold").text(wgold);
         }
@@ -780,11 +784,11 @@
         void saveGameState();
       }, 5000);
       setTimeout(() => {
-        $("#c" + Math.floor(Math.random() * 64)).append(
+        $("#tc" + Math.floor(Math.random() * 64)).append(
           "<img id='wanderer' src='wanderer.png'>",
         );
         for (let landNum of coastalLandNumbers) {
-          $("#c" + landNum).append("<div class='port'>port</div>");
+          $("#tc" + landNum).append("<div class='port'>port</div>");
         }
         console.info(leaderboard);
         var statesWithBoats = new Set();
