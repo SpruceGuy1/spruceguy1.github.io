@@ -749,7 +749,7 @@
       }, 10000);
       setInterval(() => {
         for (let currentBoat of boat) {
-          moveBoat(currentBoat, coastalLandNumbers);
+          moveBoat(currentBoat, coastalLandNumbers, states);
         }
       }, 5000);
       const lobbyChannel = "game_lobby";

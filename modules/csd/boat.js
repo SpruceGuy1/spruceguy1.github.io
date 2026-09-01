@@ -14,6 +14,7 @@ export function createBoat(state, boat, portLandNum) {
     location: portLandNum,
     y: Math.floor(portLandNum / 8),
     x: portLandNum % 8,
+    state:state
   });
 }
 
@@ -26,8 +27,9 @@ export function createBoat(state, boat, portLandNum) {
  */
 export function moveBoat(
   currentBoat,
-  coastalLandNumbers,
+  coastalLandNumbers,states,
   random = Math.random,
+
 ) {
   var destinations = coastalLandNumbers;
   if (coastalLandNumbers.length > 1) {
@@ -42,7 +44,17 @@ export function moveBoat(
   var destination = destinations[Math.floor(random() * destinations.length)];
   $("#boat-" + currentBoat.id).appendTo("#c" + destination);
   currentBoat.location = destination;
+  var origin = [currentBoat.x, currentBoat.y]
   currentBoat.y = Math.floor(destination / 8);
   currentBoat.x = destination % 8;
+  if(random()<1/3){
+    states[origin[0]+8*origin[1]].gold-=(states[origin[0]+8*origin[1]].gold>0?0.5:0)
+    states[destination].gold++
+    $("#g"+destination).text(states[destination].gold)
+    $("#g"+(origin[0]+8*origin[1])).text(states[origin[0]+8*origin[1]].gold)
+
+
+
+  }
   return destination;
 }
