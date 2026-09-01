@@ -5,7 +5,7 @@
  * @param {number} portLandNum - Initial port cell owned by the state.
  */
 export function createBoat(state, boat, portLandNum) {
-  $("#c" + portLandNum).append(
+  $("#tc" + portLandNum).append(
     "<div class='boat origin-" + state.loc + "' id='boat-" + boat.length + "'>",
   );
   boat.push({
@@ -42,7 +42,7 @@ export function moveBoat(
   }
 
   var destination = destinations[Math.floor(random() * destinations.length)];
-  $("#boat-" + currentBoat.id).appendTo("#c" + destination);
+  $("#boat-" + currentBoat.id).appendTo("#tc" + destination);
   currentBoat.location = destination;
   currentBoat.y = Math.floor(destination / 8);
   currentBoat.x = destination % 8;

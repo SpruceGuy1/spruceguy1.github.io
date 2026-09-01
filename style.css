@@ -111,8 +111,8 @@ button {
   height: 16px;
 }
 .port {
-  height: auto;
-  width: auto;
+  box-sizing: border-box;
+  max-width: 100%;
   border: 1px dashed #204080;
 }
 .boat {
@@ -121,6 +121,21 @@ button {
   background-color: #c09060;
   color: gold;
 }
-.fixtd > td {
+.country-sim-table {
+  table-layout: fixed;
+  width: 1024px;
+}
+.fixtd .country-sim-table .territory-cell {
+  box-sizing: border-box;
+  width: 128px;
   height: 128px;
+  padding: 0;
+  vertical-align: top;
+}
+.territory-content {
+  position: relative;
+  box-sizing: border-box;
+  width: 128px;
+  height: 128px;
+  overflow: hidden;
 }

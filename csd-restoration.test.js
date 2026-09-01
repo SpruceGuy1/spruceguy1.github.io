@@ -74,7 +74,7 @@ assert.equal(context.applyGameState(payload), true);
 assert.equal(context.states[30].gold, 30, "each state's gold is restored");
 
 const landNum = 12;
-assert.equal($("#c" + landNum).text(), payload.land[landNum].name);
+assert.equal($("#tc" + landNum).text(), payload.land[landNum].name);
 assert.equal(
   context.getClickedOwner(landNum).name,
   payload.states[landNum].name,
