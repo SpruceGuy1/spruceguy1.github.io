@@ -50,7 +50,7 @@ export function moveBoat(
   if (random() < 1 / 3) {
     states[origin[0] + 8 * origin[1]].gold -=
       states[origin[0] + 8 * origin[1]].gold > 0 ? 0.5 : 0;
-    states[destination].gold+=0.5;
+    states[destination].gold += 0.5;
     $("#g" + destination).text(states[destination].gold);
     $("#g" + (origin[0] + 8 * origin[1])).text(
       states[origin[0] + 8 * origin[1]].gold,
