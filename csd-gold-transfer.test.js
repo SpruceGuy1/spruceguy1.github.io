@@ -8,7 +8,7 @@ const model = html.slice(
   html.indexOf("function randomColor"),
 );
 const generation = html.slice(
-  html.indexOf("function generateCountry30Gold"),
+  html.indexOf("function generateGold"),
   html.indexOf("function getNeighboringCellIndices"),
 );
 const stateDetails = html.slice(
@@ -51,6 +51,7 @@ this.Land = Land;
 this.State = State;
 this.states = states;
 this.landOwners = landOwners;
+this.generateGold = generateGold;
 this.generateCountry30Gold = generateCountry30Gold;
 this.showStateDetails = showStateDetails;`,
   context,
@@ -96,23 +97,28 @@ const country30Ally = new context.State("ffff00", "Country 30 Ally", 4);
 context.states[4] = country30Ally;
 country30.ally(country30Ally);
 context.generateCountry30Gold(() => 0);
-assert.equal(country30.gold, 1, "Country 30 transfers one generated gold");
-assert.equal(country30Ally.gold, 1, "an active ally receives one gold");
-assert.equal(displayedText.get("#g30"), 1);
-assert.equal(displayedText.get("#g4"), 1);
+assert.equal(country30.gold, 1.5, "Country 30 transfers 0.5 generated gold");
+assert.equal(country30Ally.gold, 0.5, "an active ally receives 0.5 gold");
+assert.equal(displayedText.get("#g30"), 1.5);
+assert.equal(displayedText.get("#g4"), 0.5);
 assert.match(
   displayedText.get("#gold-status"),
-  /transferred 1 gold.*Country 30 Ally/,
+  /transferred 0\.5 gold.*Country 30 Ally/,
 );
 
 assert.equal(context.showStateDetails(country30), true);
-assert.match(alerts.at(-1), /Country 30\nArea: 1\nGold: 1/);
+assert.match(alerts.at(-1), /Country 30\nArea: 1\nGold: 1\.5/);
 assert.doesNotThrow(() => clickHandler.call({ id: "c30" }));
-assert.match(alerts.at(-1), /Country 30\nArea: 1\nGold: 1/);
+assert.match(alerts.at(-1), /Country 30\nArea: 1\nGold: 1\.5/);
 
 context.landOwners[9] = 9;
 assert.doesNotThrow(() => clickHandler.call({ id: "c9" }));
 assert.equal(alerts.at(-1), "No active state owns this territory.");
+assert.equal(
+  context.generateGold(9, () => 0),
+  false,
+  "unowned land does not generate gold",
+);
 
 const defender = new context.State("0000ff", "Defender", 3);
 const capturedLand = new context.Land("Captured", 9);
@@ -122,7 +128,13 @@ defender.gold = 8;
 context.states[3] = defender;
 context.landOwners[3] = 3;
 context.landOwners[9] = 3;
+assert.equal(
+  context.generateGold(9, () => 0),
+  true,
+);
+assert.equal(defender.gold, 9, "captured land credits its active owner");
+assert.equal(displayedText.get("#g3"), 9);
 assert.equal(sender.annex(capturedLand), true);
-assert.equal(defender.gold, 8, "annexation preserves a surviving state's gold");
+assert.equal(defender.gold, 9, "annexation preserves a surviving state's gold");
 
 console.log("gold transfer regression checks passed");
