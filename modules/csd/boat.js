@@ -44,17 +44,31 @@ export function moveBoat(
   var destination = destinations[Math.floor(random() * destinations.length)];
   $("#boat-" + currentBoat.id).appendTo("#c" + destination);
   currentBoat.location = destination;
-  var origin = [currentBoat.x, currentBoat.y];
   currentBoat.y = Math.floor(destination / 8);
   currentBoat.x = destination % 8;
   if (random() < 1 / 3) {
-    states[origin[0] + 8 * origin[1]].gold -=
-      states[origin[0] + 8 * origin[1]].gold > 0 ? 0.5 : 0;
-    states[destination].gold += 0.5;
-    $("#g" + destination).text(states[destination].gold);
-    $("#g" + (origin[0] + 8 * origin[1])).text(
-      states[origin[0] + 8 * origin[1]].gold,
+    var originOwner = currentBoat.state;
+    var destinationOwner = states.find(
+      (state) =>
+        state &&
+        states[state.loc] === state &&
+        Array.isArray(state.land) &&
+        state.land.some((territory) => territory.num === destination),
     );
+    if (
+      originOwner &&
+      states[originOwner.loc] === originOwner &&
+      destinationOwner &&
+      destinationOwner !== originOwner &&
+      Number.isFinite(originOwner.gold) &&
+      Number.isFinite(destinationOwner.gold)
+    ) {
+      var transferAmount = Math.min(0.5, Math.max(0, originOwner.gold));
+      originOwner.gold -= transferAmount;
+      destinationOwner.gold += transferAmount;
+      $("#g" + destinationOwner.loc).text(destinationOwner.gold);
+      $("#g" + originOwner.loc).text(originOwner.gold);
+    }
   }
   return destination;
 }

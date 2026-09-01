@@ -352,10 +352,15 @@
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
       ];
       function generateGold(num, random = Math.random) {
-        var country30 = states[num];
-        country30.gold += levels[num];
-        $("#g" + num).text(country30.gold);
-        var activeAllies = country30.alliances
+        var ownerLoc = landOwners[num];
+        var owner = states[ownerLoc];
+        if (!(owner instanceof State) || states[owner.loc] !== owner) {
+          return false;
+        }
+
+        owner.gold += levels[num];
+        $("#g" + ownerLoc).text(owner.gold);
+        var activeAllies = owner.alliances
           .map((allyLoc) => states[allyLoc])
           .filter((ally) => ally instanceof State && states[ally.loc] === ally);
         if (activeAllies.length === 0) {
@@ -365,8 +370,8 @@
         var recipient =
           activeAllies[Math.floor(random() * activeAllies.length)];
 
-        if (country30.transferGold(recipient, 0.5)) {
-          $("#g" + num).text(country30.gold);
+        if (owner.transferGold(recipient, 0.5)) {
+          $("#g" + ownerLoc).text(owner.gold);
           $("#g" + recipient.loc).text(recipient.gold);
         }
         return true;
