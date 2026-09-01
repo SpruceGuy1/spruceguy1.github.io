@@ -12,10 +12,51 @@ export function createBoat(state, boat, portLandNum) {
     origin: portLandNum,
     id: boat.length,
     location: portLandNum,
+    ownerLoc: state.loc,
+    gold: 0,
     y: Math.floor(portLandNum / 8),
     x: portLandNum % 8,
-    state: state,
   });
+}
+
+/**
+ * Loads one gold from the boat's active owner.
+ * @returns {Object|undefined} The state that supplied the gold.
+ */
+export function loadBoatGold(currentBoat, states) {
+  var owner = states[currentBoat.ownerLoc];
+  if (
+    !owner ||
+    owner.loc !== currentBoat.ownerLoc ||
+    currentBoat.gold !== 0 ||
+    owner.gold < 1
+  ) {
+    return undefined;
+  }
+
+  owner.gold -= 1;
+  currentBoat.gold = 1;
+  return owner;
+}
+
+/**
+ * Delivers the boat's cargo to the active owner of its current port.
+ * @returns {Object|undefined} The state that received the cargo.
+ */
+export function deliverBoatGold(currentBoat, states, landOwners) {
+  var destinationOwnerLoc = landOwners[currentBoat.location];
+  var destinationOwner = states[destinationOwnerLoc];
+  if (
+    !destinationOwner ||
+    destinationOwner.loc !== destinationOwnerLoc ||
+    currentBoat.gold <= 0
+  ) {
+    return undefined;
+  }
+
+  destinationOwner.gold += currentBoat.gold;
+  currentBoat.gold = 0;
+  return destinationOwner;
 }
 
 /**
@@ -28,7 +69,6 @@ export function createBoat(state, boat, portLandNum) {
 export function moveBoat(
   currentBoat,
   coastalLandNumbers,
-  states,
   random = Math.random,
 ) {
   var destinations = coastalLandNumbers;
@@ -44,17 +84,7 @@ export function moveBoat(
   var destination = destinations[Math.floor(random() * destinations.length)];
   $("#boat-" + currentBoat.id).appendTo("#c" + destination);
   currentBoat.location = destination;
-  var origin = [currentBoat.x, currentBoat.y];
   currentBoat.y = Math.floor(destination / 8);
   currentBoat.x = destination % 8;
-  if (random() < 1 / 3) {
-    states[origin[0] + 8 * origin[1]].gold -=
-      states[origin[0] + 8 * origin[1]].gold > 0 ? 0.5 : 0;
-    states[destination].gold++;
-    $("#g" + destination).text(states[destination].gold);
-    $("#g" + (origin[0] + 8 * origin[1])).text(
-      states[origin[0] + 8 * origin[1]].gold,
-    );
-  }
   return destination;
 }

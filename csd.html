@@ -41,7 +41,12 @@
       Change font
     </button>
     <script type="module">
-      import { createBoat, moveBoat } from "./modules/csd/boat.js";
+      import {
+        createBoat,
+        deliverBoatGold,
+        loadBoatGold,
+        moveBoat,
+      } from "./modules/csd/boat.js";
       var boat = [];
       var i = 0;
 
@@ -351,11 +356,16 @@
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
       ];
-      function generateGold(num, random = Math.random) {
-        var country30 = states[num];
-        country30.gold += levels[num];
-        $("#g" + num).text(country30.gold);
-        var activeAllies = country30.alliances
+      function generateGold(landNum, random = Math.random) {
+        var ownerLoc = landOwners[landNum];
+        var currentState = states[ownerLoc];
+        if (!currentState || currentState.loc !== ownerLoc) {
+          return false;
+        }
+
+        currentState.gold += levels[ownerLoc];
+        $("#g" + ownerLoc).text(currentState.gold);
+        var activeAllies = currentState.alliances
           .map((allyLoc) => states[allyLoc])
           .filter((ally) => ally instanceof State && states[ally.loc] === ally);
         if (activeAllies.length === 0) {
@@ -365,8 +375,8 @@
         var recipient =
           activeAllies[Math.floor(random() * activeAllies.length)];
 
-        if (country30.transferGold(recipient, 0.5)) {
-          $("#g" + num).text(country30.gold);
+        if (currentState.transferGold(recipient, 0.5)) {
+          $("#g" + ownerLoc).text(currentState.gold);
           $("#g" + recipient.loc).text(recipient.gold);
         }
         return true;
@@ -749,7 +759,28 @@
       }, 10000);
       setInterval(() => {
         for (let currentBoat of boat) {
-          moveBoat(currentBoat, coastalLandNumbers, states);
+          var cargoOwner = loadBoatGold(currentBoat, states);
+          if (cargoOwner) {
+            $("#g" + cargoOwner.loc).text(cargoOwner.gold);
+            $("#gold-status").text(`${cargoOwner.name}'s boat loaded 1 gold.`);
+          }
+
+          var destinationLandNum = moveBoat(currentBoat, coastalLandNumbers);
+          if (destinationLandNum === undefined) {
+            continue;
+          }
+
+          var destinationOwner = deliverBoatGold(
+            currentBoat,
+            states,
+            landOwners,
+          );
+          if (destinationOwner) {
+            $("#g" + destinationOwner.loc).text(destinationOwner.gold);
+            $("#gold-status").text(
+              `${destinationOwner.name} received 1 gold by boat.`,
+            );
+          }
         }
       }, 5000);
       const lobbyChannel = "game_lobby";

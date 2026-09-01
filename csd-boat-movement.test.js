@@ -22,7 +22,11 @@ const context = {
 };
 vm.createContext(context);
 vm.runInContext(
-  `${source}\nthis.createBoat = createBoat; this.moveBoat = moveBoat;`,
+  `${source}
+this.createBoat = createBoat;
+this.loadBoatGold = loadBoatGold;
+this.deliverBoatGold = deliverBoatGold;
+this.moveBoat = moveBoat;`,
   context,
 );
 
@@ -33,7 +37,23 @@ const createdBoat = boats[0];
 
 assert.equal(createdBoat.origin, 7, "the boat starts at its source port");
 assert.equal(createdBoat.location, 7);
+assert.equal(createdBoat.ownerLoc, 12);
+assert.equal(createdBoat.gold, 0);
 assert.equal(parents.get("#boat-0"), "#c7");
+
+const owner = { loc: 12, name: "Owner", gold: 3 };
+const recipient = { loc: 4, name: "Recipient", gold: 5 };
+const states = [];
+states[4] = recipient;
+states[12] = owner;
+const landOwners = [];
+landOwners[63] = 4;
+const initialTotal = owner.gold + recipient.gold + createdBoat.gold;
+
+assert.equal(context.loadBoatGold(createdBoat, states), owner);
+assert.equal(owner.gold, 2, "loading debits the active owner");
+assert.equal(createdBoat.gold, 1, "the loaded gold becomes boat cargo");
+assert.equal(owner.gold + recipient.gold + createdBoat.gold, initialTotal);
 
 const destination = context.moveBoat(
   createdBoat,
@@ -47,8 +67,34 @@ assert.equal(createdBoat.location, 63);
 assert.equal(createdBoat.x, 7);
 assert.equal(createdBoat.y, 7);
 assert.equal(createdBoat.origin, 7, "movement preserves the source port");
+assert.equal(
+  context.deliverBoatGold(createdBoat, states, landOwners),
+  recipient,
+);
+assert.equal(recipient.gold, 6, "the destination-port owner receives cargo");
+assert.equal(createdBoat.gold, 0, "delivered cargo leaves the boat");
+assert.equal(owner.gold + recipient.gold + createdBoat.gold, initialTotal);
 
-const states = [{ loc: 0 }, undefined, { loc: 2 }];
+states[12] = undefined;
+assert.equal(context.loadBoatGold(createdBoat, states), undefined);
+assert.equal(createdBoat.gold, 0, "an eliminated owner cannot load cargo");
+
+createdBoat.gold = 1;
+landOwners[createdBoat.location] = 4;
+assert.equal(
+  context.deliverBoatGold(createdBoat, states, landOwners),
+  recipient,
+  "a loaded boat can deliver after its owner is eliminated",
+);
+assert.equal(createdBoat.gold, 0);
+
+createdBoat.gold = 1;
+landOwners[createdBoat.location] = 9;
+assert.doesNotThrow(() =>
+  context.deliverBoatGold(createdBoat, states, landOwners),
+);
+assert.equal(createdBoat.gold, 1, "cargo is retained without an active owner");
+
 assert.equal(states[1], undefined, "the fixture contains an eliminated state");
 assert.doesNotThrow(() =>
   boats.forEach((currentBoat) =>
