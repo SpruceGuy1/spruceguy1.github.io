@@ -34,10 +34,21 @@ this.activeState = activeState;`,
 );
 
 assert.doesNotThrow(() =>
-  vm.runInContext(`${levelUpdateLoop}\nthis.callbackContinued = true;`, context),
+  vm.runInContext(
+    `${levelUpdateLoop}\nthis.callbackContinued = true;`,
+    context,
+  ),
 );
-assert.equal(context.levels[2], 3, "the active state's level updates from gold");
+assert.equal(
+  context.levels[2],
+  3,
+  "the active state's level updates from gold",
+);
 assert.deepEqual(Array.from(context.leaderboard), [context.activeState]);
-assert.equal(context.callbackContinued, true, "the simulation callback continues");
+assert.equal(
+  context.callbackContinued,
+  true,
+  "the simulation callback continues",
+);
 
 console.log("level update regression checks passed");
