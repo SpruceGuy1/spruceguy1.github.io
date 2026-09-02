@@ -387,7 +387,7 @@
         }
 
         var country30 = states[30];
-        country30.gold += levels[30];
+        country30.gold += Math.round(Math.sqrt(levels[30]));
         $("#g30").text(country30.gold);
         var activeAllies = country30.alliances
           .map((allyLoc) => states[allyLoc])
@@ -692,7 +692,7 @@
           var t = Math.floor(Math.random() * 64);
           var u = Math.floor(Math.random() * 6);
           var currentState = states[t];
-          if (levels[t] > 5) {
+          if (levels[t] > 1) {
             return;
           }
           if (!currentState) {
@@ -734,7 +734,7 @@
         var t = Math.floor(Math.random() * 64);
         var u = Math.floor(Math.random() * 6);
         var currentState = states[t];
-        if (levels[t] <= 5) {
+        if (levels[t] <= 1) {
           return;
         }
         if (!currentState) {
