@@ -5,9 +5,9 @@
       "rega": "^\\s*(?:i\\s+)?am\\.?\\s*$",
       "flags": "i"
     },
-    { "q": "I am", "rega": "/sum.?", "flags": "i" },
-    { "q": "You are", "rega": "/es.?", "flags": "i" },
-    { "q": "Horse", "rega": "/ekʷe.?", "flags": "i" },
-    { "q": "You are a horse", "rega": "/(ekʷe es|es ekʷe).?", "flags": "i" }
+    { "q": "I am", "rega": "sum.?", "flags": "i" },
+    { "q": "You are", "rega": "es.?", "flags": "i" },
+    { "q": "Horse", "rega": "ekʷe.?", "flags": "i" },
+    { "q": "You are a horse", "rega": "(ekʷe es|es ekʷe).?", "flags": "i" }
   ]
 }

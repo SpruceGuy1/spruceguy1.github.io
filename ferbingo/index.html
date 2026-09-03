@@ -232,20 +232,45 @@
           name = skill.charAt(0).toUpperCase() + skill.slice(1);
         }
         $("#skill").text(name);
+        render();
       });
       function render() {
-        $("#questions").text(questions[skill][questionProgress[skill]].q);
-        $("#qStatus").text("Not answered yet");
-        if (questions[skill][questionProgress[skill]].rega) {
+        const currentQuestion = questions[skill]?.[questionProgress[skill]];
+
+        if (!currentQuestion) {
+          $("#questions").text("No questions available.");
+          $("#answer-area").empty();
+          $("#qstatus").text("No questions available for this skill.");
+          $("#check").prop("disabled", true);
+          return;
+        }
+
+        $("#questions").text(currentQuestion.q);
+        $("#qstatus").text("Not answered yet");
+        $("#check").prop("disabled", false);
+        if (currentQuestion.rega) {
           $("#answer-area").html("<input id='userAnswer'>");
+        } else {
+          $("#answer-area").empty();
         }
       }
       $("#check").click(function () {
-        var regex = new RegExp(questions[skill][questionProgress[skill]].rega);
+        const skillQuestions = questions[skill];
+        const currentQuestion = skillQuestions?.[questionProgress[skill]];
+        if (!currentQuestion?.rega) return;
+
+        var regex = new RegExp(currentQuestion.rega, currentQuestion.flags);
         if (regex.test($("#userAnswer").val())) {
-          $("#qStatus").text("Correct answer!");
+          $("#qstatus").text("Correct answer!");
           questionProgress[skill]++;
-          render();
+          if (questionProgress[skill] >= skillQuestions.length) {
+            $("#questions").text("All questions completed.");
+            $("#answer-area").empty();
+            $("#qstatus").text("Skill complete!");
+            $("#check").prop("disabled", true);
+          } else {
+            render();
+          }
         }
       });
       render();
