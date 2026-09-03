@@ -1,4 +1,6 @@
-{"translation":[
-  { "q": "sum", "rega": "/\\b(i\\s+)?am\\b.?/i" },
-  { "q": "I am", "rega": "/sum.?/i" }
-]}
+{
+  "translation": [
+    { "q": "sum", "rega": "/\\b(i\\s+)?am\\b.?/i" },
+    { "q": "I am", "rega": "/sum.?/i" }
+  ]
+}
