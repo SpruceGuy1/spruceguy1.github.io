@@ -239,18 +239,15 @@
           $("#answer-area").html("<input id='userAnswer'>");
         }
       }
-      $("#check").click(function(){
-                var regex =            new RegExp(questions[skill][questionProgress[skill]].rega
-
-                )
-                if(regex.test($("#userAnswer").val())){
-                  $("#qStatus").text("Correct answer!")
-                  questionProgress[skill]++
-                  render()
-                }
-
-      })
-      render()
+      $("#check").click(function () {
+        var regex = new RegExp(questions[skill][questionProgress[skill]].rega);
+        if (regex.test($("#userAnswer").val())) {
+          $("#qStatus").text("Correct answer!");
+          questionProgress[skill]++;
+          render();
+        }
+      });
+      render();
     </script>
   </body>
 </html>
