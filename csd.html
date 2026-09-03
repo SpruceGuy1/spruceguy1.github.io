@@ -370,6 +370,40 @@
         return true;
       }
 
+      function handleBoatArrivalAction(
+        currentBoat,
+        destinationLandNum,
+        random = Math.random,
+      ) {
+        if (random() >= 0.5) {
+          return handleBoatArrival(currentBoat, destinationLandNum);
+        }
+
+        var originOwner = currentBoat.state;
+        var destinationOwner = states[landOwners[destinationLandNum]];
+        if (
+          !originOwner ||
+          states[originOwner.loc] !== originOwner ||
+          !destinationOwner ||
+          destinationOwner === originOwner ||
+          !Number.isFinite(originOwner.gold) ||
+          !Number.isFinite(destinationOwner.gold)
+        ) {
+          return false;
+        }
+
+        var transferAmount = Math.min(0.5, Math.max(0, originOwner.gold));
+        if (transferAmount === 0) {
+          return false;
+        }
+
+        originOwner.gold -= transferAmount;
+        destinationOwner.gold += transferAmount;
+        $("#g" + originOwner.loc).text(originOwner.gold);
+        $("#g" + destinationOwner.loc).text(destinationOwner.gold);
+        return true;
+      }
+
       $("td").click(function () {
         handleTerritoryClick(this);
       });
@@ -840,7 +874,7 @@
             landOwners,
           );
           if (destinationLandNum !== undefined) {
-            handleBoatArrival(currentBoat, destinationLandNum);
+            handleBoatArrivalAction(currentBoat, destinationLandNum);
           }
         }
       }, 5000);

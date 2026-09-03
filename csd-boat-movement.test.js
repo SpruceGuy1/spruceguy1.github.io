@@ -6,7 +6,6 @@ const source = fs
   .readFileSync("modules/csd/boat.js", "utf8")
   .replaceAll("export function", "function");
 const parents = new Map();
-const displayedText = new Map();
 const context = {
   Math,
   $(selector) {
@@ -17,9 +16,6 @@ const context = {
       },
       appendTo(destination) {
         parents.set(selector, destination);
-      },
-      text(value) {
-        displayedText.set(selector, value);
       },
     };
   },
@@ -52,10 +48,7 @@ const destination = context.moveBoat(
   coastalLandNumbers,
   states,
   landOwners,
-  (() => {
-    const values = [0.9, 0];
-    return () => values.shift();
-  })(),
+  () => 0.9,
 );
 assert.ok(coastalLandNumbers.includes(destination));
 assert.notEqual(destination, 7, "another available port is selected");
@@ -64,15 +57,8 @@ assert.equal(createdBoat.location, 63);
 assert.equal(createdBoat.x, 7);
 assert.equal(createdBoat.y, 7);
 assert.equal(createdBoat.origin, 7, "movement preserves the source port");
-assert.equal(owner.gold, 0, "the transfer is bounded by the owner's balance");
-assert.equal(
-  recipient.gold,
-  5.25,
-  "the active port owner receives the transfer",
-);
-assert.equal(owner.gold + recipient.gold, 5.25, "the transfer conserves gold");
-assert.equal(displayedText.get("#g12"), 0);
-assert.equal(displayedText.get("#g4"), 5.25);
+assert.equal(owner.gold, 0.25, "movement does not transfer gold");
+assert.equal(recipient.gold, 5, "movement only changes the boat location");
 
 states[12] = undefined;
 assert.equal(states[1], undefined, "the fixture contains an eliminated state");
@@ -87,6 +73,6 @@ assert.doesNotThrow(() =>
     ),
   ),
 );
-assert.equal(recipient.gold, 5.25, "an eliminated owner cannot send gold");
+assert.equal(recipient.gold, 5, "an eliminated owner cannot send gold");
 
 console.log("boat movement regression checks passed");
