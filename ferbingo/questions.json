@@ -1,6 +1,9 @@
 {
   "translation": [
-    { "q": "sum", "rega": "/\\b(i\\s+)?am\\b.?/i" },
-    { "q": "I am", "rega": "/sum.?/i" }
+{
+  "q": "sum",
+  "rega": "^\\s*(?:i\\s+)?am\\.?\\s*$",
+  "flags": "i"
+},    { "q": "I am", "rega": "/sum.?", "flags":"i"}
   ]
 }
