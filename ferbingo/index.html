@@ -78,7 +78,13 @@
       const loadButton = document.getElementById("load-btn");
 
       let currentUser = null;
-      let questionProgress = {};
+      let questionProgress = {
+        "vocab":0,
+        "orthography":0,
+        "translation":0,
+        "inflection":0,
+        "pronunciation":0
+      };
 
       function getGameData() {
         return {
