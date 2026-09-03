@@ -341,6 +341,35 @@
         return showStateDetails(owner);
       }
 
+      function handleBoatArrival(currentBoat, destinationLandNum) {
+        var attacker = states[currentBoat.state.loc];
+        if (attacker !== currentBoat.state) {
+          return false;
+        }
+
+        var defender = states[landOwners[destinationLandNum]];
+        if (
+          !defender ||
+          defender === attacker ||
+          attacker.alliances.includes(defender.loc)
+        ) {
+          return false;
+        }
+
+        if (!attacker.annex(land[destinationLandNum])) {
+          return false;
+        }
+
+        $("#c" + destinationLandNum).css("background", "#" + attacker.color);
+        $("#tc" + destinationLandNum).text(
+          "Annexed by " +
+            attacker.name +
+            ", originally " +
+            land[destinationLandNum].name,
+        );
+        return true;
+      }
+
       $("td").click(function () {
         handleTerritoryClick(this);
       });
@@ -804,7 +833,15 @@
       }, 10000);
       setInterval(() => {
         for (let currentBoat of boat) {
-          moveBoat(currentBoat, coastalLandNumbers, states);
+          var destinationLandNum = moveBoat(
+            currentBoat,
+            coastalLandNumbers,
+            states,
+            landOwners,
+          );
+          if (destinationLandNum !== undefined) {
+            handleBoatArrival(currentBoat, destinationLandNum);
+          }
         }
       }, 5000);
       const lobbyChannel = "game_lobby";

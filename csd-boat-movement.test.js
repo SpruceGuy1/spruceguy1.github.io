@@ -35,8 +35,11 @@ const coastalLandNumbers = [0, 7, 63];
 const owner = { loc: 12, gold: 0.25, land: [{ num: 7 }] };
 const recipient = { loc: 4, gold: 5, land: [{ num: 63 }] };
 const states = [];
+const landOwners = [];
 states[4] = recipient;
 states[12] = owner;
+landOwners[7] = 12;
+landOwners[63] = 4;
 context.createBoat(owner, boats, 7);
 const createdBoat = boats[0];
 
@@ -48,6 +51,7 @@ const destination = context.moveBoat(
   createdBoat,
   coastalLandNumbers,
   states,
+  landOwners,
   (() => {
     const values = [0.9, 0];
     return () => values.shift();
@@ -74,7 +78,9 @@ states[12] = undefined;
 assert.equal(states[1], undefined, "the fixture contains an eliminated state");
 assert.doesNotThrow(() =>
   boats.forEach((currentBoat) =>
-    context.moveBoat(currentBoat, coastalLandNumbers, states, () => 0),
+    context.moveBoat(currentBoat, coastalLandNumbers, states, landOwners, () =>
+      0,
+    ),
   ),
 );
 assert.equal(recipient.gold, 5.25, "an eliminated owner cannot send gold");
