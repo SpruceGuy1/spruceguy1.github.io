@@ -47,13 +47,9 @@
     </fieldset>
     <fieldset>
       <legend>Questions</legend>
-      <p id="skill">Vocabulary</p>
+      <p id="skill">Translation</p>
       <select id="choose-skill">
-        <option id="vocab">Vocabulary</option>
-        <option id="orthography">Orthography</option>
-        <option id="translation">Translation</option>
-        <option id="inflection">Inflection</option>
-        <option id="pronunciation">Pronunciation</option>
+        <option value="translation">Translation</option>
       </select>
       <div id="questions"></div>
       <p id="answer-area"></p>
@@ -221,18 +217,18 @@
         }
       });
 
-      var skill = "vocab";
+      var skill = "translation";
       $("#choose-skill").change(function () {
         skill = $("#choose-skill").val();
         var name;
-        if ((skill = "vocab")) {
+        if (skill === "vocab") {
           name = "Vocabulary";
         } else {
           name = skill.charAt(0).toUpperCase() + skill.slice(1);
         }
         $("#skill").text(name);
       });
-      $("#question").text(questions[skill][questionProgress[skill]]);
+      $("#questions").text(questions[skill][questionProgress[skill]].q);
     </script>
   </body>
 </html>
