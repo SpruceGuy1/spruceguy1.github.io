@@ -183,11 +183,19 @@ assert.equal(
   false,
 );
 assert.equal(inactiveAttacker.gold, 2);
-assert.equal(activeDefender.gold, 3, "an inactive destination receives no gold");
+assert.equal(
+  activeDefender.gold,
+  3,
+  "an inactive destination receives no gold",
+);
 assert.equal(
   context.handleBoatArrivalAction({ state: inactiveAttacker }, 63, () => 0.9),
   false,
 );
-assert.equal(context.landOwners[63], 4, "an inactive destination is not annexed");
+assert.equal(
+  context.landOwners[63],
+  4,
+  "an inactive destination is not annexed",
+);
 
 console.log("boat annexation regression checks passed");
