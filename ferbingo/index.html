@@ -50,12 +50,10 @@
       <p id="skill">Translation</p>
       <select id="choose-skill">
         <option value="translation">Translation</option>
-                <option value="vocab">Vocabulary</option>
+        <option value="vocab">Vocabulary</option>
         <option value="orthography">Orthography</option>
-                <option value="pronunciation">Pronunciation</option>
+        <option value="pronunciation">Pronunciation</option>
         <option id="inflection">Inflection</option>
-
-
       </select>
       <div id="questions"></div>
       <p id="answer-area"></p>
@@ -234,16 +232,12 @@
         }
         $("#skill").text(name);
       });
-      function render(){
-      $("#questions").text(questions[skill][questionProgress[skill]].q);
-      $("#qStatus").text("Not answered yet")
-      if(      questions[skill][questionProgress[skill]].rega){
-        $("#answer-area").html("<input id='userAnswer'>")
-
-
-
-      }
-
+      function render() {
+        $("#questions").text(questions[skill][questionProgress[skill]].q);
+        $("#qStatus").text("Not answered yet");
+        if (questions[skill][questionProgress[skill]].rega) {
+          $("#answer-area").html("<input id='userAnswer'>");
+        }
       }
       $("#check").click(function(){
                 var regex =            new RegExp(questions[skill][questionProgress[skill]].rega
