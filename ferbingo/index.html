@@ -249,7 +249,7 @@
                 var regex =            new RegExp(questions[skill][questionProgress[skill]].rega
 
                 )
-                if(regex.match($("#userAnswer").val())){
+                if(regex.test($("#userAnswer").val())){
                   $("#qStatus").text("Correct answer!")
                   questionProgress[skill]++
                   render()
