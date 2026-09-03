@@ -22,6 +22,8 @@ export function createBoat(state, boat, portLandNum) {
  * Moves a boat to a randomly selected coastal port.
  * @param {Object} currentBoat - Boat model to move.
  * @param {Array<number>} coastalLandNumbers - Available port cells.
+ * @param {Array<Object>} states - Active states indexed by their original location.
+ * @param {Array<number>} landOwners - State locations indexed by land cell.
  * @param {Function} random - Random number generator used to select a port.
  * @returns {number|undefined} The selected destination cell.
  */
@@ -29,6 +31,7 @@ export function moveBoat(
   currentBoat,
   coastalLandNumbers,
   states,
+  landOwners,
   random = Math.random,
 ) {
   var destinations = coastalLandNumbers;
@@ -48,13 +51,7 @@ export function moveBoat(
   currentBoat.x = destination % 8;
   if (random() < 1 / 3) {
     var originOwner = currentBoat.state;
-    var destinationOwner = states.find(
-      (state) =>
-        state &&
-        states[state.loc] === state &&
-        Array.isArray(state.land) &&
-        state.land.some((territory) => territory.num === destination),
-    );
+    var destinationOwner = states[landOwners[destination]];
     if (
       originOwner &&
       states[originOwner.loc] === originOwner &&
