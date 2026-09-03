@@ -37,12 +37,31 @@
         </label>
         <button type="submit">Register</button>
       </form>
-      <button id="save-btn" type="button" disabled>Save Game</button>
-      <button id="load-btn" type="button" disabled>Load Game</button>
+      <button id="save-btn" type="button" disabled>Save Progress To Your Account</button>
+      <button id="load-btn" type="button" disabled>Get Your Saved Progress</button>
       <div id="status" role="status" aria-live="polite">Loading modules...</div>
     </fieldset>
     <fieldset>
+      
       <legend>Questions</legend>
+      <p id="skill">Vocabulary</p>
+      <select id="choose-skill">
+        <option id="vocab">Vocabulary</option>
+        <option id="orthography">Orthography</option>
+        <option id="translation">Translation</option>
+        <option id="inflection">Inflection</option>
+        <option id="pronunciation">Pronunciation</option>
+
+
+
+
+      </select>
+      <div id="questions">
+
+      </div>
+      <div id="answer-area"></div>
+      <button id="check">Check answer</button>
+      <p id="qstatus">Not answered yet</div>
     </fieldset>
     <script type="module">
       import questions from "./questions.json" with { type: "json" };
