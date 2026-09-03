@@ -37,12 +37,15 @@
         </label>
         <button type="submit">Register</button>
       </form>
-      <button id="save-btn" type="button" disabled>Save Progress To Your Account</button>
-      <button id="load-btn" type="button" disabled>Get Your Saved Progress</button>
+      <button id="save-btn" type="button" disabled>
+        Save Progress To Your Account
+      </button>
+      <button id="load-btn" type="button" disabled>
+        Get Your Saved Progress
+      </button>
       <div id="status" role="status" aria-live="polite">Loading modules...</div>
     </fieldset>
     <fieldset>
-      
       <legend>Questions</legend>
       <p id="skill">Vocabulary</p>
       <select id="choose-skill">
@@ -51,14 +54,8 @@
         <option id="translation">Translation</option>
         <option id="inflection">Inflection</option>
         <option id="pronunciation">Pronunciation</option>
-
-
-
-
       </select>
-      <div id="questions">
-
-      </div>
+      <div id="questions"></div>
       <p id="answer-area"></p>
       <button id="check">Check answer</button>
       <p id="qstatus">Not answered yet</p>
@@ -223,19 +220,19 @@
           }
         }
       });
-        
-var skill = "vocab"
-      $("#choose-skill").change(function(){
-        skill = $("#choose-skill").val()
-        var name
-        if(skill="vocab"){
-          name="Vocabulary"
-        }else{
-          name=skill.charAt(0).toUpperCase() + skill.slice(1);
+
+      var skill = "vocab";
+      $("#choose-skill").change(function () {
+        skill = $("#choose-skill").val();
+        var name;
+        if ((skill = "vocab")) {
+          name = "Vocabulary";
+        } else {
+          name = skill.charAt(0).toUpperCase() + skill.slice(1);
         }
-        $("#skill").text(name)
-      })
-      $("#question").text(questions[skill][questionProgress[skill]])
+        $("#skill").text(name);
+      });
+      $("#question").text(questions[skill][questionProgress[skill]]);
     </script>
   </body>
 </html>
