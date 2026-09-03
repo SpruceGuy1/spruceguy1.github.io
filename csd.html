@@ -1,0 +1,919 @@
+<!doctype html>
+<html>
+  <head>
+    <title>CountrySim D-Luxe</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="style.css" />
+    <script src="//cdn.jsdelivr.net/npm/eruda"></script>
+
+    <script>
+      eruda.init();
+    </script>
+    <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.27.2.min.js"></script>
+
+    <base target="_blank" />
+  </head>
+  <body>
+    Go to Blocks @ <a href="blocks.html">here</a>
+  </body>
+  <body class="fixtd">
+    CountrySim v3.1<br />
+    2026 remake<br />
+    By SpruceGuy<br />
+    <a href="nav.html">Other projects</a>
+    <audio src="My Song 17.m4a" autoplay controls loop></audio>
+    The year is <span id="y">1</span>
+    <table class="country-sim-table">
+      <tr id="r0"></tr>
+      <tr id="r1"></tr>
+      <tr id="r2"></tr>
+      <tr id="r3"></tr>
+      <tr id="r4"></tr>
+      <tr id="r5"></tr>
+      <tr id="r6"></tr>
+      <tr id="r7"></tr>
+    </table>
+    Wanderer has <span id="wgold">0</span> gold
+    <div id="gold-status" aria-live="polite"></div>
+
+    <ol id="lb"></ol>
+    Current font: <span id="font">Clean</span> <br /><button id="cf">
+      Change font
+    </button>
+    <script type="module">
+      import { createBoat, moveBoat } from "./modules/csd/boat.js";
+      var boat = [];
+      var i = 0;
+
+      var j;
+      var states = [];
+      var land = [];
+      var coastalLandNumbers = [
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 15, 16, 23, 24, 31, 32, 39, 40, 47, 48, 55,
+        56, 57, 58, 59, 60, 61, 62, 63,
+      ];
+      var landOwners = [];
+      var year = 1;
+      class Land {
+        constructor(ogname, num) {
+          this.num = num;
+          this.name = ogname;
+        }
+      }
+      class State {
+        constructor(color, name, loc) {
+          this.color = color;
+          this.name = name;
+          this.loc = loc;
+          this.alliances = [];
+          this.area = 1;
+          this.land = [new Land(this.name, this.loc)];
+          this.hasPort = false;
+          this.gold = 0;
+        }
+        ally(n) {
+          this.alliances.push(n.loc);
+          n.alliances.push(this.loc);
+        }
+        transferGold(recipient, amount) {
+          if (
+            !recipient ||
+            states[recipient.loc] !== recipient ||
+            recipient === this ||
+            !this.alliances.includes(recipient.loc) ||
+            !Number.isFinite(amount) ||
+            amount <= 0 ||
+            this.gold < amount
+          ) {
+            return false;
+          }
+
+          this.gold -= amount;
+          recipient.gold += amount;
+          return true;
+        }
+        annex(selectedLand) {
+          var defenderLoc = landOwners[selectedLand.num];
+          var defender = states[defenderLoc];
+          if (
+            !defender ||
+            defender === this ||
+            this.alliances.includes(defender.loc)
+          ) {
+            return false;
+          }
+
+          var defenderLandIndex = defender.land.findIndex(
+            (territory) => territory.num === selectedLand.num,
+          );
+          if (defenderLandIndex === -1) {
+            return false;
+          }
+
+          var transferredLand = defender.land.splice(defenderLandIndex, 1)[0];
+          this.land.push(transferredLand);
+          defender.area = defender.land.length;
+          this.area = this.land.length;
+          landOwners[transferredLand.num] = this.loc;
+
+          if (defender.area === 0) {
+            states[defender.loc] = undefined;
+            for (var state of states) {
+              if (state) {
+                state.alliances = state.alliances.filter(
+                  (allyLoc) => allyLoc !== defender.loc,
+                );
+              }
+            }
+          }
+          return true;
+        }
+      }
+      function randomColor() {
+        return Math.floor(Math.random() * 0x1000000)
+          .toString(16)
+          .padStart(6, "0");
+      }
+      var colors = [
+        "000000",
+        "000080",
+        "0000ff",
+        "008000",
+        "008080",
+        "0080ff",
+        "00ff00",
+        "00ff80",
+        "00ffff",
+        "800000",
+        "800080",
+        "8000ff",
+        "808000",
+        "808080",
+        "8080ff",
+        "80ff00",
+        "80ff80",
+        "80ffff",
+        "ff0000",
+        "ff0080",
+        "ff00ff",
+        "ff8000",
+        "ff8080",
+        "ffff00",
+        "ffff80",
+        "ffffff",
+        ...Array.from({ length: 29 }, randomColor),
+        "804000",
+        "408000",
+        "004080",
+        "008040",
+        "800040",
+        "400080",
+        randomColor(),
+        "ffc080",
+        "4040ff",
+      ];
+      var plosives = ["b", "d", "g", "k", "p", "t", ""];
+      var others = [
+        "c",
+        "ð",
+        "f",
+        "ġ",
+        "ğ",
+        "j",
+        "l",
+        "ļj",
+        "m",
+        "n",
+        "q",
+        "r",
+        "ř",
+        "s",
+        "š",
+        "þ",
+        "v",
+        "w",
+        "ŵ",
+        "x",
+        "z",
+        "ž",
+      ];
+      var addits = [
+        "br",
+        "bl",
+        "dr",
+        "gr",
+        "gl",
+        "gʷ",
+        "kr",
+        "kʷ",
+        "pl",
+        "pr",
+        "st",
+        "sp",
+        "sl",
+        "str",
+        "spr",
+        "tr",
+      ];
+      var cons = [
+        "b",
+        "bb",
+        "c",
+        "ch",
+        "d",
+        "dd",
+        "f",
+        "g",
+        "gh",
+        "h",
+        "j",
+        "k",
+        "kh",
+        "l",
+        "ll",
+        "m",
+        "n",
+        "nn",
+        "mm",
+        "p",
+        "ph",
+        "qu",
+        "r",
+        "rr",
+        "s",
+        "sh",
+        "t",
+        "th",
+        "v",
+        "w",
+        "x",
+        "y",
+        "z",
+      ];
+
+      var ow = [
+        "a",
+        "aa",
+        "ae",
+        "ai",
+        "au",
+        "aw",
+        "e",
+        "ee",
+        "i",
+        "igh",
+        "o",
+        "oa",
+        "oo",
+        "u",
+        "uh",
+        "ue",
+      ];
+      var vow = [
+        "a",
+        "â",
+        "å",
+        "æ",
+        "e",
+        "ė",
+        "ě",
+        "ê",
+        "ë",
+        "i",
+        "ı",
+        "ï",
+        "o",
+        "ö",
+        "u",
+        "ü",
+        "ù",
+      ];
+      var names = [];
+      for (i = 0; i <= 63; i++) {
+        j = Math.floor(i / 8);
+        names[i] =
+          plosives.concat(others).concat(addits)[
+            Math.floor(
+              Math.random() * plosives.concat(others).concat(addits).length,
+            )
+          ] +
+          vow[Math.floor(Math.random() * vow.length)] +
+          plosives.concat(others).concat(addits)[
+            Math.floor(
+              Math.random() * plosives.concat(others).concat(addits).length,
+            )
+          ] +
+          vow[Math.floor(Math.random() * vow.length)] +
+          plosives.concat(others)[
+            Math.floor(Math.random() * plosives.concat(others).length)
+          ];
+        $("#r" + j).append(
+          "<td class='territory-cell' id='c" +
+            i +
+            "'><div class='territory-content' id='tc" +
+            i +
+            "'>" +
+            names[i] +
+            "<br>Gold: <span id='g" +
+            i +
+            "'>0</span></div></td>",
+        );
+        $("#c" + i).css("background", "#" + colors[i]);
+        var territory = new Land(names[i], i);
+        var state = new State(colors[i], names[i], i);
+        state.land = [territory];
+        states.push(state);
+        land.push(territory);
+        landOwners.push(i);
+      }
+      function showStateDetails(owner) {
+        if (!(owner instanceof State) || states[owner.loc] !== owner) {
+          alert("No active state owns this territory.");
+          return false;
+        }
+        alert(`${owner.name}\nArea: ${owner.area}\nGold: ${owner.gold}`);
+        return true;
+      }
+
+      function handleTerritoryClick(cell) {
+        var landNum = Number($(cell).attr("id").substring(1));
+        var owner = states[landOwners[landNum]];
+        return showStateDetails(owner);
+      }
+
+      function handleBoatArrival(currentBoat, destinationLandNum) {
+        var attacker = states[currentBoat.state.loc];
+        if (attacker !== currentBoat.state) {
+          return false;
+        }
+
+        var defender = states[landOwners[destinationLandNum]];
+        if (
+          !defender ||
+          defender === attacker ||
+          attacker.alliances.includes(defender.loc)
+        ) {
+          return false;
+        }
+
+        if (!attacker.annex(land[destinationLandNum])) {
+          return false;
+        }
+
+        $("#c" + destinationLandNum).css("background", "#" + attacker.color);
+        $("#tc" + destinationLandNum).text(
+          "Annexed by " +
+            attacker.name +
+            ", originally " +
+            land[destinationLandNum].name,
+        );
+        return true;
+      }
+
+      function handleBoatArrivalAction(
+        currentBoat,
+        destinationLandNum,
+        random = Math.random,
+      ) {
+        if (random() >= 0.5) {
+          return handleBoatArrival(currentBoat, destinationLandNum);
+        }
+
+        var originOwner = currentBoat.state;
+        var destinationOwner = states[landOwners[destinationLandNum]];
+        if (
+          !originOwner ||
+          states[originOwner.loc] !== originOwner ||
+          !destinationOwner ||
+          destinationOwner === originOwner ||
+          !Number.isFinite(originOwner.gold) ||
+          !Number.isFinite(destinationOwner.gold)
+        ) {
+          return false;
+        }
+
+        var transferAmount = Math.min(0.5, Math.max(0, originOwner.gold));
+        if (transferAmount === 0) {
+          return false;
+        }
+
+        originOwner.gold -= transferAmount;
+        destinationOwner.gold += transferAmount;
+        $("#g" + originOwner.loc).text(originOwner.gold);
+        $("#g" + destinationOwner.loc).text(destinationOwner.gold);
+        return true;
+      }
+
+      $("td").click(function () {
+        handleTerritoryClick(this);
+      });
+      var ctha = [];
+      var wgold = 0;
+      var leaderboard = [];
+      console.log(states);
+      var levels = [
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      ];
+      function generateGold(num, random = Math.random) {
+        var ownerLoc = landOwners[num];
+        var owner = states[ownerLoc];
+        if (!(owner instanceof State) || states[owner.loc] !== owner) {
+          return false;
+        }
+
+        owner.gold += levels[num];
+        $("#g" + ownerLoc).text(owner.gold);
+        var activeAllies = owner.alliances
+          .map((allyLoc) => states[allyLoc])
+          .filter((ally) => ally instanceof State && states[ally.loc] === ally);
+        if (activeAllies.length === 0) {
+          return true;
+        }
+
+        var recipient =
+          activeAllies[Math.floor(random() * activeAllies.length)];
+
+        if (owner.transferGold(recipient, 0.5)) {
+          $("#g" + ownerLoc).text(owner.gold);
+          $("#g" + recipient.loc).text(recipient.gold);
+        }
+        return true;
+      }
+
+      function generateCountry30Gold(random = Math.random) {
+        if (!states[30]) {
+          $("#g30").text(0);
+          $("#gold-status").text("Country 30 is not active.");
+          return false;
+        }
+
+        var country30 = states[30];
+        country30.gold += Math.round(Math.sqrt(levels[30]));
+        $("#g30").text(country30.gold);
+        var activeAllies = country30.alliances
+          .map((allyLoc) => states[allyLoc])
+          .filter((ally) => ally instanceof State && states[ally.loc] === ally);
+        if (activeAllies.length === 0) {
+          $("#gold-status").text(
+            `Country 30 retained ${levels[30]} gold (balance: ${country30.gold}).`,
+          );
+          return true;
+        }
+
+        var recipient =
+          activeAllies[Math.floor(random() * activeAllies.length)];
+
+        if (country30.transferGold(recipient, 0.5)) {
+          $("#g30").text(country30.gold);
+          $("#g" + recipient.loc).text(recipient.gold);
+          $("#gold-status").text(
+            `Country 30 transferred 0.5 gold to ${recipient.name}.`,
+          );
+        }
+        return true;
+      }
+
+      function getNeighboringCellIndices(index) {
+        var row = Math.floor(index / 8);
+        var column = index % 8;
+        var neighbors = [];
+
+        for (var rowOffset = -1; rowOffset <= 1; rowOffset++) {
+          for (var columnOffset = -1; columnOffset <= 1; columnOffset++) {
+            if (rowOffset === 0 && columnOffset === 0) {
+              continue;
+            }
+
+            var candidateRow = row + rowOffset;
+            var candidateColumn = column + columnOffset;
+            if (
+              candidateRow >= 0 &&
+              candidateRow < 8 &&
+              candidateColumn >= 0 &&
+              candidateColumn < 8
+            ) {
+              neighbors.push(candidateRow * 8 + candidateColumn);
+            }
+          }
+        }
+
+        return neighbors;
+      }
+      var fonts = ["Times New Roman", "sans-serif", "handwriting"];
+      var s = 0;
+      var fn = ["Classic", "Clean", "Handwriting"];
+      $("#cf").click(function () {
+        s = (s + 1) % 3;
+        $("td").css("font-family", fonts[s]);
+        $("#font").text(fn[s]);
+      });
+      /*const GAME_STATE_VERSION = 1;
+      const GAME_STATE_ENDPOINT = "/api/game-state";
+      const GAME_STATE_STORAGE_KEY = "countrysim.gameState";
+
+      function isValidLand(savedLand) {
+        return (
+          savedLand !== null &&
+          typeof savedLand === "object" &&
+          typeof savedLand.name === "string" &&
+          savedLand.name.length <= 100 &&
+          !/[<>]/.test(savedLand.name) &&
+          Number.isInteger(savedLand.num) &&
+          savedLand.num >= 0 &&
+          savedLand.num < 64
+        );
+      }
+
+      function applyGameState(payload) {
+        if (
+          payload === null ||
+          typeof payload !== "object" ||
+          payload.version !== GAME_STATE_VERSION ||
+          !Array.isArray(payload.states) ||
+          payload.states.length !== 64 ||
+          !Array.isArray(payload.land) ||
+          payload.land.length !== 64 ||
+          !Array.isArray(payload.alliances) ||
+          payload.alliances.length !== 64 ||
+          !Number.isInteger(payload.year) ||
+          payload.year < 1 ||
+          !payload.land.every(isValidLand)
+        ) {
+          return false;
+        }
+
+        var restoredStates = [];
+        for (var stateIndex = 0; stateIndex < 64; stateIndex++) {
+          var savedState = payload.states[stateIndex];
+          var savedAlliances = payload.alliances[stateIndex];
+          if (
+            !Array.isArray(savedAlliances) ||
+            savedAlliances.length > 64 ||
+            !savedAlliances.every(
+              (ally) => Number.isInteger(ally) && ally >= 0 && ally < 64,
+            )
+          ) {
+            return false;
+          }
+
+          if (savedState === null) {
+            restoredStates.push(undefined);
+            continue;
+          }
+          if (
+            typeof savedState !== "object" ||
+            !/^[0-9a-f]{6}$/i.test(savedState.color) ||
+            typeof savedState.name !== "string" ||
+            savedState.name.length > 100 ||
+            /[<>]/.test(savedState.name) ||
+            !Number.isInteger(savedState.loc) ||
+            savedState.loc !== stateIndex ||
+            !Number.isInteger(savedState.area) ||
+            savedState.area < 1 ||
+            savedState.area > 64 ||
+            typeof savedState.gold !== "number" ||
+            !Number.isFinite(savedState.gold) ||
+            savedState.gold < 0 ||
+            !Array.isArray(savedState.land) ||
+            savedState.land.length === 0 ||
+            savedState.land.length > 64 ||
+            !savedState.land.every(isValidLand)
+          ) {
+            return false;
+          }
+
+          var restoredState = new State(
+            savedState.color,
+            savedState.name,
+            savedState.loc,
+          );
+          restoredState.area = savedState.area;
+          restoredState.gold = savedState.gold;
+          restoredState.land = savedState.land.map(
+            (savedLand) => new Land(savedLand.name, savedLand.num),
+          );
+          restoredState.alliances = savedAlliances.slice();
+          restoredStates.push(restoredState);
+        }
+
+        var restoredLandOwners = Array(64);
+        for (var restoredState of restoredStates) {
+          if (!restoredState) {
+            continue;
+          }
+          if (restoredState.area !== restoredState.land.length) {
+            return false;
+          }
+          for (var territory of restoredState.land) {
+            if (restoredLandOwners[territory.num] !== undefined) {
+              return false;
+            }
+            restoredLandOwners[territory.num] = restoredState.loc;
+          }
+        }
+        if (
+          !Array.from(
+            { length: 64 },
+            (_, landNum) => restoredLandOwners[landNum],
+          ).every((ownerLoc) => ownerLoc !== undefined)
+        ) {
+          return false;
+        }
+
+        states = restoredStates;
+        landOwners = restoredLandOwners;
+        land = payload.land.map(
+          (savedLand) => new Land(savedLand.name, savedLand.num),
+        );
+        for (var restoredState of states) {
+          if (restoredState) {
+            restoredState.land = restoredState.land.map(
+              (territory) => land[territory.num],
+            );
+          }
+        }
+        names = land.map((savedLand) => savedLand.name);
+        year = payload.year;
+        $("#y").text(year);
+        $("#g").text(states[30] ? states[30].gold : 0);
+        for (var restoredState of states) {
+          if (restoredState) {
+            for (var territory of restoredState.land) {
+              $("#tc" + territory.num).text(territory.name);
+              $("#c" + territory.num).css(
+                "background",
+                "#" + restoredState.color,
+              );
+            }
+          }
+        }
+        return true;
+      }
+
+      function createGameStatePayload() {
+        return {
+          version: GAME_STATE_VERSION,
+          states: states,
+          land: land,
+          year: year,
+          alliances: states.map((state) =>
+            state ? state.alliances.slice() : [],
+          ),
+        };
+      }
+
+      async function loadGameState() {
+        try {
+          var localPayload = localStorage.getItem(GAME_STATE_STORAGE_KEY);
+          if (localPayload && applyGameState(JSON.parse(localPayload))) {
+            return;
+          }
+        } catch (error) {
+          console.warn("Unable to load local game state:", error);
+        }
+
+        try {
+          var response = await fetch(GAME_STATE_ENDPOINT);
+          if (response.ok) {
+            applyGameState(await response.json());
+          }
+        } catch (error) {
+          console.warn("Unable to load remote game state:", error);
+        }
+      }
+
+      async function saveGameState() {
+        var payload = createGameStatePayload();
+        var serializedPayload = JSON.stringify(payload);
+        try {
+          localStorage.setItem(GAME_STATE_STORAGE_KEY, serializedPayload);
+        } catch (error) {
+          console.warn("Unable to save local game state:", error);
+        }
+
+        try {
+          var response = await fetch(GAME_STATE_ENDPOINT, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: serializedPayload,
+            keepalive: true,
+          });
+          if (!response.ok) {
+            console.warn("Unable to save remote game state:", response.status);
+          }
+        } catch (error) {
+          console.warn("Unable to save remote game state:", error);
+        }
+      }
+
+      void loadGameState();
+      window.addEventListener("pagehide", () => {
+        void saveGameState();
+      });*/
+      setInterval(() => {
+        generateCountry30Gold();
+
+        if (Math.floor(Math.random() * 6) == 3) {
+          var t = Math.floor(Math.random() * 56) + 8;
+          var currentState = states[landOwners[t]];
+          var adjacentCells = getNeighboringCellIndices(t).filter(
+            (index) => landOwners[index] !== landOwners[t],
+          );
+          var u =
+            adjacentCells[Math.floor(Math.random() * adjacentCells.length)];
+          var adjacentState = states[landOwners[u]];
+          if (
+            currentState &&
+            adjacentState &&
+            currentState.alliances.length <= 3 &&
+            !currentState.alliances.includes(adjacentState.loc)
+          ) {
+            $("#tc" + t).append(" Allied with " + adjacentState.name);
+            currentState.ally(adjacentState);
+          }
+          generateGold(t);
+        }
+        leaderboard = [];
+        for (let j of states) {
+          if (j instanceof State && states[j.loc] === j) {
+            if (j.area >= 2) {
+              leaderboard.push(j);
+            }
+            levels[j.loc] = Math.floor(j.gold / 100) + 1;
+          }
+        }
+        leaderboard.sort((a, b) => b.area - a.area);
+        $("#lb").html("");
+        for (let k of leaderboard) {
+          $("#lb").append("<li>" + k.name + " with " + k.area + " area</li>");
+        }
+
+        console.log("t");
+        if (Math.floor(Math.random() * 6) == 2) {
+          var t = Math.floor(Math.random() * 64);
+          var u = Math.floor(Math.random() * 6);
+          var currentState = states[t];
+          if (levels[t] > 1) {
+            return;
+          }
+          if (!currentState) {
+            return;
+          }
+          var selectedLand =
+            currentState.land[
+              Math.floor(Math.random() * currentState.land.length)
+            ];
+          var adjacentLand = getNeighboringCellIndices(selectedLand.num).filter(
+            (index) => landOwners[index] !== currentState.loc,
+          );
+          if (adjacentLand.length === 0) {
+            return;
+          }
+          var v = adjacentLand[Math.floor(Math.random() * adjacentLand.length)];
+          switch (u) {
+            case 0:
+              var defender = states[landOwners[v]];
+              if (defender && currentState.annex(land[v])) {
+                $("#c" + v).css("background", "#" + currentState.color);
+                $("#tc" + v).text(
+                  "Annexed by " +
+                    currentState.name +
+                    ", originally " +
+                    land[v].name,
+                );
+              }
+
+              break;
+            case 1:
+              $("#tc" + t).append(" Enemy of " + names[v]);
+              break;
+          }
+        }
+        // console.log(leaderboard)
+      }, 100);
+      setInterval(function () {
+        var t = Math.floor(Math.random() * 64);
+        var u = Math.floor(Math.random() * 6);
+        var currentState = states[t];
+        if (levels[t] <= 1) {
+          return;
+        }
+        if (!currentState) {
+          return;
+        }
+        var selectedLand =
+          currentState.land[
+            Math.floor(Math.random() * currentState.land.length)
+          ];
+        var adjacentLand = getNeighboringCellIndices(selectedLand.num).filter(
+          (index) => landOwners[index] !== currentState.loc,
+        );
+        if (adjacentLand.length === 0) {
+          return;
+        }
+        var v = adjacentLand[Math.floor(Math.random() * adjacentLand.length)];
+        switch (u) {
+          case 0:
+            var defender = states[landOwners[v]];
+            if (defender && currentState.annex(land[v])) {
+              $("#c" + v).css("background", "#" + currentState.color);
+              $("#tc" + v).text(
+                "Annexed by " +
+                  currentState.name +
+                  ", originally " +
+                  land[v].name,
+              );
+            }
+
+            break;
+          case 1:
+            $("#tc" + t).append(" Enemy of " + names[v]);
+            break;
+        }
+      }, 10);
+      var x;
+      var y;
+      setInterval(() => {
+        $("#wanderer").appendTo("#tc" + Math.floor(Math.random() * 64));
+        if ($("#wanderer").parent().attr("id") == "tc30") {
+          wgold++;
+          $("#wgold").text(wgold);
+        }
+
+        year++;
+        $("#y").text(year);
+        void saveGameState();
+      }, 5000);
+      setTimeout(() => {
+        $("#tc" + Math.floor(Math.random() * 64)).append(
+          "<img id='wanderer' src='wanderer.png'>",
+        );
+        for (let landNum of coastalLandNumbers) {
+          $("#tc" + landNum).append("<div class='port'>port</div>");
+        }
+        console.info(leaderboard);
+        var statesWithBoats = new Set();
+        for (let portLandNum of coastalLandNumbers) {
+          var ownerLoc = landOwners[portLandNum];
+          var portOwner = states[ownerLoc];
+          if (portOwner && !statesWithBoats.has(ownerLoc)) {
+            portOwner.hasPort = true;
+            createBoat(portOwner, boat, portLandNum);
+            statesWithBoats.add(ownerLoc);
+          }
+        }
+      }, 10000);
+      setInterval(() => {
+        for (let currentBoat of boat) {
+          var destinationLandNum = moveBoat(
+            currentBoat,
+            coastalLandNumbers,
+            states,
+            landOwners,
+          );
+          if (destinationLandNum !== undefined) {
+            handleBoatArrivalAction(currentBoat, destinationLandNum);
+          }
+        }
+      }, 5000);
+      const lobbyChannel = "game_lobby";
+      const gameChannel = "game_instance_" + year;
+      var ign = prompt("What would you like your IGN to be?");
+      /*  var pubnub = new PubNub({
+        publishKey: "pub-c-327bd66c-dba9-4825-9d83-78888e2cebd1",
+        subscribeKey: "sub-c-3fef8705-c927-4394-83a3-481da882cd34",
+        uuid: ign,
+      });
+      var px = 0;
+      var py = 0;
+
+      pubnub.publish({
+        channel: gameChannel,
+        message: {
+          action: "move",
+          player: ign,
+          position: { x: px, y: py },
+        },
+      });
+
+      pubnub.addListener({
+        message: function (event) {
+          // Handle incoming game events (e.g., update player positions)
+          console.log("Received message:", event.message);
+        },
+        presence: function (event) {
+          // Handle player join/leave events
+          console.log("Presence event:", event);
+        },
+      });
+      pubnub.subscribe({
+        channels: [gameChannel],
+        withPresence: true,
+      });*/
+
+      // Script tags should go at the end of the body:
+    </script>
+  </body>
+</html>
