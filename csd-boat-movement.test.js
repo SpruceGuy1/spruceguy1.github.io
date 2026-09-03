@@ -78,8 +78,12 @@ states[12] = undefined;
 assert.equal(states[1], undefined, "the fixture contains an eliminated state");
 assert.doesNotThrow(() =>
   boats.forEach((currentBoat) =>
-    context.moveBoat(currentBoat, coastalLandNumbers, states, landOwners, () =>
-      0,
+    context.moveBoat(
+      currentBoat,
+      coastalLandNumbers,
+      states,
+      landOwners,
+      () => 0,
     ),
   ),
 );

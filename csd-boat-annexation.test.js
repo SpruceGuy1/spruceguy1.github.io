@@ -67,7 +67,11 @@ const boat = { state: attacker, location: 63 };
 assert.equal(context.handleBoatArrival(boat, 63), true);
 assert.equal(attacker.area, 2);
 assert.equal(defender.area, 1);
-assert.equal(context.states[4], defender, "a defender with other land survives");
+assert.equal(
+  context.states[4],
+  defender,
+  "a defender with other land survives",
+);
 assert.equal(context.landOwners[63], 12);
 assert.equal(rendered.get("#c63:background"), "#00000c");
 assert.match(rendered.get("#tc63:text"), /Annexed by Attacker/);
@@ -75,7 +79,11 @@ assert.match(rendered.get("#tc63:text"), /Annexed by Attacker/);
 assert.equal(context.handleBoatArrival(boat, 8), true);
 assert.equal(attacker.area, 3);
 assert.equal(defender.area, 0);
-assert.equal(context.states[4], undefined, "the last-land defender is eliminated");
+assert.equal(
+  context.states[4],
+  undefined,
+  "the last-land defender is eliminated",
+);
 assert.equal(context.landOwners[8], 12);
 
 resetModel();
@@ -98,7 +106,9 @@ assert.equal(
 
 context.states[2] = alliedAttacker;
 context.landOwners[1] = 30;
-assert.doesNotThrow(() => context.handleBoatArrival({ state: alliedAttacker }, 1));
+assert.doesNotThrow(() =>
+  context.handleBoatArrival({ state: alliedAttacker }, 1),
+);
 assert.equal(
   context.handleBoatArrival({ state: alliedAttacker }, 1),
   false,
