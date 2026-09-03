@@ -10,7 +10,9 @@
     { "q": "Horse", "rega": "ekʷe.?", "flags": "i" },
     { "q": "You are a horse", "rega": "(ekʷe es|es ekʷe).?", "flags": "i" }
   ],
-  "vocab":[
-    {"information": "<h1>'Sum' and 'Es'</h1><br><p>'Sum' means 'I am' or 'am'. It is taken directly from Latin. 'Es' means 'you are'. It is similarly taken from Latin."}
+  "vocab": [
+    {
+      "information": "<h1>'Sum' and 'Es'</h1><br><p>'Sum' means 'I am' or 'am'. It is taken directly from Latin. 'Es' means 'you are'. It is similarly taken from Latin."
+    }
   ]
 }
