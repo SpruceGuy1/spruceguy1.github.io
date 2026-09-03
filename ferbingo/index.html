@@ -162,7 +162,10 @@
         status.textContent = "Saving game...";
 
         try {
-          await setDoc(doc(db, "ferbingo_saves", currentUser.uid), getGameData());
+          await setDoc(
+            doc(db, "ferbingo_saves", currentUser.uid),
+            getGameData(),
+          );
           status.textContent = "Game progress saved.";
         } catch (error) {
           showFirebaseError("Save", error);
@@ -188,7 +191,8 @@
           status.textContent = `Loaded save from ${data.lastSaved}.`;
         } catch (error) {
           if (error.message === "invalid-save-data") {
-            status.textContent = "Save data is invalid or uses an unsupported version.";
+            status.textContent =
+              "Save data is invalid or uses an unsupported version.";
           } else {
             showFirebaseError("Load", error);
           }
