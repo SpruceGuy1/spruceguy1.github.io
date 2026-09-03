@@ -1,8 +1,22 @@
 <!doctype html>
 <html>
-  <head> </head>
-  <body>
-    <img src="/images/ferbingo/logo.png" style="height: 40px; width: 160px" />
-    <script></script>
+  <head> 
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/eruda"></script>
+<script>        eruda.init()
+</script>
+  </head>
+  <body lang="en">
+    <img src="/images/ferbingo/logo.png" style="height: 40px; width: 160px" alt="logo of Ferbingo" />
+    <fieldset>
+        <legend>Log-In</legend>
+    </fieldset>
+    <fieldset>
+        <legend>Questions</legend>
+    </fieldset>
+    <script>
+        
+        import questions from 'questions.json' with { type: 'json' };
+    </script>
   </body>
 </html>
