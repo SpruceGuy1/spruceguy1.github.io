@@ -49,23 +49,5 @@ export function moveBoat(
   currentBoat.location = destination;
   currentBoat.y = Math.floor(destination / 8);
   currentBoat.x = destination % 8;
-  if (random() < 1 / 3) {
-    var originOwner = currentBoat.state;
-    var destinationOwner = states[landOwners[destination]];
-    if (
-      originOwner &&
-      states[originOwner.loc] === originOwner &&
-      destinationOwner &&
-      destinationOwner !== originOwner &&
-      Number.isFinite(originOwner.gold) &&
-      Number.isFinite(destinationOwner.gold)
-    ) {
-      var transferAmount = Math.min(0.5, Math.max(0, originOwner.gold));
-      originOwner.gold -= transferAmount;
-      destinationOwner.gold += transferAmount;
-      $("#g" + destinationOwner.loc).text(destinationOwner.gold);
-      $("#g" + originOwner.loc).text(originOwner.gold);
-    }
-  }
   return destination;
 }

@@ -37,7 +37,8 @@ this.State = State;
 this.states = states;
 this.landOwners = landOwners;
 this.land = land;
-this.handleBoatArrival = handleBoatArrival;`,
+this.handleBoatArrival = handleBoatArrival;
+this.handleBoatArrivalAction = handleBoatArrivalAction;`,
   context,
 );
 
@@ -113,6 +114,88 @@ assert.equal(
   context.handleBoatArrival({ state: alliedAttacker }, 1),
   false,
   "a missing destination owner is rejected",
+);
+
+resetModel();
+const transferAttacker = addState("Transfer attacker", 12, [7]);
+const transferDefender = addState("Transfer defender", 4, [63, 8]);
+transferAttacker.gold = 0.25;
+transferDefender.gold = 5;
+const transferArea = transferDefender.area;
+assert.equal(
+  context.handleBoatArrivalAction({ state: transferAttacker }, 63, () => 0.49),
+  true,
+);
+assert.equal(transferAttacker.gold, 0);
+assert.equal(transferDefender.gold, 5.25);
+assert.equal(transferAttacker.gold + transferDefender.gold, 5.25);
+assert.equal(rendered.get("#g12:text"), 0);
+assert.equal(rendered.get("#g4:text"), 5.25);
+assert.equal(context.landOwners[63], 4, "gold transfer does not annex land");
+assert.equal(transferDefender.area, transferArea);
+
+resetModel();
+const exactAttacker = addState("Exact attacker", 12, [7]);
+const exactDefender = addState("Exact defender", 4, [63, 8]);
+exactAttacker.gold = 2;
+exactDefender.gold = 3;
+assert.equal(
+  context.handleBoatArrivalAction({ state: exactAttacker }, 63, () => 0.5),
+  true,
+);
+assert.equal(context.landOwners[63], 12, "a 0.5 roll attempts annexation");
+assert.equal(exactAttacker.gold, 2, "annexation does not debit gold");
+assert.equal(exactDefender.gold, 3, "annexation does not credit gold");
+
+resetModel();
+const highAttacker = addState("High attacker", 12, [7]);
+const highDefender = addState("High defender", 4, [63, 8]);
+assert.equal(
+  context.handleBoatArrivalAction({ state: highAttacker }, 63, () => 0.9),
+  true,
+);
+assert.equal(context.landOwners[63], 12, "a roll above 0.5 annexes");
+assert.equal(highAttacker.area, 2, "only one annexation is performed");
+assert.equal(highDefender.area, 1);
+
+resetModel();
+const inactiveAttacker = addState("Inactive attacker", 12, [7]);
+const activeDefender = addState("Active defender", 4, [63]);
+inactiveAttacker.gold = 2;
+activeDefender.gold = 3;
+context.states[12] = undefined;
+assert.equal(
+  context.handleBoatArrivalAction({ state: inactiveAttacker }, 63, () => 0.1),
+  false,
+);
+assert.equal(inactiveAttacker.gold, 2);
+assert.equal(activeDefender.gold, 3);
+assert.equal(
+  context.handleBoatArrivalAction({ state: inactiveAttacker }, 63, () => 0.9),
+  false,
+);
+assert.equal(context.landOwners[63], 4, "an inactive source cannot annex");
+
+context.states[12] = inactiveAttacker;
+context.states[4] = undefined;
+assert.equal(
+  context.handleBoatArrivalAction({ state: inactiveAttacker }, 63, () => 0.1),
+  false,
+);
+assert.equal(inactiveAttacker.gold, 2);
+assert.equal(
+  activeDefender.gold,
+  3,
+  "an inactive destination receives no gold",
+);
+assert.equal(
+  context.handleBoatArrivalAction({ state: inactiveAttacker }, 63, () => 0.9),
+  false,
+);
+assert.equal(
+  context.landOwners[63],
+  4,
+  "an inactive destination is not annexed",
 );
 
 console.log("boat annexation regression checks passed");
