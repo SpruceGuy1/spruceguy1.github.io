@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/eruda"></script>
@@ -7,20 +7,197 @@
       eruda.init();
     </script>
   </head>
-  <body lang="en">
+  <body>
     <img
       src="/images/ferbingo/logo.png"
       style="height: 40px; width: 160px"
-      alt="logo of Ferbingo"
+      alt="Ferbingo logo"
     />
     <fieldset>
       <legend>Log-In</legend>
+      <form id="login">
+        <label>
+          Login Email
+          <input id="log-email" type="email" required />
+        </label>
+        <label>
+          Password
+          <input id="log-pword" type="password" required />
+        </label>
+        <button type="submit">Log In</button>
+      </form>
+      <form id="register">
+        <label>
+          Register Email
+          <input id="reg-email" type="email" required />
+        </label>
+        <label>
+          Password
+          <input id="reg-pword" type="password" required />
+        </label>
+        <button type="submit">Register</button>
+      </form>
+      <button id="save-btn" type="button" disabled>Save Game</button>
+      <button id="load-btn" type="button" disabled>Load Game</button>
+      <div id="status" role="status" aria-live="polite">Loading modules...</div>
     </fieldset>
     <fieldset>
       <legend>Questions</legend>
     </fieldset>
     <script type="module">
       import questions from "./questions.json" with { type: "json" };
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+        createUserWithEmailAndPassword,
+        signInWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-auth.js";
+      import {
+        getFirestore,
+        doc,
+        setDoc,
+        getDoc,
+      } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyAeINE31darFq72BB4N1WtWDARk9YPxJzY",
+        authDomain: "sapient-origin-462411-t7.firebaseapp.com",
+        projectId: "sapient-origin-462411-t7",
+        storageBucket: "sapient-origin-462411-t7.firebasestorage.app",
+        messagingSenderId: "749880999520",
+        appId: "1:749880999520:web:9246df43f9ecb2279fcd05",
+        measurementId: "G-2HT9YKBXV4",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const db = getFirestore(app);
+      const status = document.getElementById("status");
+      const saveButton = document.getElementById("save-btn");
+      const loadButton = document.getElementById("load-btn");
+
+      let currentUser = null;
+      let questionProgress = {};
+
+      function getGameData() {
+        return {
+          version: 1,
+          questionProgress,
+          lastSaved: new Date().toISOString(),
+        };
+      }
+
+      function applyGameData(data) {
+        const isPlainObject =
+          data?.questionProgress !== null &&
+          typeof data?.questionProgress === "object" &&
+          !Array.isArray(data.questionProgress);
+
+        if (
+          data?.version !== 1 ||
+          !isPlainObject ||
+          typeof data.lastSaved !== "string"
+        ) {
+          throw new Error("invalid-save-data");
+        }
+
+        questionProgress = data.questionProgress;
+      }
+
+      function showFirebaseError(action, error) {
+        const code = error?.code || "unknown-error";
+        status.textContent = `${action} error: ${code}`;
+      }
+
+      onAuthStateChanged(auth, (user) => {
+        currentUser = user;
+        saveButton.disabled = !user;
+        loadButton.disabled = !user;
+        status.textContent = user
+          ? `Signed in as ${user.email}.`
+          : "Not signed in.";
+      });
+
+      document
+        .getElementById("register")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const email = document.getElementById("reg-email").value;
+          const password = document.getElementById("reg-pword").value;
+
+          try {
+            const credential = await createUserWithEmailAndPassword(
+              auth,
+              email,
+              password,
+            );
+            status.textContent = `Registered as ${credential.user.email}.`;
+          } catch (error) {
+            showFirebaseError("Registration", error);
+          }
+        });
+
+      document
+        .getElementById("login")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const email = document.getElementById("log-email").value;
+          const password = document.getElementById("log-pword").value;
+
+          try {
+            const credential = await signInWithEmailAndPassword(
+              auth,
+              email,
+              password,
+            );
+            status.textContent = `Signed in as ${credential.user.email}.`;
+          } catch (error) {
+            showFirebaseError("Login", error);
+          }
+        });
+
+      saveButton.addEventListener("click", async () => {
+        if (!currentUser) return;
+        status.textContent = "Saving game...";
+
+        try {
+          await setDoc(
+            doc(db, "ferbingo_saves", currentUser.uid),
+            getGameData(),
+          );
+          status.textContent = "Game progress saved.";
+        } catch (error) {
+          showFirebaseError("Save", error);
+        }
+      });
+
+      loadButton.addEventListener("click", async () => {
+        if (!currentUser) return;
+        status.textContent = "Loading game...";
+
+        try {
+          const snapshot = await getDoc(
+            doc(db, "ferbingo_saves", currentUser.uid),
+          );
+
+          if (!snapshot.exists()) {
+            status.textContent = "No Ferbingo save found for this account.";
+            return;
+          }
+
+          const data = snapshot.data();
+          applyGameData(data);
+          status.textContent = `Loaded save from ${data.lastSaved}.`;
+        } catch (error) {
+          if (error.message === "invalid-save-data") {
+            status.textContent =
+              "Save data is invalid or uses an unsupported version.";
+          } else {
+            showFirebaseError("Load", error);
+          }
+        }
+      });
     </script>
   </body>
 </html>
