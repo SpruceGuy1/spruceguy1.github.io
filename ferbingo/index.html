@@ -223,6 +223,19 @@
           }
         }
       });
+        
+var skill = "vocab"
+      $("#choose-skill").change(function(){
+        skill = $("#choose-skill").val()
+        var name
+        if(skill="vocab"){
+          name="Vocabulary"
+        }else{
+          name=skill.charAt(0).toUpperCase() + skill.slice(1);
+        }
+        $("#skill").text(name)
+      })
+      
     </script>
   </body>
 </html>
