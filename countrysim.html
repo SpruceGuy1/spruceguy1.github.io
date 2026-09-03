@@ -322,10 +322,6 @@
         $("#y").text(year);
       }, 5000);
       setTimeout(() => {
-        if (!ctha.includes(38)) {
-          $("#c38").css("background", $("#c30").css("background"));
-          $("#c38").text("Annexed territory of " + names[30]);
-        }
         $("#c" + Math.floor(Math.random() * 64)).append(
           "<img id='wanderer' src='wanderer.png'>",
         );
