@@ -248,6 +248,7 @@
         $("#questions").text(currentQuestion.q);
         $("#qstatus").text("Not answered yet");
         $("#check").prop("disabled", false);
+        $("#check").text("Check answer")
         if (currentQuestion.rega) {
           $("#answer-area").html("<input id='userAnswer'>");
         } else {
@@ -257,6 +258,13 @@
       $("#check").click(function () {
         const skillQuestions = questions[skill];
         const currentQuestion = skillQuestions?.[questionProgress[skill]];
+        if(currentQuestion.information){
+          $("#question").html(currentQuestion.information)
+          $("#answer-area").html("")
+          $("#check").text("Continue")
+          $("#go-back").show()
+
+        }
         if (!currentQuestion?.rega) return;
 
         var regex = new RegExp(currentQuestion.rega, currentQuestion.flags);
