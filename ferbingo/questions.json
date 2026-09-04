@@ -10,7 +10,7 @@
     { "q": "Horse", "rega": "^\\s*ekʷe\\.?\\s*$", "flags": "i" },
     {
       "q": "You are a horse",
-      "rega": "^\\s*(ekʷe es|es ekʷe)\\.?\\s*$",
+      "rega": "^\\s*(ekʷe 'es|es ekʷe|ekʷe' es)\\.?\\s*$",
       "flags": "i"
     },
     { "q": "To eat", "rega": "^\\s*edere\\.?\\s*$", "flags": "i" }
