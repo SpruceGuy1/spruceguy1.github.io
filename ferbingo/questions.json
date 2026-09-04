@@ -13,10 +13,19 @@
       "rega": "^\\s*(ekʷe es|es ekʷe)\\.?\\s*$",
       "flags": "i"
     }
+        ,{ "q": "To eat", "rega": "^\\s*edere\\.?\\s*$", "flags": "i" }
+
   ],
   "vocab": [
     {
       "information": "<h1>'Sum' and 'Es'</h1><br><p>'Sum' means 'I am' or 'am'. It is taken directly from Latin. 'Es' means 'you are'. It is similarly taken from Latin."
     }
+  ],
+  "inflection": [
+    {"information": "<h1>-ere verbs of the second conjugation</h1><br><div class='conj2'></div>"}
+    ,    {"information": "<h1>-are verbs of the first conjugation</h1><br><div class='conj1'></div>"}
+,    {"information": "<h1>-ere verbs of the third conjugation</h1><br><div class='conj3'></div>"}
+,    {"information": "<h1>-ire verbs of the fourth conjugation</h1><br><div class='conj4'></div>"}
+
   ]
 }
