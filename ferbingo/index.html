@@ -223,6 +223,17 @@
           }
         }
       });
+      tables.conj2 = `
+        -ere verbs:
+        MOOD VOICE TENSE    SINGULAR             PLURAL
+                          1     2     3     1       2       3
+        INDC ACTV  PRES   -eijo -es   -et   -emus   -etis   -ent
+                   PAST   -ebo  -ebas -ebat -ebamus -ebatis -ebant
+                   FUTURE Present tense + 'vod'
+                   FUT-PFC Past tense + 'vod'
+
+                  
+        `
       for (const i in tables) {
         tables[i] = "<pre>" + tables[i] + "</pre>";
       }
