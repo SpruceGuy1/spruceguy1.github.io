@@ -12,9 +12,8 @@
       "q": "You are a horse",
       "rega": "^\\s*(ekʷe es|es ekʷe)\\.?\\s*$",
       "flags": "i"
-    }
-        ,{ "q": "To eat", "rega": "^\\s*edere\\.?\\s*$", "flags": "i" }
-
+    },
+    { "q": "To eat", "rega": "^\\s*edere\\.?\\s*$", "flags": "i" }
   ],
   "vocab": [
     {
@@ -22,10 +21,17 @@
     }
   ],
   "inflection": [
-    {"information": "<h1>-ere verbs of the second conjugation</h1><br><div class='conj2'></div>"}
-    ,    {"information": "<h1>-are verbs of the first conjugation</h1><br><div class='conj1'></div>"}
-,    {"information": "<h1>-ere verbs of the third conjugation</h1><br><div class='conj3'></div>"}
-,    {"information": "<h1>-ire verbs of the fourth conjugation</h1><br><div class='conj4'></div>"}
-
+    {
+      "information": "<h1>-ere verbs of the second conjugation</h1><br><div class='conj2'></div>"
+    },
+    {
+      "information": "<h1>-are verbs of the first conjugation</h1><br><div class='conj1'></div>"
+    },
+    {
+      "information": "<h1>-ere verbs of the third conjugation</h1><br><div class='conj3'></div>"
+    },
+    {
+      "information": "<h1>-ire verbs of the fourth conjugation</h1><br><div class='conj4'></div>"
+    }
   ]
 }
