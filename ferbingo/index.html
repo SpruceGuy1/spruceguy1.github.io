@@ -63,7 +63,7 @@
     </fieldset>
     <script type="module">
       import questions from "./questions.json" with { type: "json" };
-     // import tables from "./conjugation-tables.js"
+      // import tables from "./conjugation-tables.js"
       import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
       import {
         getAuth,
@@ -224,7 +224,7 @@
         }
       });
       var tables = {
-        conj2:`
+        conj2: `
         -ere verbs:
         MOOD VOICE TENSE    SINGULAR             PLURAL
                           1     2     3     1       2       3
@@ -234,10 +234,10 @@
                    FUT-PFC Past tense + 'vod'
 
                   
-        `
-      }
-      for(i in tables){
-        tables[i] = "<pre>"+tables[i]+"</pre>"
+        `,
+      };
+      for (i in tables) {
+        tables[i] = "<pre>" + tables[i] + "</pre>";
       }
       var skill = "translation";
       $("#choose-skill").change(function () {
@@ -313,15 +313,13 @@
         render();
       });
       render();
-      setInterval(function(){
-        $(".conj-1").html(tables.conj1)
-        $(".conj-2").html(tables.conj2)
+      setInterval(function () {
+        $(".conj-1").html(tables.conj1);
+        $(".conj-2").html(tables.conj2);
 
-                        
-      $(".conj-3").html(tables.conj3)
-        $(".conj-4").html(tables.conj4)
-
-      },1000)
+        $(".conj-3").html(tables.conj3);
+        $(".conj-4").html(tables.conj4);
+      }, 1000);
     </script>
   </body>
 </html>

@@ -1,4 +1,4 @@
- var tables = {
+var tables = {
   conj1: `
   <table>
     <tr>
@@ -51,7 +51,7 @@ Sign
   conj4: ``,
   //TODO: make verb conj tables
 };
-tables.conj1=`<pre>
+tables.conj1 = `<pre>
 Plural
 1st	2nd	3rd	1st	2nd	3rd
 Indicative	Active	Present	-o	-as	-at	-amus	-atis	-ant
@@ -93,4 +93,4 @@ Plural	-anes	-anei
 Agent	Action	Product
 -ator	-atijo	tañge -ate
 Sign
-</pre>`
+</pre>`;
