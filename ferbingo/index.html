@@ -60,6 +60,7 @@
       </select>
       <div id="questions"></div>
       <p id="answer-area"></p>
+      <button id="spec-kw">kʷ</button>
       <button id="check">Check answer</button>
       <p id="qstatus">Not answered yet</p>
     </fieldset>
@@ -225,6 +226,9 @@
           }
         }
       });
+      $("#spec-kw").click(function(){
+        $("#userAnswer").val($("#userAnswer").val()+"kʷ")
+      })
       tables.conj2 = `
         -ere verbs:
         MOOD VOICE TENSE    SINGULAR             PLURAL
