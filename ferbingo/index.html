@@ -284,10 +284,15 @@
         const skillQuestions = questions[skill];
         const currentQuestion = skillQuestions?.[questionProgress[skill]];
         if (currentQuestion.information) {
-          if (questionProgress.vocab < questions.vocab.length - 1) {
-            questionProgress.vocab++;
+          if (questionProgress[skill] < skillQuestions.length - 1) {
+            questionProgress[skill]++;
+            render();
+          } else {
+            $("#questions").text("All questions completed.");
+            $("#answer-area").empty();
+            $("#qstatus").text("Skill complete!");
+            $("#check").prop("disabled", true);
           }
-          render();
           return;
         }
         if (!currentQuestion?.rega) return;
@@ -307,8 +312,8 @@
         }
       });
       $("#answer-area").on("click", "#go-back", function () {
-        if (questionProgress.vocab > 0) {
-          questionProgress.vocab--;
+        if (questionProgress[skill] > 0) {
+          questionProgress[skill]--;
         }
         render();
       });
