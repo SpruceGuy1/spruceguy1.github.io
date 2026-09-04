@@ -1,4 +1,4 @@
-var tables = {
+const tables = {
   conj1: `
   <table>
     <tr>
@@ -94,3 +94,5 @@ Agent	Action	Product
 -ator	-atijo	tañge -ate
 Sign
 </pre>`;
+
+export default tables;

@@ -63,7 +63,7 @@
     </fieldset>
     <script type="module">
       import questions from "./questions.json" with { type: "json" };
-      // import tables from "./conjugation-tables.js"
+      import tables from "./conjugation-tables.js";
       import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
       import {
         getAuth,
@@ -223,20 +223,7 @@
           }
         }
       });
-      var tables = {
-        conj2: `
-        -ere verbs:
-        MOOD VOICE TENSE    SINGULAR             PLURAL
-                          1     2     3     1       2       3
-        INDC ACTV  PRES   -eijo -es   -et   -emus   -etis   -ent
-                   PAST   -ebo  -ebas -ebat -ebamus -ebatis -ebant
-                   FUTURE Present tense + 'vod'
-                   FUT-PFC Past tense + 'vod'
-
-                  
-        `,
-      };
-      for (i in tables) {
+      for (const i in tables) {
         tables[i] = "<pre>" + tables[i] + "</pre>";
       }
       var skill = "translation";
@@ -268,6 +255,10 @@
 
         if (currentQuestion.information) {
           $("#questions").html(currentQuestion.information);
+          $(".conj1").html(tables.conj1);
+          $(".conj2").html(tables.conj2);
+          $(".conj3").html(tables.conj3);
+          $(".conj4").html(tables.conj4);
           $("#answer-area").html('<button id="go-back">Go Back</button>');
           $("#check").text("Continue");
           return;
@@ -318,13 +309,6 @@
         render();
       });
       render();
-      setInterval(function () {
-        $(".conj-1").html(tables.conj1);
-        $(".conj-2").html(tables.conj2);
-
-        $(".conj-3").html(tables.conj3);
-        $(".conj-4").html(tables.conj4);
-      }, 1000);
     </script>
   </body>
 </html>
