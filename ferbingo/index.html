@@ -245,10 +245,18 @@
           return;
         }
 
-        $("#questions").text(currentQuestion.q);
         $("#qstatus").text("Not answered yet");
         $("#check").prop("disabled", false);
         $("#check").text("Check answer");
+
+        if (currentQuestion.information) {
+          $("#questions").html(currentQuestion.information);
+          $("#answer-area").html('<button id="go-back">Go Back</button>');
+          $("#check").text("Continue");
+          return;
+        }
+
+        $("#questions").text(currentQuestion.q);
         if (currentQuestion.rega) {
           $("#answer-area").html("<input id='userAnswer'>");
         } else {
@@ -259,10 +267,11 @@
         const skillQuestions = questions[skill];
         const currentQuestion = skillQuestions?.[questionProgress[skill]];
         if (currentQuestion.information) {
-          $("#question").html(currentQuestion.information);
-          $("#answer-area").html("");
-          $("#check").text("Continue");
-          $("#go-back").show();
+          if (questionProgress.vocab < questions.vocab.length - 1) {
+            questionProgress.vocab++;
+          }
+          render();
+          return;
         }
         if (!currentQuestion?.rega) return;
 
@@ -279,6 +288,12 @@
             render();
           }
         }
+      });
+      $("#answer-area").on("click", "#go-back", function () {
+        if (questionProgress.vocab > 0) {
+          questionProgress.vocab--;
+        }
+        render();
       });
       render();
     </script>
