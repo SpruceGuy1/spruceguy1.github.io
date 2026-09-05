@@ -14,17 +14,22 @@
       "flags": "i"
     },
     { "q": "To eat", "rega": "^\\s*edere\\.?\\s*$", "flags": "i" },
-    { "q": "The horse eats with the pig. Ekʷe' ed__ kom swe.", "rega": "^\\s*et\\.?\\s*$", "flags": "i" }
-
+    {
+      "q": "The horse eats with the pig. Ekʷe' ed__ kom swe.",
+      "rega": "^\\s*et\\.?\\s*$",
+      "flags": "i"
+    }
   ],
   "vocab": [
     {
       "information": "<h1>'Sum' and 'Es'</h1><br><p>'Sum' means 'I am' or 'am'. It is taken directly from Latin. 'Es' means 'you are'. It is similarly taken from Latin."
     },
-    {      "information": "<h1>Animals</h1><br><p>'Ekʷe' means 'horse'. It is taken from Latin equus. 'Swe' means 'pig'. It is taken from Latin 'sus'."
-},
-    {      "information": "<h1>Animals</h1><br><p>'Kom' means 'with'. It is taken from Latin cum. 'Ne' means 'not'. It is taken from Latin 'ne'."}
-
+    {
+      "information": "<h1>Animals</h1><br><p>'Ekʷe' means 'horse'. It is taken from Latin equus. 'Swe' means 'pig'. It is taken from Latin 'sus'."
+    },
+    {
+      "information": "<h1>Animals</h1><br><p>'Kom' means 'with'. It is taken from Latin cum. 'Ne' means 'not'. It is taken from Latin 'ne'."
+    }
   ],
   "inflection": [
     {
