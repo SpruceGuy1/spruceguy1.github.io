@@ -112,7 +112,39 @@
         xp: 0,
         completedQuestionIds: {},
       };
+function isPlainObject(value) {
+  return (
+    value !== null &&
+    typeof value === "object" &&
+    !Array.isArray(value)
+  );
+}
 
+function normalizeGameData(data) {
+  if (!isPlainObject(data) || !isPlainObject(data.questionProgress)) {
+    throw new Error("invalid-save-data");
+  }
+
+  if (data.version === 1) {
+    return {
+      version: 2,
+      questionProgress: {
+        ...data.questionProgress,
+        completedQuestionIds: {},
+      },
+      lastSaved: data.lastSaved,
+    };
+  }
+
+  if (
+    data.version === 2 &&
+    isPlainObject(data.questionProgress.completedQuestionIds)
+  ) {
+    return data;
+  }
+
+  throw new Error("unsupported-save-version");
+}
       function getGameData() {
         return {
           version: 2,
@@ -121,7 +153,7 @@
         };
       }
 
-      function applyGameData(data) {
+      /*function applyGameData(data) {
         const isPlainObject =
           data?.questionProgress !== null &&
           typeof data?.questionProgress === "object" &&
@@ -139,8 +171,14 @@
         $("#xpc").text(questionProgress.xp);
 
         render();
-      }
+      }*/
+function applyGameData(data) {
+  const normalizedData = normalizeGameData(data);
 
+  questionProgress = normalizedData.questionProgress;
+  $("#xpc").text(questionProgress.xp);
+  render();
+}
       function showFirebaseError(action, error) {
         const code = error?.code || "unknown-error";
         status.textContent = `${action} error: ${code}`;
