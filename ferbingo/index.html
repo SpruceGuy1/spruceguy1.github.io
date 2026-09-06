@@ -44,6 +44,7 @@
       <button id="load-btn" type="button" disabled>
         Get Your Saved Progress
       </button>
+      Your player's XP: <span id="xpc">Loading...</span>
       <div id="status" role="status" aria-live="polite">Loading modules...</div>
     </fieldset>
     <fieldset>
@@ -105,6 +106,7 @@
         translation: 0,
         inflection: 0,
         pronunciation: 0,
+        xp:0,
       };
 
       function getGameData() {
@@ -313,6 +315,8 @@
         var regex = new RegExp(currentQuestion.rega, currentQuestion.flags);
         if (regex.test($("#userAnswer").val())) {
           $("#qstatus").text("Correct answer!");
+          questionProgress.xp++
+          $("#xpc").text(questionProgress.xp)
           try {
             new Audio("/correct.m4a").play();
           } catch (e) {
