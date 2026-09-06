@@ -110,11 +110,12 @@
         inflection: 0,
         pronunciation: 0,
         xp: 0,
+        completedQuestionIds: {},
       };
 
       function getGameData() {
         return {
-          version: 1,
+          version: 2,
           questionProgress,
           lastSaved: new Date().toISOString(),
         };
@@ -320,8 +321,13 @@
         var regex = new RegExp(currentQuestion.rega, currentQuestion.flags);
         if (regex.test($("#userAnswer").val())) {
           $("#qstatus").text("Correct answer!");
-          questionProgress.xp++;
-          $("#xpc").text(questionProgress.xp);
+          const questionId = currentQuestion.id;
+
+if (!questionProgress.completedQuestionIds[questionId]) {
+  questionProgress.completedQuestionIds[questionId] = true;
+  questionProgress.xp++;
+  $("`#xpc`").text(questionProgress.xp);
+}
           try {
             new Audio("/correct.m4a").play();
           } catch (e) {
