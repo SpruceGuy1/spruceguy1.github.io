@@ -293,7 +293,11 @@
         const currentQuestion = skillQuestions?.[questionProgress[skill]];
         if (currentQuestion.information) {
           if (questionProgress[skill] < skillQuestions.length - 1) {
-            try { new Audio("/correct.m4a").play(); } catch (e) {  console.error("Error: " + e)}
+            try {
+              new Audio("/correct.m4a").play();
+            } catch (e) {
+              console.error("Error: " + e);
+            }
             questionProgress[skill]++;
             render();
           } else {
@@ -309,7 +313,11 @@
         var regex = new RegExp(currentQuestion.rega, currentQuestion.flags);
         if (regex.test($("#userAnswer").val())) {
           $("#qstatus").text("Correct answer!");
-           try { new Audio("/correct.m4a").play(); } catch (e) {  console.error("Error: " + e)}
+          try {
+            new Audio("/correct.m4a").play();
+          } catch (e) {
+            console.error("Error: " + e);
+          }
 
           questionProgress[skill]++;
           if (questionProgress[skill] >= skillQuestions.length) {
