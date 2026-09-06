@@ -323,11 +323,11 @@
           $("#qstatus").text("Correct answer!");
           const questionId = currentQuestion.id;
 
-if (!questionProgress.completedQuestionIds[questionId]) {
-  questionProgress.completedQuestionIds[questionId] = true;
-  questionProgress.xp++;
-  $("`#xpc`").text(questionProgress.xp);
-}
+          if (!questionProgress.completedQuestionIds[questionId]) {
+            questionProgress.completedQuestionIds[questionId] = true;
+            questionProgress.xp++;
+            $("`#xpc`").text(questionProgress.xp);
+          }
           try {
             new Audio("/correct.m4a").play();
           } catch (e) {
