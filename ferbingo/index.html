@@ -126,9 +126,10 @@
           data?.questionProgress !== null &&
           typeof data?.questionProgress === "object" &&
           !Array.isArray(data.questionProgress);
+          
 
         if (
-          data?.version !== 1 ||
+          data?.version !== 2 ||
           !isPlainObject ||
           typeof data.lastSaved !== "string"
         ) {
