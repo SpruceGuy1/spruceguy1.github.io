@@ -31,13 +31,8 @@
       "information": "<h1>Simple Words I</h1><br><p>'Kom' means 'with'. It is taken from Latin cum. 'Ne' means 'not'. It is taken from Latin 'ne'."
     },
     {
-            "information": "<h1>Simple Words II</h1><br><p>'ë' means 'and'. It is taken from Latin et. 'ot' means 'or'. It is taken from Latin 'aut'."
-
+      "information": "<h1>Simple Words II</h1><br><p>'ë' means 'and'. It is taken from Latin et. 'ot' means 'or'. It is taken from Latin 'aut'."
     }
-    
-
-    
-
   ],
   "inflection": [
     {
@@ -53,10 +48,9 @@
       "information": "<h1>-ire verbs of the fourth conjugation</h1><br><div class='conj4'></div>"
     }
   ],
-  "orthography":[
+  "orthography": [
     {
-                  "information": "<h1>Hiati</h1><br><p>If a word ends with a vowel and the next word starts with a vowel other than e or ë, use the letter h. Example: <i>Dema hit ad merkátem.</i> However, if the second word starts with e or ë, use the ' symbol. Example: <i>Ekʷe' ë swe hijûnt.</i></p>"
-
+      "information": "<h1>Hiati</h1><br><p>If a word ends with a vowel and the next word starts with a vowel other than e or ë, use the letter h. Example: <i>Dema hit ad merkátem.</i> However, if the second word starts with e or ë, use the ' symbol. Example: <i>Ekʷe' ë swe hijûnt.</i></p>"
     }
   ]
 }
