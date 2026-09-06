@@ -65,6 +65,7 @@
       <p id="answer-area"></p>
       <button id="spec-kw">kʷ</button>
       <button id="check">Check answer</button>
+      <button id="go-back">Go back</button>
       <p id="qstatus">Not answered yet</p>
     </fieldset>
     <script type="module">
@@ -282,7 +283,7 @@
           $(".conj2").html(tables.conj2);
           $(".conj3").html(tables.conj3);
           $(".conj4").html(tables.conj4);
-          $("#answer-area").html('<button id="go-back">Go Back</button>');
+          
           $("#check").text("Continue");
           return;
         }
@@ -340,7 +341,7 @@
           new Audio("/incorrect.m4a").play();
         }
       });
-      $("#answer-area").on("click", "#go-back", function () {
+      $("#go-back").on("click", function () {
         if (questionProgress[skill] > 0) {
           questionProgress[skill]--;
         }
