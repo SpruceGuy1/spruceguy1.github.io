@@ -6,7 +6,7 @@ if ! grep -q "my_function" ~/.bashrc; then
   cat << 'EOF' >> ~/.bashrc
 
 autocommit() {
-    bash /commit.sh $1
+    bash commit.sh $1
 }
 EOF
 fi
