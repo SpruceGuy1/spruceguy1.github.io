@@ -106,7 +106,7 @@
         translation: 0,
         inflection: 0,
         pronunciation: 0,
-        xp:0,
+        xp: 0,
       };
 
       function getGameData() {
@@ -315,8 +315,8 @@
         var regex = new RegExp(currentQuestion.rega, currentQuestion.flags);
         if (regex.test($("#userAnswer").val())) {
           $("#qstatus").text("Correct answer!");
-          questionProgress.xp++
-          $("#xpc").text(questionProgress.xp)
+          questionProgress.xp++;
+          $("#xpc").text(questionProgress.xp);
           try {
             new Audio("/correct.m4a").play();
           } catch (e) {
