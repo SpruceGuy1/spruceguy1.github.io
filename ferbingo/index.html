@@ -52,13 +52,13 @@
       <p id="skill">Translation</p>
       <select id="choose-skill">
         <option value="translation">Translation (7 questions)</option>
-        <option value="vocab">Vocabulary (3 lessons)</option>
+        <option value="vocab">Vocabulary (4 lessons)</option>
         <option value="orthography">Orthography (1 lesson)</option>
         <option value="pronunciation">
           Pronunciation (not yet implemented)
         </option>
         <option value="inflection">
-          Inflection (2 lessons ready, 2 lessons coming soon)
+          Inflection (1 lesson ready, 3 lessons coming soon)
         </option>
       </select>
       <div id="questions"></div>
@@ -326,7 +326,7 @@
           if (!questionProgress.completedQuestionIds[questionId]) {
             questionProgress.completedQuestionIds[questionId] = true;
             questionProgress.xp++;
-            $("`#xpc`").text(questionProgress.xp);
+            $("#xpc").text(questionProgress.xp);
           }
           try {
             new Audio("/correct.m4a").play();
@@ -344,7 +344,9 @@
             render();
           }
         } else {
-          new Audio("/incorrect.m4a").play();
+          new Audio("/incorrect.m4a").play().catch((e) => {
+            console.error("Error: " + e);
+          });
         }
       });
       $("#go-back").on("click", function () {
