@@ -85,7 +85,7 @@
     {
       "id": "t16",
       "q": "Amike mëije ne' est fële, sed kane.",
-      "rega": "^\\s*(My friend|A friend of mine|The friend of mine) is a cat\\.?\\s*$",
+      "rega": "^\\s*(My friend|A friend of mine|The friend of mine) is not a cat, but a dog\\.?\\s*$",
       "flags": "i"
     },
     {
