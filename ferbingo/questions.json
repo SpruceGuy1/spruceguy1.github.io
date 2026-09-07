@@ -59,7 +59,7 @@
       "q": "The horse and dog drink at the animals' zoo .",
       "rega": "^\\s*ekʷe' ë kane bibunt ze zoložike animalest\\.?\\s*$",
       "flags": "i",
-      "special":{
+      "special": {
         "ingots": 2,
         "optional": true
       }
