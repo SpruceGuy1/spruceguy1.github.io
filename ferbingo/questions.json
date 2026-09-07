@@ -23,6 +23,12 @@
       "q": "The horse eats with the pig. Ekʷe' ed__ kom swe.",
       "rega": "^\\s*et\\.?\\s*$",
       "flags": "i"
+    },
+    {
+      "id":"t7",
+      "q":"The horse or the pig?",
+      "rega": "^\\s*ekʷe hot swe\\??\\s*$",
+      "flags":"i"
     }
   ],
   "vocab": [
