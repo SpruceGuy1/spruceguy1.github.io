@@ -94,7 +94,12 @@
       "rega": "^\\s*I eat (a|the)? melon with my friend\\.?\\s*$",
       "flags": "i"
     },
-{"id": "t17", "q": "Pan ne' est melom.", "rega": "^\\s*(a |the )?Bread is not (a|the)? melon\\.?\\s*$", "flags": "i"}
+    {
+      "id": "t17",
+      "q": "Pan ne' est melom.",
+      "rega": "^\\s*(a |the )?Bread is not (a|the)? melon\\.?\\s*$",
+      "flags": "i"
+    }
   ],
   "vocab": [
     {
@@ -147,12 +152,12 @@
       "information": "<h1>Mëije</h1><br><p>'Mëije' means 'my'. It is taken from Latin 'meus'. If the gender of the noun is specified, 'mëija' (F), 'mëijus' (M), 'mëis' (S-M), 'mëijaġ' (S-F), 'mëijents' (NN or NS) is used.</p>"
     },
     {
-      "id":"v11",
-      "information":"<h1>Simple Words IV</h1><br><p>'Sed' means 'but'. It is taken from Latin 'sed'.</p>"
+      "id": "v11",
+      "information": "<h1>Simple Words IV</h1><br><p>'Sed' means 'but'. It is taken from Latin 'sed'.</p>"
     },
     {
-      "id":"v12",
-      "information":"<h1>Food I</h1><br><p>'Pan' means 'bread'. It is taken from Latin 'panis'. A rare form is 'pane'. 'Melon' means 'melon'. It is taken from Late Latin 'melo'.</p>"
+      "id": "v12",
+      "information": "<h1>Food I</h1><br><p>'Pan' means 'bread'. It is taken from Latin 'panis'. A rare form is 'pane'. 'Melon' means 'melon'. It is taken from Late Latin 'melo'.</p>"
     }
   ],
   "inflection": [
