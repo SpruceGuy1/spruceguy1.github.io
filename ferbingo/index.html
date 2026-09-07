@@ -130,7 +130,6 @@
       const leaderboardBody = leaderboard.querySelector("tbody");
       const saveButton = document.getElementById("save-btn");
       const loadButton = document.getElementById("load-btn");
-      var newArt = false;
       let currentUser = null;
       let chestData = {
         ingots: 0,
@@ -150,6 +149,26 @@
         return (
           value !== null && typeof value === "object" && !Array.isArray(value)
         );
+      }
+
+      function normalizeChestData(data) {
+        if (
+          !isPlainObject(data) ||
+          !Number.isFinite(data.ingots) ||
+          data.ingots < 0 ||
+          !Array.isArray(data.artworkID) ||
+          !data.artworkID.every((artworkID) => typeof artworkID === "string") ||
+          !Array.isArray(data.minigameTickets) ||
+          !data.minigameTickets.every((ticket) => typeof ticket === "string")
+        ) {
+          throw new Error("invalid-save-data");
+        }
+
+        return {
+          ingots: data.ingots,
+          artworkID: [...data.artworkID],
+          minigameTickets: [...data.minigameTickets],
+        };
       }
 
       function normalizeGameData(data) {
@@ -190,9 +209,13 @@
 
         if (
           data.version === 3 &&
-          isPlainObject(data.questionProgress.completedQuestionIds)
+          isPlainObject(data.questionProgress.completedQuestionIds) &&
+          isPlainObject(data.chestData)
         ) {
-          return data;
+          return {
+            ...data,
+            chestData: normalizeChestData(data.chestData),
+          };
         }
 
         throw new Error("unsupported-save-version");
@@ -275,8 +298,23 @@
         const normalizedData = normalizeGameData(data);
 
         questionProgress = normalizedData.questionProgress;
+        chestData = normalizedData.chestData;
         $("#xpc").text(questionProgress.xp);
+        $("#ingots").text(chestData.ingots);
+        renderArtwork();
         render();
+      }
+
+      function renderArtwork() {
+        const artwork = $("#art").empty();
+        chestData.artworkID.forEach((artworkID) => {
+          $("<img>", {
+            src: `/images/artworks/${artworkID}.png`,
+            alt: "Artwork",
+            width: 100,
+            height: 100,
+          }).appendTo(artwork);
+        });
       }
       function showFirebaseError(action, error) {
         const code = error?.code || "unknown-error";
@@ -372,7 +410,6 @@
             showFirebaseError("Load", error);
           }
         }
-        newArt = true;
       });
       $("#spec-kw").click(function () {
         $("#userAnswer").val($("#userAnswer").val() + "kʷ");
@@ -450,14 +487,10 @@
           } else if (rand < 2 / 3) {
             alert("You got an artwork!");
             chestData.artworkID.push("a" + Math.floor(Math.random() * 10));
-            $("#art").append(
-              "<img src='/images/artworks/" +
-                chestData.artworkID[chestData.artworkID.length - 1] +
-                ".png' alt='Artwork' style='width:100px;height:100px;'>",
-            );
           } else {
             alert("You got nothing this time. Better luck next time!");
           }
+          renderArtwork();
         } else {
           alert("Not enough ingots to buy a chest.");
         }
@@ -527,13 +560,6 @@
       setInterval(() => {
         $("#xpc").text(questionProgress.xp);
         $("#ingots").text(chestData.ingots);
-        if (newArt && chestData.artworkID.length > 0) {
-          $("#art").append(
-            "<img src='/images/artworks/" +
-              chestData.artworkID[chestData.artworkID.length - 1] +
-              ".png' alt='Artwork' style='width:100px;height:100px;'>",
-          );
-        }
       }, 1000);
     </script>
   </body>
