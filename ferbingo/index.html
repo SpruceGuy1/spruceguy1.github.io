@@ -48,6 +48,22 @@
       <div id="status" role="status" aria-live="polite">Loading modules...</div>
     </fieldset>
     <fieldset>
+      <legend>XP Leaderboard</legend>
+      <p id="leaderboard-status" role="status" aria-live="polite">
+        Loading leaderboard...
+      </p>
+      <table id="leaderboard" hidden>
+        <thead>
+          <tr>
+            <th scope="col">Rank</th>
+            <th scope="col">Player</th>
+            <th scope="col">XP</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </fieldset>
+    <fieldset>
       <legend>Questions</legend>
       <p id="skill">Translation</p>
       <select id="choose-skill">
@@ -83,6 +99,8 @@
         doc,
         setDoc,
         getDoc,
+        collection,
+        getDocs,
       } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js";
 
       const firebaseConfig = {
@@ -99,6 +117,9 @@
       const auth = getAuth(app);
       const db = getFirestore(app);
       const status = document.getElementById("status");
+      const leaderboard = document.getElementById("leaderboard");
+      const leaderboardStatus = document.getElementById("leaderboard-status");
+      const leaderboardBody = leaderboard.querySelector("tbody");
       const saveButton = document.getElementById("save-btn");
       const loadButton = document.getElementById("load-btn");
 
@@ -146,9 +167,49 @@
       function getGameData() {
         return {
           version: 2,
+          playerEmail: currentUser?.email || "Unknown player",
           questionProgress,
           lastSaved: new Date().toISOString(),
         };
+      }
+
+      async function loadLeaderboard() {
+        leaderboardStatus.textContent = "Loading leaderboard...";
+        leaderboard.hidden = true;
+
+        try {
+          const snapshots = await getDocs(collection(db, "ferbingo_saves"));
+          const players = snapshots.docs
+            .map((snapshot) => {
+              const data = snapshot.data();
+              return {
+                name: data.playerEmail || "Unknown player",
+                xp: Number(data.questionProgress?.xp) || 0,
+              };
+            })
+            .sort((first, second) => second.xp - first.xp);
+
+          leaderboardBody.replaceChildren();
+          players.forEach((player, index) => {
+            const row = document.createElement("tr");
+            const rank = document.createElement("td");
+            const name = document.createElement("td");
+            const xp = document.createElement("td");
+            rank.textContent = index + 1;
+            name.textContent = player.name;
+            xp.textContent = player.xp;
+            row.append(rank, name, xp);
+            leaderboardBody.append(row);
+          });
+
+          leaderboardStatus.textContent = players.length
+            ? ""
+            : "No saved players yet.";
+          leaderboard.hidden = players.length === 0;
+        } catch (error) {
+          leaderboardStatus.textContent = "Unable to load the leaderboard.";
+          showFirebaseError("Leaderboard", error);
+        }
       }
 
       /*function applyGameData(data) {
@@ -189,6 +250,7 @@
         status.textContent = user
           ? `Signed in as ${user.email}.`
           : "Not signed in.";
+        loadLeaderboard();
       });
 
       document
@@ -239,6 +301,7 @@
             getGameData(),
           );
           status.textContent = "Game progress saved.";
+          loadLeaderboard();
         } catch (error) {
           showFirebaseError("Save", error);
         }
