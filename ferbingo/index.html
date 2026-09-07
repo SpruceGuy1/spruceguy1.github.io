@@ -228,7 +228,6 @@
         throw new Error("unsupported-save-version");
       }
       function getGameData() {
-
         return {
           version: 3,
           playerEmail: currentUser?.email || "Unknown player",
@@ -255,7 +254,10 @@
             .map((snapshot) => {
               const data = snapshot.data();
               return {
-                name: data.questionProgress?.username || data.playerEmail || "Unknown player",
+                name:
+                  data.questionProgress?.username ||
+                  data.playerEmail ||
+                  "Unknown player",
                 xp: Number(data.questionProgress?.xp) || 0,
               };
             })
