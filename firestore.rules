@@ -2,6 +2,112 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+    function isOwner(userId) {
+      return request.auth != null && request.auth.uid == userId;
+    }
+
+    function validCompletedQuestions(completedQuestionIds) {
+      return completedQuestionIds is map
+        && completedQuestionIds.keys().hasOnly([
+          't0', 't1', 't2', 't3', 't4', 't5', 't6', 't7', 't8', 't9',
+          't10', 't11', 't12', 't13', 't14', 't15', 't16', 't17'
+        ])
+        && completedQuestionIds.values().hasOnly([true]);
+    }
+
+    function validQuestionProgress(progress) {
+      return progress is map
+        && progress.keys().hasAll([
+          'vocab', 'orthography', 'translation', 'inflection',
+          'pronunciation', 'xp', 'completedQuestionIds'
+        ])
+        && progress.keys().hasOnly([
+          'vocab', 'orthography', 'translation', 'inflection',
+          'pronunciation', 'xp', 'completedQuestionIds', 'username'
+        ])
+        && progress.vocab is int && progress.vocab >= 0
+        && progress.orthography is int && progress.orthography >= 0
+        && progress.translation is int && progress.translation >= 0
+        && progress.inflection is int && progress.inflection >= 0
+        && progress.pronunciation is int && progress.pronunciation >= 0
+        && progress.xp is int && progress.xp >= 0
+        && validCompletedQuestions(progress.completedQuestionIds)
+        && progress.xp == progress.completedQuestionIds.keys().size()
+        && (!('username' in progress)
+          || (progress.username is string && progress.username.size() <= 40));
+    }
+
+    function earnedIngots(progress) {
+      return progress.completedQuestionIds.keys().size()
+        + (progress.completedQuestionIds.keys().hasAny(['t12']) ? 1 : 0);
+    }
+
+    function validChestData(chestData, progress) {
+      return chestData is map
+        && chestData.keys().hasOnly(['ingots', 'artworkID', 'minigameTickets'])
+        && chestData.keys().hasAll(['ingots', 'artworkID', 'minigameTickets'])
+        && chestData.ingots is int && chestData.ingots >= 0
+        && chestData.artworkID is list
+        && chestData.artworkID.hasOnly([
+          'a0', 'a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8', 'a9'
+        ])
+        && chestData.minigameTickets is list
+        && chestData.minigameTickets.hasOnly(['ticket'])
+        && chestData.ingots
+          + 5 * (chestData.artworkID.size() + chestData.minigameTickets.size())
+          <= earnedIngots(progress);
+    }
+
+    function leaderboardDisplayName(progress) {
+      return 'username' in progress && progress.username.size() > 0
+        ? progress.username
+        : 'Anonymous player';
+    }
+
+    function validFerbingoSave(data) {
+      return data is map
+        && data.keys().hasAll([
+          'version', 'playerEmail', 'questionProgress', 'chestData', 'lastSaved'
+        ])
+        && data.keys().hasOnly([
+          'version', 'playerEmail', 'questionProgress', 'chestData', 'lastSaved'
+        ])
+        && data.version == 3
+        && data.playerEmail is string
+        && data.lastSaved is string
+        && validQuestionProgress(data.questionProgress)
+        && validChestData(data.chestData, data.questionProgress);
+    }
+
+    function migratesLegacySave() {
+      return resource.data.version in [1, 2]
+        && request.resource.data.chestData.ingots == 0
+        && request.resource.data.chestData.artworkID.size() == 0
+        && request.resource.data.chestData.minigameTickets.size() == 0;
+    }
+
+    function validSaveTransition() {
+      let oldProgress = resource.data.questionProgress;
+      let newProgress = request.resource.data.questionProgress;
+      let oldChest = resource.data.chestData;
+      let newChest = request.resource.data.chestData;
+      let earned = earnedIngots(newProgress) - earnedIngots(oldProgress);
+      let spent = oldChest.ingots + earned - newChest.ingots;
+      let addedItems = newChest.artworkID.size() - oldChest.artworkID.size()
+        + newChest.minigameTickets.size() - oldChest.minigameTickets.size();
+
+      return resource.data.version == 3
+        && validFerbingoSave(resource.data)
+        && newProgress.completedQuestionIds.keys()
+          .hasAll(oldProgress.completedQuestionIds.keys())
+        && newChest.artworkID.hasAll(oldChest.artworkID)
+        && newChest.artworkID.size() >= oldChest.artworkID.size()
+        && newChest.minigameTickets.hasAll(oldChest.minigameTickets)
+        && newChest.minigameTickets.size() >= oldChest.minigameTickets.size()
+        && spent >= 0
+        && addedItems * 5 <= spent;
+    }
+
     // Secure the player saves collection
     match /player_saves/{userId} {
       // Allows reading and writing ONLY if the user is authenticated 
@@ -9,9 +115,31 @@ service cloud.firestore {
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
     match /ferbingo_saves/{userId} {
-      allow read: if request.auth != null;
-      allow create, update, delete: if request.auth != null
-        && request.auth.uid == userId;
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId)
+        && validFerbingoSave(request.resource.data);
+      allow update: if isOwner(userId)
+        && validFerbingoSave(request.resource.data)
+        && (migratesLegacySave() || validSaveTransition());
+      allow delete: if isOwner(userId);
+    }
+    match /ferbingo_leaderboard/{userId} {
+      allow read: if true;
+      allow create, update: if isOwner(userId)
+        && request.resource.data.keys().hasOnly(['displayName', 'xp'])
+        && request.resource.data.keys().hasAll(['displayName', 'xp'])
+        && request.resource.data.displayName is string
+        && request.resource.data.displayName.size() > 0
+        && request.resource.data.displayName.size() <= 40
+        && request.resource.data.xp is int
+        && request.resource.data.xp >= 0
+        && getAfter(/databases/$(database)/documents/ferbingo_saves/$(userId))
+          .data.questionProgress.xp == request.resource.data.xp
+        && leaderboardDisplayName(
+          getAfter(/databases/$(database)/documents/ferbingo_saves/$(userId))
+            .data.questionProgress
+        ) == request.resource.data.displayName;
+      allow delete: if isOwner(userId);
     }
   }
 }

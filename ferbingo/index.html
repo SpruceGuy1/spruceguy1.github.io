@@ -50,7 +50,12 @@
       <div id="status" role="status" aria-live="polite">Loading modules...</div>
     </fieldset>
     Username: <span id="username-display">Not set</span>
-    <input id="username-input" type="text" placeholder="Enter username" />
+    <input
+      id="username-input"
+      type="text"
+      maxlength="40"
+      placeholder="Enter username"
+    />
     <button id="set-username">Set Username</button>
     <fieldset>
       <legend>XP Leaderboard</legend>
@@ -110,10 +115,10 @@
       import {
         getFirestore,
         doc,
-        setDoc,
         getDoc,
         collection,
         getDocs,
+        writeBatch,
       } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js";
       var tables = conj[0];
       var nouns = conj[1];
@@ -178,17 +183,44 @@
         };
       }
 
+      function reconstructCompletedQuestionIds(progress) {
+        const completedQuestionIds = {};
+
+        Object.entries(questions).forEach(([skillName, skillQuestions]) => {
+          const completedCount = progress[skillName];
+          if (!Number.isInteger(completedCount) || completedCount <= 0) return;
+
+          skillQuestions
+            .slice(0, completedCount)
+            .filter(
+              (question) =>
+                question.rega &&
+                typeof question.id === "string" &&
+                !question.special?.optional,
+            )
+            .forEach((question) => {
+              completedQuestionIds[question.id] = true;
+            });
+        });
+
+        return completedQuestionIds;
+      }
+
       function normalizeGameData(data) {
         if (!isPlainObject(data) || !isPlainObject(data.questionProgress)) {
           throw new Error("invalid-save-data");
         }
 
         if (data.version === 1) {
+          const completedQuestionIds = reconstructCompletedQuestionIds(
+            data.questionProgress,
+          );
           return {
             version: 3,
             questionProgress: {
               ...data.questionProgress,
-              completedQuestionIds: {},
+              xp: Object.keys(completedQuestionIds).length,
+              completedQuestionIds,
             },
             chestData: {
               ingots: 0,
@@ -238,27 +270,27 @@
         };
       }
 
-      async function loadLeaderboard() {
-        if (!currentUser) {
-          leaderboardStatus.textContent = "Sign in to view the leaderboard.";
-          leaderboard.hidden = true;
-          return;
-        }
+      function getLeaderboardData() {
+        return {
+          displayName: questionProgress.username || "Anonymous player",
+          xp: questionProgress.xp,
+        };
+      }
 
+      async function loadLeaderboard() {
         leaderboardStatus.textContent = "Loading leaderboard...";
         leaderboard.hidden = true;
 
         try {
-          const snapshots = await getDocs(collection(db, "ferbingo_saves"));
+          const snapshots = await getDocs(
+            collection(db, "ferbingo_leaderboard"),
+          );
           const players = snapshots.docs
             .map((snapshot) => {
               const data = snapshot.data();
               return {
-                name:
-                  data.questionProgress?.username ||
-                  data.playerEmail ||
-                  "Unknown player",
-                xp: Number(data.questionProgress?.xp) || 0,
+                name: data.displayName || "Anonymous player",
+                xp: Number(data.xp) || 0,
               };
             })
             .sort((first, second) => second.xp - first.xp);
@@ -385,10 +417,13 @@
         status.textContent = "Saving game...";
 
         try {
-          await setDoc(
-            doc(db, "ferbingo_saves", currentUser.uid),
-            getGameData(),
+          const batch = writeBatch(db);
+          batch.set(doc(db, "ferbingo_saves", currentUser.uid), getGameData());
+          batch.set(
+            doc(db, "ferbingo_leaderboard", currentUser.uid),
+            getLeaderboardData(),
           );
+          await batch.commit();
           status.textContent = "Game progress saved.";
           loadLeaderboard();
         } catch (error) {
@@ -591,13 +626,14 @@
       });
       $("#set-username").click(function () {
         const newUsername = $("#username-input").val().trim();
-        if (newUsername) {
+        if (newUsername && newUsername.length <= 40) {
           questionProgress.username = newUsername;
           $("#username-display").text(newUsername);
           $("#username-input").val("");
           status.textContent = "Username set successfully.";
         } else {
-          status.textContent = "Please enter a valid username.";
+          status.textContent =
+            "Please enter a username between 1 and 40 characters.";
         }
       });
       $("#go-back").on("click", function () {
