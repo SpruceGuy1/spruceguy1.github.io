@@ -53,6 +53,16 @@
       "q": "I am not drinking.",
       "rega": "^\\s*ne bibo\\.?\\s*$",
       "flags": "i"
+    },
+    {
+      "id": "t12",
+      "q": "The horse and dog drink at the animals' zoo .",
+      "rega": "^\\s*ekʷe' ë kane bibunt ze zoložike animalest\\.?\\s*$",
+      "flags": "i",
+      "special":{
+        "ingots": 2,
+        "optional": true
+      }
     }
   ],
   "vocab": [

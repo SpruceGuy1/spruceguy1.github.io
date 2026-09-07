@@ -50,7 +50,7 @@ Sign
   conj3: `<pre>
 MOOD VOICE TENSE SINGULAR        PLURAL
                  1  2   3   1     2     3
-INDC ACTV  PRES  -o -is -it -imus -itis -ijunt
+INDC ACTV  PRES  -o -is -it -imus -itis -unt
   </pre>`,
   conj4: ``,
   //TODO: make verb conj tables

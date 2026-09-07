@@ -69,7 +69,7 @@
       <legend>Questions</legend>
       <p id="skill">Translation</p>
       <select id="choose-skill">
-        <option value="translation">Translation (9 questions)</option>
+        <option value="translation">Translation (12 questions)</option>
         <option value="vocab">Vocabulary (7 lessons)</option>
         <option value="orthography">Orthography (1 lesson)</option>
         <option value="pronunciation">
@@ -83,6 +83,7 @@
       <p id="answer-area"></p>
       <button id="spec-kw">kʷ</button>
       <button id="check">Check answer</button>
+      <button id="skip-question" type="button" hidden>This question is optional and this button allows you to skip it.</button>
       <button id="go-back">Go back</button>
       <p id="qstatus">Not answered yet</p>
     </fieldset>
@@ -448,12 +449,17 @@
           $("#answer-area").empty();
           $("#qstatus").text("No questions available for this skill.");
           $("#check").prop("disabled", true);
+          $("#skip-question").prop("disabled", true).prop("hidden", true);
           return;
         }
 
+        const isOptionalQuestion = Boolean(currentQuestion?.special?.optional);
         $("#qstatus").text("Not answered yet");
         $("#check").prop("disabled", false);
         $("#check").text("Check answer");
+        $("#skip-question")
+          .prop("disabled", !isOptionalQuestion)
+          .prop("hidden", !isOptionalQuestion);
 
         if (currentQuestion.information) {
           $("#questions").html(currentQuestion.information);
@@ -464,6 +470,7 @@
           $(".decl3").html(nouns.decl3);
 
           $("#check").text("Continue");
+          $("#skip-question").prop("hidden", true);
           return;
         }
 
@@ -512,6 +519,7 @@
             $("#answer-area").empty();
             $("#qstatus").text("Skill complete!");
             $("#check").prop("disabled", true);
+            $("#skip-question").prop("hidden", true);
           }
           return;
         }
@@ -525,7 +533,8 @@
           if (!questionProgress.completedQuestionIds[questionId]) {
             questionProgress.completedQuestionIds[questionId] = true;
             questionProgress.xp++;
-            chestData.ingots += 1; // Award 1 ingot for each correct answer
+            var ingotBonus = currentQuestion.special?.ingots || 1; // Default to 1 ingot if not specified
+            chestData.ingots += ingotBonus; // Award ingots for each correct answer
             $("#xpc").text(questionProgress.xp);
             $("#ingots").text(chestData.ingots);
           }
@@ -541,6 +550,7 @@
             $("#answer-area").empty();
             $("#qstatus").text("Skill complete!");
             $("#check").prop("disabled", true);
+            $("#skip-question").prop("hidden", true);
           } else {
             render();
           }
@@ -549,6 +559,25 @@
             console.error("Error: " + e);
           });
         }
+      });
+      $("#skip-question").click(function () {
+        const skillQuestions = questions[skill];
+        const currentQuestion = skillQuestions?.[questionProgress[skill]];
+        if (!currentQuestion || !currentQuestion.special?.optional) {
+          return;
+        }
+
+        if (questionProgress[skill] < skillQuestions.length - 1) {
+          questionProgress[skill]++;
+          render();
+          return;
+        }
+
+        $("#questions").text("All questions completed.");
+        $("#answer-area").empty();
+        $("#qstatus").text("Skill complete!");
+        $("#check").prop("disabled", true);
+        $("#skip-question").prop("hidden", true);
       });
       $("#go-back").on("click", function () {
         if (questionProgress[skill] > 0) {
