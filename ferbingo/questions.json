@@ -29,6 +29,12 @@
       "q": "The horse or the pig?",
       "rega": "^\\s*ekʷe hot swe\\??\\s*$",
       "flags": "i"
+    },
+    {
+      "id":"t8",
+      "q":"Ekʷe' est ze zoložike.",
+      "rega":"^\\s*(the|a) horse is at (the|a) zoo\\.?\\s*$",
+      "flags":"i"
     }
   ],
   "vocab": [
@@ -51,7 +57,20 @@
       "id": "v3",
 
       "information": "<h1>Simple Words II</h1><br><p>'ë' means 'and'. It is taken from Latin et. 'ot' means 'or'. It is taken from Latin 'aut'."
-    }
+    },
+    {
+      "id": "v4",
+
+      "information": "<h1>Verbs I</h1><br><p>'Edere' means 'to eat'. It is taken from Latin 'edere'. 'Bibere' means 'to drink'. It is taken from Latin 'bibere'."
+    },
+    {
+      "id":"v5",
+      "information":"<h1>Animals II</h1><br><p>Zoložike means 'zoo'. It is taken from English 'zoologic'. 'Animale' means 'animal'. It is taken from Latin 'animalis'. </p>"
+    },
+  {
+    "id":"v6",
+    "information":"<h1>Simple Words III</h1><br><p>'Ze' means 'at.' It is taken from Ninek 'sa'. 'Est' means 'is.' It is taken from Latin 'est'.</p>"
+  }
   ],
   "inflection": [
     {
