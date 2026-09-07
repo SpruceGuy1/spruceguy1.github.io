@@ -69,6 +69,18 @@
       "q": "The cat and dog are friends.",
       "rega": "^\\s*fële' ë kane sunt amikes\\.?\\s*$",
       "flags": "i"
+    },
+    {
+      "id": "t14",
+      "q": "Ne sum ekʷe.",
+      "rega": "^\\s*I am not a horse\\.?\\s*$",
+      "flags": "i"
+    },
+    {
+      "id": "t15",
+      "q": "Amike mëije est kane.",
+      "rega": "^\\s*(My friend|A friend of mine|The friend of mine) is a dog\\.?\\s*$",
+      "flags": "i"
     }
   ],
   "vocab": [
@@ -116,6 +128,10 @@
     {
       "id": "v9",
       "information": "<h1>Friends</h1><br><p>'Amike' means 'friend'. It is taken from Latin 'amicus'. If the gender of the friend is specified, 'amika' (F), 'amikus' (M), 'amikon' (S-M), 'amikaġ' (S-F), 'amik' (NN or NS) is used.</p>"
+    },
+    {
+      "id": "v10",
+      "information": "<h1>Mëije</h1><br><p>'Mëije' means 'my'. It is taken from Latin 'meus'. If the gender of the noun is specified, 'mëija' (F), 'mëijus' (M), 'mëis' (S-M), 'mëijaġ' (S-F), 'mëijents' (NN or NS) is used.</p>"
     }
   ],
   "inflection": [
