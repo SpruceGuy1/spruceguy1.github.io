@@ -63,6 +63,12 @@
         "ingots": 2,
         "optional": true
       }
+    },
+    {
+      "id": "t13",
+      "q": "The cat and dog are friends.",
+      "rega": "^\\s*fële' ë kane sunt amikes\\.?\\s*$",
+      "flags": "i"
     }
   ],
   "vocab": [
@@ -102,7 +108,15 @@
     {
       "id": "v7",
       "information": "<h1>Ese present conjugations</h1><br><table><tr><th>Person</th><th>Singular</th><th>Plural</th></tr><tr><td>1st</td><td>sum</td><td>sumus</td></tr><tr><td>2nd</td><td>es</td><td>estis</td></tr><tr><td>3rd</td><td>est</td><td>sunt, sũ'</td></tr></table>"
-    }
+    },
+    {
+      "id": "v8",
+      "information": "<h1>Animals III</h1><br><p>'Kane' means 'dog'. It is taken from Latin 'canis'. 'Fële' means 'cat'. It is taken from Latin 'felis'. The rarer word 'gate' also means 'cat'. It is taken from Latin 'cattus'. </p>"
+    },
+{
+      "id": "v9",
+      "information": "<h1>Friends</h1><br><p>'Amike' means 'friend'. It is taken from Latin 'amicus'. If the gender of the friend is specified, 'amika' (F), 'amikus' (M), 'amikon' (S-M), 'amikaġ' (S-F), 'amik' (NN or NS) is used.</p>"
+}
   ],
   "inflection": [
     {
