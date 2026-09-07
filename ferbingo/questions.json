@@ -25,10 +25,10 @@
       "flags": "i"
     },
     {
-      "id":"t7",
-      "q":"The horse or the pig?",
+      "id": "t7",
+      "q": "The horse or the pig?",
       "rega": "^\\s*ekʷe hot swe\\??\\s*$",
-      "flags":"i"
+      "flags": "i"
     }
   ],
   "vocab": [
