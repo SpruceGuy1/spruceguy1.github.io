@@ -87,7 +87,7 @@
     <script type="module">
       import questions from "./questions.json" with { type: "json" };
       import conj from "./conjugation-tables.js";
-      
+
       import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
       import {
         getAuth,
@@ -103,8 +103,8 @@
         collection,
         getDocs,
       } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js";
-var tables = conj[0];
-var nouns = conj[1];
+      var tables = conj[0];
+      var nouns = conj[1];
       const firebaseConfig = {
         apiKey: "AIzaSyAeINE31darFq72BB4N1WtWDARk9YPxJzY",
         authDomain: "sapient-origin-462411-t7.firebaseapp.com",

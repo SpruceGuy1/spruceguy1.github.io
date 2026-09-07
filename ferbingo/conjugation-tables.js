@@ -106,6 +106,6 @@ var nouns = {
   DAT  -ebi     -ehi
   ACC  -em      -ei
   ABL  -e       -es
-  VOC  -é       -és</pre>`
-}
-export default [tables,nouns];
+  VOC  -é       -és</pre>`,
+};
+export default [tables, nouns];
