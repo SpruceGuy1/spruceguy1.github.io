@@ -1,27 +1,27 @@
 body {
-	max-width: 720px;
-	margin: 1rem auto;
-	padding: 0 1rem;
-	font-family: sans-serif;
+  max-width: 720px;
+  margin: 1rem auto;
+  padding: 0 1rem;
+  font-family: sans-serif;
 }
 
 fieldset {
-	margin: 1rem 0;
+  margin: 1rem 0;
 }
 
 #leaderboard {
-	width: 100%;
-	border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
 }
 
 #leaderboard th,
 #leaderboard td {
-	padding: 0.4rem 0.6rem;
-	border-bottom: 1px solid #ccc;
-	text-align: left;
+  padding: 0.4rem 0.6rem;
+  border-bottom: 1px solid #ccc;
+  text-align: left;
 }
 
 #leaderboard th:last-child,
 #leaderboard td:last-child {
-	text-align: right;
+  text-align: right;
 }
