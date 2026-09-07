@@ -49,6 +49,9 @@
       <button id="buy-chest">Buy Chest</button>
       <div id="status" role="status" aria-live="polite">Loading modules...</div>
     </fieldset>
+    Username: <span id="username-display">Not set</span>
+    <input id="username-input" type="text" placeholder="Enter username" />
+    <button id="set-username">Set Username</button>
     <fieldset>
       <legend>XP Leaderboard</legend>
       <p id="leaderboard-status" role="status" aria-live="polite">
@@ -147,6 +150,7 @@
         pronunciation: 0,
         xp: 0,
         completedQuestionIds: {},
+        username: "",
       };
       function isPlainObject(value) {
         return (
@@ -224,9 +228,11 @@
         throw new Error("unsupported-save-version");
       }
       function getGameData() {
+
         return {
           version: 3,
           playerEmail: currentUser?.email || "Unknown player",
+
           questionProgress,
           chestData,
           lastSaved: new Date().toISOString(),
@@ -249,7 +255,7 @@
             .map((snapshot) => {
               const data = snapshot.data();
               return {
-                name: data.playerEmail || "Unknown player",
+                name: data.questionProgress?.username || data.playerEmail || "Unknown player",
                 xp: Number(data.questionProgress?.xp) || 0,
               };
             })
@@ -580,6 +586,17 @@
         $("#qstatus").text("Skill complete!");
         $("#check").prop("disabled", true);
         $("#skip-question").prop("hidden", true);
+      });
+      $("#set-username").click(function () {
+        const newUsername = $("#username-input").val().trim();
+        if (newUsername) {
+          questionProgress.username = newUsername;
+          $("#username-display").text(newUsername);
+          $("#username-input").val("");
+          status.textContent = "Username set successfully.";
+        } else {
+          status.textContent = "Please enter a valid username.";
+        }
       });
       $("#go-back").on("click", function () {
         if (questionProgress[skill] > 0) {
