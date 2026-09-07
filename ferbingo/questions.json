@@ -35,6 +35,24 @@
       "q": "Ekʷe' est ze zoložike.",
       "rega": "^\\s*(the|a) horse is at (the|a) zoo\\.?\\s*$",
       "flags": "i"
+    },
+    {
+      "id": "t9",
+      "q": "The animals are at the zoo.",
+      "rega": "^\\s*animales sunt ze zoložike\\.?\\s*$",
+      "flags": "i"
+    },
+    {
+      "id": "t10",
+      "q": "The horse and the pig are at the zoo.",
+      "rega": "^\\s*ekʷe' ë swe (sũ'|sunt) ze zoložike\\.?\\s*$",
+      "flags": "i"
+    },
+    {
+      "id": "t11",
+      "q": "I am not drinking.",
+      "rega": "^\\s*ne bibo\\.?\\s*$",
+      "flags": "i"
     }
   ],
   "vocab": [
@@ -61,7 +79,7 @@
     {
       "id": "v4",
 
-      "information": "<h1>Verbs I</h1><br><p>'Edere' means 'to eat'. It is taken from Latin 'edere'. 'Bibere' means 'to drink'. It is taken from Latin 'bibere'."
+      "information": "<h1>Verbs I</h1><br><p>'Edere' means 'to eat'. It is a second conjugation verb taken from Latin 'edere'. 'Bibere' means 'to drink'. It is a third conjugation verb taken from Latin 'bibere'."
     },
     {
       "id": "v5",
@@ -70,6 +88,10 @@
     {
       "id": "v6",
       "information": "<h1>Simple Words III</h1><br><p>'Ze' means 'at.' It is taken from Ninek 'sa'. 'Est' means 'is.' It is taken from Latin 'est'.</p>"
+    },
+    {
+      "id":"v7",
+      "information": "<h1>Ese present conjugations</h1><br><table><tr><th>Person</th><th>Singular</th><th>Plural</th></tr><tr><td>1st</td><td>sum</td><td>sumus</td></tr><tr><td>2nd</td><td>es</td><td>estis</td></tr><tr><td>3rd</td><td>est</td><td>sunt, sũ'</td></tr></table>"
     }
   ],
   "inflection": [
@@ -87,9 +109,13 @@
       "id": "i2",
 
       "information": "<h1>-ere verbs of the third conjugation</h1><br><div class='conj3'></div>"
+    },{
+      "id": "i3",
+
+      "information": "<h1>-e nouns of the third declension</h1><br><div class='decl3'></div>"
     },
     {
-      "id": "i3",
+      "id": "i4",
 
       "information": "<h1>-ire verbs of the fourth conjugation</h1><br><div class='conj4'></div>"
     }

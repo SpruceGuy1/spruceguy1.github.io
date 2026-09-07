@@ -47,7 +47,11 @@ Agent	Action	Product
 Sign
   `,
   conj2: ``,
-  conj3: ``,
+  conj3: `<pre>
+MOOD VOICE TENSE SINGULAR        PLURAL
+                 1  2   3   1     2     3
+INDC ACTV  PRES  -o -is -it -imus -itis -ijunt
+  </pre>`,
   conj4: ``,
   //TODO: make verb conj tables
 };
@@ -94,5 +98,14 @@ Agent	Action	Product
 -ator	-atijo	tañge -ate
 Sign
 </pre>`;
-
-export default tables;
+var nouns = {
+  decl3: `<pre>
+  CASE SINGULAR PLURAL
+  NOM  -e       -es
+  GEN  -t, -et  -st, -est
+  DAT  -ebi     -ehi
+  ACC  -em      -ei
+  ABL  -e       -es
+  VOC  -é       -és</pre>`
+}
+export default [tables,nouns];

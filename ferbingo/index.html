@@ -67,8 +67,8 @@
       <legend>Questions</legend>
       <p id="skill">Translation</p>
       <select id="choose-skill">
-        <option value="translation">Translation (7 questions)</option>
-        <option value="vocab">Vocabulary (4 lessons)</option>
+        <option value="translation">Translation (9 questions)</option>
+        <option value="vocab">Vocabulary (7 lessons)</option>
         <option value="orthography">Orthography (1 lesson)</option>
         <option value="pronunciation">
           Pronunciation (not yet implemented)
@@ -86,7 +86,8 @@
     </fieldset>
     <script type="module">
       import questions from "./questions.json" with { type: "json" };
-      import tables from "./conjugation-tables.js";
+      import conj from "./conjugation-tables.js";
+      
       import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
       import {
         getAuth,
@@ -102,7 +103,8 @@
         collection,
         getDocs,
       } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js";
-
+var tables = conj[0];
+var nouns = conj[1];
       const firebaseConfig = {
         apiKey: "AIzaSyAeINE31darFq72BB4N1WtWDARk9YPxJzY",
         authDomain: "sapient-origin-462411-t7.firebaseapp.com",
@@ -389,6 +391,7 @@
           $(".conj2").html(tables.conj2);
           $(".conj3").html(tables.conj3);
           $(".conj4").html(tables.conj4);
+          $(".decl3").html(nouns.decl3);
 
           $("#check").text("Continue");
           return;
