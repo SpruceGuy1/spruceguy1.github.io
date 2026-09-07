@@ -90,14 +90,14 @@
     },
     {
       "id": "t16",
-      "q": "Edeijo melom kom amike mëije.",
+      "q": "Edeijo melon kom amike mëije.",
       "rega": "^\\s*I eat (a|the)? melon with my friend\\.?\\s*$",
       "flags": "i"
     },
     {
       "id": "t17",
-      "q": "Pan ne' est melom.",
-      "rega": "^\\s*(a |the )?Bread is not (a|the)? melon\\.?\\s*$",
+      "q": "Pan ne' est melon.",
+      "rega": "^\\s*(a |the )?Bread is not (a |the )?melon\\.?\\s*$",
       "flags": "i"
     }
   ],
