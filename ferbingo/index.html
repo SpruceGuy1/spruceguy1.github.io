@@ -130,7 +130,7 @@
       const leaderboardBody = leaderboard.querySelector("tbody");
       const saveButton = document.getElementById("save-btn");
       const loadButton = document.getElementById("load-btn");
-
+var newArt = false;
       let currentUser = null;
       let chestData = {
         ingots: 0,
@@ -372,6 +372,7 @@
             showFirebaseError("Load", error);
           }
         }
+        newArt = true;
       });
       $("#spec-kw").click(function () {
         $("#userAnswer").val($("#userAnswer").val() + "kʷ");
@@ -449,11 +450,7 @@
           } else if (rand < 2 / 3) {
             alert("You got an artwork!");
             chestData.artworkID.push("a" + Math.floor(Math.random() * 10));
-            $("#art").append(
-              "<img src='/images/artworks/" +
-                chestData.artworkID[chestData.artworkID.length - 1] +
-                ".png' alt='Artwork' style='width:100px;height:100px;'>",
-            );
+            $("#art").append("<img src='/images/artworks/" +chestData.artworkID[chestData.artworkID.length - 1] +".png' alt='Artwork' style='width:100px;height:100px;'>",);
           } else {
             alert("You got nothing this time. Better luck next time!");
           }
@@ -523,6 +520,13 @@
         render();
       });
       render();
+      setInterval(() => {
+        $("#xpc").text(questionProgress.xp);
+        $("#ingots").text(chestData.ingots);
+        if(newArt && chestData.artworkID.length > 0) {
+          $("#art").append("<img src='/images/artworks/" +chestData.artworkID[chestData.artworkID.length - 1] +".png' alt='Artwork' style='width:100px;height:100px;'>",);
+        }
+      }, 1000);
     </script>
   </body>
 </html>
