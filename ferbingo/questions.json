@@ -113,10 +113,10 @@
       "id": "v8",
       "information": "<h1>Animals III</h1><br><p>'Kane' means 'dog'. It is taken from Latin 'canis'. 'Fële' means 'cat'. It is taken from Latin 'felis'. The rarer word 'gate' also means 'cat'. It is taken from Latin 'cattus'. </p>"
     },
-{
+    {
       "id": "v9",
       "information": "<h1>Friends</h1><br><p>'Amike' means 'friend'. It is taken from Latin 'amicus'. If the gender of the friend is specified, 'amika' (F), 'amikus' (M), 'amikon' (S-M), 'amikaġ' (S-F), 'amik' (NN or NS) is used.</p>"
-}
+    }
   ],
   "inflection": [
     {
