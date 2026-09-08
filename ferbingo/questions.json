@@ -89,13 +89,13 @@
       "flags": "i"
     },
     {
-      "id": "t16",
+      "id": "t17",
       "q": "Edeijo melon kom amike mëije.",
       "rega": "^\\s*I eat (a|the)? melon with my friend\\.?\\s*$",
       "flags": "i"
     },
     {
-      "id": "t17",
+      "id": "t18",
       "q": "Pan ne' est melon.",
       "rega": "^\\s*(a |the )?Bread is not (a |the )?melon\\.?\\s*$",
       "flags": "i"
