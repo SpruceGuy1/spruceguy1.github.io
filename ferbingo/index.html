@@ -315,7 +315,7 @@
         renderArtwork();
         render();
       }
-var ingotMult = 1;
+      var ingotMult = 1;
       function renderArtwork() {
         const artwork = $("#art").empty();
         chestData.artworkID.forEach((artworkID) => {
@@ -504,14 +504,13 @@ var ingotMult = 1;
           } else if (rand < 2 / 3) {
             alert("You got an artwork!");
             chestData.artworkID.push("a" + Math.floor(Math.random() * 10));
-          } else if(rand < 5/6){
-            alert("You got a double ingot boost for 1 minute!")
+          } else if (rand < 5 / 6) {
+            alert("You got a double ingot boost for 1 minute!");
             ingotMult *= 2;
             setTimeout(() => {
               ingotMult /= 2;
             }, 60000);
-
-          }else{
+          } else {
             alert("You got nothing this time. Better luck next time!");
           }
           renderArtwork();
