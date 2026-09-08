@@ -107,11 +107,10 @@
       "flags": "i"
     },
     {
-      "id":"t20",
-      "q":"Enjo(-|•)me melom. Est bene.",
-      "rega":"^\\s*I enjoy (a |the )?melon. It( i|')s good\\.?\\s*$"
+      "id": "t20",
+      "q": "Enjo(-|•)me melom. Est bene.",
+      "rega": "^\\s*I enjoy (a |the )?melon. It( i|')s good\\.?\\s*$"
     }
-
   ],
   "vocab": [
     {
@@ -171,15 +170,14 @@
       "id": "v12",
       "information": "<h1>Food I</h1><br><p>'Pan' means 'bread'. It is taken from Latin 'panis'. A rare form is 'pane'. 'Melon' means 'melon'. It is taken from Late Latin 'melo'.</p>"
     },
-{
+    {
       "id": "v13",
       "information": "<h1>Enjoy</h1><br><p>'Enjo' means 'to enjoy'. It is taken from English 'enjoy'. It is conjugated with accusative pronouns, so 'I enjoy' is 'enjo-me'.</p>"
-
-},
-{
+    },
+    {
       "id": "v14",
       "information": "<h1>Good and Bad</h1><br><p>'Bene' means 'good'. It is taken from Latin 'bene'. 'Male' means 'bad'. It is taken from Latin 'malus'.</p>"
-}
+    }
   ],
   "inflection": [
     {
