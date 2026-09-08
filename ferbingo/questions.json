@@ -90,8 +90,8 @@
     },
     {
       "id": "t17",
-      "q": "Edeijo melon kom amike mëije.",
-      "rega": "^\\s*I eat (a|the)? melon with my friend\\.?\\s*$",
+      "q": "Edeijo melom kom amike mëije.",
+      "rega": "^\\s*I eat (a |the )?melon with my friend\\.?\\s*$",
       "flags": "i"
     },
     {
@@ -99,7 +99,19 @@
       "q": "Pan ne' est melon.",
       "rega": "^\\s*(a |the )?Bread is not (a |the )?melon\\.?\\s*$",
       "flags": "i"
+    },
+    {
+      "id": "t19",
+      "q": "Ekʷe' edet panem ë melom ze zoložike.",
+      "rega": "^\\s*(The |A )?horse eats (a |the )?bread and (a |the )?melon at (a|the) zoo\\.?\\s*$",
+      "flags": "i"
+    },
+    {
+      "id":"t20",
+      "q":"Enjo(-|•)me melom. Est bene.",
+      "rega":"^\\s*I enjoy (a |the )?melon. It( i|')s good\\.?\\s*$"
     }
+
   ],
   "vocab": [
     {
@@ -158,7 +170,16 @@
     {
       "id": "v12",
       "information": "<h1>Food I</h1><br><p>'Pan' means 'bread'. It is taken from Latin 'panis'. A rare form is 'pane'. 'Melon' means 'melon'. It is taken from Late Latin 'melo'.</p>"
-    }
+    },
+{
+      "id": "v13",
+      "information": "<h1>Enjoy</h1><br><p>'Enjo' means 'to enjoy'. It is taken from English 'enjoy'. It is conjugated with accusative pronouns, so 'I enjoy' is 'enjo-me'.</p>"
+
+},
+{
+      "id": "v14",
+      "information": "<h1>Good and Bad</h1><br><p>'Bene' means 'good'. It is taken from Latin 'bene'. 'Male' means 'bad'. It is taken from Latin 'malus'.</p>"
+}
   ],
   "inflection": [
     {
