@@ -108,7 +108,7 @@
     },
     {
       "id": "t20",
-      "q": "Enjo(-|•)me melom. Est bene.",
+      "q": "Enjo-me melom. Est bene.",
       "rega": "^\\s*I enjoy (a |the )?melon. It( i|')s good\\.?\\s*$"
     }
   ],
