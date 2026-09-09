@@ -16,7 +16,11 @@
       import words from "https://raw.githubusercontent.com/words/an-array-of-english-words/refs/heads/master/index.json" with { type: "json" };
       const results = document.getElementById("results");
       var test = [];
-      for (let i of words) {
+      var iter = 0
+      //for (let i of words) {
+      setInterval(() => {
+        i = words[iter];
+        iter++;
         if (i.endsWith("ular")) {
           var str = i;
           const base = i.slice(0, -4);
@@ -38,7 +42,7 @@
           test.push(str);
           results.append(str, document.createElement("br"));
         }
-      }
+      }, 1000);
       console.log(test);
     </script>
   </body>
