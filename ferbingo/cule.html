@@ -8,25 +8,25 @@
   <body>
     <h1>-cle, -gle, -ple, -ble</h1>
     <script type="module">
-      var words = require("an-array-of-english-words");
-      // import words from "https://raw.githubusercontent.com/words/an-array-of-english-words/refs/heads/master/index.json";
+      import words from "https://raw.githubusercontent.com/words/an-array-of-english-words/refs/heads/master/index.json" with { type: "json" };
       for (let i of words) {
         if (i.endsWith("ular")) {
           var str = i;
-          if (words.includes(str.slice(0, -4) + "le")) {
-            str += " " + str.slice(0, -4) + "le";
+          const base = i.slice(0, -4);
+          if (words.includes(base + "le")) {
+            str += " " + base + "le";
           }
-          if (words.includes(str.slice(0, -4) + "ule")) {
-            str += " " + str.slice(0, -4) + "ule";
+          if (words.includes(base + "ule")) {
+            str += " " + base + "ule";
           }
-          if (words.includes(str.slice(0, -4) + "ulus")) {
-            str += " " + str.slice(0, -4) + "ulus";
+          if (words.includes(base + "ulus")) {
+            str += " " + base + "ulus";
           }
-          if (words.includes(str.slice(0, -4) + "ulum")) {
-            str += " " + str.slice(0, -4) + "ulum";
+          if (words.includes(base + "ulum")) {
+            str += " " + base + "ulum";
           }
-          if (words.includes(str.slice(0, -4) + "ula")) {
-            str += " " + str.slice(0, -4) + "ula";
+          if (words.includes(base + "ula")) {
+            str += " " + base + "ula";
           }
           document.write(str + "<br>");
         }
