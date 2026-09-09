@@ -7,8 +7,10 @@
   </head>
   <body>
     <h1>-cle, -gle, -ple, -ble</h1>
+    <div id="results"></div>
     <script type="module">
       import words from "https://raw.githubusercontent.com/words/an-array-of-english-words/refs/heads/master/index.json" with { type: "json" };
+      const results = document.getElementById("results");
       for (let i of words) {
         if (i.endsWith("ular")) {
           var str = i;
@@ -28,7 +30,7 @@
           if (words.includes(base + "ula")) {
             str += " " + base + "ula";
           }
-          document.write(str + "<br>");
+          results.append(str, document.createElement("br"));
         }
       }
     </script>
