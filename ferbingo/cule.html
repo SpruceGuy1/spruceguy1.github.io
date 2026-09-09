@@ -1,36 +1,35 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ferbingo Cule</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>-cle, -gle, -ple, -ble</h1>
     <script type="module">
-        import words from 'https://raw.githubusercontent.com/words/an-array-of-english-words/refs/heads/master/index.json';
-        for(let i of words){
-            if(i.endsWith('ular')){
-                var str = i;
-                if(words.includes(str.slice(0, -4) + 'le')){
-                    str += " "+str.slice(0, -4) + 'le';
-                }
-                if(words.includes(str.slice(0, -4) + 'ule')){
-                    str += " "+str.slice(0, -4) + 'ule';
-                }
-                if(words.includes(str.slice(0, -4) + 'ulus')){
-                    str += " "+str.slice(0, -4) + 'ulus';
-                }
-                if(words.includes(str.slice(0, -4) + 'ulum')){
-                    str += " "+str.slice(0, -4) + 'ulum';
-                }
-                if(words.includes(str.slice(0, -4) + 'ula')){
-                    str += " "+str.slice(0, -4) + 'ula';
-                }
-                document.write(str + '<br>')
-            }
+      import words from "https://raw.githubusercontent.com/words/an-array-of-english-words/refs/heads/master/index.json";
+      for (let i of words) {
+        if (i.endsWith("ular")) {
+          var str = i;
+          if (words.includes(str.slice(0, -4) + "le")) {
+            str += " " + str.slice(0, -4) + "le";
+          }
+          if (words.includes(str.slice(0, -4) + "ule")) {
+            str += " " + str.slice(0, -4) + "ule";
+          }
+          if (words.includes(str.slice(0, -4) + "ulus")) {
+            str += " " + str.slice(0, -4) + "ulus";
+          }
+          if (words.includes(str.slice(0, -4) + "ulum")) {
+            str += " " + str.slice(0, -4) + "ulum";
+          }
+          if (words.includes(str.slice(0, -4) + "ula")) {
+            str += " " + str.slice(0, -4) + "ula";
+          }
+          document.write(str + "<br>");
         }
-
+      }
     </script>
-</body>
+  </body>
 </html>
