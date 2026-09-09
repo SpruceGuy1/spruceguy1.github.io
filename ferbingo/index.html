@@ -472,7 +472,12 @@
           .prop("hidden", !isOptionalQuestion);
 
         if (currentQuestion.information) {
-          $("#questions").html(currentQuestion.information);
+          if(Array.isArray(currentQuestion.information)) {
+            $("#questions").html(currentQuestion.information.join("<br>"));
+          } else {
+            $("#questions").html(currentQuestion.information);
+          
+          }
           $(".conj1").html(tables.conj1);
           $(".conj2").html(tables.conj2);
           $(".conj3").html(tables.conj3);
