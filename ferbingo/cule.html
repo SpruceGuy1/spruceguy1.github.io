@@ -13,6 +13,7 @@
     <script type="module">
       import words from "https://raw.githubusercontent.com/words/an-array-of-english-words/refs/heads/master/index.json" with { type: "json" };
       const results = document.getElementById("results");
+      var test = [];
       for (let i of words) {
         if (i.endsWith("ular")) {
           var str = i;
@@ -32,9 +33,11 @@
           if (words.includes(base + "ula")) {
             str += " " + base + "ula";
           }
+          test.push(str)
           results.append(str, document.createElement("br"));
         }
       }
+      console.log(test);
     </script>
   </body>
 </html>
