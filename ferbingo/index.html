@@ -96,6 +96,20 @@
       <legend>Artworks</legend>
       <div id="art"></div>
     </fieldset>
+    <fieldset>
+      <legend>Minigames</legend>
+      <button id="pay-ticket">Pay 1 minigame ticket to play a minigame</button>
+      <p id="minigame-status">You have <span id="ticket-count">0</span> minigame tickets.</p>
+      <div id="minigame-area" hidden>
+        <span id="dir">=<br><img id="riggy" src="/Riggy.png" alt="Minigame Image"><br>=</span>
+        <button id="up">UP</button>
+        <button id="down">DOWN</button>
+
+  
+  
+
+      </div>
+    </fieldset>
     <script type="module">
       import questions from "./questions.json" with { type: "json" };
       import conj from "./conjugation-tables.js";
@@ -128,6 +142,7 @@
       };
 
       const app = initializeApp(firebaseConfig);
+
       const auth = getAuth(app);
       const db = getFirestore(app);
       const status = document.getElementById("status");
@@ -616,10 +631,45 @@
         }
         render();
       });
+      $("#pay-ticket").click(function () {
+        if (chestData.minigameTickets.length > 0) {
+          chestData.minigameTickets.pop();
+          $("#ticket-count").text(chestData.minigameTickets.length);
+          $("#minigame-area").show();
+          status.textContent = "You can now play the minigame!";
+          minigameActive = true;
+          setTimeout(() => {
+            minigameActive = false;
+            $("#minigame-area").hide();
+            status.textContent = "Minigame ended.";
+          }, 30000); // Minigame lasts for 30 seconds
+        } else {
+          status.textContent = "You don't have any minigame tickets.";
+        }
+      });
+      var minigameActive = false;
+      var riggyPosition = 0;
+      var correctPosition = 0;
+      $("#up").click(function () {
+        $("#riggy").css("transform", "translateY(-16px)");
+        riggyPosition -= 1;
+      });
+      $("#down").click(function () {
+        $("#riggy").css("transform", "translateY(16px)");
+        riggyPosition += 1;
+      });
       render();
       setInterval(() => {
         $("#xpc").text(questionProgress.xp);
         $("#ingots").text(chestData.ingots);
+        if(riggyPosition === correctPosition) {
+          chestData.ingots += 0.5 * ingotMult; // Award 1 ingot for correct position
+          $("#ingots").text(chestData.ingots);
+        } else {
+          chestData.ingots -= 0.2 * ingotMult; // Deduct 0.2 ingots for incorrect position
+          if (chestData.ingots < 0) chestData.ingots = 0; // Prevent negative ingots
+          $("#ingots").text(chestData.ingots);
+        }
       }, 1000);
     </script>
   </body>
