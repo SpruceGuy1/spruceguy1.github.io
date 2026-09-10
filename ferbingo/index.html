@@ -673,7 +673,7 @@
           $("#ingots").text(chestData.ingots);
         } else {
           chestData.ingots -= 0.2 * ingotMult; // Deduct 0.2 ingots for incorrect position
-          if (chestData.ingots < 0) chestData.ingots = 0; // Prevent negative ingots
+          if (chestData.ingots < 2) chestData.ingots = 2; // Prevent negative ingots
           $("#ingots").text(chestData.ingots);
         }}
         
