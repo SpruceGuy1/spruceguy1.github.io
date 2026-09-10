@@ -133,10 +133,9 @@
     {
       "id": "t24",
       "q": "Enjo-fëlem mëijem bibere idrem.",
-      "rega":"^\\s*My cat enjoys drinking (a |the )?water\\.?\\s*$",
+      "rega": "^\\s*My cat enjoys drinking (a |the )?water\\.?\\s*$",
       "flags": "i"
     }
-
   ],
   "vocab": [
     {
@@ -226,7 +225,6 @@
 
       "information": "<h1>Water</h1><br><p>'Ider' is an R-declension noun meaning 'water'. It is taken from Ancient Greek 'ὕδωρ' ('hydor'). Refreskare is a first-conjugation verb meaning 'to refresh'. Its present participle is 'refreskants'. </p>"
     }
-
   ],
   "inflection": [
     {
