@@ -666,17 +666,16 @@
       setInterval(() => {
         $("#xpc").text(questionProgress.xp);
         $("#ingots").text(chestData.ingots);
-        if(minigameActive) {
-        
-        if(riggyPosition === correctPosition) {
-          chestData.ingots += 0.5 * ingotMult; // Award 1 ingot for correct position
-          $("#ingots").text(chestData.ingots);
-        } else {
-          chestData.ingots -= 0.2 * ingotMult; // Deduct 0.2 ingots for incorrect position
-          if (chestData.ingots < 2) chestData.ingots = 2; // Prevent negative ingots
-          $("#ingots").text(chestData.ingots);
-        }}
-        
+        if (minigameActive) {
+          if (riggyPosition === correctPosition) {
+            chestData.ingots += 0.5 * ingotMult; // Award 1 ingot for correct position
+            $("#ingots").text(chestData.ingots);
+          } else {
+            chestData.ingots -= 0.2 * ingotMult; // Deduct 0.2 ingots for incorrect position
+            if (chestData.ingots < 2) chestData.ingots = 2; // Prevent negative ingots
+            $("#ingots").text(chestData.ingots);
+          }
+        }
       }, 1000);
       setInterval(() => {
         if (minigameActive) {
