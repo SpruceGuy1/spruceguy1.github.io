@@ -639,7 +639,7 @@
         if (chestData.minigameTickets.length > 0) {
           chestData.minigameTickets.pop();
           $("#ticket-count").text(chestData.minigameTickets.length);
-          $("#minigame-area").show();
+          $("#minigame-area").prop("hidden", false);
           status.textContent = "You can now play the minigame!";
           minigameActive = true;
           setTimeout(() => {
