@@ -117,7 +117,26 @@
       "q": "Enjo-me panem. Ne' est male.",
       "rega": "^\\s*I enjoy (a |the )?bread\\. (It is not|It's not|It isn't) bad\\.?\\s*$",
       "flags": "i"
+    },
+    {
+      "id": "t22",
+      "q": "Amike mëije ne' est fële, sed kane. Edet komóñk panem.",
+      "rega": "^\\s*(My friend|A friend of mine|The friend of mine) is not a cat, but a dog\\. It often eats (a |the )?bread\\.?\\s*$",
+      "flags": "i"
+    },
+    {
+      "id": "t23",
+      "q": "Bibo komóñk idrem. Est refreskants.",
+      "rega": "^\\s*I drink (a |the )?water often\\. It is refreshing\\.?\\s*$",
+      "flags": "i"
+    },
+    {
+      "id": "t24",
+      "q": "Enjo-fëlem mëijem bibere idrem.",
+      "rega":"^\\s*My cat enjoys drinking (a |the )?water\\.?\\s*$",
+      "flags": "i"
     }
+
   ],
   "vocab": [
     {
@@ -196,7 +215,18 @@
         "<tr><td>ABL</td><td>me</td><td>nobite</td><td>te</td><td>obite, hubite</td><td>Conjugate 'ile' (ablative) by gender</td><td>Conjugate 'iles' (ablative) by gender</td></tr>",
         "<tr><td>VOC</td><td>-</td><td>ja</td><td>fro, gʷeijé (informal), demé (formal)</td><td>gʷeijés (informal), demés (formal)</td><td>-</td><td>-</td></tr></table>"
       ]
+    },
+    {
+      "id": "v16",
+
+      "information": "<h1>Simple Words V</h1><br><p>'Komóñk' means 'often'. It is taken from English 'common' plus the suffix '-k'.</p>"
+    },
+    {
+      "id": "v17",
+
+      "information": "<h1>Water</h1><br><p>'Ider' is an R-declension noun meaning 'water'. It is taken from Ancient Greek 'ὕδωρ' ('hydor'). Refreskare is a first-conjugation verb meaning 'to refresh'. Its present participle is 'refreskants'. </p>"
     }
+
   ],
   "inflection": [
     {
