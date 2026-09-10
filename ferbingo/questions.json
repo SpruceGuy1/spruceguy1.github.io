@@ -127,7 +127,7 @@
     {
       "id": "t23",
       "q": "Bibo komóñk idrem. Est refreskants.",
-      "rega": "^\\s*I drink (a |the )?water often\\. It is refreshing\\.?\\s*$",
+      "rega": "^\\s*I (?:often drink (a |the )?water|drink (a |the )?water often)\\. It is refreshing\\.?\\s*$",
       "flags": "i"
     },
     {
