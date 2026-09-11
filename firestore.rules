@@ -9,9 +9,19 @@ service cloud.firestore {
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
     match /ferbingo_saves/{userId} {
-      allow read: if request.auth != null;
+      // Save documents are untrusted game progress and private to their owner.
+      allow read: if request.auth != null && request.auth.uid == userId;
       allow create, update, delete: if request.auth != null
         && request.auth.uid == userId;
+    }
+    match /ferbingo_leaderboard/{userId} {
+      // Only the trusted answer-validation function writes this projection.
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
+    match /ferbingo_scores/{userId} {
+      // Server-only reward state; Admin SDK requests bypass these client rules.
+      allow read, write: if false;
     }
   }
 }
