@@ -1,9 +1,4 @@
 {
-  "functions": {
-    "source": "functions",
-    "runtime": "nodejs22",
-    "predeploy": ["npm --prefix \"$RESOURCE_DIR\" run prepare-source"]
-  },
   "firestore": {
     "rules": "firestore.rules"
   }

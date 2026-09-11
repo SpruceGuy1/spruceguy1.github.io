@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+    <script src="//cdn.jsdelivr.net/npm/eruda"></script>
     <script>
       eruda.init();
     </script>
@@ -134,10 +134,6 @@
         collection,
         getDocs,
       } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js";
-      import {
-        getFunctions,
-        httpsCallable,
-      } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-functions.js";
       var tables = conj[0];
       var nouns = conj[1];
       const firebaseConfig = {
@@ -154,11 +150,6 @@
 
       const auth = getAuth(app);
       const db = getFirestore(app);
-      const functions = getFunctions(app);
-      const submitFerbingoAnswer = httpsCallable(
-        functions,
-        "submitFerbingoAnswer",
-      );
       const status = document.getElementById("status");
       const leaderboard = document.getElementById("leaderboard");
       const leaderboardStatus = document.getElementById("leaderboard-status");
@@ -166,7 +157,6 @@
       const saveButton = document.getElementById("save-btn");
       const loadButton = document.getElementById("load-btn");
       let currentUser = null;
-      let trustedXp = 0;
       let chestData = {
         ingots: 0,
         artworkID: [],
@@ -178,6 +168,7 @@
         translation: 0,
         inflection: 0,
         pronunciation: 0,
+        xp: 0,
         completedQuestionIds: {},
         username: "",
       };
@@ -207,11 +198,6 @@
         };
       }
 
-      function withoutLeaderboardRewards(progress) {
-        const { xp: _legacyXp, ...untrustedProgress } = progress;
-        return untrustedProgress;
-      }
-
       function normalizeGameData(data) {
         if (!isPlainObject(data) || !isPlainObject(data.questionProgress)) {
           throw new Error("invalid-save-data");
@@ -219,9 +205,9 @@
 
         if (data.version === 1) {
           return {
-            version: 4,
+            version: 3,
             questionProgress: {
-              ...withoutLeaderboardRewards(data.questionProgress),
+              ...data.questionProgress,
               completedQuestionIds: {},
             },
             chestData: {
@@ -237,8 +223,8 @@
           isPlainObject(data.questionProgress.completedQuestionIds)
         ) {
           return {
-            version: 4,
-            questionProgress: withoutLeaderboardRewards(data.questionProgress),
+            version: 3,
+            questionProgress: data.questionProgress,
             chestData: {
               ingots: 0,
               artworkID: [],
@@ -249,14 +235,12 @@
         }
 
         if (
-          (data.version === 3 || data.version === 4) &&
+          data.version === 3 &&
           isPlainObject(data.questionProgress.completedQuestionIds) &&
           isPlainObject(data.chestData)
         ) {
           return {
             ...data,
-            version: 4,
-            questionProgress: withoutLeaderboardRewards(data.questionProgress),
             chestData: normalizeChestData(data.chestData),
           };
         }
@@ -265,8 +249,10 @@
       }
       function getGameData() {
         return {
-          version: 4,
-          questionProgress: withoutLeaderboardRewards(questionProgress),
+          version: 3,
+          playerEmail: currentUser?.email || "Unknown player",
+
+          questionProgress,
           chestData,
           lastSaved: new Date().toISOString(),
         };
@@ -283,23 +269,19 @@
         leaderboard.hidden = true;
 
         try {
-          const snapshots = await getDocs(
-            collection(db, "ferbingo_leaderboard"),
-          );
+          const snapshots = await getDocs(collection(db, "ferbingo_saves"));
           const players = snapshots.docs
             .map((snapshot) => {
               const data = snapshot.data();
               return {
-                id: snapshot.id,
-                name: data.displayName || "Player",
-                xp: Number(data.xp) || 0,
+                name:
+                  data.questionProgress?.username ||
+                  data.playerEmail ||
+                  "Unknown player",
+                xp: Number(data.questionProgress?.xp) || 0,
               };
             })
             .sort((first, second) => second.xp - first.xp);
-
-          trustedXp =
-            players.find((player) => player.id === currentUser.uid)?.xp || 0;
-          $("#xpc").text(trustedXp);
 
           leaderboardBody.replaceChildren();
           players.forEach((player, index) => {
@@ -339,7 +321,7 @@
         }
 
         questionProgress = data.questionProgress;
-        $("#xpc").text(trustedXp);
+        $("#xpc").text(questionProgress.xp);
 
         render();
       }*/
@@ -348,7 +330,7 @@
 
         questionProgress = normalizedData.questionProgress;
         chestData = normalizedData.chestData;
-        $("#xpc").text(trustedXp);
+        $("#xpc").text(questionProgress.xp);
         $("#ingots").text(chestData.ingots);
         renderArtwork();
         render();
@@ -372,8 +354,6 @@
 
       onAuthStateChanged(auth, (user) => {
         currentUser = user;
-        trustedXp = 0;
-        $("#xpc").text(trustedXp);
         saveButton.disabled = !user;
         loadButton.disabled = !user;
         status.textContent = user
@@ -562,7 +542,7 @@
           alert("Not enough ingots to buy a chest.");
         }
       });
-      $("#check").click(async function () {
+      $("#check").click(function () {
         const skillQuestions = questions[skill];
         const currentQuestion = skillQuestions?.[questionProgress[skill]];
         if (currentQuestion.information) {
@@ -585,49 +565,18 @@
         }
         if (!currentQuestion?.rega) return;
 
-        const answer = $("#userAnswer").val();
-        let reward = {
-          correct: new RegExp(currentQuestion.rega, currentQuestion.flags).test(
-            answer,
-          ),
-          awarded: false,
-          xp: trustedXp,
-          ingotsAwarded: 0,
-        };
-
-        if (currentUser) {
-          $("#check").prop("disabled", true);
-          $("#qstatus").text("Checking answer...");
-          try {
-            const response = await submitFerbingoAnswer({
-              skill,
-              questionId: currentQuestion.id,
-              answer,
-              displayName: questionProgress.username,
-            });
-            reward = response.data;
-          } catch (error) {
-            showFirebaseError("Answer validation", error);
-            $("#qstatus").text("Unable to validate this answer. Try again.");
-            return;
-          } finally {
-            $("#check").prop("disabled", false);
-          }
-        }
-
-        if (reward.correct) {
+        var regex = new RegExp(currentQuestion.rega, currentQuestion.flags);
+        if (regex.test($("#userAnswer").val())) {
           $("#qstatus").text("Correct answer!");
           const questionId = currentQuestion.id;
 
-          questionProgress.completedQuestionIds[questionId] = true;
-          if (reward.awarded) {
-            trustedXp = reward.xp;
-            chestData.ingots += reward.ingotsAwarded * ingotMult;
-            $("#xpc").text(trustedXp);
+          if (!questionProgress.completedQuestionIds[questionId]) {
+            questionProgress.completedQuestionIds[questionId] = true;
+            questionProgress.xp++;
+            var ingotBonus = (currentQuestion.special?.ingots || 1) * ingotMult; // Default to 1 ingot if not specified
+            chestData.ingots += ingotBonus; // Award ingots for each correct answer
+            $("#xpc").text(questionProgress.xp);
             $("#ingots").text(chestData.ingots);
-            loadLeaderboard();
-          } else if (!currentUser) {
-            $("#qstatus").text("Correct! Sign in to earn validated rewards.");
           }
           try {
             new Audio("/correct.m4a").play();
@@ -706,20 +655,17 @@
       var minigameActive = false;
       var riggyPosition = 0;
       var correctPosition = 0;
-      function renderRiggyPosition() {
-        $("#riggy").css("transform", `translateY(${riggyPosition * 16}px)`);
-      }
       $("#up").click(function () {
-        riggyPosition = Math.max(-2, riggyPosition - 1);
-        renderRiggyPosition();
+        $("#riggy").css("transform", "translateY(-16px)");
+        riggyPosition -= 1;
       });
       $("#down").click(function () {
-        riggyPosition = Math.min(2, riggyPosition + 1);
-        renderRiggyPosition();
+        $("#riggy").css("transform", "translateY(16px)");
+        riggyPosition += 1;
       });
       render();
       setInterval(() => {
-        $("#xpc").text(trustedXp);
+        $("#xpc").text(questionProgress.xp);
         $("#ingots").text(chestData.ingots);
         if (minigameActive) {
           if (riggyPosition === correctPosition) {
