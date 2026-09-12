@@ -589,7 +589,7 @@
         if (p && !currentQuestion?.rega) return;
 
         var regex = new RegExp(currentQuestion.rega, currentQuestion.flags);
-        if (p && regex.test($("#userAnswer").val())) {
+        if (!p || regex.test($("#userAnswer").val())) {
           job();
         } else {
           new Audio("/incorrect.m4a").play().catch((e) => {
