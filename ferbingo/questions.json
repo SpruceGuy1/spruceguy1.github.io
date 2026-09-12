@@ -141,6 +141,22 @@
       "q": "Ošte ne' est bene, sed male. Nenjo-me hoste.",
       "rega": "^\\s*(The |A )?enemy is not good, but bad\\. I do not enjoy (the |a )?enemy\\.?\\s*$",
       "flags": "i"
+    },
+    {
+      "id": "t26",
+      "q": "Gʷeijé! Jala!",
+      "rega": "^\\s*(Hey|Hi|Hello|Greetings),? (guy|dude)\\.?\\s*$",
+      "flags": "i",
+      "special": {
+        "optional": true
+      }
+
+    },
+    {
+      "id": "t27",
+      "q": "Esne fese?",
+      "rega": "^\\s*Are you tired\\??\\s*$",
+      "flags": "i"
     }
   ],
   "vocab": [
@@ -240,7 +256,28 @@
         "Inflection of 'ošte' as 'hoste' with H-hiatus: <table><tr><th>Case</th><th>Singular</th><th>Plural</th></tr><tr><td>NOM</td><td>hoste</td><td>hostes</td></tr><tr><td>ACC</td><td>hostem</td><td>hostei</td></tr><tr><td>GEN</td><td>hostet</td><td>hostest</td></tr><tr><td>DAT</td><td>hostebi</td><td>hostehi</td></tr><tr><td>ABL</td><td>hoste</td><td>hosten</td></tr><tr><td>VOC</td><td>hosté</td><td>hostés</td></tr></table>",
         "Inflection of 'ošte' after any other consonant (including apostrophe-hiatus): <table><tr><th>Case</th><th>Singular</th><th>Plural</th></tr><tr><td>NOM</td><td>ošte</td><td>oštes</td></tr><tr><td>ACC</td><td>oštem</td><td>oštei</td></tr><tr><td>GEN</td><td>oštet</td><td>oštest</td></tr><tr><td>DAT</td><td>oštebi</td><td>oštehi</td></tr><tr><td>ABL</td><td>ošte</td><td>ošten</td></tr><tr><td>VOC</td><td>ošté</td><td>oštés</td></tr></table>"
       ]
+    },
+    {
+      "id": "v19",
+      "information": "<h1>Greetings I</h1><br><p>'Gʷeijé' means 'guy' or 'dude'. It is taken from English 'guy'. 'Demé' is a formal greeting like 'sir' or 'ma'am'. It is the vocative of Ferbezan 'deme'. 'Deme' comes from Ancient Greek 'δῆμος' (dêmos).</p>"
+    },
+    {
+      "id": "v20",
+      "information": "<h1>Greetings II</h1><br><p>'Salud' or 'Salúd' is a formal or informal greeting like English 'hello'. It is taken from Latin 'salve'. 'Jala' is a casual greeting like 'hey' or 'hi'. It is taken from the prefix 'j-' and English 'hello'.</p>"
+    },
+    {
+      "id": "v21",
+      "information": "<h1>-ne questions</h1><br><p>To ask a yes/no question, add '-ne' to the end of the verb that you're asking whether happens. For example, 'Esne male?' means 'Are you bad?'.</p>"
+    },
+    {
+      "id": "v22",
+      "information": "<h1>Tired and Energetic</h1><br><p>'Fese' means 'tired'. It is taken from Latin 'fessus'. 'Enerëtike' means 'energetic'. It is taken from English 'energetic'.</p>"
+    },
+    {
+      "id": "v23",
+      "information": "<h1>Yes, No, and Maybe</h1><br><p>'Ite' means 'yes'. It is taken from Latin 'ita'. 'Ne' means 'no'. It is taken from Latin 'ne'. However, some phrases use 'min' to mean 'no'. Example: 'min, ne' est' = 'No, it's not.' This exists because two of 'ne' next to each other create a double negative. 'Fotas' means 'maybe', 'perhaps', or 'possibly'. It is taken from Latin 'fortasse'.</p>"
     }
+    
   ],
   "inflection": [
     {
@@ -274,6 +311,22 @@
       "id": "o0",
 
       "information": "<h1>Hiati</h1><br><p>If a word ends with a vowel and the next word starts with a vowel other than e or ë, use the letter h. Example: <i>Dema hit ad merkátem.</i> However, if the second word starts with e or ë, use the ' symbol. Example: <i>Ekʷe' ë swe hijûnt.</i></p>"
+    }
+  ],
+  "pronunciation": [
+    {
+      "id": "p0",
+      "information": "NOT READY YET"
+    },
+    {
+      "id": "p1",
+      "qaud": "/audio/esne-paritus-pro-kene.mp3",
+      "otext": "Choose an answer for the question",
+      "options":[
+        "Ite', esurijo.",
+        "Ekʷe' edet kom swe."
+      ],
+      "correctOption":0
     }
   ]
 }
