@@ -150,7 +150,6 @@
       "special": {
         "optional": true
       }
-
     },
     {
       "id": "t27",
@@ -277,7 +276,6 @@
       "id": "v23",
       "information": "<h1>Yes, No, and Maybe</h1><br><p>'Ite' means 'yes'. It is taken from Latin 'ita'. 'Ne' means 'no'. It is taken from Latin 'ne'. However, some phrases use 'min' to mean 'no'. Example: 'min, ne' est' = 'No, it's not.' This exists because two of 'ne' next to each other create a double negative. 'Fotas' means 'maybe', 'perhaps', or 'possibly'. It is taken from Latin 'fortasse'.</p>"
     }
-    
   ],
   "inflection": [
     {
@@ -322,11 +320,8 @@
       "id": "p1",
       "qaud": "/audio/esne-paritus-pro-kene.mp3",
       "otext": "Choose an answer for the question",
-      "options":[
-        "Ite', esurijo.",
-        "Ekʷe' edet kom swe."
-      ],
-      "correctOption":0
+      "options": ["Ite', esurijo.", "Ekʷe' edet kom swe."],
+      "correctOption": 0
     }
   ]
 }

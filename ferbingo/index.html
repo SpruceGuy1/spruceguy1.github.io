@@ -490,24 +490,28 @@
         $("#skip-question")
           .prop("disabled", !isOptionalQuestion)
           .prop("hidden", !isOptionalQuestion);
-          if(currentQuestion.qaud){
-            $("#questions").html("<button id='qaud' onclick='new Audio(\""+currentQuestion.qaud+"\").play()'>Play audio for question</button>")
-            $("#questions").append(currentQuestion.otext)
-            for(let i of currentQuestion.options){
-              var indx = currentQuestion.options.getIndexOf(i)
-              function clickHandler(num){
-                if(currentQuestion.correctOption==num){
-                  checkAnswer(false)
-
-                }
-
+        if (currentQuestion.qaud) {
+          $("#questions").html(
+            "<button id='qaud' onclick='new Audio(\"" +
+              currentQuestion.qaud +
+              "\").play()'>Play audio for question</button>",
+          );
+          $("#questions").append(currentQuestion.otext);
+          for (let i of currentQuestion.options) {
+            var indx = currentQuestion.options.getIndexOf(i);
+            function clickHandler(num) {
+              if (currentQuestion.correctOption == num) {
+                checkAnswer(false);
               }
-              $("#opt-"+indx).on("click", function(){
-                clickHandler(indx)
-              })
-              $("#questions").append("<button class='opt-button' id='opt-"+indx+"")
             }
+            $("#opt-" + indx).on("click", function () {
+              clickHandler(indx);
+            });
+            $("#questions").append(
+              "<button class='opt-button' id='opt-" + indx + "",
+            );
           }
+        }
 
         if (currentQuestion.information) {
           if (Array.isArray(currentQuestion.information)) {
@@ -560,7 +564,7 @@
           alert("Not enough ingots to buy a chest.");
         }
       });
-        function checkAnswer (p) {
+      function checkAnswer(p) {
         const skillQuestions = questions[skill];
         const currentQuestion = skillQuestions?.[questionProgress[skill]];
         if (currentQuestion.information) {
@@ -581,14 +585,19 @@
           }
           return;
         }
-        
+
         if (p && !currentQuestion?.rega) return;
 
         var regex = new RegExp(currentQuestion.rega, currentQuestion.flags);
-        if (p &&regex.test($("#userAnswer").val())) {job()} else { new Audio("/incorrect.m4a").play().catch((e) => { console.error("Error: " + e);  });}
+        if (p && regex.test($("#userAnswer").val())) {
+          job();
+        } else {
+          new Audio("/incorrect.m4a").play().catch((e) => {
+            console.error("Error: " + e);
+          });
+        }
 
-
-        function job(){
+        function job() {
           $("#qstatus").text("Correct answer!");
           const questionId = currentQuestion.id;
 
@@ -616,9 +625,11 @@
           } else {
             render();
           }
+        }
       }
-    }
-            $("#check").click(function(){checkAnswer(true)});
+      $("#check").click(function () {
+        checkAnswer(true);
+      });
       $("#skip-question").click(function () {
         const skillQuestions = questions[skill];
         const currentQuestion = skillQuestions?.[questionProgress[skill]];
