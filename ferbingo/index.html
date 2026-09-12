@@ -520,8 +520,8 @@
             $option.on("click", function () {
               if (currentQuestion.correctOption === index) {
                 checkAnswer(false);
-              }else{
-                new Audio("/audio/incorrect.m4a").play()
+              } else {
+                new Audio("/audio/incorrect.m4a").play();
               }
             });
             $("#questions").append($option);
