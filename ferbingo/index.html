@@ -497,7 +497,7 @@
               "\").play()'>Play audio for question</button>",
           );
           $("#questions").append(currentQuestion.otext);
-         /* for (let i of currentQuestion.options) {
+          /* for (let i of currentQuestion.options) {
             var indx = currentQuestion.options.getIndexOf(i);
             function clickHandler(num) {
               if (currentQuestion.correctOption == num) {
@@ -508,21 +508,21 @@
               clickHandler(indx);
             });
             $("#questions").append(
-              "<button class='opt-button' id='opt-" + ind*/for (const [index, option] of currentQuestion.options.entries()) {
+              "<button class='opt-button' id='opt-" + ind*/ for (const [
+            index,
+            option,
+          ] of currentQuestion.options.entries()) {
             const $option = $("<button>", {
               class: "opt-button",
               id: `opt-${index}`,
               text: option,
             });
-                       $option.on("click", function () {
+            $option.on("click", function () {
               if (currentQuestion.correctOption === index) {
-               checkAnswer(false);
+                checkAnswer(false);
               }
             });
             $("`#questions`").append($option);
-            
-            
-
           }
         }
 
