@@ -525,8 +525,10 @@
               }
             });
             $("#questions").append($option);
-            return;
+            
           }
+          $("`#answer-area`").empty();
+return;
         }
 
         if (currentQuestion.information) {
