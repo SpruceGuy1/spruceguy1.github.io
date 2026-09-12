@@ -724,7 +724,9 @@ import {
               if (currentQuestion.correctOption === index) {
                 checkAnswer(false);
               } else {
-                new Audio("/audio/incorrect.m4a").play();
+                new Audio("/audio/incorrect.m4a").play().catch((e) => {
+                  console.error("Error: " + e);
+                });
               }
             });
             $("#questions").append($option);
@@ -789,11 +791,9 @@ import {
         const currentQuestion = skillQuestions?.[questionProgress[skill]];
         if (currentQuestion.information) {
           if (questionProgress[skill] < skillQuestions.length - 1) {
-            try {
-              new Audio("/audio/correct.m4a").play();
-            } catch (e) {
+            new Audio("/audio/correct.m4a").play().catch((e) => {
               console.error("Error: " + e);
-            }
+            });
             questionProgress[skill]++;
             render();
           } else {
@@ -829,11 +829,9 @@ import {
             $("#xpc").text(questionProgress.xp);
             $("#ingots").text(chestData.ingots);
           }
-          try {
-            new Audio("/audio/correct.m4a").play();
-          } catch (e) {
+          new Audio("/audio/correct.m4a").play().catch((e) => {
             console.error("Error: " + e);
-          }
+          });
 
           questionProgress[skill]++;
           if (questionProgress[skill] >= skillQuestions.length) {
