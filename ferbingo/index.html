@@ -76,7 +76,7 @@
         <option value="vocab">Vocabulary (15 lessons)</option>
         <option value="orthography">Orthography (1 lesson)</option>
         <option value="pronunciation">
-          Pronunciation (not yet implemented)
+          Pronunciation (1 question ready, 1 lesson coming soon)
         </option>
         <option value="inflection">
           Inflection (1 lesson ready, 3 lessons coming soon)
@@ -520,9 +520,12 @@
             $option.on("click", function () {
               if (currentQuestion.correctOption === index) {
                 checkAnswer(false);
+              }else{
+                new Audio("/audio/incorrect.m4a").play()
               }
             });
-            $("`#questions`").append($option);
+            $("#questions").append($option);
+            return;
           }
         }
 
@@ -583,7 +586,7 @@
         if (currentQuestion.information) {
           if (questionProgress[skill] < skillQuestions.length - 1) {
             try {
-              new Audio("/correct.m4a").play();
+              new Audio("/audio/correct.m4a").play();
             } catch (e) {
               console.error("Error: " + e);
             }
