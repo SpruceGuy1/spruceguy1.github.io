@@ -605,7 +605,7 @@
         if (!p || regex.test($("#userAnswer").val())) {
           job();
         } else {
-          new Audio("/incorrect.m4a").play().catch((e) => {
+          new Audio("/audio/incorrect.m4a").play().catch((e) => {
             console.error("Error: " + e);
           });
         }
@@ -623,7 +623,7 @@
             $("#ingots").text(chestData.ingots);
           }
           try {
-            new Audio("/correct.m4a").play();
+            new Audio("/audio/correct.m4a").play();
           } catch (e) {
             console.error("Error: " + e);
           }
