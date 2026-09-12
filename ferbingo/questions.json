@@ -288,14 +288,15 @@
     },
     {
       "id": "v25",
-      "information": ["<h1>Meals</h1><br><p>Snack: ënake",
-      "Breakfast: desaune",
-      "Lunch: añkene",
-      "Dinner: kene",
-      "Dessert: postuke",
-      " </p>"]
+      "information": [
+        "<h1>Meals</h1><br><p>Snack: ënake",
+        "Breakfast: desaune",
+        "Lunch: añkene",
+        "Dinner: kene",
+        "Dessert: postuke",
+        " </p>"
+      ]
     }
-
   ],
   "inflection": [
     {
