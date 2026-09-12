@@ -16,7 +16,7 @@
     />
     <fieldset>
       <legend>Log-In</legend>
-      <form id="login">
+      <form id="login" onsubmit="return false">
         <label>
           Login Email
           <input id="log-email" type="email" required />
@@ -30,13 +30,13 @@
       <form id="register">
         <label>
           Register Email
-          <input id="reg-email" type="email" required />
+          <input id="reg-email" type="email" required/>
         </label>
         <label>
           Password
           <input id="reg-pword" type="password" required />
         </label>
-        <button type="submit">Register</button>
+        <button type="submit" >Register</button>
       </form>
       <button id="save-btn" type="button" disabled>
         Save Progress To Your Account
