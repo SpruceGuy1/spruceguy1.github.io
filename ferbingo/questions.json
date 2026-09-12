@@ -233,15 +233,14 @@
     },
     {
       "id": "v18",
-      "information": ["<h1>Oste vs. Ošte</h1><br><p>Oste means 'bone'. It is taken from Greek 'οστό' (ostó). Ošte means 'enemy'. It is taken from Latin 'hostis'. Declension:</p><table><tr><th>Case</th><th>Singular</th><th>Plural</th></tr><tr><td>NOM</td><td>oste</td><td>ostes</td></tr><tr><td>ACC</td><td>ostem</td><td>ostei</td></tr><tr><td>GEN</td><td>ostet</td><td>ostest</td></tr><tr><td>DAT</td><td>ostebi</td><td>ostehi</td></tr><tr><td>ABL</td><td>oste</td><td>osten</td></tr><tr><td>VOC</td><td>osté</td><td>ostés</td></tr></table>"
-, "Oste (bone) becomes 'huste' when it uses an H-hiatus (the extra h added between two vowels). Ošte (enemy) becomes 'hoste' when it uses an H-hiatus. The declension of 'huste' and 'hoste' is the same as 'oste' and 'ošte', respectively."
-      ,"Inflection of 'ošte' (enemy) as 'oste' after b d g p t or k: Change the consonant to v, ð, ġ, f, þ, or x.  <table><tr><th>Case</th><th>Singular</th><th>Plural</th></tr><tr><td>NOM</td><td>oste</td><td>ostes</td></tr><tr><td>ACC</td><td>ostem</td><td>ostei</td></tr><tr><td>GEN</td><td>ostet</td><td>ostest</td></tr><tr><td>DAT</td><td>ostebi</td><td>ostehi</td></tr><tr><td>ABL</td><td>oste</td><td>osten</td></tr><tr><td>VOC</td><td>osté</td><td>ostés</td></tr></table>"
-      ,"Inflection of 'ošte' as 'hoste' with H-hiatus: <table><tr><th>Case</th><th>Singular</th><th>Plural</th></tr><tr><td>NOM</td><td>hoste</td><td>hostes</td></tr><tr><td>ACC</td><td>hostem</td><td>hostei</td></tr><tr><td>GEN</td><td>hostet</td><td>hostest</td></tr><tr><td>DAT</td><td>hostebi</td><td>hostehi</td></tr><tr><td>ABL</td><td>hoste</td><td>hosten</td></tr><tr><td>VOC</td><td>hosté</td><td>hostés</td></tr></table>"
-
-      ,"Inflection of 'ošte' after any other consonant (including apostrophe-hiatus): <table><tr><th>Case</th><th>Singular</th><th>Plural</th></tr><tr><td>NOM</td><td>ošte</td><td>oštes</td></tr><tr><td>ACC</td><td>oštem</td><td>oštei</td></tr><tr><td>GEN</td><td>oštet</td><td>oštest</td></tr><tr><td>DAT</td><td>oštebi</td><td>oštehi</td></tr><tr><td>ABL</td><td>ošte</td><td>ošten</td></tr><tr><td>VOC</td><td>ošté</td><td>oštés</td></tr></table>"
-  ]
+      "information": [
+        "<h1>Oste vs. Ošte</h1><br><p>Oste means 'bone'. It is taken from Greek 'οστό' (ostó). Ošte means 'enemy'. It is taken from Latin 'hostis'. Declension:</p><table><tr><th>Case</th><th>Singular</th><th>Plural</th></tr><tr><td>NOM</td><td>oste</td><td>ostes</td></tr><tr><td>ACC</td><td>ostem</td><td>ostei</td></tr><tr><td>GEN</td><td>ostet</td><td>ostest</td></tr><tr><td>DAT</td><td>ostebi</td><td>ostehi</td></tr><tr><td>ABL</td><td>oste</td><td>osten</td></tr><tr><td>VOC</td><td>osté</td><td>ostés</td></tr></table>",
+        "Oste (bone) becomes 'huste' when it uses an H-hiatus (the extra h added between two vowels). Ošte (enemy) becomes 'hoste' when it uses an H-hiatus. The declension of 'huste' and 'hoste' is the same as 'oste' and 'ošte', respectively.",
+        "Inflection of 'ošte' (enemy) as 'oste' after b d g p t or k: Change the consonant to v, ð, ġ, f, þ, or x.  <table><tr><th>Case</th><th>Singular</th><th>Plural</th></tr><tr><td>NOM</td><td>oste</td><td>ostes</td></tr><tr><td>ACC</td><td>ostem</td><td>ostei</td></tr><tr><td>GEN</td><td>ostet</td><td>ostest</td></tr><tr><td>DAT</td><td>ostebi</td><td>ostehi</td></tr><tr><td>ABL</td><td>oste</td><td>osten</td></tr><tr><td>VOC</td><td>osté</td><td>ostés</td></tr></table>",
+        "Inflection of 'ošte' as 'hoste' with H-hiatus: <table><tr><th>Case</th><th>Singular</th><th>Plural</th></tr><tr><td>NOM</td><td>hoste</td><td>hostes</td></tr><tr><td>ACC</td><td>hostem</td><td>hostei</td></tr><tr><td>GEN</td><td>hostet</td><td>hostest</td></tr><tr><td>DAT</td><td>hostebi</td><td>hostehi</td></tr><tr><td>ABL</td><td>hoste</td><td>hosten</td></tr><tr><td>VOC</td><td>hosté</td><td>hostés</td></tr></table>",
+        "Inflection of 'ošte' after any other consonant (including apostrophe-hiatus): <table><tr><th>Case</th><th>Singular</th><th>Plural</th></tr><tr><td>NOM</td><td>ošte</td><td>oštes</td></tr><tr><td>ACC</td><td>oštem</td><td>oštei</td></tr><tr><td>GEN</td><td>oštet</td><td>oštest</td></tr><tr><td>DAT</td><td>oštebi</td><td>oštehi</td></tr><tr><td>ABL</td><td>ošte</td><td>ošten</td></tr><tr><td>VOC</td><td>ošté</td><td>oštés</td></tr></table>"
+      ]
     }
-
   ],
   "inflection": [
     {
