@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ferbingo Cule</title>
+    <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+    <script>
+      eruda.init();
+    </script>
+  </head>
+  <body>
+    <h1>-cle, -gle, -ple, -ble</h1>
+    <p id="status" role="status" aria-live="polite">Loading word list...</p>
+    <div id="results"></div>
+    <script type="module">
+      const wordListUrl =
+        "https://raw.githubusercontent.com/words/an-array-of-english-words/refs/heads/master/index.json";
+      const results = document.getElementById("results");
+      const status = document.getElementById("status");
+      const test = [];
+
+      async function loadWords() {
+        try {
+          const response = await fetch(wordListUrl);
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+          }
+
+          const words = await response.json();
+          const wordSet = new Set(words);
+          for (const word of words) {
+            if (!word.endsWith("ular")) continue;
+
+            let group = word;
+            const base = word.slice(0, -4);
+            for (const ending of ["le", "ule", "ulus", "ulum", "ula"]) {
+              if (wordSet.has(base + ending)) {
+                group += " " + base + ending;
+              }
+            }
+            test.push(group);
+            results.append(group, document.createElement("br"));
+          }
+          status.textContent = `Found ${test.length} matching word groups.`;
+        } catch (error) {
+          status.textContent = "Unable to load the word list.";
+          console.error("Word-list request failed:", error);
+        }
+      }
+
+      loadWords();
+    </script>
+  </body>
+</html>

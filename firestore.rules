@@ -1,0 +1,17 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Secure the player saves collection
+    match /player_saves/{userId} {
+      // Allows reading and writing ONLY if the user is authenticated 
+      // and their Unique ID matches the database document name
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    match /ferbingo_saves/{userId} {
+      allow read: if request.auth != null;
+      allow create, update, delete: if request.auth != null
+        && request.auth.uid == userId;
+    }
+  }
+}

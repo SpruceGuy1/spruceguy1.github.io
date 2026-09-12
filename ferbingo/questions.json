@@ -1,0 +1,348 @@
+{
+  "translation": [
+    {
+      "id": "t0",
+      "q": "sum",
+      "rega": "^\\s*(?:i\\s+)?am\\.?\\s*$",
+      "flags": "i"
+    },
+    { "id": "t1", "q": "I am", "rega": "^\\s*sum\\.?\\s*$", "flags": "i" },
+    { "id": "t2", "q": "You are", "rega": "^\\s*es\\.?\\s*$", "flags": "i" },
+    { "id": "t3", "q": "Horse", "rega": "^\\s*ekʷe\\.?\\s*$", "flags": "i" },
+    {
+      "id": "t4",
+
+      "q": "You are a horse",
+      "rega": "^\\s*(ekʷe 'es|es ekʷe|ekʷe' es)\\.?\\s*$",
+      "flags": "i"
+    },
+    { "id": "t5", "q": "To eat", "rega": "^\\s*edere\\.?\\s*$", "flags": "i" },
+    {
+      "id": "t6",
+
+      "q": "The horse eats with the pig. Ekʷe' ed__ kom swe.",
+      "rega": "^\\s*et\\.?\\s*$",
+      "flags": "i"
+    },
+    {
+      "id": "t7",
+      "q": "The horse or the pig?",
+      "rega": "^\\s*ekʷe hot swe\\??\\s*$",
+      "flags": "i"
+    },
+    {
+      "id": "t8",
+      "q": "Ekʷe' est ze zoložike.",
+      "rega": "^\\s*(the|a) horse is at (the|a) zoo\\.?\\s*$",
+      "flags": "i"
+    },
+    {
+      "id": "t9",
+      "q": "The animals are at the zoo.",
+      "rega": "^\\s*animales sunt ze zoložike\\.?\\s*$",
+      "flags": "i"
+    },
+    {
+      "id": "t10",
+      "q": "The horse and the pig are at the zoo.",
+      "rega": "^\\s*ekʷe' ë swe (sũ'|sunt) ze zoložike\\.?\\s*$",
+      "flags": "i"
+    },
+    {
+      "id": "t11",
+      "q": "I am not drinking.",
+      "rega": "^\\s*ne bibo\\.?\\s*$",
+      "flags": "i"
+    },
+    {
+      "id": "t12",
+      "q": "The horse and dog drink at the animals' zoo.",
+      "rega": "^\\s*ekʷe' ë kane bibunt ze zoložike animalest\\.?\\s*$",
+      "flags": "i",
+      "special": {
+        "ingots": 2,
+        "optional": true
+      }
+    },
+    {
+      "id": "t13",
+      "q": "The cat and dog are friends.",
+      "rega": "^\\s*fële' ë kane sunt amikes\\.?\\s*$",
+      "flags": "i"
+    },
+    {
+      "id": "t14",
+      "q": "Ne sum ekʷe.",
+      "rega": "^\\s*I am not a horse\\.?\\s*$",
+      "flags": "i"
+    },
+    {
+      "id": "t15",
+      "q": "Amike mëije est kane.",
+      "rega": "^\\s*(My friend|A friend of mine|The friend of mine) is a dog\\.?\\s*$",
+      "flags": "i"
+    },
+    {
+      "id": "t16",
+      "q": "Amike mëije ne' est fële, sed kane.",
+      "rega": "^\\s*(My friend|A friend of mine|The friend of mine) is not a cat, but a dog\\.?\\s*$",
+      "flags": "i"
+    },
+    {
+      "id": "t17",
+      "q": "Edeijo melom kom amike mëije.",
+      "rega": "^\\s*I eat (a |the )?melon with my friend\\.?\\s*$",
+      "flags": "i"
+    },
+    {
+      "id": "t18",
+      "q": "Pan ne' est melon.",
+      "rega": "^\\s*(a |the )?Bread is not (a |the )?melon\\.?\\s*$",
+      "flags": "i"
+    },
+    {
+      "id": "t19",
+      "q": "Ekʷe' edet panem ë melom ze zoložike.",
+      "rega": "^\\s*(The |A )?horse eats (a |the )?bread and (a |the )?melon at (a|the) zoo\\.?\\s*$",
+      "flags": "i"
+    },
+    {
+      "id": "t20",
+      "q": "Enjo-me melom. Est bene.",
+      "rega": "^\\s*I enjoy (a |the )?melon\\. It( i|')s good\\.?\\s*$",
+      "flags": "i"
+    },
+    {
+      "id": "t21",
+      "q": "Enjo-me panem. Ne' est male.",
+      "rega": "^\\s*I enjoy (a |the )?bread\\. (It is not|It's not|It isn't) bad\\.?\\s*$",
+      "flags": "i"
+    },
+    {
+      "id": "t22",
+      "q": "Amike mëije ne' est fële, sed kane. Edet komóñk panem.",
+      "rega": "^\\s*(My friend|A friend of mine|The friend of mine) is not a cat, but a dog\\. It often eats (a |the )?bread\\.?\\s*$",
+      "flags": "i"
+    },
+    {
+      "id": "t23",
+      "q": "Bibo komóñk idrem. Est refreskants.",
+      "rega": "^\\s*I (?:often drink (a |the )?water|drink (a |the )?water often)\\. It is refreshing\\.?\\s*$",
+      "flags": "i"
+    },
+    {
+      "id": "t24",
+      "q": "Enjo-fëlem mëijem bibere idrem.",
+      "rega": "^\\s*My cat enjoys drinking (a |the )?water\\.?\\s*$",
+      "flags": "i"
+    },
+    {
+      "id": "t25",
+      "q": "Ošte ne' est bene, sed male. Nenjo-me hoste.",
+      "rega": "^\\s*(The |A )?enemy is not good, but bad\\. I do not enjoy (the |a )?enemy\\.?\\s*$",
+      "flags": "i"
+    },
+    {
+      "id": "t26",
+      "q": "Gʷeijé! Jala!",
+      "rega": "^\\s*(Hey|Hi|Hello|Greetings),? (guy|dude)\\.?\\s*$",
+      "flags": "i",
+      "special": {
+        "optional": true
+      }
+    },
+    {
+      "id": "t27",
+      "q": "Esne fese?",
+      "rega": "^\\s*Are you tired\\??\\s*$",
+      "flags": "i"
+    },
+    {
+      "id": "t28",
+      "q": "Enjo•tene hañkenem?",
+      "rega": "^\\s*(Are you enjoying|Do you enjoy) (the |a )?lunch\\??\\s*$",
+      "flags": "i"
+    }
+  ],
+  "vocab": [
+    {
+      "id": "v0",
+
+      "information": "<h1>'Sum' and 'Es'</h1><br><p>'Sum' means 'I am' or 'am'. It is taken directly from Latin. 'Es' means 'you are'. It is similarly taken from Latin."
+    },
+    {
+      "id": "v1",
+
+      "information": "<h1>Animals I</h1><br><p>'Ekʷe' means 'horse'. It is taken from Latin equus. 'Swe' means 'pig'. It is taken from Latin 'sus'."
+    },
+    {
+      "id": "v2",
+
+      "information": "<h1>Simple Words I</h1><br><p>'Kom' means 'with'. It is taken from Latin cum. 'Ne' means 'not'. It is taken from Latin 'ne'."
+    },
+    {
+      "id": "v3",
+
+      "information": "<h1>Simple Words II</h1><br><p>'ë' means 'and'. It is taken from Latin et. 'ot' means 'or'. It is taken from Latin 'aut'."
+    },
+    {
+      "id": "v4",
+
+      "information": "<h1>Verbs I</h1><br><p>'Edere' means 'to eat'. It is a second conjugation verb taken from Latin 'edere'. 'Bibere' means 'to drink'. It is a third conjugation verb taken from Latin 'bibere'."
+    },
+    {
+      "id": "v5",
+      "information": "<h1>Animals II</h1><br><p>Zoložike means 'zoo'. It is taken from English 'zoologic'. 'Animale' means 'animal'. It is taken from Latin 'animalis'. </p>"
+    },
+    {
+      "id": "v6",
+      "information": "<h1>Simple Words III</h1><br><p>'Ze' means 'at.' It is taken from Ninek 'sa'. 'Est' means 'is.' It is taken from Latin 'est'.</p>"
+    },
+    {
+      "id": "v7",
+      "information": "<h1>Ese present conjugations</h1><br><table><tr><th>Person</th><th>Singular</th><th>Plural</th></tr><tr><td>1st</td><td>sum</td><td>sumus</td></tr><tr><td>2nd</td><td>es</td><td>estis</td></tr><tr><td>3rd</td><td>est</td><td>sunt, sũ'</td></tr></table>"
+    },
+    {
+      "id": "v8",
+      "information": "<h1>Animals III</h1><br><p>'Kane' means 'dog'. It is taken from Latin 'canis'. 'Fële' means 'cat'. It is taken from Latin 'felis'. The rarer word 'gate' also means 'cat'. It is taken from Latin 'cattus'. </p>"
+    },
+    {
+      "id": "v9",
+      "information": "<h1>Friends</h1><br><p>'Amike' means 'friend'. It is taken from Latin 'amicus'. If the gender of the friend is specified, 'amika' (F), 'amikus' (M), 'amikon' (S-M), 'amikaġ' (S-F), 'amik' (NN or NS) is used.</p>"
+    },
+    {
+      "id": "v10",
+      "information": "<h1>Mëije</h1><br><p>'Mëije' means 'my'. It is taken from Latin 'meus'. If the gender of the noun is specified, 'mëija' (F), 'mëijus' (M), 'mëis' (S-M), 'mëijaġ' (S-F), 'mëijents' (NN or NS) is used.</p>"
+    },
+    {
+      "id": "v11",
+      "information": "<h1>Simple Words IV</h1><br><p>'Sed' means 'but'. It is taken from Latin 'sed'.</p>"
+    },
+    {
+      "id": "v12",
+      "information": "<h1>Food I</h1><br><p>'Pan' means 'bread'. It is taken from Latin 'panis'. A rare form is 'pane'. 'Melon' means 'melon'. It is taken from Late Latin 'melo'.</p>"
+    },
+    {
+      "id": "v13",
+      "information": "<h1>Enjoy</h1><br><p>'Enjo' means 'to enjoy'. It is taken from English 'enjoy'. It is conjugated with accusative pronouns, so 'I enjoy' is 'enjo-me'.</p>"
+    },
+    {
+      "id": "v14",
+      "information": "<h1>Good and Bad</h1><br><p>'Bene' means 'good'. It is taken from Latin 'bene'. 'Male' means 'bad'. It is taken from Latin 'malus'.</p>"
+    },
+    {
+      "id": "v15",
+
+      "information": [
+        "<h1>Personal Pronouns</h1><br><table><tr><th>Case</th><th>Singular 1st</th><th>Plural 1st</th><th>Singular 2nd</th><th>Plural 2nd</th><th>Singular 3rd</th><th>Plural 3rd</th></tr><tr><td>NOM</td><td>ego</td><td>nos</td><td>tu</td><td>vos, os, hus</td><td>Conjugate 'ile' by gender </td><td>Conjugate 'iles' by gender</td></tr>",
+        "<tr><td>ACC</td><td>me</td><td>nom</td><td>te</td><td>om</td><td>Conjugate 'ilem' by gender</td><td>Conjugate 'ilei' by gender</td></tr>",
+        "<tr><td>GEN</td><td>mëije</td><td>noster</td><td>teije</td><td>oster, huster</td><td>Conjugate 'ilt' by gender</td><td>Conjugate 'ilst' by gender</td></tr>",
+        "<tr><td>DAT</td><td>mihi</td><td>nobis</td><td>tibi</td><td>obis, hubis</td><td>Conjugate 'ilebi' by gender</td><td>Conjugate 'ilehi' by gender</td></tr>",
+        "<tr><td>ABL</td><td>me</td><td>nobite</td><td>te</td><td>obite, hubite</td><td>Conjugate 'ile' (ablative) by gender</td><td>Conjugate 'iles' (ablative) by gender</td></tr>",
+        "<tr><td>VOC</td><td>-</td><td>ja</td><td>fro, gʷeijé (informal), demé (formal)</td><td>gʷeijés (informal), demés (formal)</td><td>-</td><td>-</td></tr></table>"
+      ]
+    },
+    {
+      "id": "v16",
+
+      "information": "<h1>Simple Words V</h1><br><p>'Komóñk' means 'often'. It is taken from English 'common' plus the suffix '-k'.</p>"
+    },
+    {
+      "id": "v17",
+
+      "information": "<h1>Water</h1><br><p>'Ider' is an R-declension noun meaning 'water'. It is taken from Ancient Greek 'ὕδωρ' ('hydor'). Refreskare is a first-conjugation verb meaning 'to refresh'. Its present participle is 'refreskants'. </p>"
+    },
+    {
+      "id": "v18",
+      "information": [
+        "<h1>Oste vs. Ošte</h1><br><p>Oste means 'bone'. It is taken from Greek 'οστό' (ostó). Ošte means 'enemy'. It is taken from Latin 'hostis'. Declension:</p><table><tr><th>Case</th><th>Singular</th><th>Plural</th></tr><tr><td>NOM</td><td>oste</td><td>ostes</td></tr><tr><td>ACC</td><td>ostem</td><td>ostei</td></tr><tr><td>GEN</td><td>ostet</td><td>ostest</td></tr><tr><td>DAT</td><td>ostebi</td><td>ostehi</td></tr><tr><td>ABL</td><td>oste</td><td>osten</td></tr><tr><td>VOC</td><td>osté</td><td>ostés</td></tr></table>",
+        "Oste (bone) becomes 'huste' when it uses an H-hiatus (the extra h added between two vowels). Ošte (enemy) becomes 'hoste' when it uses an H-hiatus. The declension of 'huste' and 'hoste' is the same as 'oste' and 'ošte', respectively.",
+        "Inflection of 'ošte' (enemy) as 'oste' after b d g p t or k: Change the consonant to v, ð, ġ, f, þ, or x.  <table><tr><th>Case</th><th>Singular</th><th>Plural</th></tr><tr><td>NOM</td><td>oste</td><td>ostes</td></tr><tr><td>ACC</td><td>ostem</td><td>ostei</td></tr><tr><td>GEN</td><td>ostet</td><td>ostest</td></tr><tr><td>DAT</td><td>ostebi</td><td>ostehi</td></tr><tr><td>ABL</td><td>oste</td><td>osten</td></tr><tr><td>VOC</td><td>osté</td><td>ostés</td></tr></table>",
+        "Inflection of 'ošte' as 'hoste' with H-hiatus: <table><tr><th>Case</th><th>Singular</th><th>Plural</th></tr><tr><td>NOM</td><td>hoste</td><td>hostes</td></tr><tr><td>ACC</td><td>hostem</td><td>hostei</td></tr><tr><td>GEN</td><td>hostet</td><td>hostest</td></tr><tr><td>DAT</td><td>hostebi</td><td>hostehi</td></tr><tr><td>ABL</td><td>hoste</td><td>hosten</td></tr><tr><td>VOC</td><td>hosté</td><td>hostés</td></tr></table>",
+        "Inflection of 'ošte' after any other consonant (including apostrophe-hiatus): <table><tr><th>Case</th><th>Singular</th><th>Plural</th></tr><tr><td>NOM</td><td>ošte</td><td>oštes</td></tr><tr><td>ACC</td><td>oštem</td><td>oštei</td></tr><tr><td>GEN</td><td>oštet</td><td>oštest</td></tr><tr><td>DAT</td><td>oštebi</td><td>oštehi</td></tr><tr><td>ABL</td><td>ošte</td><td>ošten</td></tr><tr><td>VOC</td><td>ošté</td><td>oštés</td></tr></table>"
+      ]
+    },
+    {
+      "id": "v19",
+      "information": "<h1>Greetings I</h1><br><p>'Gʷeijé' means 'guy' or 'dude'. It is taken from English 'guy'. 'Demé' is a formal greeting like 'sir' or 'ma'am'. It is the vocative of Ferbezan 'deme'. 'Deme' comes from Ancient Greek 'δῆμος' (dêmos).</p>"
+    },
+    {
+      "id": "v20",
+      "information": "<h1>Greetings II</h1><br><p>'Salud' or 'Salúd' is a formal or informal greeting like English 'hello'. It is taken from Latin 'salve'. 'Jala' is a casual greeting like 'hey' or 'hi'. It is taken from the prefix 'j-' and English 'hello'.</p>"
+    },
+    {
+      "id": "v21",
+      "information": "<h1>-ne questions</h1><br><p>To ask a yes/no question, add '-ne' to the end of the verb that you're asking whether happens. For example, 'Esne male?' means 'Are you bad?'.</p>"
+    },
+    {
+      "id": "v22",
+      "information": "<h1>Tired and Energetic</h1><br><p>'Fese' means 'tired'. It is taken from Latin 'fessus'. 'Enerëtike' means 'energetic'. It is taken from English 'energetic'.</p>"
+    },
+    {
+      "id": "v23",
+      "information": "<h1>Yes, No, and Maybe</h1><br><p>'Ite' means 'yes'. It is taken from Latin 'ita'. 'Ne' means 'no'. It is taken from Latin 'ne'. However, some phrases use 'min' to mean 'no'. Example: 'min, ne' est' = 'No, it's not.' This exists because two of 'ne' next to each other create a double negative. 'Fotas' means 'maybe', 'perhaps', or 'possibly'. It is taken from Latin 'fortasse'.</p>"
+    },
+    {
+      "id": "v24",
+      "information": "<h1>Parire and Esurire</h1><br><p>'Parire' is a fourth-conjugation verb meaning 'to get ready'. Its participle parite (standard-declension adjective) means 'ready'. 'Esurire' is taken directly drom Latin and means 'to be hungry'.</p>"
+    },
+    {
+      "id": "v25",
+      "information": [
+        "<h1>Meals</h1><br><p>Snack: ënake",
+        "Breakfast: desaune",
+        "Lunch: añkene",
+        "Dinner: kene",
+        "Dessert: postuke",
+        " </p>"
+      ]
+    }
+  ],
+  "inflection": [
+    {
+      "id": "i0",
+
+      "information": "<h1>-ere verbs of the second conjugation</h1><br><div class='conj2'></div>"
+    },
+    {
+      "id": "i1",
+
+      "information": "<h1>-are verbs of the first conjugation</h1><br><div class='conj1'></div>"
+    },
+    {
+      "id": "i2",
+
+      "information": "<h1>-ere verbs of the third conjugation</h1><br><div class='conj3'></div>"
+    },
+    {
+      "id": "i3",
+
+      "information": "<h1>-e nouns of the third declension</h1><br><div class='decl3'></div>"
+    },
+    {
+      "id": "i4",
+
+      "information": "<h1>-ire verbs of the fourth conjugation</h1><br><div class='conj4'></div>"
+    }
+  ],
+  "orthography": [
+    {
+      "id": "o0",
+
+      "information": "<h1>Hiati</h1><br><p>If a word ends with a vowel and the next word starts with a vowel other than e or ë, use the letter h. Example: <i>Dema hit ad merkátem.</i> However, if the second word starts with e or ë, use the ' symbol. Example: <i>Ekʷe' ë swe hijûnt.</i></p>"
+    }
+  ],
+  "pronunciation": [
+    {
+      "id": "p0",
+      "information": "NOT READY YET"
+    },
+    {
+      "id": "p1",
+      "qaud": "/audio/esne-parite-pro-kene.mp3",
+      "otext": "Choose an answer for the question",
+      "options": ["Ite', esurijo.", "Ekʷe' edet kom swe."],
+      "correctOption": 0
+    }
+  ]
+}

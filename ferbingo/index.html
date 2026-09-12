@@ -1,0 +1,938 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/eruda"></script>
+    <script>
+      eruda.init();
+    </script>
+  </head>
+
+  <body>
+    <img
+      src="/images/ferbingo/logo.png"
+      style="height: 40px; width: 160px"
+      alt="Ferbingo logo"
+    />
+    <a href="/index.html">Home</a>
+    <fieldset>
+      <legend>Log-In</legend>
+      <!--form id="login" onsubmit="return false">
+        <label>
+          Login Email
+          <input id="log-email" type="email" required />
+        </label>
+        <label>
+          Password
+          <input id="log-pword" type="password" required />
+        </label>
+        <button type="submit">Log In</button>
+      </form>
+      <form id="register">
+        <label>
+          Register Email
+          <input id="reg-email" type="email" required />
+        </label>
+        <label>
+          Password
+          <input id="reg-pword" type="password" required />
+        </label>
+        <button type="submit" >Register</button>
+      </form-->
+      <form id="login">
+        <label>
+          Login Email
+          <input id="log-email" type="email" required />
+        </label>
+        <label>
+          Password
+          <input id="log-pword" type="password" required />
+        </label>
+        <button id="login-submit" type="submit" disabled>Log In</button>
+      </form>
+
+      <form id="register">
+        <label>
+          Register Email
+          <input id="reg-email" type="email" required />
+        </label>
+        <label>
+          Password
+          <input id="reg-pword" type="password" required />
+        </label>
+        <button id="register-submit" type="submit" disabled>Register</button>
+      </form>
+      <button id="save-btn" type="button" disabled>
+        Save Progress To Your Account
+      </button>
+      <button id="load-btn" type="button" disabled>
+        Get Your Saved Progress
+      </button>
+      Your XP: <span id="xpc">Loading...</span> Your Ingots:
+      <span id="ingots">Loading...</span> Buy a chest for 5 ingots:
+      <button id="buy-chest">Buy Chest</button>
+      <div id="status" role="status" aria-live="polite">Loading modules...</div>
+    </fieldset>
+    Username: <span id="username-display">Not set</span>
+    <input id="username-input" type="text" placeholder="Enter username" />
+    <button id="set-username">Set Username</button>
+    <fieldset>
+      <legend>XP Leaderboard</legend>
+      <p id="leaderboard-status" role="status" aria-live="polite">
+        Loading leaderboard...
+      </p>
+      <table id="leaderboard" hidden>
+        <thead>
+          <tr>
+            <th scope="col">Rank</th>
+            <th scope="col">Player</th>
+            <th scope="col">XP</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </fieldset>
+    <fieldset>
+      <legend>Questions</legend>
+      <p id="skill">Translation</p>
+      <select id="choose-skill">
+        <option value="translation">Translation (29 questions)</option>
+        <option value="vocab">Vocabulary (15 lessons)</option>
+        <option value="orthography">Orthography (1 lesson)</option>
+        <option value="pronunciation">
+          Pronunciation (1 question ready, 1 lesson coming soon)
+        </option>
+        <option value="inflection">
+          Inflection (1 lesson ready, 3 lessons coming soon)
+        </option>
+      </select>
+      <div id="questions"></div>
+      <p id="answer-area"></p>
+      <button id="spec-kw">kʷ</button>
+      <button id="check">Check answer</button>
+      <button id="skip-question" type="button" hidden>
+        This question is optional and this button allows you to skip it.
+      </button>
+      <button id="go-back">Go back</button>
+      <p id="qstatus">Not answered yet</p>
+    </fieldset>
+    <fieldset>
+      <legend>Artworks</legend>
+      <div id="art"></div>
+    </fieldset>
+    <fieldset>
+      <legend>Minigames</legend>
+      <button id="pay-ticket">Pay 1 minigame ticket to play a minigame</button>
+      <p id="minigame-status">
+        You have <span id="ticket-count">0</span> minigame tickets.
+      </p>
+      <div id="minigame-area" hidden>
+        <span id="dir"
+          >=<br /><img
+            id="riggy"
+            src="/Riggy.png"
+            alt="Minigame Image"
+          /><br />=</span
+        >
+        <button id="up">UP</button>
+        <button id="down">DOWN</button>
+      </div>
+    </fieldset>
+    <!--comment-->
+    <script>
+      function showStartupError(message) {
+        const status = document.getElementById("status");
+
+        if (status?.textContent === "Loading modules...") {
+          status.textContent = `Startup error: ${message}`;
+        }
+      }
+
+      window.addEventListener(
+        "error",
+        (event) => {
+          const target = event.target;
+          const url =
+            target?.src || target?.href || event.filename || "unknown resource";
+          const detail =
+            event.error?.message || event.message || "resource failed to load";
+
+          showStartupError(`${detail} (${url})`);
+          console.error("Ferbingo startup error:", event);
+        },
+        true,
+      );
+
+      window.addEventListener("unhandledrejection", (event) => {
+        const reason = event.reason;
+        const detail =
+          reason?.message ||
+          (typeof reason === "string" ? reason : "unknown promise rejection");
+
+        showStartupError(detail);
+        console.error("Ferbingo startup rejection:", reason);
+      });
+    </script>
+    <!--script>
+      window.addEventListener(
+        "error",
+        (event) => {
+          const status = document.getElementById("status");
+
+          if (status?.textContent === "Loading modules...") {
+            status.textContent = "Startup error. Check the browser console.";
+          }
+
+          console.error(
+            "Ferbingo startup error:",
+            event.error || event.message,
+          );
+        },
+        true,
+      );
+
+      window.addEventListener("unhandledrejection", (event) => {
+        const status = document.getElementById("status");
+
+        if (status?.textContent === "Loading modules...") {
+          status.textContent = "Startup error. Check the browser console.";
+        }
+
+        console.error("Ferbingo startup error:", event.reason);
+      });
+    </script-->
+    <script type="module">
+      //import questions from "./questions.json" with { type: "json" };
+      let questions;
+
+      try {
+        const response = await fetch("./questions.json");
+
+        if (!response.ok) {
+          throw new Error(`questions-load-failed-${response.status}`);
+        }
+
+        questions = await response.json();
+
+        const requiredSkills = [
+          "translation",
+          "vocab",
+          "orthography",
+          "pronunciation",
+          "inflection",
+        ];
+
+        if (
+          questions === null ||
+          typeof questions !== "object" ||
+          Array.isArray(questions) ||
+          !requiredSkills.every((skill) => Array.isArray(questions[skill]))
+        ) {
+          throw new Error("invalid-questions-data");
+        }
+      } catch (error) {
+        const status = document.getElementById("status");
+        status.textContent = `Startup error: ${error.message}`;
+        throw error;
+      }
+      /* import conj from "./conjugation-tables.js";
+
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+        createUserWithEmailAndPassword,
+        signInWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-auth.js";
+      import {
+        getFirestore,
+        doc,
+        setDoc,
+        getDoc,
+        collection,
+        getDocs,
+      } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js";
+       import conj from "./conjugation-tables.js";
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "https://www.gstatic.com/firebasejs/12.17.0/firebase-auth.js";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  collection,
+  getDocs,
+} from "https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js";*/
+      // let questions;
+      let conj;
+      let initializeApp;
+      let getAuth;
+      let onAuthStateChanged;
+      let createUserWithEmailAndPassword;
+      let signInWithEmailAndPassword;
+      let getFirestore;
+      let doc;
+      let setDoc;
+      let getDoc;
+      let collection;
+      let getDocs;
+
+      try {
+        const questionResponse = await fetch("./questions.json", {
+          cache: "no-store",
+        });
+
+        if (!questionResponse.ok) {
+          throw new Error(`questions-load-failed-${questionResponse.status}`);
+        }
+
+        questions = await questionResponse.json();
+
+        const requiredSkills = [
+          "translation",
+          "vocab",
+          "orthography",
+          "pronunciation",
+          "inflection",
+        ];
+
+        if (
+          questions === null ||
+          typeof questions !== "object" ||
+          Array.isArray(questions) ||
+          !requiredSkills.every((skill) => Array.isArray(questions[skill]))
+        ) {
+          throw new Error("invalid-questions-data");
+        }
+
+        ({ default: conj } = await import("./conjugation-tables.js"));
+
+        ({ initializeApp } =
+          await import("https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js"));
+
+        ({
+          getAuth,
+          onAuthStateChanged,
+          createUserWithEmailAndPassword,
+          signInWithEmailAndPassword,
+        } =
+          await import("https://www.gstatic.com/firebasejs/12.17.0/firebase-auth.js"));
+
+        ({ getFirestore, doc, setDoc, getDoc, collection, getDocs } =
+          await import("https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js"));
+      } catch (error) {
+        const detail = error?.message || String(error);
+        document.getElementById("status").textContent =
+          `Startup error: ${detail}`;
+        console.error("Ferbingo startup failed:", error);
+        throw error;
+      }
+      var tables = conj[0];
+      var nouns = conj[1];
+      const firebaseConfig = {
+        apiKey: "AIzaSyAeINE31darFq72BB4N1WtWDARk9YPxJzY",
+        authDomain: "sapient-origin-462411-t7.firebaseapp.com",
+        projectId: "sapient-origin-462411-t7",
+        storageBucket: "sapient-origin-462411-t7.firebasestorage.app",
+        messagingSenderId: "749880999520",
+        appId: "1:749880999520:web:9246df43f9ecb2279fcd05",
+        measurementId: "G-2HT9YKBXV4",
+      };
+
+      const app = initializeApp(firebaseConfig);
+
+      const auth = getAuth(app);
+      const db = getFirestore(app);
+      const status = document.getElementById("status");
+      const leaderboard = document.getElementById("leaderboard");
+      const leaderboardStatus = document.getElementById("leaderboard-status");
+      const leaderboardBody = leaderboard.querySelector("tbody");
+      const saveButton = document.getElementById("save-btn");
+      const loadButton = document.getElementById("load-btn");
+      const loginSubmitButton = document.getElementById("login-submit");
+      const registerSubmitButton = document.getElementById("register-submit");
+      let currentUser = null;
+      let chestData = {
+        ingots: 0,
+        artworkID: [],
+        minigameTickets: [],
+      };
+      let questionProgress = {
+        vocab: 0,
+        orthography: 0,
+        translation: 0,
+        inflection: 0,
+        pronunciation: 0,
+        xp: 0,
+        completedQuestionIds: {},
+        username: "",
+      };
+      function isPlainObject(value) {
+        return (
+          value !== null && typeof value === "object" && !Array.isArray(value)
+        );
+      }
+
+      function normalizeChestData(data) {
+        if (
+          !isPlainObject(data) ||
+          !Number.isFinite(data.ingots) ||
+          data.ingots < 0 ||
+          !Array.isArray(data.artworkID) ||
+          !data.artworkID.every((artworkID) => typeof artworkID === "string") ||
+          !Array.isArray(data.minigameTickets) ||
+          !data.minigameTickets.every((ticket) => typeof ticket === "string")
+        ) {
+          throw new Error("invalid-save-data");
+        }
+
+        return {
+          ingots: data.ingots,
+          artworkID: [...data.artworkID],
+          minigameTickets: [...data.minigameTickets],
+        };
+      }
+
+      function normalizeGameData(data) {
+        if (!isPlainObject(data) || !isPlainObject(data.questionProgress)) {
+          throw new Error("invalid-save-data");
+        }
+
+        if (data.version === 1) {
+          return {
+            version: 3,
+            questionProgress: {
+              ...data.questionProgress,
+              completedQuestionIds: {},
+            },
+            chestData: {
+              ingots: 0,
+              artworkID: [],
+              minigameTickets: [],
+            },
+            lastSaved: data.lastSaved,
+          };
+        }
+        if (
+          data.version === 2 &&
+          isPlainObject(data.questionProgress.completedQuestionIds)
+        ) {
+          return {
+            version: 3,
+            questionProgress: data.questionProgress,
+            chestData: {
+              ingots: 0,
+              artworkID: [],
+              minigameTickets: [],
+            },
+            lastSaved: data.lastSaved,
+          };
+        }
+
+        if (
+          data.version === 3 &&
+          isPlainObject(data.questionProgress.completedQuestionIds) &&
+          isPlainObject(data.chestData)
+        ) {
+          return {
+            ...data,
+            chestData: normalizeChestData(data.chestData),
+          };
+        }
+
+        throw new Error("unsupported-save-version");
+      }
+      function getGameData() {
+        return {
+          version: 3,
+          playerEmail: currentUser?.email || "Unknown player",
+
+          questionProgress,
+          chestData,
+          lastSaved: new Date().toISOString(),
+        };
+      }
+
+      async function loadLeaderboard() {
+        if (!currentUser) {
+          leaderboardStatus.textContent = "Sign in to view the leaderboard.";
+          leaderboard.hidden = true;
+          return;
+        }
+
+        leaderboardStatus.textContent = "Loading leaderboard...";
+        leaderboard.hidden = true;
+
+        try {
+          const snapshots = await getDocs(collection(db, "ferbingo_saves"));
+          const players = snapshots.docs
+            .map((snapshot) => {
+              const data = snapshot.data();
+              return {
+                name:
+                  data.questionProgress?.username ||
+                  data.playerEmail ||
+                  "Unknown player",
+                xp: Number(data.questionProgress?.xp) || 0,
+              };
+            })
+            .sort((first, second) => second.xp - first.xp);
+
+          leaderboardBody.replaceChildren();
+          players.forEach((player, index) => {
+            const row = document.createElement("tr");
+            const rank = document.createElement("td");
+            const name = document.createElement("td");
+            const xp = document.createElement("td");
+            rank.textContent = index + 1;
+            name.textContent = player.name;
+            xp.textContent = player.xp;
+            row.append(rank, name, xp);
+            leaderboardBody.append(row);
+          });
+
+          leaderboardStatus.textContent = players.length
+            ? ""
+            : "No saved players yet.";
+          leaderboard.hidden = players.length === 0;
+        } catch (error) {
+          leaderboardStatus.textContent = "Unable to load the leaderboard.";
+          showFirebaseError("Leaderboard", error);
+        }
+      }
+
+      /*function applyGameData(data) {
+        const isPlainObject =
+          data?.questionProgress !== null &&
+          typeof data?.questionProgress === "object" &&
+          !Array.isArray(data.questionProgress);
+
+        if (
+          data?.version !== 2 ||
+          !isPlainObject ||
+          typeof data.lastSaved !== "string"
+        ) {
+          throw new Error("invalid-save-data");
+        }
+
+        questionProgress = data.questionProgress;
+        $("#xpc").text(questionProgress.xp);
+
+        render();
+      }*/
+      function applyGameData(data) {
+        const normalizedData = normalizeGameData(data);
+
+        questionProgress = normalizedData.questionProgress;
+        chestData = normalizedData.chestData;
+        $("#xpc").text(questionProgress.xp);
+        $("#ingots").text(chestData.ingots);
+        renderArtwork();
+        render();
+      }
+      var ingotMult = 1;
+      function renderArtwork() {
+        const artwork = $("#art").empty();
+        chestData.artworkID.forEach((artworkID) => {
+          $("<img>", {
+            src: `/images/artworks/${artworkID}.png`,
+            alt: "Artwork",
+            width: 100,
+            height: 100,
+          }).appendTo(artwork);
+        });
+      }
+      function showFirebaseError(action, error) {
+        const code = error?.code || "unknown-error";
+        status.textContent = `${action} error: ${code}`;
+      }
+      loginSubmitButton.disabled = false;
+      registerSubmitButton.disabled = false;
+
+      onAuthStateChanged(auth, (user) => {
+        currentUser = user;
+        saveButton.disabled = !user;
+        loadButton.disabled = !user;
+        status.textContent = user
+          ? `Signed in as ${user.email}.`
+          : "Not signed in.";
+        loadLeaderboard();
+      });
+
+      document
+        .getElementById("register")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const email = document.getElementById("reg-email").value;
+          const password = document.getElementById("reg-pword").value;
+
+          try {
+            const credential = await createUserWithEmailAndPassword(
+              auth,
+              email,
+              password,
+            );
+            status.textContent = `Registered as ${credential.user.email}.`;
+          } catch (error) {
+            showFirebaseError("Registration", error);
+          }
+        });
+
+      document
+        .getElementById("login")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const email = document.getElementById("log-email").value;
+          const password = document.getElementById("log-pword").value;
+
+          try {
+            const credential = await signInWithEmailAndPassword(
+              auth,
+              email,
+              password,
+            );
+            status.textContent = `Signed in as ${credential.user.email}.`;
+          } catch (error) {
+            showFirebaseError("Login", error);
+          }
+        });
+
+      saveButton.addEventListener("click", async () => {
+        if (!currentUser) return;
+        status.textContent = "Saving game...";
+
+        try {
+          await setDoc(
+            doc(db, "ferbingo_saves", currentUser.uid),
+            getGameData(),
+          );
+          status.textContent = "Game progress saved.";
+          loadLeaderboard();
+        } catch (error) {
+          showFirebaseError("Save", error);
+        }
+      });
+
+      loadButton.addEventListener("click", async () => {
+        if (!currentUser) return;
+        status.textContent = "Loading game...";
+
+        try {
+          const snapshot = await getDoc(
+            doc(db, "ferbingo_saves", currentUser.uid),
+          );
+
+          if (!snapshot.exists()) {
+            status.textContent = "No Ferbingo save found for this account.";
+            return;
+          }
+
+          const data = snapshot.data();
+          applyGameData(data);
+          status.textContent = `Loaded save from ${data.lastSaved}.`;
+        } catch (error) {
+          if (error.message === "invalid-save-data") {
+            status.textContent =
+              "Save data is invalid or uses an unsupported version.";
+          } else {
+            showFirebaseError("Load", error);
+          }
+        }
+      });
+      $("#spec-kw").click(function () {
+        $("#userAnswer").val($("#userAnswer").val() + "kʷ");
+      });
+      tables.conj2 = `
+        -ere verbs:
+        MOOD VOICE TENSE    SINGULAR             PLURAL
+                          1     2     3     1       2       3
+        INDC ACTV  PRES   -eijo -es   -et   -emus   -etis   -ent
+                   PAST   -ebo  -ebas -ebat -ebamus -ebatis -ebant
+                   FUTURE Present tense + 'vod'
+                   FUT-PFC Past tense + 'vod'
+
+                  
+        `;
+      for (const i in tables) {
+        tables[i] = "<pre>" + tables[i] + "</pre>";
+      }
+      var skill = "translation";
+      $("#choose-skill").change(function () {
+        skill = $("#choose-skill").val();
+        var name;
+        if (skill === "vocab") {
+          name = "Vocabulary";
+        } else {
+          name = skill.charAt(0).toUpperCase() + skill.slice(1);
+        }
+        $("#skill").text(name);
+        render();
+      });
+      function render() {
+        const currentQuestion = questions[skill]?.[questionProgress[skill]];
+
+        if (!currentQuestion) {
+          $("#questions").text("No questions available.");
+          $("#answer-area").empty();
+          $("#qstatus").text("No questions available for this skill.");
+          $("#check").prop("disabled", true);
+          $("#skip-question").prop("disabled", true).prop("hidden", true);
+          return;
+        }
+
+        const isOptionalQuestion = Boolean(currentQuestion?.special?.optional);
+        $("#qstatus").text("Not answered yet");
+        $("#check").prop("disabled", false);
+        $("#check").text("Check answer");
+        $("#skip-question")
+          .prop("disabled", !isOptionalQuestion)
+          .prop("hidden", !isOptionalQuestion);
+        if (currentQuestion.qaud) {
+          $("#questions").html(
+            "<button id='qaud' onclick='new Audio(\"" +
+              currentQuestion.qaud +
+              "\").play()'>Play audio for question</button>",
+          );
+          $("#questions").append(currentQuestion.otext);
+          /* for (let i of currentQuestion.options) {
+            var indx = currentQuestion.options.getIndexOf(i);
+            function clickHandler(num) {
+              if (currentQuestion.correctOption == num) {
+                checkAnswer(false);
+              }
+            }
+            $("#opt-" + indx).on("click", function () {
+              clickHandler(indx);
+            });
+            $("#questions").append(
+              "<button class='opt-button' id='opt-" + ind*/ for (const [
+            index,
+            option,
+          ] of currentQuestion.options.entries()) {
+            const $option = $("<button>", {
+              class: "opt-button",
+              id: `opt-${index}`,
+              text: option,
+            });
+            $option.on("click", function () {
+              if (currentQuestion.correctOption === index) {
+                checkAnswer(false);
+              } else {
+                new Audio("/audio/incorrect.m4a").play();
+              }
+            });
+            $("#questions").append($option);
+          }
+          $("`#answer-area`").empty();
+          return;
+        }
+
+        if (currentQuestion.information) {
+          if (Array.isArray(currentQuestion.information)) {
+            $("#questions").html(currentQuestion.information.join("<br>"));
+          } else {
+            $("#questions").html(currentQuestion.information);
+          }
+          $(".conj1").html(tables.conj1);
+          $(".conj2").html(tables.conj2);
+          $(".conj3").html(tables.conj3);
+          $(".conj4").html(tables.conj4);
+          $(".decl3").html(nouns.decl3);
+
+          $("#check").text("Continue");
+          $("#skip-question").prop("hidden", true);
+          return;
+        }
+
+        $("#questions").text(currentQuestion.q);
+        if (currentQuestion.rega) {
+          $("#answer-area").html("<input id='userAnswer'>");
+        } else {
+          $("#answer-area").empty();
+        }
+      }
+      $("#buy-chest").click(function () {
+        if (chestData.ingots >= 5) {
+          chestData.ingots -= 5;
+          $("#ingots").text(chestData.ingots);
+          // Here you can add logic to give the player a chest or reward
+          alert("You bought a chest!");
+          var rand = Math.random();
+          if (rand < 1 / 3) {
+            alert("You got a minigame ticket!");
+            chestData.minigameTickets.push("ticket");
+          } else if (rand < 2 / 3) {
+            alert("You got an artwork!");
+            chestData.artworkID.push("a" + Math.floor(Math.random() * 10));
+          } else if (rand < 5 / 6) {
+            alert("You got a double ingot boost for 1 minute!");
+            ingotMult *= 2;
+            setTimeout(() => {
+              ingotMult /= 2;
+            }, 60000);
+          } else {
+            alert("You got nothing this time. Better luck next time!");
+          }
+          renderArtwork();
+        } else {
+          alert("Not enough ingots to buy a chest.");
+        }
+      });
+      function checkAnswer(p) {
+        const skillQuestions = questions[skill];
+        const currentQuestion = skillQuestions?.[questionProgress[skill]];
+        if (currentQuestion.information) {
+          if (questionProgress[skill] < skillQuestions.length - 1) {
+            try {
+              new Audio("/audio/correct.m4a").play();
+            } catch (e) {
+              console.error("Error: " + e);
+            }
+            questionProgress[skill]++;
+            render();
+          } else {
+            $("#questions").text("All questions completed.");
+            $("#answer-area").empty();
+            $("#qstatus").text("Skill complete!");
+            $("#check").prop("disabled", true);
+            $("#skip-question").prop("hidden", true);
+          }
+          return;
+        }
+
+        if (p && !currentQuestion?.rega) return;
+
+        var regex = new RegExp(currentQuestion.rega, currentQuestion.flags);
+        if (!p || regex.test($("#userAnswer").val())) {
+          job();
+        } else {
+          new Audio("/audio/incorrect.m4a").play().catch((e) => {
+            console.error("Error: " + e);
+          });
+        }
+
+        function job() {
+          $("#qstatus").text("Correct answer!");
+          const questionId = currentQuestion.id;
+
+          if (!questionProgress.completedQuestionIds[questionId]) {
+            questionProgress.completedQuestionIds[questionId] = true;
+            questionProgress.xp++;
+            var ingotBonus = (currentQuestion.special?.ingots || 1) * ingotMult; // Default to 1 ingot if not specified
+            chestData.ingots += ingotBonus; // Award ingots for each correct answer
+            $("#xpc").text(questionProgress.xp);
+            $("#ingots").text(chestData.ingots);
+          }
+          try {
+            new Audio("/audio/correct.m4a").play();
+          } catch (e) {
+            console.error("Error: " + e);
+          }
+
+          questionProgress[skill]++;
+          if (questionProgress[skill] >= skillQuestions.length) {
+            $("#questions").text("All questions completed.");
+            $("#answer-area").empty();
+            $("#qstatus").text("Skill complete!");
+            $("#check").prop("disabled", true);
+            $("#skip-question").prop("hidden", true);
+          } else {
+            render();
+          }
+        }
+      }
+      $("#check").click(function () {
+        checkAnswer(true);
+      });
+      $("#skip-question").click(function () {
+        const skillQuestions = questions[skill];
+        const currentQuestion = skillQuestions?.[questionProgress[skill]];
+        if (!currentQuestion || !currentQuestion.special?.optional) {
+          return;
+        }
+
+        if (questionProgress[skill] < skillQuestions.length - 1) {
+          questionProgress[skill]++;
+          render();
+          return;
+        }
+
+        $("#questions").text("All questions completed.");
+        $("#answer-area").empty();
+        $("#qstatus").text("Skill complete!");
+        $("#check").prop("disabled", true);
+        $("#skip-question").prop("hidden", true);
+      });
+      $("#set-username").click(function () {
+        const newUsername = $("#username-input").val().trim();
+        if (newUsername) {
+          questionProgress.username = newUsername;
+          $("#username-display").text(newUsername);
+          $("#username-input").val("");
+          status.textContent = "Username set successfully.";
+        } else {
+          status.textContent = "Please enter a valid username.";
+        }
+      });
+      $("#go-back").on("click", function () {
+        if (questionProgress[skill] > 0) {
+          questionProgress[skill]--;
+        }
+        render();
+      });
+      $("#pay-ticket").click(function () {
+        if (chestData.minigameTickets.length > 0) {
+          chestData.minigameTickets.pop();
+          $("#ticket-count").text(chestData.minigameTickets.length);
+          $("#minigame-area").prop("hidden", false);
+          status.textContent = "You can now play the minigame!";
+          minigameActive = true;
+          setTimeout(() => {
+            minigameActive = false;
+            $("#minigame-area").hide();
+            status.textContent = "Minigame ended.";
+          }, 30000); // Minigame lasts for 30 seconds
+        } else {
+          status.textContent = "You don't have any minigame tickets.";
+        }
+      });
+      var minigameActive = false;
+      var riggyPosition = 0;
+      var correctPosition = 0;
+      $("#up").click(function () {
+        $("#riggy").css("transform", "translateY(-16px)");
+        riggyPosition -= 1;
+      });
+      $("#down").click(function () {
+        $("#riggy").css("transform", "translateY(16px)");
+        riggyPosition += 1;
+      });
+      render();
+      setInterval(() => {
+        $("#xpc").text(questionProgress.xp);
+        $("#ingots").text(chestData.ingots);
+        if (minigameActive) {
+          if (riggyPosition === correctPosition) {
+            chestData.ingots += 0.5 * ingotMult; // Award 1 ingot for correct position
+            $("#ingots").text(chestData.ingots);
+          } else {
+            chestData.ingots -= 0.2 * ingotMult; // Deduct 0.2 ingots for incorrect position
+            if (chestData.ingots < 2) chestData.ingots = 2; // Prevent negative ingots
+            $("#ingots").text(chestData.ingots);
+          }
+        }
+      }, 1000);
+      setInterval(() => {
+        if (minigameActive) {
+          correctPosition = Math.floor(Math.random() * 5) - 2; // Random position between -2 and 2
+        }
+      }, 5000); // Change correct position every 5 seconds
+    </script>
+  </body>
+</html>
