@@ -139,6 +139,42 @@
     </fieldset>
     <!--comment-->
     <script>
+  function showStartupError(message) {
+    const status = document.getElementById("status");
+
+    if (status?.textContent === "Loading modules...") {
+      status.textContent = `Startup error: ${message}`;
+    }
+  }
+
+  window.addEventListener(
+    "error",
+    (event) => {
+      const target = event.target;
+      const url =
+        target?.src ||
+        target?.href ||
+        event.filename ||
+        "unknown resource";
+      const detail = event.error?.message || event.message || "resource failed to load";
+
+      showStartupError(`${detail} (${url})`);
+      console.error("Ferbingo startup error:", event);
+    },
+    true,
+  );
+
+  window.addEventListener("unhandledrejection", (event) => {
+    const reason = event.reason;
+    const detail =
+      reason?.message ||
+      (typeof reason === "string" ? reason : "unknown promise rejection");
+
+    showStartupError(detail);
+    console.error("Ferbingo startup rejection:", reason);
+  });
+</script>
+    <!--script>
       window.addEventListener(
         "error",
         (event) => {
@@ -165,7 +201,7 @@
 
         console.error("Ferbingo startup error:", event.reason);
       });
-    </script>
+    </script-->
     <script type="module">
       //import questions from "./questions.json" with { type: "json" };
       let questions;
@@ -200,7 +236,7 @@
         status.textContent = `Startup error: ${error.message}`;
         throw error;
       }
-      import conj from "./conjugation-tables.js";
+     /* import conj from "./conjugation-tables.js";
 
       import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
       import {
@@ -217,6 +253,97 @@
         collection,
         getDocs,
       } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js";
+       import conj from "./conjugation-tables.js";
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "https://www.gstatic.com/firebasejs/12.17.0/firebase-auth.js";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  collection,
+  getDocs,
+} from "https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js";*/
+// let questions;
+let conj;
+let initializeApp;
+let getAuth;
+let onAuthStateChanged;
+let createUserWithEmailAndPassword;
+let signInWithEmailAndPassword;
+let getFirestore;
+let doc;
+let setDoc;
+let getDoc;
+let collection;
+let getDocs;
+
+try {
+  const questionResponse = await fetch("./questions.json", {
+    cache: "no-store",
+  });
+
+  if (!questionResponse.ok) {
+    throw new Error(`questions-load-failed-${questionResponse.status}`);
+  }
+
+  questions = await questionResponse.json();
+
+  const requiredSkills = [
+    "translation",
+    "vocab",
+    "orthography",
+    "pronunciation",
+    "inflection",
+  ];
+
+  if (
+    questions === null ||
+    typeof questions !== "object" ||
+    Array.isArray(questions) ||
+    !requiredSkills.every((skill) => Array.isArray(questions[skill]))
+  ) {
+    throw new Error("invalid-questions-data");
+  }
+
+  ({ default: conj } = await import("./conjugation-tables.js"));
+
+  ({ initializeApp } = await import(
+    "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js"
+  ));
+
+  ({
+    getAuth,
+    onAuthStateChanged,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+  } = await import(
+    "https://www.gstatic.com/firebasejs/12.17.0/firebase-auth.js"
+  ));
+
+  ({
+    getFirestore,
+    doc,
+    setDoc,
+    getDoc,
+    collection,
+    getDocs,
+  } = await import(
+    "https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js"
+  ));
+} catch (error) {
+  const detail = error?.message || String(error);
+  document.getElementById("status").textContent =
+    `Startup error: ${detail}`;
+  console.error("Ferbingo startup failed:", error);
+  throw error;
+}
       var tables = conj[0];
       var nouns = conj[1];
       const firebaseConfig = {
