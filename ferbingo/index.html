@@ -367,7 +367,6 @@ import {
         ingots: 0,
         artworkID: [],
         minigameTickets: [],
-        
       };
       let questionProgress = {
         vocab: 0,
@@ -388,7 +387,6 @@ import {
       }
 
       function normalizeChestData(data) {
-        
         if (
           !isPlainObject(data) ||
           !Number.isFinite(data.ingots) ||
@@ -861,11 +859,12 @@ import {
           } else if (rand < 5 / 6) {
             alert("You got a double ingot boost for 1 minute!");
             ingotMult *= 2;
-            $("body").append("<span class='booster-2x'><img src='/images/ferbingo/2xingot.png/> 2x ingots</span>")
+            $("body").append(
+              "<span class='booster-2x'><img src='/images/ferbingo/2xingot.png/> 2x ingots</span>",
+            );
             setTimeout(() => {
               ingotMult /= 2;
-              $('.booster-2x').last().remove();
-
+              $(".booster-2x").last().remove();
             }, 60000);
           } else {
             alert("You got nothing this time. Better luck next time!");
