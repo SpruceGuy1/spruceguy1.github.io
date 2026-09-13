@@ -168,6 +168,13 @@
       "q": "Are you ready to eat?",
       "rega": "^\\s*Esne parite' edere\\??\\s*$",
       "flags": "i"
+    },
+    {
+      "id": "t30",
+      "special":{
+        "unit": "u0"
+      },
+      "q": "K\u02B7id est proble?"
     }
   ],
   "vocab": [
@@ -302,6 +309,55 @@
         "Dessert: postuke",
         " </p>"
       ]
+    },
+    {
+      "id": "v27",
+      "dyna-info":{
+        "title":"Prepositions",
+        "typ": "table",
+        "data": [
+          ["Word", "Meaning", "Case of noun after", "Etymology"],
+          ["ab", "from", "ABL", "Direct from Latin"],
+                    ["ad", "to", "ACC", "Direct from Latin"],
+          ["kom", "with", "NOM", "from Latin 'cum'"],
+          ["konter", "from", "ACC", "from Latin 'contra'"],
+          ["de", "down, off, of", "ABL", "Direct from Latin"],
+          ["ek", "away, out", "ABL", "from Latin 'ex'"],
+          ["in", "in", "ABL", "Direct from Latin"],
+          ["ob", "against", "ACC", "Direct from Latin"],
+          ["per", "through", "NOM", "Direct from Latin"],
+          ["pro", "for", "NOM", "Direct from Latin"],
+          ["prë", "before, in front", "ABL", "from Latin 'prae'"],
+          ["nekom", "without", "NOM", "from 'ne' and 'kom''"],
+          ["baġ", "below, down", "ACC", "from Ninek 'b>-g'"],
+          ["trants", "across", "NOM", "from Latin 'trans'"],
+          ["kirkom", "around", "ACC", "from Latin 'circum'"],
+          ["super", "above", "ACC", "Direct from Latin"],
+          ["inter", "between", "NOM", "Direct from Latin"]
+
+
+
+
+
+
+
+
+
+        ]
+      }
+      
+    
+    },
+    {
+      "id": "v26",
+      "unit": {
+        "title": "Correlatives",
+        "unit-id": "u0",
+        "optional": false,
+        "data": [
+
+        ]
+      }
     }
   ],
   "inflection": [
