@@ -72,7 +72,7 @@
       <span id="ingots">Loading...</span> Buy a chest for 5 ingots:
       <button id="buy-chest">Buy Chest</button>
       <br>
-      <!--Your streak: <span id="days">0</span> days. Today's lesson has<span id="not">n't</span> been completed.-->
+      Your streak: <span id="days">0</span> days. Today's lesson has<span id="not">n't</span> been completed.
       
       <div id="status" role="status" aria-live="polite">Loading modules...</div>
     </fieldset>
@@ -358,6 +358,8 @@ import {
       const leaderboardBody = leaderboard.querySelector("tbody");
       const saveButton = document.getElementById("save-btn");
       const loadButton = document.getElementById("load-btn");
+      const streakDays = document.getElementById("days");
+      const streakNot = document.getElementById("not");
       const loginSubmitButton = document.getElementById("login-submit");
       const registerSubmitButton = document.getElementById("register-submit");
       let currentUser = null;
@@ -376,8 +378,8 @@ import {
         xp: 0,
         completedQuestionIds: {},
         username: "",
-        streak:0,
-        dayLastSaved:null
+        streak: 0,
+        dayLastSaved: null,
       };
       function isPlainObject(value) {
         return (
@@ -417,8 +419,8 @@ import {
             questionProgress: {
               ...data.questionProgress,
               completedQuestionIds: {},
-              streak:0,
-              dayLastSaved:null
+              streak: 0,
+              dayLastSaved: null,
             },
             chestData: {
               ingots: 0,
@@ -432,11 +434,13 @@ import {
           data.version === 2 &&
           isPlainObject(data.questionProgress.completedQuestionIds)
         ) {
-          data.questionProgress.streak = 0;
-          data.questionProgress.dayLastSaved = null;
           return {
             version: 4,
-            questionProgress: data.questionProgress,
+            questionProgress: {
+              ...data.questionProgress,
+              streak: 0,
+              dayLastSaved: null,
+            },
             chestData: {
               ingots: 0,
               artworkID: [],
@@ -451,21 +455,43 @@ import {
           isPlainObject(data.questionProgress.completedQuestionIds) &&
           isPlainObject(data.chestData)
         ) {
-          data.questionProgress.streak = 0;
-          data.dayLastSaved = null;
           return {
             ...data,
+            version: 4,
+            questionProgress: {
+              ...data.questionProgress,
+              streak: 0,
+              dayLastSaved: null,
+            },
             chestData: normalizeChestData(data.chestData),
           };
         }
-        if(data.version === 4 &&           isPlainObject(data.questionProgress.completedQuestionIds) &&           isPlainObject(data.chestData)
-){
-  return {
-    ...data,
-                chestData: normalizeChestData(data.chestData),
+        if (
+          data.version === 4 &&
+          isPlainObject(data.questionProgress.completedQuestionIds) &&
+          isPlainObject(data.chestData)
+        ) {
+          const streak = data.questionProgress.streak ?? 0;
+          const dayLastSaved = data.questionProgress.dayLastSaved ?? null;
 
-  }
-}
+          if (
+            !Number.isInteger(streak) ||
+            streak < 0 ||
+            (dayLastSaved !== null && typeof dayLastSaved !== "string")
+          ) {
+            throw new Error("invalid-save-data");
+          }
+
+          return {
+            ...data,
+            questionProgress: {
+              ...data.questionProgress,
+              streak,
+              dayLastSaved,
+            },
+            chestData: normalizeChestData(data.chestData),
+          };
+        }
 
         throw new Error("unsupported-save-version");
       }
@@ -478,6 +504,36 @@ import {
           chestData,
           lastSaved: new Date().toISOString(),
         };
+      }
+
+      function dateKey(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+      }
+
+      function renderStreak() {
+        const today = dateKey(new Date());
+        streakDays.textContent = questionProgress.streak;
+        streakNot.textContent = questionProgress.dayLastSaved === today ? "" : "n't";
+      }
+
+      function recordDailyLesson() {
+        const today = dateKey(new Date());
+
+        if (questionProgress.dayLastSaved === today) {
+          return;
+        }
+
+        const yesterdayDate = new Date();
+        yesterdayDate.setDate(yesterdayDate.getDate() - 1);
+        const yesterday = dateKey(yesterdayDate);
+        questionProgress.streak =
+          questionProgress.dayLastSaved === yesterday
+            ? questionProgress.streak + 1
+            : 1;
+        questionProgress.dayLastSaved = today;
       }
 
       async function loadLeaderboard() {
@@ -554,6 +610,8 @@ import {
         chestData = normalizedData.chestData;
         $("#xpc").text(questionProgress.xp);
         $("#ingots").text(chestData.ingots);
+        $("#username-display").text(questionProgress.username || "Not set");
+        renderStreak();
         renderArtwork();
         render();
       }
@@ -627,15 +685,22 @@ import {
       saveButton.addEventListener("click", async () => {
         if (!currentUser) return;
         status.textContent = "Saving game...";
+        const previousStreak = questionProgress.streak;
+        const previousDayLastSaved = questionProgress.dayLastSaved;
 
         try {
+          recordDailyLesson();
           await setDoc(
             doc(db, "ferbingo_saves", currentUser.uid),
             getGameData(),
           );
           status.textContent = "Game progress saved.";
+          renderStreak();
           loadLeaderboard();
         } catch (error) {
+          questionProgress.streak = previousStreak;
+          questionProgress.dayLastSaved = previousDayLastSaved;
+          renderStreak();
           showFirebaseError("Save", error);
         }
       });
