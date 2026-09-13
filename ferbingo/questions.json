@@ -171,7 +171,7 @@
     },
     {
       "id": "t30",
-      "special":{
+      "special": {
         "unit": "u0"
       },
       "q": "K\u02B7id est proble?"
@@ -312,13 +312,13 @@
     },
     {
       "id": "v27",
-      "dyna-info":{
-        "title":"Prepositions",
+      "dyna-info": {
+        "title": "Prepositions",
         "typ": "table",
         "data": [
           ["Word", "Meaning", "Case of noun after", "Etymology"],
           ["ab", "from", "ABL", "Direct from Latin"],
-                    ["ad", "to", "ACC", "Direct from Latin"],
+          ["ad", "to", "ACC", "Direct from Latin"],
           ["kom", "with", "NOM", "from Latin 'cum'"],
           ["konter", "from", "ACC", "from Latin 'contra'"],
           ["de", "down, off, of", "ABL", "Direct from Latin"],
@@ -334,19 +334,8 @@
           ["kirkom", "around", "ACC", "from Latin 'circum'"],
           ["super", "above", "ACC", "Direct from Latin"],
           ["inter", "between", "NOM", "Direct from Latin"]
-
-
-
-
-
-
-
-
-
         ]
       }
-      
-    
     },
     {
       "id": "v26",
@@ -354,9 +343,7 @@
         "title": "Correlatives",
         "unit-id": "u0",
         "optional": false,
-        "data": [
-
-        ]
+        "data": []
       }
     }
   ],
