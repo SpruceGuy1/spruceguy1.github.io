@@ -162,6 +162,12 @@
       "q": "Enjo•tene hañkenem?",
       "rega": "^\\s*(Are you enjoying|Do you enjoy) (the |a )?lunch\\??\\s*$",
       "flags": "i"
+    },
+    {
+      "id": "t29",
+      "q": "Are you ready to eat?",
+      "rega": "^\\s*Esne parite' edere\\??\\s*$",
+      "flags": "i"
     }
   ],
   "vocab": [
