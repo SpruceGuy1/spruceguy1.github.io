@@ -95,7 +95,6 @@
             <th scope="col">Player</th>
             <th scope="col">XP</th>
             <th scope="col">Streak</th>
-
           </tr>
         </thead>
         <tbody></tbody>
@@ -562,7 +561,7 @@ import {
                   data.playerEmail ||
                   "Unknown player",
                 xp: Number(data.questionProgress?.xp) || 0,
-                streak: Number(data.questionProgress?.streak) || 0
+                streak: Number(data.questionProgress?.streak) || 0,
               };
             })
             .sort((first, second) => second.xp - first.xp);
@@ -573,11 +572,11 @@ import {
             const rank = document.createElement("td");
             const name = document.createElement("td");
             const xp = document.createElement("td");
-            const stk = document.createElement("td")
+            const stk = document.createElement("td");
             rank.textContent = index + 1;
             name.textContent = player.name;
             xp.textContent = player.xp;
-            stk.textContent = player.streak
+            stk.textContent = player.streak;
             row.append(rank, name, xp, stk);
             leaderboardBody.append(row);
           });
