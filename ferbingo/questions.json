@@ -343,7 +343,30 @@
         "title": "Correlatives",
         "unit-id": "u0",
         "optional": false,
-        "data": []
+        "data": [
+          {"id":"v28", "dyna-info":{"title":"Standard Correlatives","typ":"table","data":[
+            ["", "Interrogative", "Proximal", "Distal", "Negative", "Unspecific", "Specific", "Total", "Large"],
+            ["Thing", "kʷid", "hik", "hak", "nihil, nil", "endañge", "pardañge", "totañge"],
+            ["Option", "kos", "ikun", "akun", "nilun",  "ul", "kotam", "ebe"],
+            ["Person", "kʷis", "—", "—", "nemo",  "endeme", "pardeme", "toteme"],
+            ["Time", "kʷan", "nûñk, nuñk", "tom", "num kʷam", "um kʷam", "parkron", "semper"],
+            ["Place", "ubi", "ibi", "abi", "nuskʷam, nebi", "enok", "palok", "toqok, totok"],
+            ["Countable amount", "kʷot, kʷo'", "hik mul", "hak mul", "not", "—", "—", "—", "tot"],
+            ["Uncountable amount", "kʷante", "hik muk", "hak muk", "nante", "—", "—", "—", "tante"],
+            ["Repetition", "kʷošents", "hik mul kra", "hak mul kra", "nošents", "—", "—", "—", "tošents"],
+            ["Reason", "kur", "—", "—", "—", "—", "—", "—", "—"],
+            ["Manner", "komodo, kʷomodo", "hik metħóde", "hak metħóde", "", "—", "—", "—", "tot"]
+
+
+       
+
+
+
+
+
+
+          ]}}
+        ]
       }
     }
   ],
