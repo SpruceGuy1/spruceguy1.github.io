@@ -1,16 +1,19 @@
-const assert = require('node:assert');
-const fs = require('node:fs');
-const vm = require('node:vm');
+const assert = require("node:assert");
+const fs = require("node:fs");
+const vm = require("node:vm");
 
-const source = fs.readFileSync(__dirname + '/renderer.js', 'utf8');
-const moduleSource = source.replace(/export\s*\{\s*render\s*\};\s*export\s+default\s+render;?\s*$/, '');
+const source = fs.readFileSync(__dirname + "/renderer.js", "utf8");
+const moduleSource = source.replace(
+  /export\s*\{\s*render\s*\};\s*export\s+default\s+render;?\s*$/,
+  "",
+);
 
 const context = {
   console,
   window: { devicePixelRatio: 1 },
   document: {
     createElement(tag) {
-      if (tag !== 'canvas') throw new Error(`Unexpected tag: ${tag}`);
+      if (tag !== "canvas") throw new Error(`Unexpected tag: ${tag}`);
       return {
         width: 0,
         height: 0,
@@ -59,30 +62,31 @@ const context = {
     },
   },
 };
-context.canvasContext._fillStyle = '#ffffff';
+context.canvasContext._fillStyle = "#ffffff";
 
 vm.createContext(context);
 vm.runInContext(moduleSource, context);
 
 const render = context.render;
-const el = { clientWidth: 600, replaceChildren(node) { this.child = node; } };
+const el = {
+  clientWidth: 600,
+  replaceChildren(node) {
+    this.child = node;
+  },
+};
 const scene = {
-  'kr-type': '2d-color',
-  'kr-data': {
+  "kr-type": "2d-color",
+  "kr-data": {
     points: [
       { x: 0, y: 0 },
       { x: 0, y: 1 },
       { x: 1, y: 1 },
       { x: 1, y: 0 },
     ],
-    lines: [
-      { color: '#000000', points: [0, 1, 2, 3, 0] },
-    ],
-    areas: [
-      { color: '#00ff00', points: [1, 2, 3] },
-    ],
+    lines: [{ color: "#000000", points: [0, 1, 2, 3, 0] }],
+    areas: [{ color: "#00ff00", points: [1, 2, 3] }],
   },
 };
 
 assert.doesNotThrow(() => render(el, scene));
-assert.equal(context.canvasContext._fillStyle, '#00ff00');
+assert.equal(context.canvasContext._fillStyle, "#00ff00");

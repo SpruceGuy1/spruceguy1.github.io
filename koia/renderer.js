@@ -81,7 +81,8 @@ function render(el, json) {
       if (!Array.isArray(area.points) || area.points.length < 3) return;
 
       const start = points[area.points[0]];
-      if (!start || !Number.isFinite(start.x) || !Number.isFinite(start.y)) return;
+      if (!start || !Number.isFinite(start.x) || !Number.isFinite(start.y))
+        return;
 
       context.beginPath();
       context.moveTo(position(start).x, position(start).y);
