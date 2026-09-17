@@ -11,6 +11,7 @@ function render(el, json) {
   const data = scene["kr-data"] || {};
   const points = Array.isArray(data.points) ? data.points : [];
   const lines = Array.isArray(data.lines) ? data.lines : [];
+  const areas = Array.isArray(data.areas) ? data.areas : [];
   const canvas = document.createElement("canvas");
   const size = Math.max(1, Math.min(el.clientWidth || 600, 600));
   const padding = 24;
@@ -75,6 +76,25 @@ function render(el, json) {
       context.fill();
       context.strokeStyle = "#000000";
       context.stroke();
+    });
+    areas.forEach((area) => {
+      if (!Array.isArray(area.points) || area.points.length < 3) return;
+
+      const start = points[area.points[0]];
+      if (!start || !Number.isFinite(start.x) || !Number.isFinite(start.y)) return;
+
+      context.beginPath();
+      context.moveTo(position(start).x, position(start).y);
+      area.points.slice(1).forEach((index) => {
+        const point = points[index];
+        if (point && Number.isFinite(point.x) && Number.isFinite(point.y)) {
+          const next = position(point);
+          context.lineTo(next.x, next.y);
+        }
+      });
+      context.closePath();
+      context.fillStyle = area.color || "#000000";
+      context.fill();
     });
   }
 

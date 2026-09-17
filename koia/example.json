@@ -13,6 +13,9 @@
       { "color": "#000000", "ref": 5, "points": [1, 2] },
       { "color": "#000000", "ref": 6, "points": [2, 3] },
       { "color": "#000000", "ref": 7, "points": [3, 0] }
+    ],
+    "areas": [
+      {"color": "#ffff00", "ref": 8, "points": [1, 2, 3]}
     ]
   }
 }
