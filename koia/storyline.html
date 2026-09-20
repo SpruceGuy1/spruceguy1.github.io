@@ -12,34 +12,34 @@
   <body>
     <h1>Koia Storyline</h1>
     <form id="login">
-        <label>
-          Login Email
-          <input id="log-email" type="email" required />
-        </label>
-        <label>
-          Password
-          <input id="log-pword" type="password" required />
-        </label>
-        <button id="login-submit" type="submit" disabled>Log In</button>
-      </form>
+      <label>
+        Login Email
+        <input id="log-email" type="email" required />
+      </label>
+      <label>
+        Password
+        <input id="log-pword" type="password" required />
+      </label>
+      <button id="login-submit" type="submit" disabled>Log In</button>
+    </form>
 
-      <form id="register">
-        <label>
-          Register Email
-          <input id="reg-email" type="email" required />
-        </label>
-        <label>
-          Password
-          <input id="reg-pword" type="password" required />
-        </label>
-        <button id="register-submit" type="submit" disabled>Register</button>
-      </form>
-      <button id="save-btn" type="button" disabled>
-        Save Progress To Your Account
-      </button>
-      <button id="load-btn" type="button" disabled>
-        Get Your Saved Progress
-      </button>
+    <form id="register">
+      <label>
+        Register Email
+        <input id="reg-email" type="email" required />
+      </label>
+      <label>
+        Password
+        <input id="reg-pword" type="password" required />
+      </label>
+      <button id="register-submit" type="submit" disabled>Register</button>
+    </form>
+    <button id="save-btn" type="button" disabled>
+      Save Progress To Your Account
+    </button>
+    <button id="load-btn" type="button" disabled>
+      Get Your Saved Progress
+    </button>
     <p id="status" role="status">Connecting to Firebase...</p>
     <p id="date">Enere 1, 236FQ</p>
     <select id="date-format">
@@ -117,33 +117,37 @@
             : "Not signed in.";
         });
 
-        document.getElementById("register").addEventListener("submit", async (event) => {
-          event.preventDefault();
-          try {
-            const credential = await createUserWithEmailAndPassword(
-              auth,
-              document.getElementById("reg-email").value,
-              document.getElementById("reg-pword").value,
-            );
-            status.textContent = `Registered as ${credential.user.email}.`;
-          } catch (error) {
-            showFirebaseError("Registration", error);
-          }
-        });
+        document
+          .getElementById("register")
+          .addEventListener("submit", async (event) => {
+            event.preventDefault();
+            try {
+              const credential = await createUserWithEmailAndPassword(
+                auth,
+                document.getElementById("reg-email").value,
+                document.getElementById("reg-pword").value,
+              );
+              status.textContent = `Registered as ${credential.user.email}.`;
+            } catch (error) {
+              showFirebaseError("Registration", error);
+            }
+          });
 
-        document.getElementById("login").addEventListener("submit", async (event) => {
-          event.preventDefault();
-          try {
-            const credential = await signInWithEmailAndPassword(
-              auth,
-              document.getElementById("log-email").value,
-              document.getElementById("log-pword").value,
-            );
-            status.textContent = `Signed in as ${credential.user.email}.`;
-          } catch (error) {
-            showFirebaseError("Login", error);
-          }
-        });
+        document
+          .getElementById("login")
+          .addEventListener("submit", async (event) => {
+            event.preventDefault();
+            try {
+              const credential = await signInWithEmailAndPassword(
+                auth,
+                document.getElementById("log-email").value,
+                document.getElementById("log-pword").value,
+              );
+              status.textContent = `Signed in as ${credential.user.email}.`;
+            } catch (error) {
+              showFirebaseError("Login", error);
+            }
+          });
 
         saveButton.addEventListener("click", async () => {
           if (!currentUser) return;
@@ -160,7 +164,9 @@
           if (!currentUser) return;
           status.textContent = "Loading progress...";
           try {
-            const snapshot = await getDoc(doc(db, "koia_saves", currentUser.uid));
+            const snapshot = await getDoc(
+              doc(db, "koia_saves", currentUser.uid),
+            );
             if (!snapshot.exists()) {
               status.textContent = "No saved progress found.";
               return;
@@ -176,61 +182,60 @@
           }
         });
 
-      class KoiaDate {
-        constructor(year, month, day, format) {
-          this.year = year;
-          this.month = month;
-          this.day = day;
-          this.format = format;
-          if(!year){
-            switch(format){
-              case "fq":
-                this.year = new Date().getFullYear()-1790;
-                break;
-              case "ad":
-                this.year = new Date().getFullYear();
-                break;
-              case "cq":
-                this.year = new Date().getFullYear()+1047;
-                break;
+        class KoiaDate {
+          constructor(year, month, day, format) {
+            this.year = year;
+            this.month = month;
+            this.day = day;
+            this.format = format;
+            if (!year) {
+              switch (format) {
+                case "fq":
+                  this.year = new Date().getFullYear() - 1790;
+                  break;
+                case "ad":
+                  this.year = new Date().getFullYear();
+                  break;
+                case "cq":
+                  this.year = new Date().getFullYear() + 1047;
+                  break;
+              }
+            }
+          }
+
+          toString(format) {
+            var fqYear = this.format === "fq" ? this.year : this.year + 1790;
+            var cqYear = this.format === "cq" ? this.year : this.year - 1047;
+            var adYear = this.format === "ad" ? this.year : this.year - 236;
+            if (format === "fq") {
+              return `${this.month} ${this.day}, ${this.year}FQ`;
+            } else if (format === "ad") {
+              return `${this.month} ${this.day}, ${adYear}AD`;
+            } else if (format === "cq") {
+              return `${this.month} ${this.day}, ${cqYear}CQ`;
             }
           }
         }
-
-        toString(format) {
-          var fqYear = (this.format === "fq") ? this.year : (this.year + 1790);
-          var cqYear = (this.format === "cq") ? this.year : (this.year - 1047);
-          var adYear = (this.format === "ad") ? this.year : (this.year - 236);
-          if (format === "fq") {
-            return `${this.month} ${this.day}, ${this.year}FQ`;
-          } else if (format === "ad") {
-
-            return `${this.month} ${this.day}, ${adYear}AD`;
-          } else if (format === "cq") {
-
-            return `${this.month} ${this.day}, ${cqYear}CQ`;
-          }
+        var yearOffset = {
+          fq: -1790,
+          ad: 0,
+          cq: 1047,
+        };
+        function getCurrentDate(format) {
+          const now = new Date();
+          const month = now.toLocaleString("default", { month: "long" });
+          const day = now.getDate();
+          const year = now.getFullYear() + yearOffset[format]; // Convert to FQ year
+          return new KoiaDate(year, month, day, format);
         }
-      }
-      var yearOffset = {
-        fq: -1790,
-        ad: 0,
-        cq: 1047,
-      };
-      function getCurrentDate(format) {
-        const now = new Date();
-        const month = now.toLocaleString("default", { month: "long" });
-        const day = now.getDate();
-        const year = now.getFullYear() + yearOffset[format]; // Convert to FQ year
-        return new KoiaDate(year, month, day, format);
-      }
-      function updateDateDisplay() {
-        const format = document.getElementById("date-format").value;
-        const currentDate = getCurrentDate(format);
-        document.getElementById("date").textContent = currentDate.toString(format);
-      }
-      dateFormat.addEventListener("change", updateDateDisplay);
-      updateDateDisplay();
+        function updateDateDisplay() {
+          const format = document.getElementById("date-format").value;
+          const currentDate = getCurrentDate(format);
+          document.getElementById("date").textContent =
+            currentDate.toString(format);
+        }
+        dateFormat.addEventListener("change", updateDateDisplay);
+        updateDateDisplay();
       } catch (error) {
         const status = document.getElementById("status");
         const detail = error?.message || String(error);
