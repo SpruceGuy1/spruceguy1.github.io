@@ -769,6 +769,7 @@ import {
       });
       function render() {
         const currentQuestion = questions[skill]?.[questionProgress[skill]];
+if(currentQuestion){
         if (currentQuestion["dyna-info"]) {
           var d = currentQuestion["dyna-info"];
           var retval = "<h1>" + d.title + "</h1>";
@@ -797,7 +798,7 @@ import {
           $("#questions").html(retval);
           return;
         }
-
+      }
         if (!currentQuestion) {
           $("#questions").text("No questions available.");
           $("#answer-area").empty();
