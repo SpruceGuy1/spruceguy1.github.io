@@ -181,13 +181,32 @@
             }
           }
         });
+        var ferbezanMonths = [
+          "Enere",
+          "Febre",
+          "Martus",
+          "K\u02B7atorlune",
+          "Ma",
+          "Jon",
+          "Juļjut",
+          "Ogustut",
+          "Novelune",
+          "Dekelune",
+          "Undekelune",
+          "Duwodekelune",
+          "Dakes Komplimentárjes"
+          
+        ]
         const getDayOfYear = (date = new Date()) =>
           Math.floor(
             (date - new Date(date.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24),
           );
-        function getFerbezanMonth(n) {
+        function getFerbezanMonth(n = getDayOfYear()) {
           var m = Math.floor(n / 30);
           return ferbezanMonths[m];
+        }
+        function getFerbezanDay(n = getDayOfYear()){
+          return n - 30 * (Math.floor(n/30))
         }
 
         class KoiaDate {
@@ -200,6 +219,8 @@
               switch (format) {
                 case "fq":
                   this.year = new Date().getFullYear() - 1790;
+                  this.month = getFerbezanMonth()
+                  this.day = getFerbezanDay()
                   break;
                 case "ad":
                   this.year = new Date().getFullYear();
