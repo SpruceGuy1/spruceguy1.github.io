@@ -30,7 +30,7 @@
   </body>
   <script type="module">
     import render from "./renderer.js";
-    import ex from "./example.json";
+    import ex from "./example.json" with { type: "json" };
 
     document
       .querySelector("#upload")
