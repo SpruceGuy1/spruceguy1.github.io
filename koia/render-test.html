@@ -30,7 +30,7 @@
   </body>
   <script type="module">
     import render from "./renderer.js";
-    import ex from "./example.json"
+    import ex from "./example.json";
 
     document
       .querySelector("#upload")
@@ -40,8 +40,8 @@
         if (!file) return;
         render(document.querySelector("#render"), await file.text());
       });
-      $("#ex").click(function(){
-        render($("#render"), ex.text())
-      })
+    $("#ex").click(function () {
+      render($("#render"), ex.text());
+    });
   </script>
 </html>
