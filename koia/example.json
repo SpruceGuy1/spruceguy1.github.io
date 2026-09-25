@@ -3,10 +3,15 @@
   "kr-type": "2d-color",
   "kr-data": {
     "points": [
-      { "color": "#ffff00", "ref": 0, "x": 0, "y": 0 },
-      { "color": "#ff00ff", "ref": 1, "x": 0, "y": 1 },
-      { "color": "#00ffff", "ref": 2, "x": 1, "y": 1 },
-      { "color": "#000000", "ref": 3, "x": 1, "y": 0 }
+      { "color": "#ffff00", "ref": 0, "x": 0, "y": 0 
+    , "style": "mini"
+    },
+      { "color": "#ff00ff", "ref": 1, "x": 0, "y": 1     , "style": "mini"
+},
+      { "color": "#00ffff", "ref": 2, "x": 1, "y": 1     , "style": "mini"
+},
+      { "color": "#000000", "ref": 3, "x": 1, "y": 0     , "style": "mini"
+ }
     ],
     "lines": [
       { "color": "#000000", "ref": 4, "points": [0, 1] },
