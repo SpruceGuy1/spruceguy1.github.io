@@ -16,6 +16,15 @@ function render(el, json) {
   const size = Math.max(1, Math.min(el.clientWidth || 600, 600));
   const padding = 24;
   const pixelRatio = window.devicePixelRatio || 1;
+  function getPointByRef(r){
+    for(let i in points){
+      if(i.ref == r){
+        return i
+      }else{
+        continue
+      }
+    }
+  }
 
   canvas.width = size * pixelRatio;
   canvas.height = size * pixelRatio;
@@ -49,7 +58,7 @@ function render(el, json) {
     context.lineWidth = 2;
     lines.forEach((line) => {
       if (!Array.isArray(line.points) || line.points.length < 2) return;
-      const first = points[line.points[0]];
+      const first = getPointByRef(line.points[0]);
       if (!first || !Number.isFinite(first.x) || !Number.isFinite(first.y))
         return;
 
@@ -57,7 +66,7 @@ function render(el, json) {
       const start = position(first);
       context.moveTo(start.x, start.y);
       line.points.slice(1).forEach((index) => {
-        const point = points[index];
+        const point = getPointByRef(index);
         if (point && Number.isFinite(point.x) && Number.isFinite(point.y)) {
           const next = position(point);
           context.lineTo(next.x, next.y);
@@ -68,6 +77,14 @@ function render(el, json) {
     });
 
     points.forEach((point) => {
+      if(point.style == "mini"){
+        fillRect(position(point).x, position(point).y, 1, 1)
+        return
+      }
+      if(point.style == "invis"){
+        return
+      }
+
       if (!Number.isFinite(point.x) || !Number.isFinite(point.y)) return;
       const next = position(point);
       context.beginPath();
@@ -80,14 +97,14 @@ function render(el, json) {
     areas.forEach((area) => {
       if (!Array.isArray(area.points) || area.points.length < 3) return;
 
-      const start = points[area.points[0]];
+      const start = getPointByRef( area.points[0])
       if (!start || !Number.isFinite(start.x) || !Number.isFinite(start.y))
         return;
 
       context.beginPath();
       context.moveTo(position(start).x, position(start).y);
       area.points.slice(1).forEach((index) => {
-        const point = points[index];
+        const point = getPointByRef(index);
         if (point && Number.isFinite(point.x) && Number.isFinite(point.y)) {
           const next = position(point);
           context.lineTo(next.x, next.y);
