@@ -146,14 +146,35 @@ function render(el, json) {
 }
 /**
  * 
- * @param {*} prop: 
- * @param {*} ref 
- * @param {*} change 
- * @param {*} cs 
- * @param {*} json 
+ * @param {*} prop - property to change
+ * @param {*} ref - ref of the element
+ * @param {*} change - what to change it by
+ * @param {*} cs - tp (to set the property) or add (to perform a function)
+ * @param {*} json - the json to animate
  */
-function animate(prop, ref, change, cs = "tp", json){
+function animate(prop, ref, change, cs = "tp", json) {
+  const scene = typeof json === "string" ? JSON.parse(json) : json;
+  if (!scene || typeof scene !== "object" || !scene["kr-data"]) {
+    throw new TypeError("A Koia scene is required");
+  }
 
+  const data = scene["kr-data"];
+  const collections = [data.points, data.lines, data.areas];
+  const target = collections
+    .filter(Array.isArray)
+    .flat()
+    .find((element) => element?.ref === ref);
+  if (!target) return scene;
+
+  if (cs === "tp") {
+    target[prop] = change;
+  } else if (cs === "add") {
+    target[prop] += change;
+  } else {
+    throw new TypeError(`Unsupported animation operation: ${cs}`);
+  }
+
+  return scene;
 }
 export {render , animate };
 export default render;

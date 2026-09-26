@@ -4,7 +4,7 @@ const vm = require("node:vm");
 
 const source = fs.readFileSync(__dirname + "/renderer.js", "utf8");
 const moduleSource = source.replace(
-  /export\s*\{\s*render\s*\};\s*export\s+default\s+render;?\s*$/,
+  /export\s*\{[\s\S]*?\};\s*export\s+default\s+render;?\s*$/,
   "",
 );
 
@@ -81,6 +81,7 @@ vm.createContext(context);
 vm.runInContext(moduleSource, context);
 
 const render = context.render;
+const animate = context.animate;
 const el = {
   clientWidth: 600,
   replaceChildren(node) {
@@ -113,3 +114,9 @@ assert.equal(context.canvasContext._drawImageArgs[1], 16);
 assert.equal(context.canvasContext._drawImageArgs[2], 567);
 assert.equal(context.canvasContext._drawImageArgs[3], 16);
 assert.equal(context.canvasContext._drawImageArgs[4], 18);
+
+const movedScene = animate("x", 0, 3, "add", scene);
+assert.equal(movedScene, scene);
+assert.equal(scene["kr-data"].points[0].x, 3);
+assert.equal(animate("color", 1, "#ff0000", "tp", scene)["kr-data"].points[1].color, "#ff0000");
+assert.equal(animate("x", 99, 3, "add", scene), scene);
