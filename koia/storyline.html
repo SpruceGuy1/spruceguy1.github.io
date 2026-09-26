@@ -186,7 +186,8 @@
           }
         });
         const { render, animate } = await import("./renderer.js");
-        var ferbezanMonths = [
+        const {ferbezanMonths, getFerbezanMonth, getFerbezanDay, KoiaDate, getCurrentDate} = await import("/modules/koia/date.js")
+        /*var ferbezanMonths = [
           "Enere",
           "Febre",
           "Martus",
@@ -265,7 +266,7 @@
           const day = now.getDate();
           const year = now.getFullYear() + yearOffset[format]; // Convert to FQ year
           return new KoiaDate(year, month, day, format);
-        }
+        }*/
         function updateDateDisplay() {
           const format = document.getElementById("date-format").value;
           const currentDate = getCurrentDate(format);
