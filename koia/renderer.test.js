@@ -32,6 +32,16 @@ const context = {
       };
     },
   },
+  Image: class {
+    constructor() {
+      this.naturalWidth = 10;
+      this.naturalHeight = 12;
+    }
+    set src(value) {
+      this._src = value;
+      this.onload();
+    }
+  },
   canvasContext: {
     scale() {},
     fillRect() {},
@@ -39,6 +49,9 @@ const context = {
     moveTo() {},
     lineTo() {},
     arc() {},
+    drawImage(...args) {
+      this._drawImageArgs = args;
+    },
     fill() {},
     stroke() {},
     closePath() {},
@@ -78,10 +91,10 @@ const scene = {
   "kr-type": "2d-color",
   "kr-data": {
     points: [
-      { x: 0, y: 0 },
-      { x: 0, y: 1 },
-      { x: 1, y: 1 },
-      { x: 1, y: 0 },
+      { ref: 0, x: 0, y: 0, image: { src: "/Riggy.png", width: 16, height: 18 } },
+      { ref: 1, x: 0, y: 1 },
+      { ref: 2, x: 1, y: 1 },
+      { ref: 3, x: 1, y: 0 },
     ],
     lines: [{ color: "#000000", points: [0, 1, 2, 3, 0] }],
     areas: [{ color: "#00ff00", points: [1, 2, 3] }],
@@ -90,3 +103,8 @@ const scene = {
 
 assert.doesNotThrow(() => render(el, scene));
 assert.equal(context.canvasContext._fillStyle, "#00ff00");
+assert.equal(context.canvasContext._drawImageArgs[0]._src, "/Riggy.png");
+assert.equal(context.canvasContext._drawImageArgs[1], 16);
+assert.equal(context.canvasContext._drawImageArgs[2], 567);
+assert.equal(context.canvasContext._drawImageArgs[3], 16);
+assert.equal(context.canvasContext._drawImageArgs[4], 18);
