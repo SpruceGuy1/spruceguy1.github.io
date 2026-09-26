@@ -16,12 +16,12 @@ function render(el, json) {
   const size = Math.max(1, Math.min(el.clientWidth || 600, 600));
   const padding = 24;
   const pixelRatio = window.devicePixelRatio || 1;
-  function getPointByRef(r){
-    for(let i in points){
-      if(i.ref == r){
-        return i
-      }else{
-        continue
+  function getPointByRef(r) {
+    for (let i in points) {
+      if (i.ref == r) {
+        return i;
+      } else {
+        continue;
       }
     }
   }
@@ -77,12 +77,12 @@ function render(el, json) {
     });
 
     points.forEach((point) => {
-      if(point.style == "mini"){
-        fillRect(position(point).x, position(point).y, 1, 1)
-        return
+      if (point.style == "mini") {
+        fillRect(position(point).x, position(point).y, 1, 1);
+        return;
       }
-      if(point.style == "invis"){
-        return
+      if (point.style == "invis") {
+        return;
       }
 
       if (!Number.isFinite(point.x) || !Number.isFinite(point.y)) return;
@@ -97,7 +97,7 @@ function render(el, json) {
     areas.forEach((area) => {
       if (!Array.isArray(area.points) || area.points.length < 3) return;
 
-      const start = getPointByRef( area.points[0])
+      const start = getPointByRef(area.points[0]);
       if (!start || !Number.isFinite(start.x) || !Number.isFinite(start.y))
         return;
 
