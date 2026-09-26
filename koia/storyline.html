@@ -74,7 +74,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
         const status = document.getElementById("status");
-        
+
         const dateFormat = document.getElementById("date-format");
         const saveButton = document.getElementById("save-btn");
         const loadButton = document.getElementById("load-btn");
@@ -90,9 +90,9 @@
         function getSaveData() {
           return {
             version: 1,
-            ssData:{},
-            storylineData:{
-            dateFormat: dateFormat.value,
+            ssData: {},
+            storylineData: {
+              dateFormat: dateFormat.value,
             },
             lastSaved: new Date().toISOString(),
           };
