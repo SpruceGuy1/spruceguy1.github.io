@@ -6,11 +6,11 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <title>Koia Storyline</title>
+    <title>Koia Selliote Survival</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body class="slick dark">
-    <h1>Koia Storyline</h1>
+    <h1>Koia S. S.</h1>
     <form id="login">
       <label>
         Login Email
@@ -74,8 +74,6 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
         const status = document.getElementById("status");
-        
-        const dateFormat = document.getElementById("date-format");
         const saveButton = document.getElementById("save-btn");
         const loadButton = document.getElementById("load-btn");
         const loginSubmitButton = document.getElementById("login-submit");
@@ -92,7 +90,8 @@
             version: 1,
             ssData:{},
             storylineData:{
-            dateFormat: dateFormat.value,
+              dateFormat: document.getElementById("date-format").value,
+
             },
             lastSaved: new Date().toISOString(),
           };
@@ -101,11 +100,12 @@
         function applySaveData(data) {
           if (
             data?.version !== 1 ||
-            !["fq", "ad", "cq"].includes(data.storylineData.dateFormat)
+            !["fq", "ad", "cq"].includes(data.storylineData?.dateFormat)
           ) {
             throw new Error("invalid-save-data");
           }
-          dateFormat.value = data.storylineData.dateFormat;
+          document.getElementById("date-format").value =
+            data.storylineData.dateFormat;
           updateDateDisplay();
         }
 
@@ -272,7 +272,9 @@
           document.getElementById("date").textContent =
             currentDate.toString(format);
         }
-        dateFormat.addEventListener("change", updateDateDisplay);
+        document
+          .getElementById("date-format")
+          .addEventListener("change", updateDateDisplay);
         updateDateDisplay();
       } catch (error) {
         const status = document.getElementById("status");
