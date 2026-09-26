@@ -129,7 +129,9 @@ render(el, {
   },
 });
 assert.deepEqual(
-  context.canvasContext._fillRectCalls.slice(-2).map(({ fillStyle }) => fillStyle),
+  context.canvasContext._fillRectCalls
+    .slice(-2)
+    .map(({ fillStyle }) => fillStyle),
   ["#123456", "#000000"],
 );
 assert.equal(context.canvasContext._fillRectCalls.at(-2).args[2], 1);
