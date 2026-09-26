@@ -25,9 +25,9 @@ function render(el, json) {
       }
     }
   }*/
- function getPointByRef(ref) {
-  return points.find((point) => point?.ref === ref);
-}
+  function getPointByRef(ref) {
+    return points.find((point) => point?.ref === ref);
+  }
   canvas.width = size * pixelRatio;
   canvas.height = size * pixelRatio;
   canvas.style.width = `${size}px`;
