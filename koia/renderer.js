@@ -80,6 +80,7 @@ function render(el, json) {
 
     points.forEach((point) => {
       if (point.style == "mini") {
+        context.fillStyle = point.color || "#000000";
         context.fillRect(position(point).x, position(point).y, 1, 1);
         return;
       }

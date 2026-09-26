@@ -51,15 +51,16 @@ class KoiaDate {
   }
 
   toString(format) {
-    var fqYear = this.format === "fq" ? this.year : this.year + 1790;
-    var cqYear = this.format === "cq" ? this.year : this.year - 1047;
-    var adYear = this.format === "ad" ? this.year : this.year - 236;
+    var year =
+      format === this.format
+        ? this.year
+        : this.year + yearOffset[format] - yearOffset[this.format];
     if (format === "fq") {
-      return `${this.month} ${this.day}, ${this.year}FQ`;
+      return `${this.month} ${this.day}, ${year}FQ`;
     } else if (format === "ad") {
-      return `${this.month} ${this.day}, ${adYear}AD`;
+      return `${this.month} ${this.day}, ${year}AD`;
     } else if (format === "cq") {
-      return `${this.month} ${this.day}, ${cqYear}CQ`;
+      return `${this.month} ${this.day}, ${year}CQ`;
     }
   }
 }

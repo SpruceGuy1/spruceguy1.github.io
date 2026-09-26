@@ -44,7 +44,10 @@ const context = {
   },
   canvasContext: {
     scale() {},
-    fillRect() {},
+    fillRect(...args) {
+      this._fillRectCalls ??= [];
+      this._fillRectCalls.push({ args, fillStyle: this.fillStyle });
+    },
     beginPath() {},
     moveTo() {},
     lineTo() {},
@@ -114,6 +117,23 @@ assert.equal(context.canvasContext._drawImageArgs[1], 16);
 assert.equal(context.canvasContext._drawImageArgs[2], 567);
 assert.equal(context.canvasContext._drawImageArgs[3], 16);
 assert.equal(context.canvasContext._drawImageArgs[4], 18);
+
+context.canvasContext._fillRectCalls = [];
+render(el, {
+  "kr-type": "2d-color",
+  "kr-data": {
+    points: [
+      { ref: 0, x: 0, y: 0, style: "mini", color: "#123456" },
+      { ref: 1, x: 1, y: 0, style: "mini" },
+    ],
+  },
+});
+assert.deepEqual(
+  context.canvasContext._fillRectCalls.slice(-2).map(({ fillStyle }) => fillStyle),
+  ["#123456", "#000000"],
+);
+assert.equal(context.canvasContext._fillRectCalls.at(-2).args[2], 1);
+assert.equal(context.canvasContext._fillRectCalls.at(-2).args[3], 1);
 
 const movedScene = animate("x", 0, 3, "add", scene);
 assert.equal(movedScene, scene);

@@ -89,23 +89,12 @@
           return {
             version: 1,
             ssData: {},
-            storylineData: {
-              dateFormat: document.getElementById("date-format").value,
-            },
             lastSaved: new Date().toISOString(),
           };
         }
 
         function applySaveData(data) {
-          if (
-            data?.version !== 1 ||
-            !["fq", "ad", "cq"].includes(data.storylineData?.dateFormat)
-          ) {
-            throw new Error("invalid-save-data");
-          }
-          document.getElementById("date-format").value =
-            data.storylineData.dateFormat;
-          updateDateDisplay();
+          if (data?.version !== 1) throw new Error("invalid-save-data");
         }
 
         onAuthStateChanged(auth, (user) => {
