@@ -6,11 +6,17 @@
       { "color": "#ffff00", "ref": 0, "x": 0, "y": 0, "style": "mini" },
       { "color": "#ff00ff", "ref": 1, "x": 0, "y": 1, "style": "mini" },
       { "color": "#00ffff", "ref": 2, "x": 1, "y": 1, "style": "mini" },
-      { "color": "#000000", "ref": 3, "x": 1, "y": 0, "image":{
-        "src": "/Riggy.png",
-        "height": 18,
-        "width": 16
-      } }
+      {
+        "color": "#000000",
+        "ref": 3,
+        "x": 1,
+        "y": 0,
+        "image": {
+          "src": "/Riggy.png",
+          "height": 18,
+          "width": 16
+        }
+      }
     ],
     "lines": [
       { "color": "#000000", "ref": 4, "points": [0, 1] },
