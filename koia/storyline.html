@@ -41,12 +41,12 @@
       Get Your Saved Progress
     </button>
     <p id="status" role="status">Connecting to Firebase...</p>
-    <p id="date">Enere 1, 236FQ</p>
+    <!--p id="date">Enere 1, 236FQ</p>
     <select id="date-format">
       <option value="fq">FQ</option>
       <option value="ad">AD</option>
       <option value="cq">CQ</option>
-    </select>
+    </select-->
     <script type="module">
       try {
         const { initializeApp } =
@@ -186,7 +186,7 @@
           }
         });
         const { render, animate } = await import("./renderer.js");
-        var ferbezanMonths = [
+        /*var ferbezanMonths = [
           "Enere",
           "Febre",
           "Martus",
@@ -273,7 +273,7 @@
             currentDate.toString(format);
         }
         dateFormat.addEventListener("change", updateDateDisplay);
-        updateDateDisplay();
+        updateDateDisplay();*/
       } catch (error) {
         const status = document.getElementById("status");
         const detail = error?.message || String(error);
