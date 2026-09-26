@@ -185,7 +185,7 @@
           }
         });
         const { render, animate } = await import("./renderer.js");
-        var ferbezanMonths = [
+       /* var ferbezanMonths = [
           "Enere",
           "Febre",
           "Martus",
@@ -275,6 +275,7 @@
           .getElementById("date-format")
           .addEventListener("change", updateDateDisplay);
         updateDateDisplay();
+        */
       } catch (error) {
         const status = document.getElementById("status");
         const detail = error?.message || String(error);
