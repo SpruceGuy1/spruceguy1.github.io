@@ -16,7 +16,7 @@ function render(el, json) {
   const size = Math.max(1, Math.min(el.clientWidth || 600, 600));
   const padding = 24;
   const pixelRatio = window.devicePixelRatio || 1;
-  function getPointByRef(r) {
+  /*function getPointByRef(r) {
     for (let i in points) {
       if (i.ref == r) {
         return i;
@@ -24,8 +24,10 @@ function render(el, json) {
         continue;
       }
     }
-  }
-
+  }*/
+ function getPointByRef(ref) {
+  return points.find((point) => point?.ref === ref);
+}
   canvas.width = size * pixelRatio;
   canvas.height = size * pixelRatio;
   canvas.style.width = `${size}px`;
@@ -78,7 +80,7 @@ function render(el, json) {
 
     points.forEach((point) => {
       if (point.style == "mini") {
-        fillRect(position(point).x, position(point).y, 1, 1);
+        context.fillRect(position(point).x, position(point).y, 1, 1);
         return;
       }
       if (point.style == "invis") {
