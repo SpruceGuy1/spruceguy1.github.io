@@ -13,5 +13,9 @@ service cloud.firestore {
       allow create, update, delete: if request.auth != null
         && request.auth.uid == userId;
     }
+    match /koia_saves/{userId} {
+      allow read, write: if request.auth != null
+        && request.auth.uid == userId;
+    }
   }
 }

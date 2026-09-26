@@ -174,7 +174,8 @@
       "special": {
         "unit": "u0"
       },
-      "q": "K\u02B7id est proble?"
+      "q": "K\u02B7id est proble?",
+      "rega": "^\\s*What( i|')s the problem\\??\\s*$"
     }
   ],
   "vocab": [

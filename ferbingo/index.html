@@ -6,6 +6,7 @@
     <script>
       eruda.init();
     </script>
+    <link rel="stylesheet" href="./style.css" />
   </head>
 
   <body>
@@ -123,6 +124,10 @@
       </button>
       <button id="go-back">Go back</button>
       <p id="qstatus">Not answered yet</p>
+      <div id="unit">
+        <h1>Unit: <span id="unit-name">N/A</span></h1>
+        <div id="unit-lessons">No lessons in this unit.</div>
+      </div>
     </fieldset>
     <fieldset>
       <legend>Artworks</legend>
@@ -769,35 +774,36 @@ import {
       });
       function render() {
         const currentQuestion = questions[skill]?.[questionProgress[skill]];
-        if (currentQuestion["dyna-info"]) {
-          var d = currentQuestion["dyna-info"];
-          var retval = "<h1>" + d.title + "</h1>";
-          switch (d.typ) {
-            case "table":
-              retval += "<table>";
-              for (let i of d.data) {
-                retval += "<tr>";
-                for (let j of i) {
-                  retval += "<td>" + j + "</td>";
+        if (currentQuestion) {
+          if (currentQuestion["dyna-info"]) {
+            var d = currentQuestion["dyna-info"];
+            var retval = "<h1>" + d.title + "</h1>";
+            switch (d.typ) {
+              case "table":
+                retval += "<table>";
+                for (let i of d.data) {
+                  retval += "<tr>";
+                  for (let j of i) {
+                    retval += "<td>" + j + "</td>";
+                  }
+                  retval += "</tr>";
                 }
-                retval += "</tr>";
-              }
-              retval += "</table>";
+                retval += "</table>";
 
-              break;
-            case "std":
-              retval += "<br><p>" + d.data + "</p>";
-              break;
-            case "br":
-              for (let i of d.data) {
-                retval += "<br>" + i;
-              }
-              break;
+                break;
+              case "std":
+                retval += "<br><p>" + d.data + "</p>";
+                break;
+              case "br":
+                for (let i of d.data) {
+                  retval += "<br>" + i;
+                }
+                break;
+            }
+            $("#questions").html(retval);
+            return;
           }
-          $("#questions").html(retval);
-          return;
         }
-
         if (!currentQuestion) {
           $("#questions").text("No questions available.");
           $("#answer-area").empty();

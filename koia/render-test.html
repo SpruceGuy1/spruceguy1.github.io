@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  </head>
+  <body
+    style="
+      font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        &quot;Segoe UI&quot;,
+        Roboto,
+        Oxygen,
+        Ubuntu,
+        Cantarell,
+        &quot;Open Sans&quot;,
+        &quot;Helvetica Neue&quot;,
+        sans-serif;
+    "
+  >
+    <h1>Koiarender</h1>
+    <div id="render"></div>
+    Upload a JSON file
+    <form id="upload">
+      <input id="file" type="file" />
+      <button type="submit">Render</button>
+    </form>
+    <button id="ex">Use the example.json test file</button>
+  </body>
+  <script type="module">
+    import render from "./renderer.js";
+    import ex from "./example.json" with { type: "json" };
+
+    document
+      .querySelector("#upload")
+      .addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const file = document.querySelector("#file").files[0];
+        if (!file) return;
+        render(document.querySelector("#render"), await file.text());
+      });
+    document.querySelector("#ex").addEventListener("click", () => {
+      render(document.querySelector("#render"), ex);
+    });
+  </script>
+</html>
