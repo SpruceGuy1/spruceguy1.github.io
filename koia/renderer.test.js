@@ -118,5 +118,8 @@ assert.equal(context.canvasContext._drawImageArgs[4], 18);
 const movedScene = animate("x", 0, 3, "add", scene);
 assert.equal(movedScene, scene);
 assert.equal(scene["kr-data"].points[0].x, 3);
-assert.equal(animate("color", 1, "#ff0000", "tp", scene)["kr-data"].points[1].color, "#ff0000");
+assert.equal(
+  animate("color", 1, "#ff0000", "tp", scene)["kr-data"].points[1].color,
+  "#ff0000",
+);
 assert.equal(animate("x", 99, 3, "add", scene), scene);

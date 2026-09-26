@@ -145,7 +145,7 @@ function render(el, json) {
   return canvas;
 }
 /**
- * 
+ *
  * @param {*} prop - property to change
  * @param {*} ref - ref of the element
  * @param {*} change - what to change it by
@@ -176,5 +176,5 @@ function animate(prop, ref, change, cs = "tp", json) {
 
   return scene;
 }
-export {render , animate };
+export { render, animate };
 export default render;
