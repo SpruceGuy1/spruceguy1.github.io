@@ -145,15 +145,13 @@ function render(el, json) {
   return canvas;
 }
 /**
- * 
- * @param {*} prop: 
- * @param {*} ref 
- * @param {*} change 
- * @param {*} cs 
- * @param {*} json 
+ *
+ * @param {*} prop:
+ * @param {*} ref
+ * @param {*} change
+ * @param {*} cs
+ * @param {*} json
  */
-function animate(prop, ref, change, cs = "tp", json){
-
-}
-export {render , animate };
+function animate(prop, ref, change, cs = "tp", json) {}
+export { render, animate };
 export default render;
