@@ -186,7 +186,13 @@
           }
         });
         const { render, animate } = await import("./renderer.js");
-        const {ferbezanMonths, getFerbezanMonth, getFerbezanDay, KoiaDate, getCurrentDate} = await import("/modules/koia/date.js")
+        const {
+          ferbezanMonths,
+          getFerbezanMonth,
+          getFerbezanDay,
+          KoiaDate,
+          getCurrentDate,
+        } = await import("/modules/koia/date.js");
         /*var ferbezanMonths = [
           "Enere",
           "Febre",
