@@ -92,13 +92,21 @@ function render(el, json) {
       if (typeof point.image?.src === "string" && point.image.src) {
         const image = new Image();
         image.onload = () => {
-          const width = Number.isFinite(point.image.width) && point.image.width > 0
-            ? point.image.width
-            : image.naturalWidth;
-          const height = Number.isFinite(point.image.height) && point.image.height > 0
-            ? point.image.height
-            : image.naturalHeight;
-          context.drawImage(image, next.x - width / 2, next.y - height / 2, width, height);
+          const width =
+            Number.isFinite(point.image.width) && point.image.width > 0
+              ? point.image.width
+              : image.naturalWidth;
+          const height =
+            Number.isFinite(point.image.height) && point.image.height > 0
+              ? point.image.height
+              : image.naturalHeight;
+          context.drawImage(
+            image,
+            next.x - width / 2,
+            next.y - height / 2,
+            width,
+            height,
+          );
         };
         image.src = point.image.src;
         return;

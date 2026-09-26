@@ -91,7 +91,12 @@ const scene = {
   "kr-type": "2d-color",
   "kr-data": {
     points: [
-      { ref: 0, x: 0, y: 0, image: { src: "/Riggy.png", width: 16, height: 18 } },
+      {
+        ref: 0,
+        x: 0,
+        y: 0,
+        image: { src: "/Riggy.png", width: 16, height: 18 },
+      },
       { ref: 1, x: 0, y: 1 },
       { ref: 2, x: 1, y: 1 },
       { ref: 3, x: 1, y: 0 },
