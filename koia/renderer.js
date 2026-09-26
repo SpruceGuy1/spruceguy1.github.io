@@ -136,6 +136,16 @@ function render(el, json) {
   el.replaceChildren(canvas);
   return canvas;
 }
+/**
+ * 
+ * @param {*} prop: 
+ * @param {*} ref 
+ * @param {*} change 
+ * @param {*} cs 
+ * @param {*} json 
+ */
+function animate(prop, ref, change, cs = "tp", json){
 
-export { render };
+}
+export {render , animate };
 export default render;
