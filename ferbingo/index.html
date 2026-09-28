@@ -219,7 +219,7 @@
       let questions;
 
       try {
-        const response = await fetch("./questions.json");
+        const response = await fetch("/ferbingo/questions.json");
 
         if (!response.ok) {
           throw new Error(`questions-load-failed-${response.status}`);
@@ -297,7 +297,7 @@ import {
       let getDocs;
 
       try {
-        const questionResponse = await fetch("./questions.json", {
+        const questionResponse = await fetch("/ferbingo/questions.json", {
           cache: "no-store",
         });
 
