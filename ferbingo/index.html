@@ -324,7 +324,7 @@ import {
           throw new Error("invalid-questions-data");
         }
 
-        ({ default: conj } = await import("./conjugation-tables.js"));
+        ({ default: conj } = await import("/ferbingo/conjugation-tables.js"));
 
         ({ initializeApp } =
           await import("https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js"));
