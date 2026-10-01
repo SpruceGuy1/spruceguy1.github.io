@@ -86,10 +86,10 @@ var schema = [
   "Years",
 ];
 function display(num, $element, $) {
- /* var retval = "";
+  /* var retval = "";
   $element.append("<div id='dynamicFND'></div>");
   retval += "<h3>" + num + "</h3>";*/
-  var ind = 0
+  var ind = 0;
   var $container = $("<div></div>");
   $container.append("<h3>" + num + "</h3>");
   $element.append($container);
@@ -98,7 +98,8 @@ function display(num, $element, $) {
     if (Array.isArray(thing)) {
       thing = thing.join(", ");
     }
-    $container.append(`<b>${schema[ind]}</b>: ${thing}<br>`);    ind++;
+    $container.append(`<b>${schema[ind]}</b>: ${thing}<br>`);
+    ind++;
   }
 }
 export { display };
