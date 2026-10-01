@@ -5,7 +5,7 @@ var data = [
   ["tres", "terše", "antepenoltimate", "ter", "tripleks", "tri-", "terter", "trito-", "trijo", "trijene"],
   ["k\u02b7ator", "k\u02b7arte", "prëantepenoltimate", "k\u02b7ater", "k\u02b7arupule", ["tetra-", "tesera-", "k\u02b7adri-"], "k\u02b7adrants", "tetarto-", "k\u02b7artete", "Olímpijade"],
   ["k\u02b7iñk\u02b7e", "k\u02b7inte", "proprëantepenoltimate", "k\u02b7inter", "k\u02b7intupule", ["penta-", "k\u02b7iñk\u02b7e-", "k\u02b7inti-"], "k\u02b7intants", "-", "k\u02b7intete", "lustron"],
-  ["sek", "seste", "prëantepenoltimate", "k\u02b7ater", "k\u02b7arupule", ["tetra-", "tesera-", "k\u02b7adri-"], "k\u02b7adrants", "tetarto-", "k\u02b7artete", "Olímpijade"],
+  ["sek", "seste", "-", "sekster", "sestupule", ["sëksa-", "ësa-", "ëksa-"], "sekstants", "-", "sestete", "sesene"],
 
 ]
 var schema = ["Cardinal", "Ordinal", "Reverse Ordinal", "Repetition (time)", "Multiplication/Repetition", "Prefix", "Fractional", "Greek ordinal prefix", "Group of people", "Years"]
