@@ -20,10 +20,9 @@ function display(num, $element, $){
       thing = thing.join(", ")
 
     }
-    $("#dynamicFND").append(`<b>${schema[ind]}</b>: ${thing}<br>`)
-    ind++
+    $("#dynamicFND").append(`<b>${schema[ind]}</b>: ${thing}<br>`);
+    ind++;
   }
-  $element.append(retval)
-
+  $element.append(retval);
 }
-export {display}
+export { display };
