@@ -1,10 +1,9 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-
-<head></head>
-<body>
+  <head></head>
+  <body>
     <h1>R3S Messages</h1>
-<form id="login">
+    <form id="login">
       <label>
         Login Email
         <input id="log-email" type="email" required />
@@ -28,22 +27,31 @@
       <button id="register-submit" type="submit" disabled>Register</button>
     </form>
     <form id="typeText">
-        <label>
-          To
-          <input id="recipient-email" type="email" autocomplete="email" required placeholder="Recipient email">
-        </label>
-        <label>
-          Message
-          <input id="msg" maxlength="2000" required placeholder="Type your message...">
-        </label>
-        <button id="save-btn" type="submit" disabled>Send</button>
+      <label>
+        To
+        <input
+          id="recipient-email"
+          type="email"
+          autocomplete="email"
+          required
+          placeholder="Recipient email"
+        />
+      </label>
+      <label>
+        Message
+        <input
+          id="msg"
+          maxlength="2000"
+          required
+          placeholder="Type your message..."
+        />
+      </label>
+      <button id="save-btn" type="submit" disabled>Send</button>
     </form>
-    <button id="load-btn" type="button" disabled>
-      Refresh Inbox
-    </button>
+    <button id="load-btn" type="button" disabled>Refresh Inbox</button>
     <p id="status" role="status">Connecting to Firebase...</p>
     <ol id="messages" aria-live="polite"></ol>
-    
+
     <!--p id="date">Enere 1, 236FQ</p>
     <select id="date-format">
       <option value="fq">FQ</option>
@@ -135,8 +143,15 @@
           try {
             const messagesRef = collection(db, "messages");
             const [inbox, sent] = await Promise.all([
-              getDocs(query(messagesRef, where("recipientEmail", "==", currentUser.email))),
-              getDocs(query(messagesRef, where("senderUid", "==", currentUser.uid))),
+              getDocs(
+                query(
+                  messagesRef,
+                  where("recipientEmail", "==", currentUser.email),
+                ),
+              ),
+              getDocs(
+                query(messagesRef, where("senderUid", "==", currentUser.uid)),
+              ),
             ]);
             const messages = new Map();
             for (const snapshot of [inbox, sent]) {
@@ -144,8 +159,10 @@
                 messages.set(message.id, message.data());
               }
             }
-            const orderedMessages = [...messages.values()].sort((left, right) =>
-              (right.createdAt?.seconds ?? 0) - (left.createdAt?.seconds ?? 0),
+            const orderedMessages = [...messages.values()].sort(
+              (left, right) =>
+                (right.createdAt?.seconds ?? 0) -
+                (left.createdAt?.seconds ?? 0),
             );
             renderMessages(orderedMessages);
             status.textContent = `${orderedMessages.length} message${orderedMessages.length === 1 ? "" : "s"}.`;
@@ -205,38 +222,40 @@
         document
           .getElementById("typeText")
           .addEventListener("submit", async (event) => {
-          event.preventDefault();
-          if (!currentUser) return;
-          const recipientEmail = document.getElementById("recipient-email").value.trim();
-          const body = document.getElementById("msg").value.trim();
-          if (!recipientEmail || !body) return;
+            event.preventDefault();
+            if (!currentUser) return;
+            const recipientEmail = document
+              .getElementById("recipient-email")
+              .value.trim();
+            const body = document.getElementById("msg").value.trim();
+            if (!recipientEmail || !body) return;
 
-          saveButton.disabled = true;
-          status.textContent = "Sending message...";
-          try {
-            await addDoc(collection(db, "messages"), {
-              senderUid: currentUser.uid,
-              senderEmail: currentUser.email,
-              recipientEmail,
-              body,
-              createdAt: serverTimestamp(),
-            });
-            document.getElementById("msg").value = "";
-            await refreshMessages();
-          } catch (error) {
-            showFirebaseError("Sending message", error);
-          } finally {
-            saveButton.disabled = !currentUser;
-          }
-        });
+            saveButton.disabled = true;
+            status.textContent = "Sending message...";
+            try {
+              await addDoc(collection(db, "messages"), {
+                senderUid: currentUser.uid,
+                senderEmail: currentUser.email,
+                recipientEmail,
+                body,
+                createdAt: serverTimestamp(),
+              });
+              document.getElementById("msg").value = "";
+              await refreshMessages();
+            } catch (error) {
+              showFirebaseError("Sending message", error);
+            } finally {
+              saveButton.disabled = !currentUser;
+            }
+          });
 
         loadButton.addEventListener("click", refreshMessages);
-    }catch (error) {
+      } catch (error) {
         const status = document.getElementById("status");
         const detail = error?.message || String(error);
         status.textContent = `Startup error: ${detail}`;
         console.error("R3S Messages startup failed:", error);
       }
-        </script>
-        </body>
-        </html>
+    </script>
+  </body>
+</html>
