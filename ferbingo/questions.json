@@ -171,6 +171,7 @@
     },
     {
       "id": "t30",
+      "name":"Correlatives - K\u02B7id",
       "special": {
         "unit": "u0"
       },
@@ -180,11 +181,12 @@
     },
     {
       "id":"t31",
+      "name":"Correlatives - K\u02B7omodo",
       "special": {
         "unit": "u0"
       },
       "q": "K\u02b7omodo we fakit matei?",
-      "rega": "^\\s*How do(es one| you) do math(ematics)\\??\\s*$"
+      "rega": "^\\s*How do(es one| you) do math(ematics)?\\??\\s*$"
     }
   ],
   "vocab": [
@@ -353,7 +355,8 @@
     },
     {
       "id": "voc-learn",
-      "information": "'Mates' is a word meaning 'math' or 'mathematics'. 'Studere' is a third-conjugation verb meaning 'to study.' Example: I study math = 'Studijo matei'.",
+      "information": "'Mates' is a word meaning 'math' or 'mathematics'. 'Studere' is a third-conjugation verb meaning 'to study.' Example: I study math = 'Studijo matei'."},
+      {
       "id": "v26",
       "unit": {
         "title": "Correlatives",

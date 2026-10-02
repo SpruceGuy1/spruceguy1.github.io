@@ -775,6 +775,17 @@ import {
       function render() {
         const currentQuestion = questions[skill]?.[questionProgress[skill]];
         if (currentQuestion) {
+          if(currentQuestion.unit){
+            $("#unit-questions").text("")
+            $("#unit-name").text(currentQuestion.unit.title)
+            for(let i of questions.vocab){
+              if(i.special.unit == currentQuestion.unit.id){
+                $("#unit-questions").append(i.name+"<br>")
+                
+
+              }
+            }
+          }
           if (currentQuestion["dyna-info"]) {
             var d = currentQuestion["dyna-info"];
             var retval = "<h1>" + d.title + "</h1>";
