@@ -10,6 +10,6 @@ iframe {
 }
 style='position:fixed;top:0;right:0;width:512px;height:384px;
 */
-export function addFrame(){
-    return "<iframe style='position:fixed;top:0;right:0;width:512px;height:384px;' src='/messages.html'></iframe>"
+export function addFrame() {
+  return "<iframe style='position:fixed;top:0;right:0;width:512px;height:384px;' src='/messages.html'></iframe>";
 }
