@@ -700,6 +700,10 @@ import {
 
       saveButton.addEventListener("click", async () => {
         if (!currentUser) return;
+        if(questionProgress.xp==0){
+          var confirmSave = confirm("You have 0 XP. Are you sure you want to save your progress?");
+          return;
+        }
         status.textContent = "Saving game...";
         const previousStreak = questionProgress.streak;
         const previousDayLastSaved = questionProgress.dayLastSaved;
@@ -722,7 +726,11 @@ import {
       });
 
       loadButton.addEventListener("click", async () => {
+        
         if (!currentUser) return;
+     /*   if(questionProgress.xp==0){
+          
+        }*/
         status.textContent = "Loading game...";
 
         try {
