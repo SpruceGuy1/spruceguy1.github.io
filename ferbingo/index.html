@@ -702,7 +702,7 @@ import {
         if (!currentUser) return;
         if(questionProgress.xp==0){
           var confirmSave = confirm("You have 0 XP. Are you sure you want to save your progress?");
-          return;
+          if (!confirmSave) return;
         }
         status.textContent = "Saving game...";
         const previousStreak = questionProgress.streak;
