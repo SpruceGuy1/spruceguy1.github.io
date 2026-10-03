@@ -219,8 +219,8 @@
     <script type="module">
       //import questions from "./questions.json" with { type: "json" };
       let questions;
-      import {addFrame} from '/modules/general/messages.js'
-$("body").append(addFrame())
+      import { addFrame } from "/modules/general/messages.js";
+      $("body").append(addFrame());
 
       try {
         const response = await fetch("/ferbingo/questions.json");
@@ -700,8 +700,10 @@ import {
 
       saveButton.addEventListener("click", async () => {
         if (!currentUser) return;
-        if(questionProgress.xp==0){
-          var confirmSave = confirm("You have 0 XP. Are you sure you want to save your progress?");
+        if (questionProgress.xp == 0) {
+          var confirmSave = confirm(
+            "You have 0 XP. Are you sure you want to save your progress?",
+          );
           if (!confirmSave) return;
         }
         status.textContent = "Saving game...";
@@ -726,9 +728,8 @@ import {
       });
 
       loadButton.addEventListener("click", async () => {
-        
         if (!currentUser) return;
-     /*   if(questionProgress.xp==0){
+        /*   if(questionProgress.xp==0){
           
         }*/
         status.textContent = "Loading game...";
@@ -787,14 +788,12 @@ import {
       function render() {
         const currentQuestion = questions[skill]?.[questionProgress[skill]];
         if (currentQuestion) {
-          if(currentQuestion.unit){
-            $("#unit-questions").text("")
-            $("#unit-name").text(currentQuestion.unit.title)
-            for(let i of questions.vocab){
-              if(i.special.unit == currentQuestion.unit.id){
-                $("#unit-questions").append(i.name+"<br>")
-                
-
+          if (currentQuestion.unit) {
+            $("#unit-questions").text("");
+            $("#unit-name").text(currentQuestion.unit.title);
+            for (let i of questions.vocab) {
+              if (i.special.unit == currentQuestion.unit.id) {
+                $("#unit-questions").append(i.name + "<br>");
               }
             }
           }

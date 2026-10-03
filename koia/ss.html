@@ -177,7 +177,7 @@
             }
           }
         });
-        
+
         /* var ferbezanMonths = [
           "Enere",
           "Febre",
@@ -276,12 +276,12 @@
         console.error("Koia startup failed:", error);
       }
       const { render, animate } = await import("./renderer.js");
-        render(document.createElement("div"), {
-          "kr-type": "2d-color",
-          "kr-data": {
-            points: [{ ref: 0, x: 0, y: 0, image: "/chicken.png" }],
-          },
-        });
+      render(document.createElement("div"), {
+        "kr-type": "2d-color",
+        "kr-data": {
+          points: [{ ref: 0, x: 0, y: 0, image: "/chicken.png" }],
+        },
+      });
     </script>
   </body>
 </html>

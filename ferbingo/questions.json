@@ -171,7 +171,7 @@
     },
     {
       "id": "t30",
-      "name":"Correlatives - K\u02B7id",
+      "name": "Correlatives - K\u02B7id",
       "special": {
         "unit": "u0"
       },
@@ -180,8 +180,8 @@
       "flags": "i"
     },
     {
-      "id":"t31",
-      "name":"Correlatives - K\u02B7omodo",
+      "id": "t31",
+      "name": "Correlatives - K\u02B7omodo",
       "special": {
         "unit": "u0"
       },
@@ -355,8 +355,9 @@
     },
     {
       "id": "voc-learn",
-      "information": "'Mates' is a word meaning 'math' or 'mathematics'. 'Studere' is a third-conjugation verb meaning 'to study.' Example: I study math = 'Studijo matei'."},
-      {
+      "information": "'Mates' is a word meaning 'math' or 'mathematics'. 'Studere' is a third-conjugation verb meaning 'to study.' Example: I study math = 'Studijo matei'."
+    },
+    {
       "id": "v26",
       "unit": {
         "title": "Correlatives",
