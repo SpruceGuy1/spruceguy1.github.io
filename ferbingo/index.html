@@ -789,9 +789,9 @@ import {
         const currentQuestion = questions[skill]?.[questionProgress[skill]];
         if (currentQuestion) {
           $("#answer-area").empty();
-$("#qstatus").text("Not answered yet");
-$("#check").text("Continue").prop("disabled", false);
-$("#skip-question").prop("disabled", true).prop("hidden", true);
+          $("#qstatus").text("Not answered yet");
+          $("#check").text("Continue").prop("disabled", false);
+          $("#skip-question").prop("disabled", true).prop("hidden", true);
           if (currentQuestion.unit) {
             $("#unit-questions").text("");
             $("#unit-name").text(currentQuestion.unit.title);
@@ -946,8 +946,8 @@ $("#skip-question").prop("disabled", true).prop("hidden", true);
       function checkAnswer(p) {
         const skillQuestions = questions[skill];
         const currentQuestion = skillQuestions?.[questionProgress[skill]];
-       // if (currentQuestion.information) {
-       if (currentQuestion.information || currentQuestion["dyna-info"]) {
+        // if (currentQuestion.information) {
+        if (currentQuestion.information || currentQuestion["dyna-info"]) {
           if (questionProgress[skill] < skillQuestions.length - 1) {
             new Audio("/audio/correct.m4a").play().catch((e) => {
               console.error("Error: " + e);
