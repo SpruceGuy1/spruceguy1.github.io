@@ -796,7 +796,7 @@ import {
             $("#unit-questions").text("");
             $("#unit-name").text(currentQuestion.unit.title);
             for (let i of questions.vocab) {
-            if(!i.special) continue;
+              if (!i.special) continue;
               if (i.special.unit == currentQuestion.unit.id) {
                 $("#unit-questions").append(i.name + "<br>");
               }
