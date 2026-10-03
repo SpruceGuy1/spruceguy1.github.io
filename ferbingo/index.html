@@ -6,6 +6,8 @@
     <script>
       eruda.init();
     </script>
+    <title>Ferbingo</title>
+    <link rel="stylesheet" href="/ferbingo/style.css" />
   </head>
 
   <body>
@@ -15,6 +17,7 @@
       alt="Ferbingo logo"
     />
     <a href="/index.html">Home</a>
+    <h1>Ferbingo - Learn the conlang Ferbezan</h1>
     <fieldset>
       <legend>Log-In</legend>
       <!--form id="login" onsubmit="return false">
@@ -123,6 +126,10 @@
       </button>
       <button id="go-back">Go back</button>
       <p id="qstatus">Not answered yet</p>
+      <div id="unit">
+        <h1>Unit: <span id="unit-name">N/A</span></h1>
+        <div id="unit-lessons">No lessons in this unit.</div>
+      </div>
     </fieldset>
     <fieldset>
       <legend>Artworks</legend>
@@ -212,9 +219,11 @@
     <script type="module">
       //import questions from "./questions.json" with { type: "json" };
       let questions;
+      import { addFrame } from "/modules/general/messages.js";
+      $("body").append(addFrame());
 
       try {
-        const response = await fetch("./questions.json");
+        const response = await fetch("/ferbingo/questions.json");
 
         if (!response.ok) {
           throw new Error(`questions-load-failed-${response.status}`);
@@ -292,7 +301,7 @@ import {
       let getDocs;
 
       try {
-        const questionResponse = await fetch("./questions.json", {
+        const questionResponse = await fetch("/ferbingo/questions.json", {
           cache: "no-store",
         });
 
@@ -319,7 +328,7 @@ import {
           throw new Error("invalid-questions-data");
         }
 
-        ({ default: conj } = await import("./conjugation-tables.js"));
+        ({ default: conj } = await import("/ferbingo/conjugation-tables.js"));
 
         ({ initializeApp } =
           await import("https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js"));
@@ -691,6 +700,12 @@ import {
 
       saveButton.addEventListener("click", async () => {
         if (!currentUser) return;
+        if (questionProgress.xp == 0) {
+          var confirmSave = confirm(
+            "You have 0 XP. Are you sure you want to save your progress?",
+          );
+          if (!confirmSave) return;
+        }
         status.textContent = "Saving game...";
         const previousStreak = questionProgress.streak;
         const previousDayLastSaved = questionProgress.dayLastSaved;
@@ -714,6 +729,9 @@ import {
 
       loadButton.addEventListener("click", async () => {
         if (!currentUser) return;
+        /*   if(questionProgress.xp==0){
+          
+        }*/
         status.textContent = "Loading game...";
 
         try {
@@ -769,35 +787,51 @@ import {
       });
       function render() {
         const currentQuestion = questions[skill]?.[questionProgress[skill]];
-        if (currentQuestion["dyna-info"]) {
-          var d = currentQuestion["dyna-info"];
-          var retval = "<h1>" + d.title + "</h1>";
-          switch (d.typ) {
-            case "table":
-              retval += "<table>";
-              for (let i of d.data) {
-                retval += "<tr>";
-                for (let j of i) {
-                  retval += "<td>" + j + "</td>";
-                }
-                retval += "</tr>";
+        if (currentQuestion) {
+          $("#answer-area").empty();
+          $("#qstatus").text("Not answered yet");
+          $("#check").text("Check answer").prop("disabled", false);
+          $("#skip-question").prop("disabled", true).prop("hidden", true);
+          if (currentQuestion.unit) {
+            $("#unit-questions").text("");
+            $("#unit-name").text(currentQuestion.unit.title);
+            for (let i of questions.vocab) {
+              if (!i.special) continue;
+              if (i.special.unit == currentQuestion.unit.id) {
+                $("#unit-questions").append(i.name + "<br>");
               }
-              retval += "</table>";
-
-              break;
-            case "std":
-              retval += "<br><p>" + d.data + "</p>";
-              break;
-            case "br":
-              for (let i of d.data) {
-                retval += "<br>" + i;
-              }
-              break;
+            }
           }
-          $("#questions").html(retval);
-          return;
-        }
+          if (currentQuestion["dyna-info"]) {
+            var d = currentQuestion["dyna-info"];
+            var retval = "<h1>" + d.title + "</h1>";
+            switch (d.typ) {
+              case "table":
+                retval += "<table>";
+                for (let i of d.data) {
+                  retval += "<tr>";
+                  for (let j of i) {
+                    retval += "<td>" + j + "</td>";
+                  }
+                  retval += "</tr>";
+                }
+                retval += "</table>";
 
+                break;
+              case "std":
+                retval += "<br><p>" + d.data + "</p>";
+                break;
+              case "br":
+                for (let i of d.data) {
+                  retval += "<br>" + i;
+                }
+                break;
+            }
+            $("#questions").html(retval);
+            $("#check").text("Continue");
+            return;
+          }
+        }
         if (!currentQuestion) {
           $("#questions").text("No questions available.");
           $("#answer-area").empty();
@@ -808,9 +842,9 @@ import {
         }
 
         const isOptionalQuestion = Boolean(currentQuestion?.special?.optional);
-        $("#qstatus").text("Not answered yet");
+        /*$("#qstatus").text("Not answered yet");
         $("#check").prop("disabled", false);
-        $("#check").text("Check answer");
+        $("#check").text("Check answer");*/
         $("#skip-question")
           .prop("disabled", !isOptionalQuestion)
           .prop("hidden", !isOptionalQuestion);
@@ -914,7 +948,8 @@ import {
       function checkAnswer(p) {
         const skillQuestions = questions[skill];
         const currentQuestion = skillQuestions?.[questionProgress[skill]];
-        if (currentQuestion.information) {
+        // if (currentQuestion.information) {
+        if (currentQuestion.information || currentQuestion["dyna-info"]) {
           if (questionProgress[skill] < skillQuestions.length - 1) {
             new Audio("/audio/correct.m4a").play().catch((e) => {
               console.error("Error: " + e);

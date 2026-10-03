@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>Koia Storyline</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="slick dark">
+    <h1>Koia Storyline</h1>
+    <form id="login">
+      <label>
+        Login Email
+        <input id="log-email" type="email" required />
+      </label>
+      <label>
+        Password
+        <input id="log-pword" type="password" required />
+      </label>
+      <button id="login-submit" type="submit" disabled>Log In</button>
+    </form>
+
+    <form id="register">
+      <label>
+        Register Email
+        <input id="reg-email" type="email" required />
+      </label>
+      <label>
+        Password
+        <input id="reg-pword" type="password" required />
+      </label>
+      <button id="register-submit" type="submit" disabled>Register</button>
+    </form>
+    <button id="save-btn" type="button" disabled>
+      Save Progress To Your Account
+    </button>
+    <button id="load-btn" type="button" disabled>
+      Get Your Saved Progress
+    </button>
+    <p id="status" role="status">Connecting to Firebase...</p>
+    <p id="date">Enere 1, 236FQ</p>
+    <select id="date-format">
+      <option value="fq">FQ</option>
+      <option value="ad">AD</option>
+      <option value="cq">CQ</option>
+    </select>
+    <script type="module">
+      try {
+        const { initializeApp } =
+          await import("https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js");
+        const {
+          getAuth,
+          onAuthStateChanged,
+          createUserWithEmailAndPassword,
+          signInWithEmailAndPassword,
+        } =
+          await import("https://www.gstatic.com/firebasejs/12.17.0/firebase-auth.js");
+        const { getFirestore, doc, setDoc, getDoc } =
+          await import("https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js");
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyAeINE31darFq72BB4N1WtWDARk9YPxJzY",
+          authDomain: "sapient-origin-462411-t7.firebaseapp.com",
+          projectId: "sapient-origin-462411-t7",
+          storageBucket: "sapient-origin-462411-t7.firebasestorage.app",
+          messagingSenderId: "749880999520",
+          appId: "1:749880999520:web:9246df43f9ecb2279fcd05",
+          measurementId: "G-2HT9YKBXV4",
+        };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const status = document.getElementById("status");
+
+        const dateFormat = document.getElementById("date-format");
+        const saveButton = document.getElementById("save-btn");
+        const loadButton = document.getElementById("load-btn");
+        const loginSubmitButton = document.getElementById("login-submit");
+        const registerSubmitButton = document.getElementById("register-submit");
+        let currentUser = null;
+
+        function showFirebaseError(action, error) {
+          console.error(`${action} failed:`, error);
+          status.textContent = `${action} failed. Please try again.`;
+        }
+
+        function getSaveData() {
+          return {
+            version: 1,
+            ssData: {},
+            storylineData: {
+              dateFormat: dateFormat.value,
+            },
+            lastSaved: new Date().toISOString(),
+          };
+        }
+
+        function applySaveData(data) {
+          if (
+            data?.version !== 1 ||
+            !["fq", "ad", "cq"].includes(data.storylineData.dateFormat)
+          ) {
+            throw new Error("invalid-save-data");
+          }
+          dateFormat.value = data.storylineData.dateFormat;
+          updateDateDisplay();
+        }
+
+        onAuthStateChanged(auth, (user) => {
+          currentUser = user;
+          const signedIn = Boolean(user);
+          loginSubmitButton.disabled = false;
+          registerSubmitButton.disabled = false;
+          saveButton.disabled = !signedIn;
+          loadButton.disabled = !signedIn;
+          status.textContent = signedIn
+            ? `Signed in as ${user.email}.`
+            : "Not signed in.";
+        });
+
+        document
+          .getElementById("register")
+          .addEventListener("submit", async (event) => {
+            event.preventDefault();
+            try {
+              const credential = await createUserWithEmailAndPassword(
+                auth,
+                document.getElementById("reg-email").value,
+                document.getElementById("reg-pword").value,
+              );
+              status.textContent = `Registered as ${credential.user.email}.`;
+            } catch (error) {
+              showFirebaseError("Registration", error);
+            }
+          });
+
+        document
+          .getElementById("login")
+          .addEventListener("submit", async (event) => {
+            event.preventDefault();
+            try {
+              const credential = await signInWithEmailAndPassword(
+                auth,
+                document.getElementById("log-email").value,
+                document.getElementById("log-pword").value,
+              );
+              status.textContent = `Signed in as ${credential.user.email}.`;
+            } catch (error) {
+              showFirebaseError("Login", error);
+            }
+          });
+
+        saveButton.addEventListener("click", async () => {
+          if (!currentUser) return;
+          status.textContent = "Saving progress...";
+          try {
+            await setDoc(doc(db, "koia_saves", currentUser.uid), getSaveData());
+            status.textContent = "Progress saved.";
+          } catch (error) {
+            showFirebaseError("Save", error);
+          }
+        });
+
+        loadButton.addEventListener("click", async () => {
+          if (!currentUser) return;
+          status.textContent = "Loading progress...";
+          try {
+            const snapshot = await getDoc(
+              doc(db, "koia_saves", currentUser.uid),
+            );
+            if (!snapshot.exists()) {
+              status.textContent = "No saved progress found.";
+              return;
+            }
+            applySaveData(snapshot.data());
+            status.textContent = "Progress loaded.";
+          } catch (error) {
+            if (error.message === "invalid-save-data") {
+              status.textContent = "Saved progress is invalid.";
+            } else {
+              showFirebaseError("Load", error);
+            }
+          }
+        });
+        const { render, animate } = await import("./renderer.js");
+        const {
+          ferbezanMonths,
+          getFerbezanMonth,
+          getFerbezanDay,
+          KoiaDate,
+          getCurrentDate,
+        } = await import("/modules/koia/date.js");
+        /*var ferbezanMonths = [
+          "Enere",
+          "Febre",
+          "Martus",
+          "K\u02B7atorlune",
+          "Ma",
+          "Jon",
+          "Juļjut",
+          "Ogustut",
+          "Novelune",
+          "Dekelune",
+          "Undekelune",
+          "Duwodekelune",
+          "Dakes Komplimentárjes",
+        ];
+        const getDayOfYear = (date = new Date()) =>
+          Math.floor(
+            (Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) -
+              Date.UTC(date.getFullYear(), 0, 0)) /
+              (1000 * 60 * 60 * 24),
+          );
+        function getFerbezanMonth(n = getDayOfYear()) {
+          var m = Math.floor((n - 1) / 30);
+          return ferbezanMonths[m];
+        }
+        function getFerbezanDay(n = getDayOfYear()) {
+          return ((n - 1) % 30) + 1;
+        }
+
+        class KoiaDate {
+          constructor(year, month, day, format) {
+            this.year = year;
+            this.month = month;
+            this.day = day;
+            this.format = format;
+            if (!year) {
+              switch (format) {
+                case "fq":
+                  this.year = new Date().getFullYear() - 1790;
+                  this.month = getFerbezanMonth();
+                  this.day = getFerbezanDay();
+                  break;
+                case "ad":
+                  this.year = new Date().getFullYear();
+                  break;
+                case "cq":
+                  this.year = new Date().getFullYear() + 1047;
+                  break;
+              }
+            }
+          }
+
+          toString(format) {
+            var fqYear = this.format === "fq" ? this.year : this.year + 1790;
+            var cqYear = this.format === "cq" ? this.year : this.year - 1047;
+            var adYear = this.format === "ad" ? this.year : this.year - 236;
+            if (format === "fq") {
+              return `${this.month} ${this.day}, ${this.year}FQ`;
+            } else if (format === "ad") {
+              return `${this.month} ${this.day}, ${adYear}AD`;
+            } else if (format === "cq") {
+              return `${this.month} ${this.day}, ${cqYear}CQ`;
+            }
+          }
+        }
+        var yearOffset = {
+          fq: -1790,
+          ad: 0,
+          cq: 1047,
+        };
+        function getCurrentDate(format) {
+          const now = new Date();
+          if (format === "fq") {
+            return new KoiaDate(undefined, undefined, undefined, format);
+          }
+          const month = now.toLocaleString("default", { month: "long" });
+          const day = now.getDate();
+          const year = now.getFullYear() + yearOffset[format]; // Convert to FQ year
+          return new KoiaDate(year, month, day, format);
+        }*/
+        function updateDateDisplay() {
+          const format = document.getElementById("date-format").value;
+          const currentDate = getCurrentDate(format);
+          document.getElementById("date").textContent =
+            currentDate.toString(format);
+        }
+        dateFormat.addEventListener("change", updateDateDisplay);
+        updateDateDisplay();
+      } catch (error) {
+        const status = document.getElementById("status");
+        const detail = error?.message || String(error);
+        status.textContent = `Startup error: ${detail}`;
+        console.error("Koia startup failed:", error);
+      }
+    </script>
+  </body>
+</html>
