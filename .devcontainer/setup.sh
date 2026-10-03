@@ -8,5 +8,8 @@ if ! grep -Fq "autocommit() {" ~/.bashrc; then
 autocommit() {
     bash commit.sh "$1"
 }
+portForward(){
+    python3 -m http.server 8080
+}
 EOF
 fi
