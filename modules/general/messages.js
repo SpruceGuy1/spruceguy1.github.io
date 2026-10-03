@@ -11,7 +11,7 @@ iframe {
 style='position:fixed;top:0;right:0;width:512px;height:384px;
 */
 export function addFrame() {
-  return "<iframe style='position:fixed;top:0;right:0;width:512px;height:384px;' src='/messages.html'></iframe>";
+  return "<iframe id='messageFrame' style='position:fixed;top:0;right:0;width:512px;height:384px;' src='/messages.html'></iframe><button onclick='$(\"#messageFrame\").hide()' style='position:fixed;top:0;right:0;width:32px;height:32px;background-color:red;color:white;border:none;font-size:16px;z-index:10000;'>X</button><button onclick='$(\"#messageFrame\").show()' style='position:fixed;top:0;right:0;width:32px;height:32px;background-color:green;color:white;border:none;font-size:16px;z-index:10000;'>O</button>";
 }
 /* import {addFrame} from '/modules/general/messages.js'
 $("body").append(addFrame())*/
