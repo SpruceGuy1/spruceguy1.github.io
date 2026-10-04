@@ -857,7 +857,7 @@ import {
           return;
         }
 
-        $("#unit-name").text(unit.title || unit.id || "N/A");
+        $("#unit-name").text(unit.title);
 
         const lessonEntries = [];
         for (const bucket of Object.values(questions)) {
