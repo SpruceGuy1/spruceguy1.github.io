@@ -795,7 +795,9 @@ import {
       function getQuestionUnit(currentQuestion) {
         if (!currentQuestion) return null;
 
-        const unitId = normalizeUnitId(currentQuestion.special?.unit ?? currentQuestion.unit);
+        const unitId = normalizeUnitId(
+          currentQuestion.special?.unit ?? currentQuestion.unit,
+        );
         if (!unitId) return null;
 
         const unitFromQuestion = isPlainObject(currentQuestion.unit)
@@ -822,7 +824,9 @@ import {
           if (!Array.isArray(entries)) continue;
           for (const entry of entries) {
             if (!isPlainObject(entry)) continue;
-            const entryUnitId = normalizeUnitId(entry.special?.unit ?? entry.unit);
+            const entryUnitId = normalizeUnitId(
+              entry.special?.unit ?? entry.unit,
+            );
             if (!entryUnitId) continue;
             const entryUnit = isPlainObject(entry.unit) ? entry.unit : null;
             const entrySpecialUnit = isPlainObject(entry.special)
@@ -839,8 +843,12 @@ import {
                   entry.name ||
                   entry.q ||
                   entryUnitId,
-                optional: Boolean(entryUnitData?.optional || entry.special?.optional),
-                data: Array.isArray(entryUnitData?.data) ? entryUnitData.data : [],
+                optional: Boolean(
+                  entryUnitData?.optional || entry.special?.optional,
+                ),
+                data: Array.isArray(entryUnitData?.data)
+                  ? entryUnitData.data
+                  : [],
               });
             }
           }
@@ -864,7 +872,9 @@ import {
           if (!Array.isArray(bucket)) continue;
           for (const entry of bucket) {
             if (!isPlainObject(entry)) continue;
-            const entryUnitId = normalizeUnitId(entry.special?.unit ?? entry.unit);
+            const entryUnitId = normalizeUnitId(
+              entry.special?.unit ?? entry.unit,
+            );
             if (entryUnitId !== unit.id) continue;
             if (entry.name) {
               lessonEntries.push(entry.name);
@@ -876,9 +886,8 @@ import {
           }
         }
 
-        const unitLessonData = Array.isArray(unit.data) && unit.data.length > 0
-          ? unit.data
-          : [];
+        const unitLessonData =
+          Array.isArray(unit.data) && unit.data.length > 0 ? unit.data : [];
 
         const renderedLessons = lessonEntries.length
           ? lessonEntries
@@ -941,8 +950,11 @@ import {
           $("#skip-question").prop("disabled", true).prop("hidden", true);
           renderUnitInfo(currentQuestion);
           const unitDataLesson =
-            isPlainObject(currentQuestion.unit) && Array.isArray(currentQuestion.unit.data)
-              ? currentQuestion.unit.data.find((lesson) => isPlainObject(lesson) && lesson["dyna-info"])
+            isPlainObject(currentQuestion.unit) &&
+            Array.isArray(currentQuestion.unit.data)
+              ? currentQuestion.unit.data.find(
+                  (lesson) => isPlainObject(lesson) && lesson["dyna-info"],
+                )
               : null;
 
           if (currentQuestion["dyna-info"]) {
