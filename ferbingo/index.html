@@ -785,6 +785,153 @@ import {
         $("#skill").text(name);
         render();
       });
+      function normalizeUnitId(unitEntry) {
+        if (!unitEntry) return null;
+        if (typeof unitEntry === "string") return unitEntry;
+        if (!isPlainObject(unitEntry)) return null;
+        return unitEntry["unit-id"] || unitEntry.id || null;
+      }
+
+      function getQuestionUnit(currentQuestion) {
+        if (!currentQuestion) return null;
+
+        const unitId = normalizeUnitId(currentQuestion.special?.unit ?? currentQuestion.unit);
+        if (!unitId) return null;
+
+        const unitFromQuestion = isPlainObject(currentQuestion.unit)
+          ? currentQuestion.unit
+          : null;
+
+        const unitFromSpecial = isPlainObject(currentQuestion.special)
+          ? currentQuestion.special.unit
+          : null;
+
+        const unitValue = unitFromQuestion ?? unitFromSpecial ?? null;
+        const unitData = isPlainObject(unitValue) ? unitValue : null;
+
+        const fallbackUnit = {
+          id: unitId,
+          title: unitData?.title || unitData?.name || unitId,
+          optional: Boolean(unitData?.optional),
+          data: Array.isArray(unitData?.data) ? unitData.data : [],
+        };
+
+        const unitBag = new Map();
+        for (const skillName of Object.keys(questions)) {
+          const entries = questions[skillName];
+          if (!Array.isArray(entries)) continue;
+          for (const entry of entries) {
+            if (!isPlainObject(entry)) continue;
+            const entryUnitId = normalizeUnitId(entry.special?.unit ?? entry.unit);
+            if (!entryUnitId) continue;
+            const entryUnit = isPlainObject(entry.unit) ? entry.unit : null;
+            const entrySpecialUnit = isPlainObject(entry.special)
+              ? entry.special.unit
+              : null;
+            const entryValue = entryUnit ?? entrySpecialUnit ?? null;
+            const entryUnitData = isPlainObject(entryValue) ? entryValue : null;
+            if (!unitBag.has(entryUnitId)) {
+              unitBag.set(entryUnitId, {
+                id: entryUnitId,
+                title:
+                  entryUnitData?.title ||
+                  entryUnitData?.name ||
+                  entry.name ||
+                  entry.q ||
+                  entryUnitId,
+                optional: Boolean(entryUnitData?.optional || entry.special?.optional),
+                data: Array.isArray(entryUnitData?.data) ? entryUnitData.data : [],
+              });
+            }
+          }
+        }
+
+        return unitBag.get(unitId) || fallbackUnit;
+      }
+
+      function renderUnitInfo(currentQuestion) {
+        const unit = getQuestionUnit(currentQuestion);
+        if (!unit) {
+          $("#unit-name").text("N/A");
+          $("#unit-lessons").text("No lessons in this unit.");
+          return;
+        }
+
+        $("#unit-name").text(unit.title || unit.id || "N/A");
+
+        const lessonEntries = [];
+        for (const bucket of Object.values(questions)) {
+          if (!Array.isArray(bucket)) continue;
+          for (const entry of bucket) {
+            if (!isPlainObject(entry)) continue;
+            const entryUnitId = normalizeUnitId(entry.special?.unit ?? entry.unit);
+            if (entryUnitId !== unit.id) continue;
+            if (entry.name) {
+              lessonEntries.push(entry.name);
+            } else if (entry.q && typeof entry.q === "string") {
+              lessonEntries.push(entry.q);
+            } else if (entry.id) {
+              lessonEntries.push(entry.id);
+            }
+          }
+        }
+
+        const unitLessonData = Array.isArray(unit.data) && unit.data.length > 0
+          ? unit.data
+          : [];
+
+        const renderedLessons = lessonEntries.length
+          ? lessonEntries
+          : unitLessonData.map((lesson) => {
+              if (isPlainObject(lesson) && lesson["dyna-info"]?.title) {
+                return lesson["dyna-info"].title;
+              }
+              if (isPlainObject(lesson) && lesson.name) return lesson.name;
+              if (isPlainObject(lesson) && lesson.q) return lesson.q;
+              return String(lesson);
+            });
+
+        if (!renderedLessons.length) {
+          $("#unit-lessons").text("No lessons in this unit.");
+          return;
+        }
+
+        const uniqueLessons = [...new Set(renderedLessons)];
+        $("#unit-lessons").html(
+          uniqueLessons.map((lesson) => `<div>${lesson}</div>`).join(""),
+        );
+      }
+
+      function renderDynaInfo(d) {
+        if (!isPlainObject(d)) return "";
+
+        var retval = "<h1>" + (d.title || "Lesson") + "</h1>";
+        switch (d.typ) {
+          case "table":
+            retval += "<table>";
+            for (let i of d.data || []) {
+              retval += "<tr>";
+              for (let j of i || []) {
+                retval += "<td>" + j + "</td>";
+              }
+              retval += "</tr>";
+            }
+            retval += "</table>";
+            break;
+          case "std":
+            retval += "<br><p>" + (d.data || "") + "</p>";
+            break;
+          case "br":
+            for (let i of d.data || []) {
+              retval += "<br>" + i;
+            }
+            break;
+          default:
+            retval += "<br><p>" + (d.data || "") + "</p>";
+        }
+        return retval;
+      }
+
       function render() {
         const currentQuestion = questions[skill]?.[questionProgress[skill]];
         if (currentQuestion) {
@@ -792,42 +939,20 @@ import {
           $("#qstatus").text("Not answered yet");
           $("#check").text("Check answer").prop("disabled", false);
           $("#skip-question").prop("disabled", true).prop("hidden", true);
-          if (currentQuestion.unit) {
-            $("#unit-questions").text("");
-            $("#unit-name").text(currentQuestion.unit.title);
-            for (let i of questions.vocab) {
-              if (!i.special) continue;
-              if (i.special.unit == currentQuestion.unit.id) {
-                $("#unit-questions").append(i.name + "<br>");
-              }
-            }
-          }
-          if (currentQuestion["dyna-info"]) {
-            var d = currentQuestion["dyna-info"];
-            var retval = "<h1>" + d.title + "</h1>";
-            switch (d.typ) {
-              case "table":
-                retval += "<table>";
-                for (let i of d.data) {
-                  retval += "<tr>";
-                  for (let j of i) {
-                    retval += "<td>" + j + "</td>";
-                  }
-                  retval += "</tr>";
-                }
-                retval += "</table>";
+          renderUnitInfo(currentQuestion);
+          const unitDataLesson =
+            isPlainObject(currentQuestion.unit) && Array.isArray(currentQuestion.unit.data)
+              ? currentQuestion.unit.data.find((lesson) => isPlainObject(lesson) && lesson["dyna-info"])
+              : null;
 
-                break;
-              case "std":
-                retval += "<br><p>" + d.data + "</p>";
-                break;
-              case "br":
-                for (let i of d.data) {
-                  retval += "<br>" + i;
-                }
-                break;
-            }
-            $("#questions").html(retval);
+          if (currentQuestion["dyna-info"]) {
+            $("#questions").html(renderDynaInfo(currentQuestion["dyna-info"]));
+            $("#check").text("Continue");
+            return;
+          }
+
+          if (unitDataLesson) {
+            $("#questions").html(renderDynaInfo(unitDataLesson["dyna-info"]));
             $("#check").text("Continue");
             return;
           }
