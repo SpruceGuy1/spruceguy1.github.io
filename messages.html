@@ -139,7 +139,12 @@
             heading.textContent = isSent
               ? `To ${message.recipientEmail}`
               : `From ${message.senderEmail}`;
-            body.innerHTML = message.body;
+              const text = typeof message.body === "string" ? message.body : "";
+const isTok = text.startsWith("tok=");
+
+body.classList.toggle("tok", isTok);
+body.textContent = isTok ? text.substring(4) : text;
+            /*body.innerHTML = message.body;*/
             if (createdAt) {
               time.dateTime = createdAt.toISOString();
               time.textContent = createdAt.toLocaleString();
