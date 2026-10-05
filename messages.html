@@ -1,6 +1,18 @@
 <!doctype html>
 <html>
-  <head></head>
+  <head>
+    <style>
+      @font-face{
+        font-family: "toki-pona";
+        src: url("/toki-pona.otf") format('opentype')
+
+
+      }
+      .tok{
+        font-family:"toki-pona", sans-serif;
+      }
+    </style>
+  </head>
   <body>
     <h1>R3S Messages</h1>
     <form id="login">
@@ -26,6 +38,7 @@
       </label>
       <button id="register-submit" type="submit" disabled>Register</button>
     </form>
+    <p>To type a message in Toki Pona, use the prefix 'tok='. Example: 'tok=mi wile lape' renders as <span class="tok">mi wile lape</span></p>
     <form id="typeText">
       <label>
         To
@@ -125,7 +138,7 @@
             heading.textContent = isSent
               ? `To ${message.recipientEmail}`
               : `From ${message.senderEmail}`;
-            body.textContent = message.body;
+            body.innerHTML = message.body;
             if (createdAt) {
               time.dateTime = createdAt.toISOString();
               time.textContent = createdAt.toLocaleString();
@@ -228,6 +241,10 @@
               .getElementById("recipient-email")
               .value.trim();
             const body = document.getElementById("msg").value.trim();
+            if(body.startsWith("tok=")){
+              const tokBody = "<span class=\"tok\">" + body.substring(4) + "</span>";
+              document.getElementById("msg").value = tokBody;
+            }
             if (!recipientEmail || !body) return;
 
             saveButton.disabled = true;
