@@ -172,8 +172,15 @@
     {
       "id": "t32",
       "q": "Enjo-me fëlem mëijem, sed ne' enjo-me fëlem tëijem",
-      "rega": "^\\s*Esne parite' edere\\??\\s*$",
+      "rega": "^\\s*I (enjoy|like) my cat,? but (I don't enjoy|not|I don't like) your( cat|s)\\.?\\s*$",
       "flags": "i"
+    },
+    {
+      "id": "t33",
+      "q": "I enjoy talking, because it is good.",
+      "rega":"\\s*Enjo(\u2022|-)me lok\u02b7aġ,? kod est bene\\.?\\s*$",
+      "flags": "i"
+
     },
 
     {
@@ -364,6 +371,10 @@
       "id": "voc-learn",
       "information": "'Mates' is a word meaning 'math' or 'mathematics'. 'Studere' is a third-conjugation verb meaning 'to study.' Example: I study math = 'Studijo matei'."
     },
+    {
+      "id":"vv0",
+      "information": "'Lok\u02b7are' means 'to speak'. It comes from Latin 'loqui'. 'Kod' means 'because'. It is from Latin 'quod'."
+    }
     {
       "id": "Correlatives",
       "unit": {
