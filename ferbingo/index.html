@@ -1104,9 +1104,22 @@ import {
         }
 
         if (p && !currentQuestion?.rega) return;
+        function aString(array){
+          var retval = ""
+          for(i of array){
+            retval += i
+          }
+          return retval
+
+        }
 
         var regex = new RegExp(currentQuestion.rega, currentQuestion.flags);
         if (!p || regex.test($("#userAnswer").val())) {
+          var t = $("#userAnswer").val()
+         var u = t.replace(/[\u2018\u2019]/g, "'")
+    // Replace left and right double curly quotes with a straight double quote
+    .replace(/[\u201C\u201D]/g, '"');
+    $("#userAnswer").val(u)
           job();
         } else {
           new Audio("/audio/incorrect.m4a").play().catch((e) => {
