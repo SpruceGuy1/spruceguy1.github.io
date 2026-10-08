@@ -45,7 +45,7 @@
     {
       "id": "t10",
       "q": "The horse and the pig are at the zoo.",
-      "rega": "^\\s*ekʷe' ë swe (sũ'|sunt) ze zoložike\\.?\\s*$",
+      "rega": "^\\s*(ekʷe' ë swe|swe' ë' ek\u02B7e) (sũ'|sunt) ze zoložike\\.?\\s*$",
       "flags": "i"
     },
     {
