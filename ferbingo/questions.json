@@ -45,7 +45,7 @@
     {
       "id": "t10",
       "q": "The horse and the pig are at the zoo.",
-      "rega": "^\\s*ekʷe' ë swe (sũ'|sunt) ze zoložike\\.?\\s*$",
+      "rega": "^\\s*(ekʷe' ë swe|swe' ë' ek\u02B7e) (sũ'|sunt) ze zoložike\\.?\\s*$",
       "flags": "i"
     },
     {
@@ -170,11 +170,37 @@
       "flags": "i"
     },
     {
+      "id": "t32",
+      "q": "Enjo-me fëlem mëijem, sed ne' enjo-me fëlem tëijem",
+      "rega": "^\\s*I (enjoy|like) my cat,? but (I don't enjoy|not|I don't like) your( cat|s)\\.?\\s*$",
+      "flags": "i"
+    },
+    {
+      "id": "t33",
+      "q": "I enjoy talking, because it is good.",
+      "rega":"\\s*Enjo(\u2022|-)me lok\u02b7aġ,? kod est bene\\.?\\s*$",
+      "flags": "i"
+
+    },
+
+    {
       "id": "t30",
+      "name": "Correlatives - K\u02B7id",
       "special": {
         "unit": "u0"
       },
-      "q": "K\u02B7id est proble?"
+      "q": "K\u02B7id est proble?",
+      "rega": "^\\s*What( i|')s the problem\\??\\s*$",
+      "flags": "i"
+    },
+    {
+      "id": "t31",
+      "name": "Correlatives - K\u02B7omodo",
+      "special": {
+        "unit": "u0"
+      },
+      "q": "K\u02b7omodo we fakit matei?",
+      "rega": "^\\s*How do(es one| you) do math(ematics)?\\??\\s*$"
     }
   ],
   "vocab": [
@@ -249,7 +275,7 @@
       "information": [
         "<h1>Personal Pronouns</h1><br><table><tr><th>Case</th><th>Singular 1st</th><th>Plural 1st</th><th>Singular 2nd</th><th>Plural 2nd</th><th>Singular 3rd</th><th>Plural 3rd</th></tr><tr><td>NOM</td><td>ego</td><td>nos</td><td>tu</td><td>vos, os, hus</td><td>Conjugate 'ile' by gender </td><td>Conjugate 'iles' by gender</td></tr>",
         "<tr><td>ACC</td><td>me</td><td>nom</td><td>te</td><td>om</td><td>Conjugate 'ilem' by gender</td><td>Conjugate 'ilei' by gender</td></tr>",
-        "<tr><td>GEN</td><td>mëije</td><td>noster</td><td>teije</td><td>oster, huster</td><td>Conjugate 'ilt' by gender</td><td>Conjugate 'ilst' by gender</td></tr>",
+        "<tr><td>GEN</td><td>mëije</td><td>noster</td><td>tëije</td><td>oster, huster</td><td>Conjugate 'ilt' by gender</td><td>Conjugate 'ilst' by gender</td></tr>",
         "<tr><td>DAT</td><td>mihi</td><td>nobis</td><td>tibi</td><td>obis, hubis</td><td>Conjugate 'ilebi' by gender</td><td>Conjugate 'ilehi' by gender</td></tr>",
         "<tr><td>ABL</td><td>me</td><td>nobite</td><td>te</td><td>obite, hubite</td><td>Conjugate 'ile' (ablative) by gender</td><td>Conjugate 'iles' (ablative) by gender</td></tr>",
         "<tr><td>VOC</td><td>-</td><td>ja</td><td>fro, gʷeijé (informal), demé (formal)</td><td>gʷeijés (informal), demés (formal)</td><td>-</td><td>-</td></tr></table>"
@@ -338,7 +364,19 @@
       }
     },
     {
-      "id": "v26",
+      "id": "voc-we",
+      "information": "'We' means 'one' as a pronoun. Example: To eat, one puts food in their mouth. = 'Edere, we struwit komidem in bûkem wet.'"
+    },
+    {
+      "id": "voc-learn",
+      "information": "'Mates' is a word meaning 'math' or 'mathematics'. 'Studere' is a third-conjugation verb meaning 'to study.' Example: I study math = 'Studijo matei'."
+    },
+    {
+      "id":"vv0",
+      "information": "'Lok\u02b7are' means 'to speak'. It comes from Latin 'loqui'. 'Kod' means 'because'. It is from Latin 'quod'."
+    }
+    {
+      "id": "Correlatives",
       "unit": {
         "title": "Correlatives",
         "unit-id": "u0",
