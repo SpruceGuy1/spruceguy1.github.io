@@ -201,6 +201,28 @@
       },
       "q": "K\u02b7omodo we fakit matei?",
       "rega": "^\\s*How do(es one| you) do math(ematics)?\\??\\s*$"
+    },
+    {
+      "id": "t34",
+      "name": "Correlatives - K\u02B7an",
+      "special": {
+        "unit": "u0"
+      },
+      "q": "K\u02b7an we studit matei?",
+      "rega": "^\\s*When do(es one| you) study math(ematics)?\\??\\s*$"
+    },
+    {
+      "id": "t35",
+      "name": "Correlatives - K\u02B7is and Ibi",
+      "special": {
+        "unit": "u0"
+      },
+      "q": "K\u02b7is ibi lok\u02b7at Latine?",
+      "rega": "^\\s*Who here speaks Latin\\??\\s*$"
+    },
+    {
+      "id": "t36",
+      "q": "I enjoy speaking La"
     }
   ],
   "vocab": [
@@ -371,10 +393,7 @@
       "id": "voc-learn",
       "information": "'Mates' is a word meaning 'math' or 'mathematics'. 'Studere' is a third-conjugation verb meaning 'to study.' Example: I study math = 'Studijo matei'."
     },
-    {
-      "id":"vv0",
-      "information": "'Lok\u02b7are' means 'to speak'. It comes from Latin 'loqui'. 'Kod' means 'because'. It is from Latin 'quod'."
-    }
+    
     {
       "id": "Correlatives",
       "unit": {
@@ -499,7 +518,21 @@
           }
         ]
       }
+    },
+    {
+      "id":"v29",
+      "information": "Fakere is a third-conjugation verb meaning 'to do' or 'to make'. It is taken from Latin 'facere'."
     }
+    ,
+    {
+      "id":"vv0",
+      "information": "'Lok\u02b7are' means 'to speak'. It comes from Latin 'loqui'. 'Kod' means 'because'. It is from Latin 'quod'."
+    },
+    {
+      "id":"vv1",
+      "information": "'Hañken' means 'lunch'. It is taken from English 'lunch'."
+    }
+
   ],
   "inflection": [
     {
