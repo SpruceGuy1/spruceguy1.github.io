@@ -1,4 +1,4 @@
-export function theme(document) {
+export function theme($) {
   var sitelen_pi_tenpo_muno;
   switch (Math.floor(new Date().getMonth() / 2)) {
     case 0:
@@ -20,13 +20,13 @@ export function theme(document) {
       sitelen_pi_tenpo_muno = "nov-dec";
       break;
   }
-  document.body.append(
+  $("body").append(
     "<img src='/images/themes/" +
       sitelen_pi_tenpo_muno +
-      ".png' style='height:64px;width:64px;'>",
+      ".png' style='height:64px;width:64px;'/>",
   );
 }
 /*
-import {theme} from /images/themes/theme.js;
-theme(document)
+import {theme} from '/images/themes/theme.js';
+theme($)
 */
