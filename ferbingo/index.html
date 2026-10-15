@@ -217,44 +217,44 @@
       });
     </script-->
     <script type="module">
-            //import questions from "./questions.json" with { type: "json" };
-            let questions;
-            import { addFrame } from "/modules/general/messages.js";
-            $("body").append(addFrame());
-            import {theme} from '/images/themes/theme.js';
-      theme(document)
+      //import questions from "./questions.json" with { type: "json" };
+      let questions;
+      import { addFrame } from "/modules/general/messages.js";
+      $("body").append(addFrame());
+      import { theme } from "/images/themes/theme.js";
+      theme(document);
 
-            try {
-              const response = await fetch("/ferbingo/questions.json");
+      try {
+        const response = await fetch("/ferbingo/questions.json");
 
-              if (!response.ok) {
-                throw new Error(`questions-load-failed-${response.status}`);
-              }
+        if (!response.ok) {
+          throw new Error(`questions-load-failed-${response.status}`);
+        }
 
-              questions = await response.json();
+        questions = await response.json();
 
-              const requiredSkills = [
-                "translation",
-                "vocab",
-                "orthography",
-                "pronunciation",
-                "inflection",
-              ];
+        const requiredSkills = [
+          "translation",
+          "vocab",
+          "orthography",
+          "pronunciation",
+          "inflection",
+        ];
 
-              if (
-                questions === null ||
-                typeof questions !== "object" ||
-                Array.isArray(questions) ||
-                !requiredSkills.every((skill) => Array.isArray(questions[skill]))
-              ) {
-                throw new Error("invalid-questions-data");
-              }
-            } catch (error) {
-              const status = document.getElementById("status");
-              status.textContent = `Startup error: ${error.message}`;
-              throw error;
-            }
-            /* import conj from "./conjugation-tables.js";
+        if (
+          questions === null ||
+          typeof questions !== "object" ||
+          Array.isArray(questions) ||
+          !requiredSkills.every((skill) => Array.isArray(questions[skill]))
+        ) {
+          throw new Error("invalid-questions-data");
+        }
+      } catch (error) {
+        const status = document.getElementById("status");
+        status.textContent = `Startup error: ${error.message}`;
+        throw error;
+      }
+      /* import conj from "./conjugation-tables.js";
 
             import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
             import {
@@ -288,321 +288,321 @@
         collection,
         getDocs,
       } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js";*/
-            // let questions;
-            let conj;
-            let initializeApp;
-            let getAuth;
-            let onAuthStateChanged;
-            let createUserWithEmailAndPassword;
-            let signInWithEmailAndPassword;
-            let getFirestore;
-            let doc;
-            let setDoc;
-            let getDoc;
-            let collection;
-            let getDocs;
+      // let questions;
+      let conj;
+      let initializeApp;
+      let getAuth;
+      let onAuthStateChanged;
+      let createUserWithEmailAndPassword;
+      let signInWithEmailAndPassword;
+      let getFirestore;
+      let doc;
+      let setDoc;
+      let getDoc;
+      let collection;
+      let getDocs;
 
-            try {
-              const questionResponse = await fetch("/ferbingo/questions.json", {
-                cache: "no-store",
-              });
+      try {
+        const questionResponse = await fetch("/ferbingo/questions.json", {
+          cache: "no-store",
+        });
 
-              if (!questionResponse.ok) {
-                throw new Error(`questions-load-failed-${questionResponse.status}`);
-              }
+        if (!questionResponse.ok) {
+          throw new Error(`questions-load-failed-${questionResponse.status}`);
+        }
 
-              questions = await questionResponse.json();
+        questions = await questionResponse.json();
 
-              const requiredSkills = [
-                "translation",
-                "vocab",
-                "orthography",
-                "pronunciation",
-                "inflection",
-              ];
+        const requiredSkills = [
+          "translation",
+          "vocab",
+          "orthography",
+          "pronunciation",
+          "inflection",
+        ];
 
-              if (
-                questions === null ||
-                typeof questions !== "object" ||
-                Array.isArray(questions) ||
-                !requiredSkills.every((skill) => Array.isArray(questions[skill]))
-              ) {
-                throw new Error("invalid-questions-data");
-              }
+        if (
+          questions === null ||
+          typeof questions !== "object" ||
+          Array.isArray(questions) ||
+          !requiredSkills.every((skill) => Array.isArray(questions[skill]))
+        ) {
+          throw new Error("invalid-questions-data");
+        }
 
-              ({ default: conj } = await import("/ferbingo/conjugation-tables.js"));
+        ({ default: conj } = await import("/ferbingo/conjugation-tables.js"));
 
-              ({ initializeApp } =
-                await import("https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js"));
+        ({ initializeApp } =
+          await import("https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js"));
 
-              ({
-                getAuth,
-                onAuthStateChanged,
-                createUserWithEmailAndPassword,
-                signInWithEmailAndPassword,
-              } =
-                await import("https://www.gstatic.com/firebasejs/12.17.0/firebase-auth.js"));
+        ({
+          getAuth,
+          onAuthStateChanged,
+          createUserWithEmailAndPassword,
+          signInWithEmailAndPassword,
+        } =
+          await import("https://www.gstatic.com/firebasejs/12.17.0/firebase-auth.js"));
 
-              ({ getFirestore, doc, setDoc, getDoc, collection, getDocs } =
-                await import("https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js"));
-            } catch (error) {
-              const detail = error?.message || String(error);
-              document.getElementById("status").textContent =
-                `Startup error: ${detail}`;
-              console.error("Ferbingo startup failed:", error);
-              throw error;
-            }
-            var tables = conj[0];
-            var nouns = conj[1];
-            const firebaseConfig = {
-              apiKey: "AIzaSyAeINE31darFq72BB4N1WtWDARk9YPxJzY",
-              authDomain: "sapient-origin-462411-t7.firebaseapp.com",
-              projectId: "sapient-origin-462411-t7",
-              storageBucket: "sapient-origin-462411-t7.firebasestorage.app",
-              messagingSenderId: "749880999520",
-              appId: "1:749880999520:web:9246df43f9ecb2279fcd05",
-              measurementId: "G-2HT9YKBXV4",
-            };
+        ({ getFirestore, doc, setDoc, getDoc, collection, getDocs } =
+          await import("https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js"));
+      } catch (error) {
+        const detail = error?.message || String(error);
+        document.getElementById("status").textContent =
+          `Startup error: ${detail}`;
+        console.error("Ferbingo startup failed:", error);
+        throw error;
+      }
+      var tables = conj[0];
+      var nouns = conj[1];
+      const firebaseConfig = {
+        apiKey: "AIzaSyAeINE31darFq72BB4N1WtWDARk9YPxJzY",
+        authDomain: "sapient-origin-462411-t7.firebaseapp.com",
+        projectId: "sapient-origin-462411-t7",
+        storageBucket: "sapient-origin-462411-t7.firebasestorage.app",
+        messagingSenderId: "749880999520",
+        appId: "1:749880999520:web:9246df43f9ecb2279fcd05",
+        measurementId: "G-2HT9YKBXV4",
+      };
 
-            const app = initializeApp(firebaseConfig);
+      const app = initializeApp(firebaseConfig);
 
-            const auth = getAuth(app);
-            const db = getFirestore(app);
-            const status = document.getElementById("status");
-            const leaderboard = document.getElementById("leaderboard");
-            const leaderboardStatus = document.getElementById("leaderboard-status");
-            const leaderboardBody = leaderboard.querySelector("tbody");
-            const saveButton = document.getElementById("save-btn");
-            const loadButton = document.getElementById("load-btn");
-            const streakDays = document.getElementById("days");
-            const streakNot = document.getElementById("not");
-            const loginSubmitButton = document.getElementById("login-submit");
-            const registerSubmitButton = document.getElementById("register-submit");
-            let currentUser = null;
-            let chestData = {
+      const auth = getAuth(app);
+      const db = getFirestore(app);
+      const status = document.getElementById("status");
+      const leaderboard = document.getElementById("leaderboard");
+      const leaderboardStatus = document.getElementById("leaderboard-status");
+      const leaderboardBody = leaderboard.querySelector("tbody");
+      const saveButton = document.getElementById("save-btn");
+      const loadButton = document.getElementById("load-btn");
+      const streakDays = document.getElementById("days");
+      const streakNot = document.getElementById("not");
+      const loginSubmitButton = document.getElementById("login-submit");
+      const registerSubmitButton = document.getElementById("register-submit");
+      let currentUser = null;
+      let chestData = {
+        ingots: 0,
+        artworkID: [],
+        minigameTickets: [],
+      };
+      let questionProgress = {
+        vocab: 0,
+        orthography: 0,
+        translation: 0,
+        inflection: 0,
+        pronunciation: 0,
+        xp: 0,
+        completedQuestionIds: {},
+        username: "",
+        streak: 0,
+        dayLastSaved: null,
+      };
+      function isPlainObject(value) {
+        return (
+          value !== null && typeof value === "object" && !Array.isArray(value)
+        );
+      }
+
+      function normalizeChestData(data) {
+        if (
+          !isPlainObject(data) ||
+          !Number.isFinite(data.ingots) ||
+          data.ingots < 0 ||
+          !Array.isArray(data.artworkID) ||
+          !data.artworkID.every((artworkID) => typeof artworkID === "string") ||
+          !Array.isArray(data.minigameTickets) ||
+          !data.minigameTickets.every((ticket) => typeof ticket === "string")
+        ) {
+          throw new Error("invalid-save-data");
+        }
+
+        return {
+          ingots: data.ingots,
+          artworkID: [...data.artworkID],
+          minigameTickets: [...data.minigameTickets],
+        };
+      }
+
+      function normalizeGameData(data) {
+        if (!isPlainObject(data) || !isPlainObject(data.questionProgress)) {
+          throw new Error("invalid-save-data");
+        }
+
+        if (data.version === 1) {
+          return {
+            version: 4,
+            questionProgress: {
+              ...data.questionProgress,
+              completedQuestionIds: {},
+              streak: 0,
+              dayLastSaved: null,
+            },
+            chestData: {
               ingots: 0,
               artworkID: [],
               minigameTickets: [],
-            };
-            let questionProgress = {
-              vocab: 0,
-              orthography: 0,
-              translation: 0,
-              inflection: 0,
-              pronunciation: 0,
-              xp: 0,
-              completedQuestionIds: {},
-              username: "",
+            },
+            lastSaved: data.lastSaved,
+          };
+        }
+        if (
+          data.version === 2 &&
+          isPlainObject(data.questionProgress.completedQuestionIds)
+        ) {
+          return {
+            version: 4,
+            questionProgress: {
+              ...data.questionProgress,
               streak: 0,
               dayLastSaved: null,
-            };
-            function isPlainObject(value) {
-              return (
-                value !== null && typeof value === "object" && !Array.isArray(value)
-              );
-            }
+            },
+            chestData: {
+              ingots: 0,
+              artworkID: [],
+              minigameTickets: [],
+            },
+            lastSaved: data.lastSaved,
+          };
+        }
 
-            function normalizeChestData(data) {
-              if (
-                !isPlainObject(data) ||
-                !Number.isFinite(data.ingots) ||
-                data.ingots < 0 ||
-                !Array.isArray(data.artworkID) ||
-                !data.artworkID.every((artworkID) => typeof artworkID === "string") ||
-                !Array.isArray(data.minigameTickets) ||
-                !data.minigameTickets.every((ticket) => typeof ticket === "string")
-              ) {
-                throw new Error("invalid-save-data");
-              }
+        if (
+          data.version === 3 &&
+          isPlainObject(data.questionProgress.completedQuestionIds) &&
+          isPlainObject(data.chestData)
+        ) {
+          return {
+            ...data,
+            version: 4,
+            questionProgress: {
+              ...data.questionProgress,
+              streak: 0,
+              dayLastSaved: null,
+            },
+            chestData: normalizeChestData(data.chestData),
+          };
+        }
+        if (
+          data.version === 4 &&
+          isPlainObject(data.questionProgress.completedQuestionIds) &&
+          isPlainObject(data.chestData)
+        ) {
+          const streak = data.questionProgress.streak ?? 0;
+          const dayLastSaved = data.questionProgress.dayLastSaved ?? null;
 
+          if (
+            !Number.isInteger(streak) ||
+            streak < 0 ||
+            (dayLastSaved !== null && typeof dayLastSaved !== "string")
+          ) {
+            throw new Error("invalid-save-data");
+          }
+
+          return {
+            ...data,
+            questionProgress: {
+              ...data.questionProgress,
+              streak,
+              dayLastSaved,
+            },
+            chestData: normalizeChestData(data.chestData),
+          };
+        }
+
+        throw new Error("unsupported-save-version");
+      }
+      function getGameData() {
+        return {
+          version: 4,
+          playerEmail: currentUser?.email || "Unknown player",
+
+          questionProgress,
+          chestData,
+          lastSaved: new Date().toISOString(),
+        };
+      }
+
+      function dateKey(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+      }
+
+      function renderStreak() {
+        const today = dateKey(new Date());
+        streakDays.textContent = questionProgress.streak;
+        streakNot.textContent =
+          questionProgress.dayLastSaved === today ? "" : "n't";
+      }
+
+      function recordDailyLesson() {
+        const today = dateKey(new Date());
+
+        if (questionProgress.dayLastSaved === today) {
+          return;
+        }
+
+        const yesterdayDate = new Date();
+        yesterdayDate.setDate(yesterdayDate.getDate() - 1);
+        const yesterday = dateKey(yesterdayDate);
+        questionProgress.streak =
+          questionProgress.dayLastSaved === yesterday
+            ? questionProgress.streak + 1
+            : 1;
+        questionProgress.dayLastSaved = today;
+      }
+
+      async function loadLeaderboard() {
+        if (!currentUser) {
+          leaderboardStatus.textContent = "Sign in to view the leaderboard.";
+          leaderboard.hidden = true;
+          return;
+        }
+
+        leaderboardStatus.textContent = "Loading leaderboard...";
+        leaderboard.hidden = true;
+
+        try {
+          const snapshots = await getDocs(collection(db, "ferbingo_saves"));
+          const players = snapshots.docs
+            .map((snapshot) => {
+              const data = snapshot.data();
               return {
-                ingots: data.ingots,
-                artworkID: [...data.artworkID],
-                minigameTickets: [...data.minigameTickets],
+                name:
+                  data.questionProgress?.username ||
+                  data.playerEmail ||
+                  "Unknown player",
+                xp: Number(data.questionProgress?.xp) || 0,
+                streak: Number(data.questionProgress?.streak) || 0,
               };
-            }
+            })
+            .sort((first, second) => second.xp - first.xp);
 
-            function normalizeGameData(data) {
-              if (!isPlainObject(data) || !isPlainObject(data.questionProgress)) {
-                throw new Error("invalid-save-data");
-              }
+          leaderboardBody.replaceChildren();
+          players.forEach((player, index) => {
+            const row = document.createElement("tr");
+            const rank = document.createElement("td");
+            const name = document.createElement("td");
+            const xp = document.createElement("td");
+            const stk = document.createElement("td");
+            rank.textContent = index + 1;
+            name.textContent = player.name;
+            xp.textContent = player.xp;
+            stk.textContent = player.streak;
+            row.append(rank, name, xp, stk);
+            leaderboardBody.append(row);
+          });
 
-              if (data.version === 1) {
-                return {
-                  version: 4,
-                  questionProgress: {
-                    ...data.questionProgress,
-                    completedQuestionIds: {},
-                    streak: 0,
-                    dayLastSaved: null,
-                  },
-                  chestData: {
-                    ingots: 0,
-                    artworkID: [],
-                    minigameTickets: [],
-                  },
-                  lastSaved: data.lastSaved,
-                };
-              }
-              if (
-                data.version === 2 &&
-                isPlainObject(data.questionProgress.completedQuestionIds)
-              ) {
-                return {
-                  version: 4,
-                  questionProgress: {
-                    ...data.questionProgress,
-                    streak: 0,
-                    dayLastSaved: null,
-                  },
-                  chestData: {
-                    ingots: 0,
-                    artworkID: [],
-                    minigameTickets: [],
-                  },
-                  lastSaved: data.lastSaved,
-                };
-              }
+          leaderboardStatus.textContent = players.length
+            ? ""
+            : "No saved players yet.";
+          leaderboard.hidden = players.length === 0;
+        } catch (error) {
+          leaderboardStatus.textContent = "Unable to load the leaderboard.";
+          showFirebaseError("Leaderboard", error);
+        }
+      }
 
-              if (
-                data.version === 3 &&
-                isPlainObject(data.questionProgress.completedQuestionIds) &&
-                isPlainObject(data.chestData)
-              ) {
-                return {
-                  ...data,
-                  version: 4,
-                  questionProgress: {
-                    ...data.questionProgress,
-                    streak: 0,
-                    dayLastSaved: null,
-                  },
-                  chestData: normalizeChestData(data.chestData),
-                };
-              }
-              if (
-                data.version === 4 &&
-                isPlainObject(data.questionProgress.completedQuestionIds) &&
-                isPlainObject(data.chestData)
-              ) {
-                const streak = data.questionProgress.streak ?? 0;
-                const dayLastSaved = data.questionProgress.dayLastSaved ?? null;
-
-                if (
-                  !Number.isInteger(streak) ||
-                  streak < 0 ||
-                  (dayLastSaved !== null && typeof dayLastSaved !== "string")
-                ) {
-                  throw new Error("invalid-save-data");
-                }
-
-                return {
-                  ...data,
-                  questionProgress: {
-                    ...data.questionProgress,
-                    streak,
-                    dayLastSaved,
-                  },
-                  chestData: normalizeChestData(data.chestData),
-                };
-              }
-
-              throw new Error("unsupported-save-version");
-            }
-            function getGameData() {
-              return {
-                version: 4,
-                playerEmail: currentUser?.email || "Unknown player",
-
-                questionProgress,
-                chestData,
-                lastSaved: new Date().toISOString(),
-              };
-            }
-
-            function dateKey(date) {
-              const year = date.getFullYear();
-              const month = String(date.getMonth() + 1).padStart(2, "0");
-              const day = String(date.getDate()).padStart(2, "0");
-              return `${year}-${month}-${day}`;
-            }
-
-            function renderStreak() {
-              const today = dateKey(new Date());
-              streakDays.textContent = questionProgress.streak;
-              streakNot.textContent =
-                questionProgress.dayLastSaved === today ? "" : "n't";
-            }
-
-            function recordDailyLesson() {
-              const today = dateKey(new Date());
-
-              if (questionProgress.dayLastSaved === today) {
-                return;
-              }
-
-              const yesterdayDate = new Date();
-              yesterdayDate.setDate(yesterdayDate.getDate() - 1);
-              const yesterday = dateKey(yesterdayDate);
-              questionProgress.streak =
-                questionProgress.dayLastSaved === yesterday
-                  ? questionProgress.streak + 1
-                  : 1;
-              questionProgress.dayLastSaved = today;
-            }
-
-            async function loadLeaderboard() {
-              if (!currentUser) {
-                leaderboardStatus.textContent = "Sign in to view the leaderboard.";
-                leaderboard.hidden = true;
-                return;
-              }
-
-              leaderboardStatus.textContent = "Loading leaderboard...";
-              leaderboard.hidden = true;
-
-              try {
-                const snapshots = await getDocs(collection(db, "ferbingo_saves"));
-                const players = snapshots.docs
-                  .map((snapshot) => {
-                    const data = snapshot.data();
-                    return {
-                      name:
-                        data.questionProgress?.username ||
-                        data.playerEmail ||
-                        "Unknown player",
-                      xp: Number(data.questionProgress?.xp) || 0,
-                      streak: Number(data.questionProgress?.streak) || 0,
-                    };
-                  })
-                  .sort((first, second) => second.xp - first.xp);
-
-                leaderboardBody.replaceChildren();
-                players.forEach((player, index) => {
-                  const row = document.createElement("tr");
-                  const rank = document.createElement("td");
-                  const name = document.createElement("td");
-                  const xp = document.createElement("td");
-                  const stk = document.createElement("td");
-                  rank.textContent = index + 1;
-                  name.textContent = player.name;
-                  xp.textContent = player.xp;
-                  stk.textContent = player.streak;
-                  row.append(rank, name, xp, stk);
-                  leaderboardBody.append(row);
-                });
-
-                leaderboardStatus.textContent = players.length
-                  ? ""
-                  : "No saved players yet.";
-                leaderboard.hidden = players.length === 0;
-              } catch (error) {
-                leaderboardStatus.textContent = "Unable to load the leaderboard.";
-                showFirebaseError("Leaderboard", error);
-              }
-            }
-
-            /*function applyGameData(data) {
+      /*function applyGameData(data) {
               const isPlainObject =
                 data?.questionProgress !== null &&
                 typeof data?.questionProgress === "object" &&
@@ -621,147 +621,147 @@
 
               render();
             }*/
-            function applyGameData(data) {
-              const normalizedData = normalizeGameData(data);
+      function applyGameData(data) {
+        const normalizedData = normalizeGameData(data);
 
-              questionProgress = normalizedData.questionProgress;
-              chestData = normalizedData.chestData;
-              $("#xpc").text(questionProgress.xp);
-              $("#ingots").text(chestData.ingots);
-              $("#username-display").text(questionProgress.username || "Not set");
-              renderStreak();
-              renderArtwork();
-              render();
-            }
-            var ingotMult = 1;
-            function renderArtwork() {
-              const artwork = $("#art").empty();
-              chestData.artworkID.forEach((artworkID) => {
-                $("<img>", {
-                  src: `/images/artworks/${artworkID}.png`,
-                  alt: "Artwork",
-                  width: 100,
-                  height: 100,
-                }).appendTo(artwork);
-              });
-            }
-            function showFirebaseError(action, error) {
-              const code = error?.code || "unknown-error";
-              status.textContent = `${action} error: ${code}`;
-            }
-            loginSubmitButton.disabled = false;
-            registerSubmitButton.disabled = false;
+        questionProgress = normalizedData.questionProgress;
+        chestData = normalizedData.chestData;
+        $("#xpc").text(questionProgress.xp);
+        $("#ingots").text(chestData.ingots);
+        $("#username-display").text(questionProgress.username || "Not set");
+        renderStreak();
+        renderArtwork();
+        render();
+      }
+      var ingotMult = 1;
+      function renderArtwork() {
+        const artwork = $("#art").empty();
+        chestData.artworkID.forEach((artworkID) => {
+          $("<img>", {
+            src: `/images/artworks/${artworkID}.png`,
+            alt: "Artwork",
+            width: 100,
+            height: 100,
+          }).appendTo(artwork);
+        });
+      }
+      function showFirebaseError(action, error) {
+        const code = error?.code || "unknown-error";
+        status.textContent = `${action} error: ${code}`;
+      }
+      loginSubmitButton.disabled = false;
+      registerSubmitButton.disabled = false;
 
-            onAuthStateChanged(auth, (user) => {
-              currentUser = user;
-              saveButton.disabled = !user;
-              loadButton.disabled = !user;
-              status.textContent = user
-                ? `Signed in as ${user.email}.`
-                : "Not signed in.";
-              loadLeaderboard();
-            });
+      onAuthStateChanged(auth, (user) => {
+        currentUser = user;
+        saveButton.disabled = !user;
+        loadButton.disabled = !user;
+        status.textContent = user
+          ? `Signed in as ${user.email}.`
+          : "Not signed in.";
+        loadLeaderboard();
+      });
 
-            document
-              .getElementById("register")
-              .addEventListener("submit", async (event) => {
-                event.preventDefault();
-                const email = document.getElementById("reg-email").value;
-                const password = document.getElementById("reg-pword").value;
+      document
+        .getElementById("register")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const email = document.getElementById("reg-email").value;
+          const password = document.getElementById("reg-pword").value;
 
-                try {
-                  const credential = await createUserWithEmailAndPassword(
-                    auth,
-                    email,
-                    password,
-                  );
-                  status.textContent = `Registered as ${credential.user.email}.`;
-                } catch (error) {
-                  showFirebaseError("Registration", error);
-                }
-              });
+          try {
+            const credential = await createUserWithEmailAndPassword(
+              auth,
+              email,
+              password,
+            );
+            status.textContent = `Registered as ${credential.user.email}.`;
+          } catch (error) {
+            showFirebaseError("Registration", error);
+          }
+        });
 
-            document
-              .getElementById("login")
-              .addEventListener("submit", async (event) => {
-                event.preventDefault();
-                const email = document.getElementById("log-email").value;
-                const password = document.getElementById("log-pword").value;
+      document
+        .getElementById("login")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const email = document.getElementById("log-email").value;
+          const password = document.getElementById("log-pword").value;
 
-                try {
-                  const credential = await signInWithEmailAndPassword(
-                    auth,
-                    email,
-                    password,
-                  );
-                  status.textContent = `Signed in as ${credential.user.email}.`;
-                } catch (error) {
-                  showFirebaseError("Login", error);
-                }
-              });
+          try {
+            const credential = await signInWithEmailAndPassword(
+              auth,
+              email,
+              password,
+            );
+            status.textContent = `Signed in as ${credential.user.email}.`;
+          } catch (error) {
+            showFirebaseError("Login", error);
+          }
+        });
 
-            saveButton.addEventListener("click", async () => {
-              if (!currentUser) return;
-              if (questionProgress.xp == 0) {
-                var confirmSave = confirm(
-                  "You have 0 XP. Are you sure you want to save your progress?",
-                );
-                if (!confirmSave) return;
-              }
-              status.textContent = "Saving game...";
-              const previousStreak = questionProgress.streak;
-              const previousDayLastSaved = questionProgress.dayLastSaved;
+      saveButton.addEventListener("click", async () => {
+        if (!currentUser) return;
+        if (questionProgress.xp == 0) {
+          var confirmSave = confirm(
+            "You have 0 XP. Are you sure you want to save your progress?",
+          );
+          if (!confirmSave) return;
+        }
+        status.textContent = "Saving game...";
+        const previousStreak = questionProgress.streak;
+        const previousDayLastSaved = questionProgress.dayLastSaved;
 
-              try {
-                recordDailyLesson();
-                await setDoc(
-                  doc(db, "ferbingo_saves", currentUser.uid),
-                  getGameData(),
-                );
-                status.textContent = "Game progress saved.";
-                renderStreak();
-                loadLeaderboard();
-              } catch (error) {
-                questionProgress.streak = previousStreak;
-                questionProgress.dayLastSaved = previousDayLastSaved;
-                renderStreak();
-                showFirebaseError("Save", error);
-              }
-            });
+        try {
+          recordDailyLesson();
+          await setDoc(
+            doc(db, "ferbingo_saves", currentUser.uid),
+            getGameData(),
+          );
+          status.textContent = "Game progress saved.";
+          renderStreak();
+          loadLeaderboard();
+        } catch (error) {
+          questionProgress.streak = previousStreak;
+          questionProgress.dayLastSaved = previousDayLastSaved;
+          renderStreak();
+          showFirebaseError("Save", error);
+        }
+      });
 
-            loadButton.addEventListener("click", async () => {
-              if (!currentUser) return;
-              /*   if(questionProgress.xp==0){
+      loadButton.addEventListener("click", async () => {
+        if (!currentUser) return;
+        /*   if(questionProgress.xp==0){
 
               }*/
-              status.textContent = "Loading game...";
+        status.textContent = "Loading game...";
 
-              try {
-                const snapshot = await getDoc(
-                  doc(db, "ferbingo_saves", currentUser.uid),
-                );
+        try {
+          const snapshot = await getDoc(
+            doc(db, "ferbingo_saves", currentUser.uid),
+          );
 
-                if (!snapshot.exists()) {
-                  status.textContent = "No Ferbingo save found for this account.";
-                  return;
-                }
+          if (!snapshot.exists()) {
+            status.textContent = "No Ferbingo save found for this account.";
+            return;
+          }
 
-                const data = snapshot.data();
-                applyGameData(data);
-                status.textContent = `Loaded save from ${data.lastSaved}.`;
-              } catch (error) {
-                if (error.message === "invalid-save-data") {
-                  status.textContent =
-                    "Save data is invalid or uses an unsupported version.";
-                } else {
-                  showFirebaseError("Load", error);
-                }
-              }
-            });
-            $("#spec-kw").click(function () {
-              $("#userAnswer").val($("#userAnswer").val() + "kʷ");
-            });
-            tables.conj2 = `
+          const data = snapshot.data();
+          applyGameData(data);
+          status.textContent = `Loaded save from ${data.lastSaved}.`;
+        } catch (error) {
+          if (error.message === "invalid-save-data") {
+            status.textContent =
+              "Save data is invalid or uses an unsupported version.";
+          } else {
+            showFirebaseError("Load", error);
+          }
+        }
+      });
+      $("#spec-kw").click(function () {
+        $("#userAnswer").val($("#userAnswer").val() + "kʷ");
+      });
+      tables.conj2 = `
               -ere verbs:
               MOOD VOICE TENSE    SINGULAR             PLURAL
                                 1     2     3     1       2       3
@@ -772,229 +772,229 @@
 
 
               `;
-            for (const i in tables) {
-              tables[i] = "<pre>" + tables[i] + "</pre>";
+      for (const i in tables) {
+        tables[i] = "<pre>" + tables[i] + "</pre>";
+      }
+      var skill = "translation";
+      $("#choose-skill").change(function () {
+        skill = $("#choose-skill").val();
+        var name;
+        if (skill === "vocab") {
+          name = "Vocabulary";
+        } else {
+          name = skill.charAt(0).toUpperCase() + skill.slice(1);
+        }
+        $("#skill").text(name);
+        render();
+      });
+      function normalizeUnitId(unitEntry) {
+        if (!unitEntry) return null;
+        if (typeof unitEntry === "string") return unitEntry;
+        if (!isPlainObject(unitEntry)) return null;
+        return unitEntry["unit-id"] || unitEntry.id || null;
+      }
+
+      function getQuestionUnit(currentQuestion) {
+        if (!currentQuestion) return null;
+
+        const unitId = normalizeUnitId(
+          currentQuestion.special?.unit ?? currentQuestion.unit,
+        );
+        if (!unitId) return null;
+
+        const unitFromQuestion = isPlainObject(currentQuestion.unit)
+          ? currentQuestion.unit
+          : null;
+
+        const unitFromSpecial = isPlainObject(currentQuestion.special)
+          ? currentQuestion.special.unit
+          : null;
+
+        const unitValue = unitFromQuestion ?? unitFromSpecial ?? null;
+        const unitData = isPlainObject(unitValue) ? unitValue : null;
+
+        const fallbackUnit = {
+          id: unitId,
+          title: unitData?.title || unitData?.name || unitId,
+          optional: Boolean(unitData?.optional),
+          data: Array.isArray(unitData?.data) ? unitData.data : [],
+        };
+
+        const unitBag = new Map();
+        for (const skillName of Object.keys(questions)) {
+          const entries = questions[skillName];
+          if (!Array.isArray(entries)) continue;
+          for (const entry of entries) {
+            if (!isPlainObject(entry)) continue;
+            const entryUnitId = normalizeUnitId(
+              entry.special?.unit ?? entry.unit,
+            );
+            if (!entryUnitId) continue;
+            const entryUnit = isPlainObject(entry.unit) ? entry.unit : null;
+            const entrySpecialUnit = isPlainObject(entry.special)
+              ? entry.special.unit
+              : null;
+            const entryValue = entryUnit ?? entrySpecialUnit ?? null;
+            const entryUnitData = isPlainObject(entryValue) ? entryValue : null;
+            if (!unitBag.has(entryUnitId)) {
+              unitBag.set(entryUnitId, {
+                id: entryUnitId,
+                title:
+                  entryUnitData?.title ||
+                  entryUnitData?.name ||
+                  entry.name ||
+                  entry.q ||
+                  entryUnitId,
+                optional: Boolean(
+                  entryUnitData?.optional || entry.special?.optional,
+                ),
+                data: Array.isArray(entryUnitData?.data)
+                  ? entryUnitData.data
+                  : [],
+              });
             }
-            var skill = "translation";
-            $("#choose-skill").change(function () {
-              skill = $("#choose-skill").val();
-              var name;
-              if (skill === "vocab") {
-                name = "Vocabulary";
-              } else {
-                name = skill.charAt(0).toUpperCase() + skill.slice(1);
+          }
+        }
+
+        return unitBag.get(unitId) || fallbackUnit;
+      }
+
+      function renderUnitInfo(currentQuestion) {
+        const unit = getQuestionUnit(currentQuestion);
+        if (!unit) {
+          $("#unit-name").text("N/A");
+          $("#unit-lessons").text("No lessons in this unit.");
+          return;
+        }
+
+        $("#unit-name").text(unit.title);
+
+        const lessonEntries = [];
+        for (const bucket of Object.values(questions)) {
+          if (!Array.isArray(bucket)) continue;
+          for (const entry of bucket) {
+            if (!isPlainObject(entry)) continue;
+            const entryUnitId = normalizeUnitId(
+              entry.special?.unit ?? entry.unit,
+            );
+            if (entryUnitId !== unit.id) continue;
+            if (entry.name) {
+              lessonEntries.push(entry.name);
+            } else if (entry.q && typeof entry.q === "string") {
+              lessonEntries.push(entry.q);
+            } else if (entry.id) {
+              lessonEntries.push(entry.id);
+            }
+          }
+        }
+
+        const unitLessonData =
+          Array.isArray(unit.data) && unit.data.length > 0 ? unit.data : [];
+
+        const renderedLessons = lessonEntries.length
+          ? lessonEntries
+          : unitLessonData.map((lesson) => {
+              if (isPlainObject(lesson) && lesson["dyna-info"]?.title) {
+                return lesson["dyna-info"].title;
               }
-              $("#skill").text(name);
-              render();
+              if (isPlainObject(lesson) && lesson.name) return lesson.name;
+              if (isPlainObject(lesson) && lesson.q) return lesson.q;
+              return String(lesson);
             });
-            function normalizeUnitId(unitEntry) {
-              if (!unitEntry) return null;
-              if (typeof unitEntry === "string") return unitEntry;
-              if (!isPlainObject(unitEntry)) return null;
-              return unitEntry["unit-id"] || unitEntry.id || null;
+
+        if (!renderedLessons.length) {
+          $("#unit-lessons").text("No lessons in this unit.");
+          return;
+        }
+
+        const uniqueLessons = [...new Set(renderedLessons)];
+        $("#unit-lessons").html(
+          uniqueLessons.map((lesson) => `<div>${lesson}</div>`).join(""),
+        );
+      }
+
+      function renderDynaInfo(d) {
+        if (!isPlainObject(d)) return "";
+
+        var retval = "<h1>" + (d.title || "Lesson") + "</h1>";
+        switch (d.typ) {
+          case "table":
+            retval += "<table>";
+            for (let i of d.data || []) {
+              retval += "<tr>";
+              for (let j of i || []) {
+                retval += "<td>" + j + "</td>";
+              }
+              retval += "</tr>";
             }
-
-            function getQuestionUnit(currentQuestion) {
-              if (!currentQuestion) return null;
-
-              const unitId = normalizeUnitId(
-                currentQuestion.special?.unit ?? currentQuestion.unit,
-              );
-              if (!unitId) return null;
-
-              const unitFromQuestion = isPlainObject(currentQuestion.unit)
-                ? currentQuestion.unit
-                : null;
-
-              const unitFromSpecial = isPlainObject(currentQuestion.special)
-                ? currentQuestion.special.unit
-                : null;
-
-              const unitValue = unitFromQuestion ?? unitFromSpecial ?? null;
-              const unitData = isPlainObject(unitValue) ? unitValue : null;
-
-              const fallbackUnit = {
-                id: unitId,
-                title: unitData?.title || unitData?.name || unitId,
-                optional: Boolean(unitData?.optional),
-                data: Array.isArray(unitData?.data) ? unitData.data : [],
-              };
-
-              const unitBag = new Map();
-              for (const skillName of Object.keys(questions)) {
-                const entries = questions[skillName];
-                if (!Array.isArray(entries)) continue;
-                for (const entry of entries) {
-                  if (!isPlainObject(entry)) continue;
-                  const entryUnitId = normalizeUnitId(
-                    entry.special?.unit ?? entry.unit,
-                  );
-                  if (!entryUnitId) continue;
-                  const entryUnit = isPlainObject(entry.unit) ? entry.unit : null;
-                  const entrySpecialUnit = isPlainObject(entry.special)
-                    ? entry.special.unit
-                    : null;
-                  const entryValue = entryUnit ?? entrySpecialUnit ?? null;
-                  const entryUnitData = isPlainObject(entryValue) ? entryValue : null;
-                  if (!unitBag.has(entryUnitId)) {
-                    unitBag.set(entryUnitId, {
-                      id: entryUnitId,
-                      title:
-                        entryUnitData?.title ||
-                        entryUnitData?.name ||
-                        entry.name ||
-                        entry.q ||
-                        entryUnitId,
-                      optional: Boolean(
-                        entryUnitData?.optional || entry.special?.optional,
-                      ),
-                      data: Array.isArray(entryUnitData?.data)
-                        ? entryUnitData.data
-                        : [],
-                    });
-                  }
-                }
-              }
-
-              return unitBag.get(unitId) || fallbackUnit;
+            retval += "</table>";
+            break;
+          case "std":
+            retval += "<br><p>" + (d.data || "") + "</p>";
+            break;
+          case "br":
+            for (let i of d.data || []) {
+              retval += "<br>" + i;
             }
+            break;
+          default:
+            retval += "<br><p>" + (d.data || "") + "</p>";
+        }
+        return retval;
+      }
 
-            function renderUnitInfo(currentQuestion) {
-              const unit = getQuestionUnit(currentQuestion);
-              if (!unit) {
-                $("#unit-name").text("N/A");
-                $("#unit-lessons").text("No lessons in this unit.");
-                return;
-              }
+      function render() {
+        const currentQuestion = questions[skill]?.[questionProgress[skill]];
+        if (currentQuestion) {
+          $("#answer-area").empty();
+          $("#qstatus").text("Not answered yet");
+          $("#check").text("Check answer").prop("disabled", false);
+          $("#skip-question").prop("disabled", true).prop("hidden", true);
+          renderUnitInfo(currentQuestion);
+          const unitDataLesson =
+            isPlainObject(currentQuestion.unit) &&
+            Array.isArray(currentQuestion.unit.data)
+              ? currentQuestion.unit.data.find(
+                  (lesson) => isPlainObject(lesson) && lesson["dyna-info"],
+                )
+              : null;
 
-              $("#unit-name").text(unit.title);
+          if (currentQuestion["dyna-info"]) {
+            $("#questions").html(renderDynaInfo(currentQuestion["dyna-info"]));
+            $("#check").text("Continue");
+            return;
+          }
 
-              const lessonEntries = [];
-              for (const bucket of Object.values(questions)) {
-                if (!Array.isArray(bucket)) continue;
-                for (const entry of bucket) {
-                  if (!isPlainObject(entry)) continue;
-                  const entryUnitId = normalizeUnitId(
-                    entry.special?.unit ?? entry.unit,
-                  );
-                  if (entryUnitId !== unit.id) continue;
-                  if (entry.name) {
-                    lessonEntries.push(entry.name);
-                  } else if (entry.q && typeof entry.q === "string") {
-                    lessonEntries.push(entry.q);
-                  } else if (entry.id) {
-                    lessonEntries.push(entry.id);
-                  }
-                }
-              }
+          if (unitDataLesson) {
+            $("#questions").html(renderDynaInfo(unitDataLesson["dyna-info"]));
+            $("#check").text("Continue");
+            return;
+          }
+        }
+        if (!currentQuestion) {
+          $("#questions").text("No questions available.");
+          $("#answer-area").empty();
+          $("#qstatus").text("No questions available for this skill.");
+          $("#check").prop("disabled", true);
+          $("#skip-question").prop("disabled", true).prop("hidden", true);
+          return;
+        }
 
-              const unitLessonData =
-                Array.isArray(unit.data) && unit.data.length > 0 ? unit.data : [];
-
-              const renderedLessons = lessonEntries.length
-                ? lessonEntries
-                : unitLessonData.map((lesson) => {
-                    if (isPlainObject(lesson) && lesson["dyna-info"]?.title) {
-                      return lesson["dyna-info"].title;
-                    }
-                    if (isPlainObject(lesson) && lesson.name) return lesson.name;
-                    if (isPlainObject(lesson) && lesson.q) return lesson.q;
-                    return String(lesson);
-                  });
-
-              if (!renderedLessons.length) {
-                $("#unit-lessons").text("No lessons in this unit.");
-                return;
-              }
-
-              const uniqueLessons = [...new Set(renderedLessons)];
-              $("#unit-lessons").html(
-                uniqueLessons.map((lesson) => `<div>${lesson}</div>`).join(""),
-              );
-            }
-
-            function renderDynaInfo(d) {
-              if (!isPlainObject(d)) return "";
-
-              var retval = "<h1>" + (d.title || "Lesson") + "</h1>";
-              switch (d.typ) {
-                case "table":
-                  retval += "<table>";
-                  for (let i of d.data || []) {
-                    retval += "<tr>";
-                    for (let j of i || []) {
-                      retval += "<td>" + j + "</td>";
-                    }
-                    retval += "</tr>";
-                  }
-                  retval += "</table>";
-                  break;
-                case "std":
-                  retval += "<br><p>" + (d.data || "") + "</p>";
-                  break;
-                case "br":
-                  for (let i of d.data || []) {
-                    retval += "<br>" + i;
-                  }
-                  break;
-                default:
-                  retval += "<br><p>" + (d.data || "") + "</p>";
-              }
-              return retval;
-            }
-
-            function render() {
-              const currentQuestion = questions[skill]?.[questionProgress[skill]];
-              if (currentQuestion) {
-                $("#answer-area").empty();
-                $("#qstatus").text("Not answered yet");
-                $("#check").text("Check answer").prop("disabled", false);
-                $("#skip-question").prop("disabled", true).prop("hidden", true);
-                renderUnitInfo(currentQuestion);
-                const unitDataLesson =
-                  isPlainObject(currentQuestion.unit) &&
-                  Array.isArray(currentQuestion.unit.data)
-                    ? currentQuestion.unit.data.find(
-                        (lesson) => isPlainObject(lesson) && lesson["dyna-info"],
-                      )
-                    : null;
-
-                if (currentQuestion["dyna-info"]) {
-                  $("#questions").html(renderDynaInfo(currentQuestion["dyna-info"]));
-                  $("#check").text("Continue");
-                  return;
-                }
-
-                if (unitDataLesson) {
-                  $("#questions").html(renderDynaInfo(unitDataLesson["dyna-info"]));
-                  $("#check").text("Continue");
-                  return;
-                }
-              }
-              if (!currentQuestion) {
-                $("#questions").text("No questions available.");
-                $("#answer-area").empty();
-                $("#qstatus").text("No questions available for this skill.");
-                $("#check").prop("disabled", true);
-                $("#skip-question").prop("disabled", true).prop("hidden", true);
-                return;
-              }
-
-              const isOptionalQuestion = Boolean(currentQuestion?.special?.optional);
-              /*$("#qstatus").text("Not answered yet");
+        const isOptionalQuestion = Boolean(currentQuestion?.special?.optional);
+        /*$("#qstatus").text("Not answered yet");
               $("#check").prop("disabled", false);
               $("#check").text("Check answer");*/
-              $("#skip-question")
-                .prop("disabled", !isOptionalQuestion)
-                .prop("hidden", !isOptionalQuestion);
-              if (currentQuestion.qaud) {
-                $("#questions").html(
-                  "<button id='qaud' onclick='new Audio(\"" +
-                    currentQuestion.qaud +
-                    "\").play()'>Play audio for question</button>",
-                );
-                $("#questions").append(currentQuestion.otext);
-                /* for (let i of currentQuestion.options) {
+        $("#skip-question")
+          .prop("disabled", !isOptionalQuestion)
+          .prop("hidden", !isOptionalQuestion);
+        if (currentQuestion.qaud) {
+          $("#questions").html(
+            "<button id='qaud' onclick='new Audio(\"" +
+              currentQuestion.qaud +
+              "\").play()'>Play audio for question</button>",
+          );
+          $("#questions").append(currentQuestion.otext);
+          /* for (let i of currentQuestion.options) {
                   var indx = currentQuestion.options.getIndexOf(i);
                   function clickHandler(num) {
                     if (currentQuestion.correctOption == num) {
@@ -1006,245 +1006,245 @@
                   });
                   $("#questions").append(
                     "<button class='opt-button' id='opt-" + ind*/ for (const [
-                  index,
-                  option,
-                ] of currentQuestion.options.entries()) {
-                  const $option = $("<button>", {
-                    class: "opt-button",
-                    id: `opt-${index}`,
-                    text: option,
-                  });
-                  $option.on("click", function () {
-                    if (currentQuestion.correctOption === index) {
-                      checkAnswer(false);
-                    } else {
-                      new Audio("/audio/incorrect.m4a").play().catch((e) => {
-                        console.error("Error: " + e);
-                      });
-                    }
-                  });
-                  $("#questions").append($option);
-                }
-                $("`#answer-area`").empty();
-                return;
-              }
-
-              if (currentQuestion.information) {
-                if (Array.isArray(currentQuestion.information)) {
-                  $("#questions").html(currentQuestion.information.join("<br>"));
-                } else {
-                  $("#questions").html(currentQuestion.information);
-                }
-                $(".conj1").html(tables.conj1);
-                $(".conj2").html(tables.conj2);
-                $(".conj3").html(tables.conj3);
-                $(".conj4").html(tables.conj4);
-                $(".decl3").html(nouns.decl3);
-
-                $("#check").text("Continue");
-                $("#skip-question").prop("hidden", true);
-                return;
-              }
-
-              $("#questions").text(currentQuestion.q);
-              if (currentQuestion.rega) {
-                $("#answer-area").html("<input id='userAnswer'>");
-              } else {
-                $("#answer-area").empty();
-              }
-            }
-            $("#buy-chest").click(function () {
-              if (chestData.ingots >= 5) {
-                chestData.ingots -= 5;
-                $("#ingots").text(chestData.ingots);
-                // Here you can add logic to give the player a chest or reward
-                alert("You bought a chest!");
-                var rand = Math.random();
-                if (rand < 1 / 3) {
-                  alert("You got a minigame ticket!");
-                  chestData.minigameTickets.push("ticket");
-                } else if (rand < 2 / 3) {
-                  alert("You got an artwork!");
-                  chestData.artworkID.push("a" + Math.floor(Math.random() * 10));
-                } else if (rand < 5 / 6) {
-                  alert("You got a double ingot boost for 1 minute!");
-                  ingotMult *= 2;
-                  $("body").append(
-                    "<span class='booster-2x'><img src='/images/ferbingo/2xingot.png/> 2x ingots</span>",
-                  );
-                  setTimeout(() => {
-                    ingotMult /= 2;
-                    $(".booster-2x").last().remove();
-                  }, 60000);
-                } else {
-                  alert("You got nothing this time. Better luck next time!");
-                }
-                renderArtwork();
-              } else {
-                alert("Not enough ingots to buy a chest.");
-              }
+            index,
+            option,
+          ] of currentQuestion.options.entries()) {
+            const $option = $("<button>", {
+              class: "opt-button",
+              id: `opt-${index}`,
+              text: option,
             });
-            function checkAnswer(p) {
-              const skillQuestions = questions[skill];
-              const currentQuestion = skillQuestions?.[questionProgress[skill]];
-              // if (currentQuestion.information) {
-              if (currentQuestion.information || currentQuestion["dyna-info"]) {
-                if (questionProgress[skill] < skillQuestions.length - 1) {
-                  new Audio("/audio/correct.m4a").play().catch((e) => {
-                    console.error("Error: " + e);
-                  });
-                  questionProgress[skill]++;
-                  render();
-                } else {
-                  $("#questions").text("All questions completed.");
-                  $("#answer-area").empty();
-                  $("#qstatus").text("Skill complete!");
-                  $("#check").prop("disabled", true);
-                  $("#skip-question").prop("hidden", true);
-                }
-                return;
-              }
-
-              if (p && !currentQuestion?.rega) return;
-              function aString(array) {
-                var retval = "";
-                for (i of array) {
-                  retval += i;
-                }
-                return retval;
-              }
-
-              var regex = new RegExp(currentQuestion.rega, currentQuestion.flags);
-              if (!p || regex.test($("#userAnswer").val())) {
-                var t = $("#userAnswer").val();
-                var u = t
-                  .replace(/[\u2018\u2019]/g, "'")
-                  // Replace left and right double curly quotes with a straight double quote
-                  .replace(/[\u201C\u201D]/g, '"');
-                $("#userAnswer").val(u);
-                job();
+            $option.on("click", function () {
+              if (currentQuestion.correctOption === index) {
+                checkAnswer(false);
               } else {
                 new Audio("/audio/incorrect.m4a").play().catch((e) => {
                   console.error("Error: " + e);
                 });
               }
+            });
+            $("#questions").append($option);
+          }
+          $("`#answer-area`").empty();
+          return;
+        }
 
-              function job() {
-                $("#qstatus").text("Correct answer!");
-                const questionId = currentQuestion.id;
+        if (currentQuestion.information) {
+          if (Array.isArray(currentQuestion.information)) {
+            $("#questions").html(currentQuestion.information.join("<br>"));
+          } else {
+            $("#questions").html(currentQuestion.information);
+          }
+          $(".conj1").html(tables.conj1);
+          $(".conj2").html(tables.conj2);
+          $(".conj3").html(tables.conj3);
+          $(".conj4").html(tables.conj4);
+          $(".decl3").html(nouns.decl3);
 
-                if (!questionProgress.completedQuestionIds[questionId]) {
-                  questionProgress.completedQuestionIds[questionId] = true;
-                  questionProgress.xp++;
-                  var ingotBonus = (currentQuestion.special?.ingots || 1) * ingotMult; // Default to 1 ingot if not specified
-                  chestData.ingots += ingotBonus; // Award ingots for each correct answer
-                  $("#xpc").text(questionProgress.xp);
-                  $("#ingots").text(chestData.ingots);
-                }
-                new Audio("/audio/correct.m4a").play().catch((e) => {
-                  console.error("Error: " + e);
-                });
+          $("#check").text("Continue");
+          $("#skip-question").prop("hidden", true);
+          return;
+        }
 
-                questionProgress[skill]++;
-                if (questionProgress[skill] >= skillQuestions.length) {
-                  $("#questions").text("All questions completed.");
-                  $("#answer-area").empty();
-                  $("#qstatus").text("Skill complete!");
-                  $("#check").prop("disabled", true);
-                  $("#skip-question").prop("hidden", true);
-                } else {
-                  render();
-                }
-              }
-            }
-            $("#check").click(function () {
-              checkAnswer(true);
+        $("#questions").text(currentQuestion.q);
+        if (currentQuestion.rega) {
+          $("#answer-area").html("<input id='userAnswer'>");
+        } else {
+          $("#answer-area").empty();
+        }
+      }
+      $("#buy-chest").click(function () {
+        if (chestData.ingots >= 5) {
+          chestData.ingots -= 5;
+          $("#ingots").text(chestData.ingots);
+          // Here you can add logic to give the player a chest or reward
+          alert("You bought a chest!");
+          var rand = Math.random();
+          if (rand < 1 / 3) {
+            alert("You got a minigame ticket!");
+            chestData.minigameTickets.push("ticket");
+          } else if (rand < 2 / 3) {
+            alert("You got an artwork!");
+            chestData.artworkID.push("a" + Math.floor(Math.random() * 10));
+          } else if (rand < 5 / 6) {
+            alert("You got a double ingot boost for 1 minute!");
+            ingotMult *= 2;
+            $("body").append(
+              "<span class='booster-2x'><img src='/images/ferbingo/2xingot.png/> 2x ingots</span>",
+            );
+            setTimeout(() => {
+              ingotMult /= 2;
+              $(".booster-2x").last().remove();
+            }, 60000);
+          } else {
+            alert("You got nothing this time. Better luck next time!");
+          }
+          renderArtwork();
+        } else {
+          alert("Not enough ingots to buy a chest.");
+        }
+      });
+      function checkAnswer(p) {
+        const skillQuestions = questions[skill];
+        const currentQuestion = skillQuestions?.[questionProgress[skill]];
+        // if (currentQuestion.information) {
+        if (currentQuestion.information || currentQuestion["dyna-info"]) {
+          if (questionProgress[skill] < skillQuestions.length - 1) {
+            new Audio("/audio/correct.m4a").play().catch((e) => {
+              console.error("Error: " + e);
             });
-            $("#skip-question").click(function () {
-              const skillQuestions = questions[skill];
-              const currentQuestion = skillQuestions?.[questionProgress[skill]];
-              if (!currentQuestion || !currentQuestion.special?.optional) {
-                return;
-              }
-
-              if (questionProgress[skill] < skillQuestions.length - 1) {
-                questionProgress[skill]++;
-                render();
-                return;
-              }
-
-              $("#questions").text("All questions completed.");
-              $("#answer-area").empty();
-              $("#qstatus").text("Skill complete!");
-              $("#check").prop("disabled", true);
-              $("#skip-question").prop("hidden", true);
-            });
-            $("#set-username").click(function () {
-              const newUsername = $("#username-input").val().trim();
-              if (newUsername) {
-                questionProgress.username = newUsername;
-                $("#username-display").text(newUsername);
-                $("#username-input").val("");
-                status.textContent = "Username set successfully.";
-              } else {
-                status.textContent = "Please enter a valid username.";
-              }
-            });
-            $("#go-back").on("click", function () {
-              if (questionProgress[skill] > 0) {
-                questionProgress[skill]--;
-              }
-              render();
-            });
-            $("#pay-ticket").click(function () {
-              if (chestData.minigameTickets.length > 0) {
-                chestData.minigameTickets.pop();
-                $("#ticket-count").text(chestData.minigameTickets.length);
-                $("#minigame-area").prop("hidden", false);
-                status.textContent = "You can now play the minigame!";
-                minigameActive = true;
-                setTimeout(() => {
-                  minigameActive = false;
-                  $("#minigame-area").hide();
-                  status.textContent = "Minigame ended.";
-                }, 30000); // Minigame lasts for 30 seconds
-              } else {
-                status.textContent = "You don't have any minigame tickets.";
-              }
-            });
-            var minigameActive = false;
-            var riggyPosition = 0;
-            var correctPosition = 0;
-            $("#up").click(function () {
-              $("#riggy").css("transform", "translateY(-16px)");
-              riggyPosition -= 1;
-            });
-            $("#down").click(function () {
-              $("#riggy").css("transform", "translateY(16px)");
-              riggyPosition += 1;
-            });
+            questionProgress[skill]++;
             render();
-            setInterval(() => {
-              $("#xpc").text(questionProgress.xp);
-              $("#ingots").text(chestData.ingots);
-              if (minigameActive) {
-                if (riggyPosition === correctPosition) {
-                  chestData.ingots += 0.5 * ingotMult; // Award 1 ingot for correct position
-                  $("#ingots").text(chestData.ingots);
-                } else {
-                  chestData.ingots -= 0.2 * ingotMult; // Deduct 0.2 ingots for incorrect position
-                  if (chestData.ingots < 2) chestData.ingots = 2; // Prevent negative ingots
-                  $("#ingots").text(chestData.ingots);
-                }
-              }
-            }, 1000);
-            setInterval(() => {
-              if (minigameActive) {
-                correctPosition = Math.floor(Math.random() * 5) - 2; // Random position between -2 and 2
-                var arr = ["=", "=", "=", "=", "="]
-                arr[correctPosition+2]=" "
-              }
-            }, 5000); // Change correct position every 5 seconds
+          } else {
+            $("#questions").text("All questions completed.");
+            $("#answer-area").empty();
+            $("#qstatus").text("Skill complete!");
+            $("#check").prop("disabled", true);
+            $("#skip-question").prop("hidden", true);
+          }
+          return;
+        }
+
+        if (p && !currentQuestion?.rega) return;
+        function aString(array) {
+          var retval = "";
+          for (i of array) {
+            retval += i;
+          }
+          return retval;
+        }
+
+        var regex = new RegExp(currentQuestion.rega, currentQuestion.flags);
+        if (!p || regex.test($("#userAnswer").val())) {
+          var t = $("#userAnswer").val();
+          var u = t
+            .replace(/[\u2018\u2019]/g, "'")
+            // Replace left and right double curly quotes with a straight double quote
+            .replace(/[\u201C\u201D]/g, '"');
+          $("#userAnswer").val(u);
+          job();
+        } else {
+          new Audio("/audio/incorrect.m4a").play().catch((e) => {
+            console.error("Error: " + e);
+          });
+        }
+
+        function job() {
+          $("#qstatus").text("Correct answer!");
+          const questionId = currentQuestion.id;
+
+          if (!questionProgress.completedQuestionIds[questionId]) {
+            questionProgress.completedQuestionIds[questionId] = true;
+            questionProgress.xp++;
+            var ingotBonus = (currentQuestion.special?.ingots || 1) * ingotMult; // Default to 1 ingot if not specified
+            chestData.ingots += ingotBonus; // Award ingots for each correct answer
+            $("#xpc").text(questionProgress.xp);
+            $("#ingots").text(chestData.ingots);
+          }
+          new Audio("/audio/correct.m4a").play().catch((e) => {
+            console.error("Error: " + e);
+          });
+
+          questionProgress[skill]++;
+          if (questionProgress[skill] >= skillQuestions.length) {
+            $("#questions").text("All questions completed.");
+            $("#answer-area").empty();
+            $("#qstatus").text("Skill complete!");
+            $("#check").prop("disabled", true);
+            $("#skip-question").prop("hidden", true);
+          } else {
+            render();
+          }
+        }
+      }
+      $("#check").click(function () {
+        checkAnswer(true);
+      });
+      $("#skip-question").click(function () {
+        const skillQuestions = questions[skill];
+        const currentQuestion = skillQuestions?.[questionProgress[skill]];
+        if (!currentQuestion || !currentQuestion.special?.optional) {
+          return;
+        }
+
+        if (questionProgress[skill] < skillQuestions.length - 1) {
+          questionProgress[skill]++;
+          render();
+          return;
+        }
+
+        $("#questions").text("All questions completed.");
+        $("#answer-area").empty();
+        $("#qstatus").text("Skill complete!");
+        $("#check").prop("disabled", true);
+        $("#skip-question").prop("hidden", true);
+      });
+      $("#set-username").click(function () {
+        const newUsername = $("#username-input").val().trim();
+        if (newUsername) {
+          questionProgress.username = newUsername;
+          $("#username-display").text(newUsername);
+          $("#username-input").val("");
+          status.textContent = "Username set successfully.";
+        } else {
+          status.textContent = "Please enter a valid username.";
+        }
+      });
+      $("#go-back").on("click", function () {
+        if (questionProgress[skill] > 0) {
+          questionProgress[skill]--;
+        }
+        render();
+      });
+      $("#pay-ticket").click(function () {
+        if (chestData.minigameTickets.length > 0) {
+          chestData.minigameTickets.pop();
+          $("#ticket-count").text(chestData.minigameTickets.length);
+          $("#minigame-area").prop("hidden", false);
+          status.textContent = "You can now play the minigame!";
+          minigameActive = true;
+          setTimeout(() => {
+            minigameActive = false;
+            $("#minigame-area").hide();
+            status.textContent = "Minigame ended.";
+          }, 30000); // Minigame lasts for 30 seconds
+        } else {
+          status.textContent = "You don't have any minigame tickets.";
+        }
+      });
+      var minigameActive = false;
+      var riggyPosition = 0;
+      var correctPosition = 0;
+      $("#up").click(function () {
+        $("#riggy").css("transform", "translateY(-16px)");
+        riggyPosition -= 1;
+      });
+      $("#down").click(function () {
+        $("#riggy").css("transform", "translateY(16px)");
+        riggyPosition += 1;
+      });
+      render();
+      setInterval(() => {
+        $("#xpc").text(questionProgress.xp);
+        $("#ingots").text(chestData.ingots);
+        if (minigameActive) {
+          if (riggyPosition === correctPosition) {
+            chestData.ingots += 0.5 * ingotMult; // Award 1 ingot for correct position
+            $("#ingots").text(chestData.ingots);
+          } else {
+            chestData.ingots -= 0.2 * ingotMult; // Deduct 0.2 ingots for incorrect position
+            if (chestData.ingots < 2) chestData.ingots = 2; // Prevent negative ingots
+            $("#ingots").text(chestData.ingots);
+          }
+        }
+      }, 1000);
+      setInterval(() => {
+        if (minigameActive) {
+          correctPosition = Math.floor(Math.random() * 5) - 2; // Random position between -2 and 2
+          var arr = ["=", "=", "=", "=", "="];
+          arr[correctPosition + 2] = " ";
+        }
+      }, 5000); // Change correct position every 5 seconds
     </script>
   </body>
 </html>
