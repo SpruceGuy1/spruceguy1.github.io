@@ -217,12 +217,12 @@
       });
     </script-->
     <script type="module">
-            //import questions from "./questions.json" with { type: "json" };
-            let questions;
-            import { addFrame } from "/modules/general/messages.js";
-            $("body").append(addFrame());
-            import {theme} from '/images/themes/theme.js';
-      theme($)
+      //import questions from "./questions.json" with { type: "json" };
+      let questions;
+      import { addFrame } from "/modules/general/messages.js";
+      $("body").append(addFrame());
+      import { theme } from "/images/themes/theme.js";
+      theme($);
 
       try {
         const response = await fetch("/ferbingo/questions.json");
