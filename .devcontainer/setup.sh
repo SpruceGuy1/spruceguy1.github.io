@@ -5,8 +5,13 @@
 if ! grep -Fq "autocommit() {" ~/.bashrc; then
   cat << 'EOF' >> ~/.bashrc
  
+ 
 autocommit() {
     bash commit.sh "$1"
+}
+portForward(){
+    python3 -m http.server 8080
+    echo "Port forwarded."
 }
 EOF
 fi
