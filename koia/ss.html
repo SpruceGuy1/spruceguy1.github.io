@@ -277,20 +277,19 @@
       }
       const { render, animate } = await import("./renderer.js");
 
-render(document.getElementById("game-render"), {
-  "kr-type": "2d-color",
-  "kr-data": {
-    points: [
-      {
-        ref: 0,
-        x: 0,
-        y: 0,
-        image: { src: "/chicken.png" },
-      },
-    ],
-  },
-});
-
+      render(document.getElementById("game-render"), {
+        "kr-type": "2d-color",
+        "kr-data": {
+          points: [
+            {
+              ref: 0,
+              x: 0,
+              y: 0,
+              image: { src: "/chicken.png" },
+            },
+          ],
+        },
+      });
     </script>
   </body>
 </html>
