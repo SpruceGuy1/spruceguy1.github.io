@@ -1,3 +1,7 @@
+/**
+ * 
+ * @param {} $ 
+ */
 export function theme($) {
   var sitelen_pi_tenpo_muno;
   switch (Math.floor(new Date().getMonth() / 2)) {
