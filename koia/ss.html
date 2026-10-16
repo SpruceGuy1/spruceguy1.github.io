@@ -289,21 +289,21 @@
             },
           ],
         },
-      })
+      });
       const container = document.getElementById("game-render");
 
-// Keep the scene bounds fixed as the chicken moves.
-testScene.data["kr-data"].points.push(
-  { ref: "left-bound", x: -5, y: 0, style: "invis" },
-  { ref: "right-bound", x: 5, y: 0, style: "invis" },
-);
+      // Keep the scene bounds fixed as the chicken moves.
+      testScene.data["kr-data"].points.push(
+        { ref: "left-bound", x: -5, y: 0, style: "invis" },
+        { ref: "right-bound", x: 5, y: 0, style: "invis" },
+      );
 
-function moveChicken(x) {
-  testScene.animate("x", 0, x, "tp");
-  render(container, testScene.data);
-}
+      function moveChicken(x) {
+        testScene.animate("x", 0, x, "tp");
+        render(container, testScene.data);
+      }
 
-moveChicken(0);
+      moveChicken(0);
 
 setInterval(() => {
   moveChicken(3);
