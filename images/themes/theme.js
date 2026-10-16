@@ -1,6 +1,6 @@
 /**
- * 
- * @param {} $ 
+ *
+ * @param {} $
  */
 export function theme($) {
   var sitelen_pi_tenpo_muno;
