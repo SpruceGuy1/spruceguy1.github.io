@@ -1,31 +1,31 @@
-export class Scene{
-  constructor(json){
-    this.data = json
+export class Scene {
+  constructor(json) {
+    this.data = json;
   }
-   animate(prop, ref, change, cs = "tp", json = this.data) {
-  const scene = typeof json === "string" ? JSON.parse(json) : json;
-  if (!scene || typeof scene !== "object" || !scene["kr-data"]) {
-    throw new TypeError("A Koia scene is required");
+  animate(prop, ref, change, cs = "tp", json = this.data) {
+    const scene = typeof json === "string" ? JSON.parse(json) : json;
+    if (!scene || typeof scene !== "object" || !scene["kr-data"]) {
+      throw new TypeError("A Koia scene is required");
+    }
+
+    const data = scene["kr-data"];
+    const collections = [data.points, data.lines, data.areas];
+    const target = collections
+      .filter(Array.isArray)
+      .flat()
+      .find((element) => element?.ref === ref);
+    if (!target) return scene;
+
+    if (cs === "tp") {
+      target[prop] = change;
+    } else if (cs === "add") {
+      target[prop] += change;
+    } else {
+      throw new TypeError(`Unsupported animation operation: ${cs}`);
+    }
+
+    return scene;
   }
-
-  const data = scene["kr-data"];
-  const collections = [data.points, data.lines, data.areas];
-  const target = collections
-    .filter(Array.isArray)
-    .flat()
-    .find((element) => element?.ref === ref);
-  if (!target) return scene;
-
-  if (cs === "tp") {
-    target[prop] = change;
-  } else if (cs === "add") {
-    target[prop] += change;
-  } else {
-    throw new TypeError(`Unsupported animation operation: ${cs}`);
-  }
-
-  return scene;
-}
 }
 function render(el, json) {
   if (!el) {
