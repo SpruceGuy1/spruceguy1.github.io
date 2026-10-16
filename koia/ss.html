@@ -276,8 +276,8 @@
         status.textContent = `Startup error: ${detail}`;
         console.error("Koia startup failed:", error);
       }
-      const { render, animate, Scene} = await import("./renderer.js");
-var testScene = new Scene({
+      const { render, animate, Scene } = await import("./renderer.js");
+      var testScene = new Scene({
         "kr-type": "2d-color",
         "kr-data": {
           points: [
@@ -289,14 +289,14 @@ var testScene = new Scene({
             },
           ],
         },
-      })
-      render(document.getElementById("game-render"), testScene.data)
-     setInterval(function(){
-      testScene.animate("x", 0, 3)
-      setTimeout(function(){
-        testScene.animate("x", 0, -3)
-      },5000)
-     },10000)
+      });
+      render(document.getElementById("game-render"), testScene.data);
+      setInterval(function () {
+        testScene.animate("x", 0, 3);
+        setTimeout(function () {
+          testScene.animate("x", 0, -3);
+        }, 5000);
+      }, 10000);
     </script>
   </body>
 </html>
