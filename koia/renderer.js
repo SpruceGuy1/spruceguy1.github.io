@@ -117,6 +117,7 @@ function render(el, json) {
         return;
       }
       if (point.oval) {
+        context.beginPath();
         context.fillStyle = point.oval.color;
         context.ellipse(
           position(point).x,
