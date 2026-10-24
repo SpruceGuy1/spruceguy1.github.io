@@ -314,8 +314,12 @@
         setTimeout(() => moveChicken(-3), 50);
       }, 100);
       $("#lay-egg").click(function () {
-        var xValue = testScene.data["kr-data"].points[0].x;
-        var yValue = testScene.data["kr-data"].points[0].y;
+        /*var xValue = testScene.data["kr-data"].points[0].x;
+        var yValue = testScene.data["kr-data"].points[0].y;*/
+        const points = testScene.data["kr-data"].points;
+const chicken = points.find((point) => point.ref === 0);
+const xValue = chicken.x;
+const yValue = chicken.y;
         testScene.animate("x", 0, Math.random(), "tp");
         testScene.data["kr-data"].points.push({
           ref: 3,
@@ -328,6 +332,7 @@
           },
           //"'background-color:#ffe0c0; height:20px; width:10px; border-radius:50%;'"
         });
+        render(container, testScene.data);
       });
     </script>
   </body>
