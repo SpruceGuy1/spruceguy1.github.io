@@ -117,7 +117,7 @@ function render(el, json) {
         return;
       }
       if (point.oval) {
-        context.fillStyle = point.oval.color
+        context.fillStyle = point.oval.color;
         context.ellipse(
           position(point).x,
           position(point).y,
@@ -127,7 +127,7 @@ function render(el, json) {
           0,
           Math.PI * 2,
         );
-        context.fill()
+        context.fill();
       }
 
       if (!Number.isFinite(point.x) || !Number.isFinite(point.y)) return;
