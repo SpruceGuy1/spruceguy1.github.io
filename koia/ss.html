@@ -294,8 +294,8 @@
 
       // Keep the scene bounds fixed as the chicken moves.
       testScene.data["kr-data"].points.push(
-        /*left bound*/{ ref: "1", x: -5, y: 0, style: "invis" },
-        /*right bound*/{ ref: "2", x: 5, y: 0, style: "invis" },
+        /*left bound*/ { ref: "1", x: -5, y: 0, style: "invis" },
+        /*right bound*/ { ref: "2", x: 5, y: 0, style: "invis" },
       );
 
       function moveChicken(x) {
@@ -309,21 +309,19 @@
         moveChicken(3);
         setTimeout(() => moveChicken(-3), 50);
       }, 100);
-      $("#lay-egg").click(function(){
-        var xValue = testScene.data.points[0].x
-        var yValue = testScene.data.points[0].y
-            testScene.animate("x", 0, Math.random(), "tp");
-            testScene.data["kr-data"].points.push({
-              ref:3,
-              x:xValue,
-              y:yValue,
-              image:{
-                src:"/images/koia/egg.png"
-              }
-            })
-            
-
-      })
+      $("#lay-egg").click(function () {
+        var xValue = testScene.data.points[0].x;
+        var yValue = testScene.data.points[0].y;
+        testScene.animate("x", 0, Math.random(), "tp");
+        testScene.data["kr-data"].points.push({
+          ref: 3,
+          x: xValue,
+          y: yValue,
+          image: {
+            src: "/images/koia/egg.png",
+          },
+        });
+      });
     </script>
   </body>
 </html>
