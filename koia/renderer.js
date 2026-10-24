@@ -117,15 +117,17 @@ function render(el, json) {
         return;
       }
       if (point.oval) {
+        context.fillStyle = point.oval.color
         context.ellipse(
           position(point).x,
           position(point).y,
-          10,
-          20,
+          point.oval.pxwidth,
+          point.oval.pxheight,
           0,
           0,
           Math.PI * 2,
         );
+        context.fill()
       }
 
       if (!Number.isFinite(point.x) || !Number.isFinite(point.y)) return;
