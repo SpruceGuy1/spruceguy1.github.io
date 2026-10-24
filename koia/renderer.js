@@ -116,9 +116,16 @@ function render(el, json) {
       if (point.style == "invis") {
         return;
       }
-      if(point.oval){
-        ctx.ellipse(position(point).x, position(point).y, 10, 20, 0, 0, Math.PI * 2);
-
+      if (point.oval) {
+        ctx.ellipse(
+          position(point).x,
+          position(point).y,
+          10,
+          20,
+          0,
+          0,
+          Math.PI * 2,
+        );
       }
 
       if (!Number.isFinite(point.x) || !Number.isFinite(point.y)) return;
