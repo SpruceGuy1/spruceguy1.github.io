@@ -117,7 +117,7 @@ function render(el, json) {
         return;
       }
       if (point.oval) {
-        ctx.ellipse(
+        context.ellipse(
           position(point).x,
           position(point).y,
           10,
