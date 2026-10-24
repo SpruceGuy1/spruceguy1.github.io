@@ -128,6 +128,7 @@ function render(el, json) {
           Math.PI * 2,
         );
         context.fill();
+        return
       }
 
       if (!Number.isFinite(point.x) || !Number.isFinite(point.y)) return;
