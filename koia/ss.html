@@ -314,8 +314,8 @@
         setTimeout(() => moveChicken(-3), 50);
       }, 100);
       $("#lay-egg").click(function () {
-        var xValue = testScene.data.points[0].x;
-        var yValue = testScene.data.points[0].y;
+        var xValue = testScene.data["kr-data"].points[0].x;
+        var yValue = testScene.data["kr-data"].points[0].y;
         testScene.animate("x", 0, Math.random(), "tp");
         testScene.data["kr-data"].points.push({
           ref: 3,
