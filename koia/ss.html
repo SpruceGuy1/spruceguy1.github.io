@@ -323,8 +323,8 @@
         testScene.animate("x", 0, Math.random(), "tp");
         testScene.data["kr-data"].points.push({
           ref: 3,
-          x: xValue,
-          y: yValue,
+          x: xValue - 0.5 + Math.random(),
+          y: yValue - 0.5 + Math.random(),
           oval: {
             color: "#ffe0c0",
             pxheight: 10,
