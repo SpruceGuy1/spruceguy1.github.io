@@ -7,6 +7,7 @@ const moduleSource = source.replace(
   /export\s*\{[\s\S]*?\};\s*export\s+default\s+render;?\s*$/,
   "",
 );*/
+const source = fs.readFileSync(__dirname + "/renderer.js", "utf8");
 const moduleSource = source
   .replace(/export\s*\{[\s\S]*?\};\s*export\s+default\s+render;?\s*$/, "")
   .replace(/^export\s+class\s+/m, "class ");
