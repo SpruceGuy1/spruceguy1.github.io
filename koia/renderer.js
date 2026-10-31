@@ -1,7 +1,7 @@
 export class Scene {
   constructor(json, compressedScheme = 0x0001) {
     this.data = json;
-    this.sch = compressedScheme
+    this.sch = compressedScheme;
   }
   animate(prop, ref, change, cs = "tp", json = this.data) {
     const scene = typeof json === "string" ? JSON.parse(json) : json;
