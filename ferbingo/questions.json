@@ -216,12 +216,14 @@
       "special": {
         "unit": "u0"
       },
-      "q": "K\u02b7is ibi lok\u02b7at Latine?",
+      "q": "K\u02b7is ibi lok\u02b7at Latinem?",
       "rega": "^\\s*Who here speaks Latin\\??\\s*$"
     },
     {
       "id": "t36",
-      "q": "I enjoy speaking La"
+      "q": "I enjoy speaking Latin.",
+      "rega": "^\\s*Enjo(\u2022|-)me lok\u02b7aġ Latinem\\.?\\s*$",
+      "flags": "i"
     }
   ],
   "vocab": [
@@ -395,6 +397,7 @@
 
     {
       "id": "Correlatives",
+      "information": "<h1>Correlatives</h1><br><p>Correlatives are words that are used to ask questions or refer to things, people, places, times, and amounts. They are often used in combination with other words to form questions or statements. The following table shows the standard correlatives in Ferbezan.</p>",
       "unit": {
         "title": "Correlatives",
         "unit-id": "u0",
@@ -528,7 +531,7 @@
     },
     {
       "id": "v30",
-      "information": "'Hañken' means 'lunch'. It is taken from English 'lunch'."
+      "information": ""
     }
   ],
   "inflection": [

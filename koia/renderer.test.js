@@ -2,11 +2,14 @@ const assert = require("node:assert");
 const fs = require("node:fs");
 const vm = require("node:vm");
 
-const source = fs.readFileSync(__dirname + "/renderer.js", "utf8");
+/*const source = fs.readFileSync(__dirname + "/renderer.js", "utf8");
 const moduleSource = source.replace(
   /export\s*\{[\s\S]*?\};\s*export\s+default\s+render;?\s*$/,
   "",
-);
+);*/
+const moduleSource = source
+  .replace(/export\s*\{[\s\S]*?\};\s*export\s+default\s+render;?\s*$/, "")
+  .replace(/^export\s+class\s+/m, "class ");
 
 const context = {
   console,
