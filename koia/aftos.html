@@ -42,6 +42,10 @@
 
             */
       function r(d) {
+        var retval = {
+            "kr-type": "2d-color",
+            "kr-data": {}
+        }
         var n = 0;
         for (let i of d) {
           if (!"OS0123456789xyTtHhCcJjBz_".includes(i)) {
@@ -128,8 +132,10 @@
                 imageURL = "/images/koia/empty.png"; //empty tile
                 break;
             }
-            retval.points = [];
-            retval.points.push({
+            if(!retval["kr-data"].points){
+            retval["kr-data"].points = [];
+            }
+            retval["kr-data"].points.push({
               x: (n % 4) * 16,
               y: Math.floor(n / 4) * 16,
               image: {
@@ -150,14 +156,19 @@
         scene.data = r(data);
       }
       $("#loadData").click(function () {
-        d = prompt("Paste your data here:");
+       var d = prompt("Paste your data here:");
         if (d) {
           data = d;
           loadData(data);
 
-          render($("#render"), scene.data);
+          render(document.getElementById("render"), scene.data);
         }
       });
+    loadData(data);
+    render(document.getElementById("render"), scene.data);
+    $("#getData").click(function () {
+      $("#data").text(data.join(""));
+    });
     </script>
   </body>
 </html>
