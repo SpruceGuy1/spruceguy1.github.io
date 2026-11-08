@@ -1,159 +1,158 @@
 <!doctype html>
 <html>
-    <head>
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-        <h1>Aftos</h1>
-        <h2>Aftos is a cellular automaton that simulates herbivores, carnivores, plants, and trees.</h2>
-        <div id="render"></div>
-        <button id="getData">Get Data</button>
-        <div id="data"></div> Copy this data, and put it on your computer. When you want to load your save, click the "Load Data" button and paste the data into the prompt.
-<button id="loadData">Load Data</button>
+  <head>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>Aftos</h1>
+    <h2>
+      Aftos is a cellular automaton that simulates herbivores, carnivores,
+      plants, and trees.
+    </h2>
+    <div id="render"></div>
+    <button id="getData">Get Data</button>
+    <div id="data"></div>
+    Copy this data, and put it on your computer. When you want to load your
+    save, click the "Load Data" button and paste the data into the prompt.
+    <button id="loadData">Load Data</button>
 
-        <script type="module">
-            import {Scene, render, animate} from "/koia/renderer.js";
-            import {addFrame} from "/modules/general/messages.js";
-            $("body").append(addFrame())
-            var data = ""
-            function defaultData(){
-                var retval = ""
-                for(var i = 0; i < 16; i++){
-                    retval += "_" //(empty tile)
-                }
-                return retval
-            }
-            data = Array.from(defaultData())
-            var mode = "standard"
-            /* Modes:
+    <script type="module">
+      import { Scene, render, animate } from "/koia/renderer.js";
+      import { addFrame } from "/modules/general/messages.js";
+      $("body").append(addFrame());
+      var data = "";
+      function defaultData() {
+        var retval = "";
+        for (var i = 0; i < 16; i++) {
+          retval += "_"; //(empty tile)
+        }
+        return retval;
+      }
+      data = Array.from(defaultData());
+      var mode = "standard";
+      /* Modes:
             standard: OS0123456789xyTtHhCcJjBz_
             simple: OSPHhCcz_
             more coming
 
             */
-           function r(d){
-            var n = 0
-            for(let i of d){
-                if(!("OS0123456789xyTtHhCcJjBz_".includes(i))){
-                    alert("Invalid character in data: " + i)
-                    return Array.from(defaultData())
-                }else{
-                    var imageURL
-                    switch(i){
-                        case "O":
-                            imageURL = "/images/ecosim/co2.png" //organic matter = brown circle
-                            break
-                        case "S":
-                            imageURL = "/images/koia/sprout.png" //sprout = small green line
+      function r(d) {
+        var n = 0;
+        for (let i of d) {
+          if (!"OS0123456789xyTtHhCcJjBz_".includes(i)) {
+            alert("Invalid character in data: " + i);
+            return Array.from(defaultData());
+          } else {
+            var imageURL;
+            switch (i) {
+              case "O":
+                imageURL = "/images/ecosim/co2.png"; //organic matter = brown circle
+                break;
+              case "S":
+                imageURL = "/images/koia/sprout.png"; //sprout = small green line
 
-                            break
-                        case "0":
-                            imageURL = "/images/koia/plant0.png" //plant
-                            break
-                        case "1":
-                            imageURL = "/images/koia/plant1.png" //plant
-                            break
-                        case "2":
-                            imageURL = "/images/koia/plant2.png" //plant
-                            break
-                        case "3":
-                            imageURL = "/images/koia/plant3.png" //plant
-                            break
-                        case "4":
-                            imageURL = "/images/koia/plant4.png" //plant
-                            break
-                        case "5":
-                            imageURL = "/images/koia/plant5.png" //plant
-                            break
-                        case "6":
-                            imageURL = "/images/koia/plant6.png" //plant
-                            break
-                        case "7":
-                            imageURL = "/images/koia/plant7.png" //plant
-                            break
-                        case "8":
-                            imageURL = "/images/koia/plant8.png" //plant
-                            break
-                        case "9":
-                            imageURL = "/images/koia/plant9.png" //plant
-                            break
-                        case "x":
-                            imageURL = "/images/koia/plant10.png" //sapling
+                break;
+              case "0":
+                imageURL = "/images/koia/plant0.png"; //plant
+                break;
+              case "1":
+                imageURL = "/images/koia/plant1.png"; //plant
+                break;
+              case "2":
+                imageURL = "/images/koia/plant2.png"; //plant
+                break;
+              case "3":
+                imageURL = "/images/koia/plant3.png"; //plant
+                break;
+              case "4":
+                imageURL = "/images/koia/plant4.png"; //plant
+                break;
+              case "5":
+                imageURL = "/images/koia/plant5.png"; //plant
+                break;
+              case "6":
+                imageURL = "/images/koia/plant6.png"; //plant
+                break;
+              case "7":
+                imageURL = "/images/koia/plant7.png"; //plant
+                break;
+              case "8":
+                imageURL = "/images/koia/plant8.png"; //plant
+                break;
+              case "9":
+                imageURL = "/images/koia/plant9.png"; //plant
+                break;
+              case "x":
+                imageURL = "/images/koia/plant10.png"; //sapling
 
-                            break
-                        case "y":
-                            imageURL = "/images/koia/plant11.png" //sapling
-                            break
-                        case "T":
-                            imageURL = "/spruce-tree.png" //tree sprite reused from Blocks
-                            break
-                        case "t":
-                            imageURL = "/images/koia/bare-tree.png" //bare tree
-                            break
-                        case "H":
-                        imageURL = "/cow.png" // reused cow from Blocks
-                            break
-                        case "h":
-                            imageURL = "/images/koia/herbivore-lowhp.png" //herbivore with half hp
-                            break
-                        case "C":
-                            imageURL = "/images/koia/carnivore.png" //carnivore
-                            break   
-                        case "c":
-                            imageURL = "/images/koia/carnivore-lowhp.png" //carnivore with half hp
-                            break
-                        case "J":
-                            imageURL = "/images/koia/herbivore-juvenile.png" // juveniles have 2 hp, but cannot reach tree leaves
-                            break
-                        case "j":
-                            imageURL = "/images/koia/herbivore-juvenile-lowhp.png" //juvenile with half hp
-                            break
-                        case "B":
-                            imageURL = "/images/koia/herbivore-baby.png" //babies have 1hp and only eat sprouts
-                            break
-                        case "z":
-                            imageURL = "/images/koia/carnivore-posteating" // carnivore standing on the remains of an herbivore. when it walks away, organic matter will be left behind.
-                            break
-                        case "_":
-                            imageURL = "/images/koia/empty.png" //empty tile
-                            break   
-
-                    }
-                    retval.points = []
-                    retval.points.push({
-                        x:n % 4 * 16,
-                        y:Math.floor(n / 4) * 16,
-                        image:{
-                            src:imageURL,
-                            width:16,
-                            height:16
-
-                        },
-                        ref: n
-                    })
-                }
-                n ++
+                break;
+              case "y":
+                imageURL = "/images/koia/plant11.png"; //sapling
+                break;
+              case "T":
+                imageURL = "/spruce-tree.png"; //tree sprite reused from Blocks
+                break;
+              case "t":
+                imageURL = "/images/koia/bare-tree.png"; //bare tree
+                break;
+              case "H":
+                imageURL = "/cow.png"; // reused cow from Blocks
+                break;
+              case "h":
+                imageURL = "/images/koia/herbivore-lowhp.png"; //herbivore with half hp
+                break;
+              case "C":
+                imageURL = "/images/koia/carnivore.png"; //carnivore
+                break;
+              case "c":
+                imageURL = "/images/koia/carnivore-lowhp.png"; //carnivore with half hp
+                break;
+              case "J":
+                imageURL = "/images/koia/herbivore-juvenile.png"; // juveniles have 2 hp, but cannot reach tree leaves
+                break;
+              case "j":
+                imageURL = "/images/koia/herbivore-juvenile-lowhp.png"; //juvenile with half hp
+                break;
+              case "B":
+                imageURL = "/images/koia/herbivore-baby.png"; //babies have 1hp and only eat sprouts
+                break;
+              case "z":
+                imageURL = "/images/koia/carnivore-posteating"; // carnivore standing on the remains of an herbivore. when it walks away, organic matter will be left behind.
+                break;
+              case "_":
+                imageURL = "/images/koia/empty.png"; //empty tile
+                break;
             }
-            return retval
-           }
-            var scene = new Scene({})
-            function loadData(d){
-                data = Array.from(d)
-                scene.data = r(data)
-            }
-            $("#loadData").click(function() {
-                d = prompt("Paste your data here:")
-                if (d) {
-                    data = d
-                    loadData(data)
+            retval.points = [];
+            retval.points.push({
+              x: (n % 4) * 16,
+              y: Math.floor(n / 4) * 16,
+              image: {
+                src: imageURL,
+                width: 16,
+                height: 16,
+              },
+              ref: n,
+            });
+          }
+          n++;
+        }
+        return retval;
+      }
+      var scene = new Scene({});
+      function loadData(d) {
+        data = Array.from(d);
+        scene.data = r(data);
+      }
+      $("#loadData").click(function () {
+        d = prompt("Paste your data here:");
+        if (d) {
+          data = d;
+          loadData(data);
 
-                    render($("#render"), scene.data)
-                }
-            })
-
-
-
-        </script>
-
-    </body>
+          render($("#render"), scene.data);
+        }
+      });
+    </script>
+  </body>
 </html>
