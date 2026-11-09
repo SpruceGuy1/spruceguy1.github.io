@@ -43,10 +43,10 @@ function render(el, json, { pixelGrid = false } = {}) {
   const lines = Array.isArray(data.lines) ? data.lines : [];
   const areas = Array.isArray(data.areas) ? data.areas : [];
   const canvas = document.createElement("canvas");
- // const size = Math.max(1, Math.min(el.clientWidth || 600, 600));
- const size = pixelGrid
-  ? 64
-  : Math.max(1, Math.min(el.clientWidth || 600, 600));
+  // const size = Math.max(1, Math.min(el.clientWidth || 600, 600));
+  const size = pixelGrid
+    ? 64
+    : Math.max(1, Math.min(el.clientWidth || 600, 600));
   const padding = 24;
   const pixelRatio = window.devicePixelRatio || 1;
   /*function getPointByRef(r) {
@@ -90,11 +90,11 @@ function render(el, json, { pixelGrid = false } = {}) {
       y: size - offsetY - (point.y - minY) * scale,
     });*/
     const position = pixelGrid
-  ? (point) => ({ x: point.x, y: point.y })
-  : (point) => ({
-      x: offsetX + (point.x - minX) * scale,
-      y: size - offsetY - (point.y - minY) * scale,
-    });
+      ? (point) => ({ x: point.x, y: point.y })
+      : (point) => ({
+          x: offsetX + (point.x - minX) * scale,
+          y: size - offsetY - (point.y - minY) * scale,
+        });
 
     context.lineWidth = 2;
     lines.forEach((line) => {

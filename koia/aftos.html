@@ -143,7 +143,7 @@
             /*x: (n % 4) * 16,
             y: Math.floor(n / 4) * 16,*/
             x: 8 + (n % 4) * 16,
-y: 8 + Math.floor(n / 4) * 16,
+            y: 8 + Math.floor(n / 4) * 16,
             image: {
               src: imageURL,
               width: 16,
@@ -167,17 +167,17 @@ y: 8 + Math.floor(n / 4) * 16,
           data = d;
           loadData(data);
 
-        //  render(document.getElementById("render"), scene.data);
-        render(document.getElementById("render"), scene.data, {
-  pixelGrid: true,
-});
+          //  render(document.getElementById("render"), scene.data);
+          render(document.getElementById("render"), scene.data, {
+            pixelGrid: true,
+          });
         }
       });
       loadData(data);
-    //  render(document.getElementById("render"), scene.data);
-    render(document.getElementById("render"), scene.data, {
-  pixelGrid: true,
-});
+      //  render(document.getElementById("render"), scene.data);
+      render(document.getElementById("render"), scene.data, {
+        pixelGrid: true,
+      });
       $("#getData").click(function () {
         $("#data").text(data.join(""));
       });
