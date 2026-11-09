@@ -28,7 +28,7 @@ export class Scene {
     return scene;
   }
 }
-function render(el, json, { pixelGrid = false } = {}) {
+function render(el, json, { pixelGrid = false, pgs = 4} = {}) {
   if (!el) {
     throw new TypeError("A container element is required");
   }
@@ -45,7 +45,7 @@ function render(el, json, { pixelGrid = false } = {}) {
   const canvas = document.createElement("canvas");
   // const size = Math.max(1, Math.min(el.clientWidth || 600, 600));
   const size = pixelGrid
-    ? 64
+    ? 16 * (pgs || 4) // 16px per grid unit
     : Math.max(1, Math.min(el.clientWidth || 600, 600));
   const padding = 24;
   const pixelRatio = window.devicePixelRatio || 1;

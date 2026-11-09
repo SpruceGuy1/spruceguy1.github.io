@@ -21,12 +21,17 @@
     save, click the "Load Data" button and paste the data into the prompt.
     <button id="loadData">Load Data</button>
     <select id="mapSelect"></select>
+    <form id="customValues">
+      <input type="number" id="customPGS" placeholder="Pixel Grid Size (default 4)" />
+      <button type="submit">Save values</button>
+    </form>
     <script type="module">
       import { Scene, render, animate } from "/koia/renderer.js";
       import { addFrame } from "/modules/general/messages.js";
       import { maps } from "/modules/aftos/maps.js";
       $("body").append(addFrame());
       var data = "";
+      var currentPGS = 4; //default pixel grid size
       function defaultData() {
         var retval = "";
         for (var i = 0; i < 16; i++) {
@@ -170,7 +175,7 @@
 
           //  render(document.getElementById("render"), scene.data);
           render(document.getElementById("render"), scene.data, {
-            pixelGrid: true,
+            pixelGrid: true, pgs: currentPGS || 4,
           });
         }
       });
@@ -178,6 +183,7 @@
       //  render(document.getElementById("render"), scene.data);
       render(document.getElementById("render"), scene.data, {
         pixelGrid: true,
+        pgs: currentPGS || 4,
       });
       $("#getData").click(function () {
         $("#data").text(data.join(""));
@@ -189,7 +195,7 @@
           data = maps[selectedMap];
           loadData(data.data); //data.data :)
           render(document.getElementById("render"), scene.data, {
-            pixelGrid: true,
+            pixelGrid: true,pgs: data.pgs || 4
           });
         }
       });
@@ -198,6 +204,19 @@
           "<option value='" + prop + "'>" + maps[prop].name + "</option>",
         );
       }
+      $("#customValues").submit(function (e) {
+        e.preventDefault();
+        var pgsValue = parseInt($("#customPGS").val());
+        if (!isNaN(pgsValue) && pgsValue > 0) {
+          currentPGS = pgsValue;
+          render(document.getElementById("render"), scene.data, {
+            pixelGrid: true,
+            pgs: currentPGS,
+          });
+        } else {
+          alert("Please enter a valid positive number for Pixel Grid Size.");
+        }
+      });
     </script>
   </body>
 </html>
