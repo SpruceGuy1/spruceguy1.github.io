@@ -183,6 +183,7 @@
         $("#data").text(data.join(""));
       });
       $("#mapSelect").change(function () {
+        console.log("mapSelect changed");
         var selectedMap = $(this).val();
         if (selectedMap && maps[selectedMap]) {
           data = maps[selectedMap];
