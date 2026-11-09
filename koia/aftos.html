@@ -51,7 +51,7 @@
           if (!"OS0123456789xyTtHhCcJjBz_".includes(i)) {
             alert("Invalid character in data: " + i);
             return Array.from(defaultData());
-          } else {
+          } 
             var imageURL;
             switch (i) {
               case "O":
@@ -131,7 +131,11 @@
               case "_":
                 imageURL = "/images/koia/empty.png"; //empty tile
                 break;
+              default:
+                imageURL = "/images/koia/error.png"; //error tile
+                break;
             }
+          
             if (!retval["kr-data"].points) {
               retval["kr-data"].points = [];
             }
@@ -146,8 +150,9 @@
               ref: n,
             });
           }
+        
           n++;
-        }
+        
         return retval;
       }
       var scene = new Scene({});
