@@ -187,7 +187,7 @@
         var selectedMap = $(this).val();
         if (selectedMap && maps[selectedMap]) {
           data = maps[selectedMap];
-          loadData(selectedMap.data);
+          loadData(data.data); //data.data :)
           render(document.getElementById("render"), scene.data, {
             pixelGrid: true,
           });
