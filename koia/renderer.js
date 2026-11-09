@@ -28,7 +28,7 @@ export class Scene {
     return scene;
   }
 }
-function render(el, json, { pixelGrid = false, pgs = 4} = {}) {
+function render(el, json, { pixelGrid = false, pgs = 4 } = {}) {
   if (!el) {
     throw new TypeError("A container element is required");
   }
