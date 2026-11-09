@@ -155,7 +155,7 @@
             /*x: 8 + (n % 4) * 16,
             y: 8 + Math.floor(n / 4) * 16,*/
             x: 8 + (n % currentPGS) * 16,
-y: 8 + Math.floor(n / currentPGS) * 16,
+            y: 8 + Math.floor(n / currentPGS) * 16,
             image: {
               src: imageURL,
               width: 16,
@@ -195,7 +195,7 @@ y: 8 + Math.floor(n / currentPGS) * 16,
       $("#getData").click(function () {
         $("#data").text(data.join(""));
       });
-     /* $("#mapSelect").change(function () {
+      /* $("#mapSelect").change(function () {
         console.log("mapSelect changed");
         var selectedMap = $(this).val();
         if (selectedMap && maps[selectedMap]) {
@@ -208,16 +208,16 @@ y: 8 + Math.floor(n / currentPGS) * 16,
         }
       });*/
       $("#mapSelect").change(function () {
-  const selectedMap = maps[$(this).val()];
+        const selectedMap = maps[$(this).val()];
 
-  if (selectedMap) {
-    loadData(selectedMap.data);
-    render(document.getElementById("render"), scene.data, {
-      pixelGrid: true,
-      pgs: currentPGS,
-    });
-  }
-});
+        if (selectedMap) {
+          loadData(selectedMap.data);
+          render(document.getElementById("render"), scene.data, {
+            pixelGrid: true,
+            pgs: currentPGS,
+          });
+        }
+      });
       for (let prop in maps) {
         $("#mapSelect").append(
           "<option value='" + prop + "'>" + maps[prop].name + "</option>",
@@ -227,8 +227,8 @@ y: 8 + Math.floor(n / currentPGS) * 16,
         e.preventDefault();
         var pgsValue = parseInt($("#customPGS").val());
         if (!isNaN(pgsValue) && pgsValue > 0) {
-currentPGS = pgsValue;
-loadData(data);
+          currentPGS = pgsValue;
+          loadData(data);
           render(document.getElementById("render"), scene.data, {
             pixelGrid: true,
             pgs: currentPGS,
