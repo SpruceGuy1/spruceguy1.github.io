@@ -22,7 +22,11 @@
     <button id="loadData">Load Data</button>
     <select id="mapSelect"></select>
     <form id="customValues">
-      <input type="number" id="customPGS" placeholder="Pixel Grid Size (default 4)" />
+      <input
+        type="number"
+        id="customPGS"
+        placeholder="Pixel Grid Size (default 4)"
+      />
       <button type="submit">Save values</button>
     </form>
     <script type="module">
@@ -177,7 +181,8 @@ y: 8 + Math.floor(n / currentPGS) * 16,
 
           //  render(document.getElementById("render"), scene.data);
           render(document.getElementById("render"), scene.data, {
-            pixelGrid: true, pgs: currentPGS || 4,
+            pixelGrid: true,
+            pgs: currentPGS || 4,
           });
         }
       });
@@ -197,7 +202,8 @@ y: 8 + Math.floor(n / currentPGS) * 16,
           data = maps[selectedMap];
           loadData(data.data); //data.data :)
           render(document.getElementById("render"), scene.data, {
-            pixelGrid: true,pgs: data.pgs || 4
+            pixelGrid: true,
+            pgs: data.pgs || 4,
           });
         }
       });*/
