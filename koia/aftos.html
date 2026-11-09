@@ -94,66 +94,64 @@
             case "x":
               imageURL = "/images/koia/plant10.png"; //sapling
 
-                break;
-              case "y":
-                imageURL = "/images/koia/plant11.png"; //sapling
-                break;
-              case "T":
-                imageURL = "/spruce-tree.png"; //tree sprite reused from Blocks
-                break;
-              case "t":
-                imageURL = "/images/koia/bare-tree.png"; //bare tree
-                break;
-              case "H":
-                imageURL = "/cow.png"; // reused cow from Blocks
-                break;
-              case "h":
-                imageURL = "/images/koia/herbivore-lowhp.png"; //herbivore with half hp
-                break;
-              case "C":
-                imageURL = "/images/koia/carnivore.png"; //carnivore
-                break;
-              case "c":
-                imageURL = "/images/koia/carnivore-lowhp.png"; //carnivore with half hp
-                break;
-              case "J":
-                imageURL = "/images/koia/herbivore-juvenile.png"; // juveniles have 2 hp, but cannot reach tree leaves
-                break;
-              case "j":
-                imageURL = "/images/koia/herbivore-juvenile-lowhp.png"; //juvenile with half hp
-                break;
-              case "B":
-                imageURL = "/images/koia/herbivore-baby.png"; //babies have 1hp and only eat sprouts
-                break;
-              case "z":
-                imageURL = "/images/koia/carnivore-posteating.png"; // carnivore standing on the remains of an herbivore. when it walks away, organic matter will be left behind.
-                break;
-              case "_":
-                imageURL = "/images/koia/empty.png"; //empty tile
-                break;
-              default:
-                imageURL = "/images/koia/error.png"; //error tile
-                break;
-            }
-          
-            if (!retval["kr-data"].points) {
-              retval["kr-data"].points = [];
-            }
-            retval["kr-data"].points.push({
-              x: (n % 4) * 16,
-              y: Math.floor(n / 4) * 16,
-              image: {
-                src: imageURL,
-                width: 16,
-                height: 16,
-              },
-              ref: n,
-            });
-            n++
+              break;
+            case "y":
+              imageURL = "/images/koia/plant11.png"; //sapling
+              break;
+            case "T":
+              imageURL = "/spruce-tree.png"; //tree sprite reused from Blocks
+              break;
+            case "t":
+              imageURL = "/images/koia/bare-tree.png"; //bare tree
+              break;
+            case "H":
+              imageURL = "/cow.png"; // reused cow from Blocks
+              break;
+            case "h":
+              imageURL = "/images/koia/herbivore-lowhp.png"; //herbivore with half hp
+              break;
+            case "C":
+              imageURL = "/images/koia/carnivore.png"; //carnivore
+              break;
+            case "c":
+              imageURL = "/images/koia/carnivore-lowhp.png"; //carnivore with half hp
+              break;
+            case "J":
+              imageURL = "/images/koia/herbivore-juvenile.png"; // juveniles have 2 hp, but cannot reach tree leaves
+              break;
+            case "j":
+              imageURL = "/images/koia/herbivore-juvenile-lowhp.png"; //juvenile with half hp
+              break;
+            case "B":
+              imageURL = "/images/koia/herbivore-baby.png"; //babies have 1hp and only eat sprouts
+              break;
+            case "z":
+              imageURL = "/images/koia/carnivore-posteating.png"; // carnivore standing on the remains of an herbivore. when it walks away, organic matter will be left behind.
+              break;
+            case "_":
+              imageURL = "/images/koia/empty.png"; //empty tile
+              break;
+            default:
+              imageURL = "/images/koia/error.png"; //error tile
+              break;
           }
-        
-          
-        
+
+          if (!retval["kr-data"].points) {
+            retval["kr-data"].points = [];
+          }
+          retval["kr-data"].points.push({
+            x: (n % 4) * 16,
+            y: Math.floor(n / 4) * 16,
+            image: {
+              src: imageURL,
+              width: 16,
+              height: 16,
+            },
+            ref: n,
+          });
+          n++;
+        }
+
         return retval;
       }
       var scene = new Scene({});
