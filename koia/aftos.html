@@ -20,10 +20,11 @@
     Copy this data, and put it on your computer. When you want to load your
     save, click the "Load Data" button and paste the data into the prompt.
     <button id="loadData">Load Data</button>
-
+<select id="mapSelect"></select>
     <script type="module">
       import { Scene, render, animate } from "/koia/renderer.js";
       import { addFrame } from "/modules/general/messages.js";
+      import { maps } from "/modules/aftos/maps.js";
       $("body").append(addFrame());
       var data = "";
       function defaultData() {
@@ -181,6 +182,19 @@
       $("#getData").click(function () {
         $("#data").text(data.join(""));
       });
+      $("#mapSelect").change(function () {
+        var selectedMap = $(this).val();
+        if (selectedMap && maps[selectedMap]) {
+          data = maps[selectedMap];
+          loadData(data);
+          render(document.getElementById("render"), scene.data, {
+            pixelGrid: true,
+          });
+        }
+      });
+      for(let prop in maps){
+        $("#mapSelect").append("<option value='"+prop+"'>"+maps[prop].name+"</option>");
+      }
     </script>
   </body>
 </html>
