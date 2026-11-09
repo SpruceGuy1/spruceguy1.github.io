@@ -28,7 +28,7 @@ export class Scene {
     return scene;
   }
 }
-function render(el, json) {
+function render(el, json, { pixelGrid = false } = {}) {
   if (!el) {
     throw new TypeError("A container element is required");
   }
@@ -43,7 +43,10 @@ function render(el, json) {
   const lines = Array.isArray(data.lines) ? data.lines : [];
   const areas = Array.isArray(data.areas) ? data.areas : [];
   const canvas = document.createElement("canvas");
-  const size = Math.max(1, Math.min(el.clientWidth || 600, 600));
+ // const size = Math.max(1, Math.min(el.clientWidth || 600, 600));
+ const size = pixelGrid
+  ? 64
+  : Math.max(1, Math.min(el.clientWidth || 600, 600));
   const padding = 24;
   const pixelRatio = window.devicePixelRatio || 1;
   /*function getPointByRef(r) {
@@ -82,7 +85,13 @@ function render(el, json) {
     const scale = (size - padding * 2) / range;
     const offsetX = (size - (maxX - minX) * scale) / 2;
     const offsetY = (size - (maxY - minY) * scale) / 2;
-    const position = (point) => ({
+    /*const position = (point) => ({
+      x: offsetX + (point.x - minX) * scale,
+      y: size - offsetY - (point.y - minY) * scale,
+    });*/
+    const position = pixelGrid
+  ? (point) => ({ x: point.x, y: point.y })
+  : (point) => ({
       x: offsetX + (point.x - minX) * scale,
       y: size - offsetY - (point.y - minY) * scale,
     });
