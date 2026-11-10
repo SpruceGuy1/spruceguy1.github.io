@@ -14,6 +14,7 @@
       Aftos is a cellular automaton that simulates herbivores, carnivores,
       plants, and trees.
     </h2>
+    <button id="progressButton">Progress by 1 step</button>
     <div id="render"></div>
     <button id="getData">Get Data</button>
     <div id="data"></div>
@@ -236,6 +237,114 @@
         } else {
           alert("Please enter a valid positive number for Pixel Grid Size.");
         }
+      });
+      function getNeighbors(index, pgs) {
+        const neighbors = [];
+        const row = Math.floor(index / pgs);
+        const col = index % pgs;
+
+        for (let r = row - 1; r <= row + 1; r++) {
+          for (let c = col - 1; c <= col + 1; c++) {
+            if (
+              r >= 0 &&
+              r < pgs &&
+              c >= 0 &&
+              c < pgs &&
+              !(r === row && c === col)
+              && (Math.abs(r - row) + Math.abs(c - col) <= 1)
+            ) {
+              neighbors.push(r * pgs + c);
+            }
+          }
+        }
+
+        return neighbors;
+      }
+      function progress(dataArray){
+        //1: move adult herbivores
+        var index = 0
+        for(let i of dataArray){
+          if(i==="H"){
+            //move adult herbivore
+            for(let neighborIndex of getNeighbors(index, currentPGS)){
+              /*if(dataArray[neighborIndex]==="_"){
+                //move to this empty tile
+                dataArray[neighborIndex] = "H";
+                dataArray[index] = "_";
+                break;
+              }*/
+             let possibleFoodIndices = []
+             if(dataArray[neighborIndex]==="0" || dataArray[neighborIndex]==="1" || dataArray[neighborIndex]==="2" || dataArray[neighborIndex]==="3" || dataArray[neighborIndex]==="4" || dataArray[neighborIndex]==="5" || dataArray[neighborIndex]==="6" || dataArray[neighborIndex]==="7" || dataArray[neighborIndex]==="8" || dataArray[neighborIndex]==="9" || dataArray[neighborIndex]==="x" || dataArray[neighborIndex]==="y"){
+                possibleFoodIndices.push(neighborIndex)
+             }
+                //eat this plant
+                
+                
+                
+            }
+            let nuArray = new Array(4)
+            for(let i of posdibleFoodIndices){
+              if(i == index - currentPGS){
+                nuArray[0] = i
+             }else if(i == index + 1){
+                nuArray[1] = i
+             }else if(i == index + currentPGS){
+                nuArray[2] = i
+
+            }else if(i == index - 1){
+                nuArray[3] = i
+          }
+        }
+          for(let i of nuArray){
+            if(i!==undefined){
+              dataArray[i] = "H"
+              dataArray[index] = "_"
+              break;
+            }
+          }
+        }
+          if(i==="h"){
+            //move adult herbivore with low hp
+            for(let neighborIndex of getNeighbors(index, currentPGS)){
+              if(dataArray[neighborIndex]==="_"){
+                //move to this empty tile
+                dataArray[neighborIndex] = "h";
+                dataArray[index] = "_";
+                break;
+              }
+            }
+            let nuArray = new Array(4)
+            for(let i of posdibleFoodIndices){
+              if(i == index - currentPGS){
+                nuArray[0] = i
+             }else if(i == index + 1){
+                nuArray[1] = i
+             }else if(i == index + currentPGS){
+                nuArray[2] = i
+            }else if(i == index - 1){
+                nuArray[3] = i
+            }
+          for(let i of nuArray){
+            if(i!==undefined){
+              dataArray[i] = "H" //gain hp by eating plant
+              dataArray[index] = "_"
+              break;
+            }
+          }
+        }
+          }
+          index++;
+        }
+        data = dataArray
+        loadData(dataArray)
+        render(document.getElementById("render"), scene.data, {
+          pixelGrid: true,
+          pgs: currentPGS,
+        });
+        return dataArray
+      }
+      $("#progressButton").click(function () {
+        data = progress(data);
       });
     </script>
   </body>
