@@ -354,27 +354,27 @@
         });
         return dataArray;
       }*/
-     function progress(dataArray) {
-  const original = [...dataArray];
-  const next = [...dataArray];
-  const plantTiles = new Set("0123456789xy");
+      function progress(dataArray) {
+        const original = [...dataArray];
+        const next = [...dataArray];
+        const plantTiles = new Set("0123456789xy");
 
-  for (let index = 0; index < original.length; index++) {
-    const tile = original[index];
-    if (tile !== "H" && tile !== "h") continue;
+        for (let index = 0; index < original.length; index++) {
+          const tile = original[index];
+          if (tile !== "H" && tile !== "h") continue;
 
-    const neighbors = getNeighbors(index, currentPGS);
-    const target = [
-      index - currentPGS, // up
-      index + 1,          // right
-      index + currentPGS, // down
-      index - 1,          // left
-    ].find(
-      (candidate) =>
-        neighbors.includes(candidate) &&
-        plantTiles.has(original[candidate]) &&
-        plantTiles.has(next[candidate]),
-    );
+          const neighbors = getNeighbors(index, currentPGS);
+          const target = [
+            index - currentPGS, // up
+            index + 1, // right
+            index + currentPGS, // down
+            index - 1, // left
+          ].find(
+            (candidate) =>
+              neighbors.includes(candidate) &&
+              plantTiles.has(original[candidate]) &&
+              plantTiles.has(next[candidate]),
+          );
 
     if (target !== undefined) {
       next[index] = "_";
