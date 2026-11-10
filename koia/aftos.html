@@ -373,9 +373,9 @@
 
           const neighbors = getNeighbors(index, currentPGS);
           const target = [
-            index - currentPGS, // up
-            index + 1, // right
             index + currentPGS, // down
+            index + 1, // right
+            index - currentPGS, // up
             index - 1, // left
           ].find(
             (candidate) =>
