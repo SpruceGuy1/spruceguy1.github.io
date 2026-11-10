@@ -292,28 +292,27 @@
               }
               //eat this plant
             }
-            let nuArray = new Array(4)
-            for(let i of possibleFoodIndices){
-              if(i == index - currentPGS){
-                nuArray[0] = i
-             }else if(i == index + 1){
-                nuArray[1] = i
-             }else if(i == index + currentPGS){
-                nuArray[2] = i
-
-            }else if(i == index - 1){
-                nuArray[3] = i
-          }
-        }
-          for(let i of nuArray){
-            if(i!==undefined){
-              dataArray[i] = "H"
-              dataArray[index] = "_"
-              break;
+            let nuArray = new Array(4);
+            for (let i of possibleFoodIndices) {
+              if (i == index - currentPGS) {
+                nuArray[0] = i;
+              } else if (i == index + 1) {
+                nuArray[1] = i;
+              } else if (i == index + currentPGS) {
+                nuArray[2] = i;
+              } else if (i == index - 1) {
+                nuArray[3] = i;
+              }
+            }
+            for (let i of nuArray) {
+              if (i !== undefined) {
+                dataArray[i] = "H";
+                dataArray[index] = "_";
+                break;
+              }
             }
           }
-        }
-          if(i==="h"){
+          if (i === "h") {
             //move adult herbivore with low hp
             for (let neighborIndex of getNeighbors(index, currentPGS)) {
               if (dataArray[neighborIndex] === "_") {
@@ -323,25 +322,25 @@
                 break;
               }
             }
-            let nuArray = new Array(4)
-            for(let i of possibleFoodIndices){
-              if(i == index - currentPGS){
-                nuArray[0] = i
-             }else if(i == index + 1){
-                nuArray[1] = i
-             }else if(i == index + currentPGS){
-                nuArray[2] = i
-            }else if(i == index - 1){
-                nuArray[3] = i
+            let nuArray = new Array(4);
+            for (let i of possibleFoodIndices) {
+              if (i == index - currentPGS) {
+                nuArray[0] = i;
+              } else if (i == index + 1) {
+                nuArray[1] = i;
+              } else if (i == index + currentPGS) {
+                nuArray[2] = i;
+              } else if (i == index - 1) {
+                nuArray[3] = i;
+              }
+              for (let i of nuArray) {
+                if (i !== undefined) {
+                  dataArray[i] = "H"; //gain hp by eating plant
+                  dataArray[index] = "_";
+                  break;
+                }
+              }
             }
-          for(let i of nuArray){
-            if(i!==undefined){
-              dataArray[i] = "H" //gain hp by eating plant
-              dataArray[index] = "_"
-              break;
-            }
-          }
-        }
           }
           index++;
         }
