@@ -266,6 +266,8 @@
         for (let i of dataArray) {
           if (i === "H") {
             //move adult herbivore
+                          let possibleFoodIndices = [];
+
             for (let neighborIndex of getNeighbors(index, currentPGS)) {
               /*if(dataArray[neighborIndex]==="_"){
                 //move to this empty tile
@@ -273,7 +275,6 @@
                 dataArray[index] = "_";
                 break;
               }*/
-              let possibleFoodIndices = [];
               if (
                 dataArray[neighborIndex] === "0" ||
                 dataArray[neighborIndex] === "1" ||
@@ -314,12 +315,15 @@
           }
           if (i === "h") {
             //move adult herbivore with low hp
+                          let possibleFoodIndices = [];
+
             for (let neighborIndex of getNeighbors(index, currentPGS)) {
-              if (dataArray[neighborIndex] === "_") {
+            //=== "0" || dataArray[neighborIndex] == "1" || ) {
+if("0123456789xy".includes(dataArray[neighborIndex])){
                 //move to this empty tile
-                dataArray[neighborIndex] = "h";
-                dataArray[index] = "_";
-                break;
+                possibleFoodIndices.push(neighborIndex)
+                
+                
               }
             }
             let nuArray = new Array(4);
