@@ -1,4 +1,4 @@
-function getNeighbors(index,pgs){
+function getNeighbors(index, pgs) {
   const neighbors = [];
   const row = Math.floor(index / pgs);
   const col = index % pgs;
@@ -10,8 +10,8 @@ function getNeighbors(index,pgs){
         r < pgs &&
         c >= 0 &&
         c < pgs &&
-        !(r === row && c === col)
-        && Math.abs(r-row) + Math.abs(c-col) <= 1
+        !(r === row && c === col) &&
+        Math.abs(r - row) + Math.abs(c - col) <= 1
       ) {
         neighbors.push(r * pgs + c);
       }
