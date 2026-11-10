@@ -383,17 +383,24 @@
   }
   let next0 = [...next];
 for(let index = 0; index < next.length; index++){
-  //sprouts become plants, 0123456789x become 123456789xy, y becomes t, t becomes T
+  //sprouts become plants, OS0123456789x become S0123456789xy, y becomes t, t becomes T
   const tile = next[index];
-  if(!("0123456789xytT".includes(tile))) continue;
+  if(!("OS0123456789xytT".includes(tile))) continue;
   if(tile == "y") next0[index] = "t";
-  else if(tile == "t") next0[index] = "T";
+  else if(tile == "t") next0[index] = "T"
+  else if(tile == "O") next0[index] = "S"
+  else if(tile == "S") next0[index] = "0"
   else if(tile == "T") continue;
   else{
     const num = parseInt(tile);
     if(num < 9) next0[index] = (num + 1).toString();
     else if(num == 9) next0[index] = "x";
     else if(tile == "x") next0[index] = "y";
+    for(let neighbor of getNeighbors(index, currentPGS)){
+      if(next[neighbor] == "_"){
+        next0[neighbor] = "S"; //sprout grows in empty tile next to plant. up to 4 sprouts can grow from one plant
+      }
+    }
   }
 }
   loadData(next0);
