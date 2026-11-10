@@ -354,55 +354,55 @@
         });
         return dataArray;
       }*/
-     function progress(dataArray) {
-  const original = [...dataArray];
-  const next = [...dataArray];
-  const plantTiles = new Set("0123456789xy");
+      function progress(dataArray) {
+        const original = [...dataArray];
+        const next = [...dataArray];
+        const plantTiles = new Set("0123456789xy");
 
-  for (let index = 0; index < original.length; index++) {
-    const tile = original[index];
-    if (tile !== "H" && tile !== "h") continue;
+        for (let index = 0; index < original.length; index++) {
+          const tile = original[index];
+          if (tile !== "H" && tile !== "h") continue;
 
-    const neighbors = getNeighbors(index, currentPGS);
-    const target = [
-      index - currentPGS, // up
-      index + 1,          // right
-      index + currentPGS, // down
-      index - 1,          // left
-    ].find(
-      (candidate) =>
-        neighbors.includes(candidate) &&
-        plantTiles.has(original[candidate]) &&
-        plantTiles.has(next[candidate]),
-    );
+          const neighbors = getNeighbors(index, currentPGS);
+          const target = [
+            index - currentPGS, // up
+            index + 1, // right
+            index + currentPGS, // down
+            index - 1, // left
+          ].find(
+            (candidate) =>
+              neighbors.includes(candidate) &&
+              plantTiles.has(original[candidate]) &&
+              plantTiles.has(next[candidate]),
+          );
 
-    if (target !== undefined) {
-      next[index] = "_";
-      next[target] = "H"; // Eating restores a low-health herbivore.
-    }
-  }
-  let next0 = [...next];
-for(let index = 0; index < next.length; index++){
-  //sprouts become plants, 0123456789x become 123456789xy, y becomes t, t becomes T
-  const tile = next[index];
-  if(!("0123456789xytT".includes(tile))) continue;
-  if(tile == "y") next0[index] = "t";
-  else if(tile == "t") next0[index] = "T";
-  else if(tile == "T") continue;
-  else{
-    const num = parseInt(tile);
-    if(num < 9) next0[index] = (num + 1).toString();
-    else if(num == 9) next0[index] = "x";
-    else if(tile == "x") next0[index] = "y";
-  }
-}
-  loadData(next0);
-  render(document.getElementById("render"), scene.data, {
-    pixelGrid: true,
-    pgs: currentPGS,
-  });
-  return next0;
-}
+          if (target !== undefined) {
+            next[index] = "_";
+            next[target] = "H"; // Eating restores a low-health herbivore.
+          }
+        }
+        let next0 = [...next];
+        for (let index = 0; index < next.length; index++) {
+          //sprouts become plants, 0123456789x become 123456789xy, y becomes t, t becomes T
+          const tile = next[index];
+          if (!"0123456789xytT".includes(tile)) continue;
+          if (tile == "y") next0[index] = "t";
+          else if (tile == "t") next0[index] = "T";
+          else if (tile == "T") continue;
+          else {
+            const num = parseInt(tile);
+            if (num < 9) next0[index] = (num + 1).toString();
+            else if (num == 9) next0[index] = "x";
+            else if (tile == "x") next0[index] = "y";
+          }
+        }
+        loadData(next0);
+        render(document.getElementById("render"), scene.data, {
+          pixelGrid: true,
+          pgs: currentPGS,
+        });
+        return next0;
+      }
       $("#progressButton").click(function () {
         data = progress(data);
       });
