@@ -5,3 +5,10 @@
   color: white;
   background-color: darkblue;
 }
+#render{
+  width: 500px;       /* Scale to fill container width */
+  height: auto;      /* Maintain original canvas aspect ratio */
+  
+  /* Optional: Prevents blurry images if scaling pixel art up */
+  image-rendering: pixelated; 
+}
