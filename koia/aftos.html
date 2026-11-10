@@ -250,8 +250,8 @@
               r < pgs &&
               c >= 0 &&
               c < pgs &&
-              !(r === row && c === col)
-              && (Math.abs(r - row) + Math.abs(c - col) <= 1)
+              !(r === row && c === col) &&
+              Math.abs(r - row) + Math.abs(c - col) <= 1
             ) {
               neighbors.push(r * pgs + c);
             }
@@ -260,27 +260,37 @@
 
         return neighbors;
       }
-      function progress(dataArray){
+      function progress(dataArray) {
         //1: move adult herbivores
-        var index = 0
-        for(let i of dataArray){
-          if(i==="H"){
+        var index = 0;
+        for (let i of dataArray) {
+          if (i === "H") {
             //move adult herbivore
-            for(let neighborIndex of getNeighbors(index, currentPGS)){
+            for (let neighborIndex of getNeighbors(index, currentPGS)) {
               /*if(dataArray[neighborIndex]==="_"){
                 //move to this empty tile
                 dataArray[neighborIndex] = "H";
                 dataArray[index] = "_";
                 break;
               }*/
-             let possibleFoodIndices = []
-             if(dataArray[neighborIndex]==="0" || dataArray[neighborIndex]==="1" || dataArray[neighborIndex]==="2" || dataArray[neighborIndex]==="3" || dataArray[neighborIndex]==="4" || dataArray[neighborIndex]==="5" || dataArray[neighborIndex]==="6" || dataArray[neighborIndex]==="7" || dataArray[neighborIndex]==="8" || dataArray[neighborIndex]==="9" || dataArray[neighborIndex]==="x" || dataArray[neighborIndex]==="y"){
-                possibleFoodIndices.push(neighborIndex)
-             }
-                //eat this plant
-                
-                
-                
+              let possibleFoodIndices = [];
+              if (
+                dataArray[neighborIndex] === "0" ||
+                dataArray[neighborIndex] === "1" ||
+                dataArray[neighborIndex] === "2" ||
+                dataArray[neighborIndex] === "3" ||
+                dataArray[neighborIndex] === "4" ||
+                dataArray[neighborIndex] === "5" ||
+                dataArray[neighborIndex] === "6" ||
+                dataArray[neighborIndex] === "7" ||
+                dataArray[neighborIndex] === "8" ||
+                dataArray[neighborIndex] === "9" ||
+                dataArray[neighborIndex] === "x" ||
+                dataArray[neighborIndex] === "y"
+              ) {
+                possibleFoodIndices.push(neighborIndex);
+              }
+              //eat this plant
             }
             let nuArray = new Array(4)
             for(let i of possibleFoodIndices){
@@ -305,8 +315,8 @@
         }
           if(i==="h"){
             //move adult herbivore with low hp
-            for(let neighborIndex of getNeighbors(index, currentPGS)){
-              if(dataArray[neighborIndex]==="_"){
+            for (let neighborIndex of getNeighbors(index, currentPGS)) {
+              if (dataArray[neighborIndex] === "_") {
                 //move to this empty tile
                 dataArray[neighborIndex] = "h";
                 dataArray[index] = "_";
@@ -335,13 +345,13 @@
           }
           index++;
         }
-        data = dataArray
-        loadData(dataArray)
+        data = dataArray;
+        loadData(dataArray);
         render(document.getElementById("render"), scene.data, {
           pixelGrid: true,
           pgs: currentPGS,
         });
-        return dataArray
+        return dataArray;
       }
       $("#progressButton").click(function () {
         data = progress(data);
