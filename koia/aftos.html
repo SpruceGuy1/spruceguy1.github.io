@@ -521,6 +521,7 @@
             iter[1][index] = "_";
           } else if (tile == "j" || tile == "B") {
             iter[1][index] = "O"; // j and B die if they can't eat anything, becoming organic matter. J can survive without eating, but will lose health.
+            grow[index] = false; // Don't immediately grow a sprout back
           } else if (tile == "J") {
             iter[1][index] = "j"; // J becomes j if it can't eat anything, losing health.
           }
