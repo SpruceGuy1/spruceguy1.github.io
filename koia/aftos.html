@@ -450,7 +450,7 @@
           const tile = iter[0][index];
           if (tile !== "B" && tile !== "J" && tile !== "j") continue;
           const neighbors = getNeighbors(index, currentPGS);
-          let plantTarget = null;
+          let plantTarget = undefined;
           /*if(tile == "B"){plantTarget = [
             index + currentPGS, // down
             index + 1, // right
@@ -489,7 +489,7 @@
               neighbors.includes(c) && iter[0][c] === "S" && iter[1][c] === "S"
             );
           });
-          let treeTarget = null;
+          let treeTarget = undefined;
           if (tile == "B") {
             treeTarget = [
               index + currentPGS, // down
@@ -504,16 +504,17 @@
               );
             });
           }
-          if (treeTarget !== null) {
+          if (treeTarget !== undefined) {
             iter[1][index] = "J"; // B becomes J when eating a tree, growing up.
             iter[1][treeTarget] = "t"; // Trees lose leaves when eaten, but can grow them back.
             grow[treeTarget] = false; // Don't immediately grow leaves back
-          } else if (plantTarget !== null) {
+          } else if (plantTarget !== undefined) {
             iter[1][plantTarget] = "H"; // j and J become H when eating a plant, restoring health and growing up.
             iter[1][index] = "_";
-          } else if (sproutTarget !== null) {
+          } else if (sproutTarget !== undefined) {
             if (tile == "B") {
               iter[1][sproutTarget] = "J";
+            
             } else {
               iter[1][sproutTarget] = "H";
             } // B becomes J when eating a sprout,  growing up.
