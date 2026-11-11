@@ -12,7 +12,8 @@
   /* Optional: Prevents blurry images if scaling pixel art up */
   image-rendering: pixelated;
 }
-.koia1{
-  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
-  
+.koia1 {
+  font-family:
+    "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
