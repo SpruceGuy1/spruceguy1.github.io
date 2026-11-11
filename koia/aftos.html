@@ -512,12 +512,12 @@
             iter[1][plantTarget] = "H"; // j and J become H when eating a plant, restoring health and growing up.
             iter[1][index] = "_";
           } else if (sproutTarget !== null) {
-            if(tile == "B"){
-            iter[1][sproutTarget] = "J";
-          }else{
-            iter[1][sproutTarget] = "H"
-          } // B becomes J when eating a sprout,  growing up.
-          // j and J become H when eating a sprout, growing up.
+            if (tile == "B") {
+              iter[1][sproutTarget] = "J";
+            } else {
+              iter[1][sproutTarget] = "H";
+            } // B becomes J when eating a sprout,  growing up.
+            // j and J become H when eating a sprout, growing up.
             iter[1][index] = "_";
           } else if (tile == "j" || tile == "B") {
             iter[1][index] = "O"; // j and B die if they can't eat anything, becoming organic matter. J can survive without eating, but will lose health.
