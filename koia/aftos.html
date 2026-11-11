@@ -381,18 +381,18 @@
         });
         return dataArray;
       }*/
-     //babies eat sprouts and tree leaves, juveniles eat plants and sprouts
-     function getCandidateFunction(tile, index, next) {
+      //babies eat sprouts and tree leaves, juveniles eat plants and sprouts
+      function getCandidateFunction(tile, index, next) {
         if (tile === "B") {
-          return (candidate) => [
-            index + currentPGS, // down
-            index + 1, // right
-            index - currentPGS, // up
-            index - 1, // left
-          ].includes(candidate) && data[candidate] === "S";
-            
-            
-      } else if (tile == "J" || tile == "j") /*(tile === "J" || tile === "j") {
+          return (candidate) =>
+            [
+              index + currentPGS, // down
+              index + 1, // right
+              index - currentPGS, // up
+              index - 1, // left
+            ].includes(candidate) && data[candidate] === "S";
+        } else if (tile == "J" || tile == "j")
+          /*(tile === "J" || tile === "j") {
           return (candidate) =>
             getNeighbors(candidate, currentPGS).some(
               (neighbor) =>
@@ -401,11 +401,11 @@
                 data[neighbor] === "y",
             );
         }*/
-        return () => false;
+          return () => false;
       }
       function progress(dataArray) {
         const original = [...dataArray];
-        let iter = []
+        let iter = [];
         iter[0] = [...dataArray];
         const plantTiles = new Set("0123456789xy");
 
@@ -421,7 +421,7 @@
             index - 1,
           ].find(function (c) {
             return (
-            neighbors.includes(c) && original[c] == "T" && iter[0][c] == "T"
+              neighbors.includes(c) && original[c] == "T" && iter[0][c] == "T"
             );
           });
           const target = [
@@ -444,13 +444,13 @@
             iter[0][target] = "H"; // Eating restores a low-health herbivore.
           }
         }
-iter[1] = [...iter[0]];
-// move babies and juveniles
+        iter[1] = [...iter[0]];
+        // move babies and juveniles
         for (let index = 0; index < iter[0].length; index++) {
           const tile = iter[0][index];
           if (tile !== "B" && tile !== "J" && tile !== "j") continue;
           const neighbors = getNeighbors(index, currentPGS);
-          let plantTarget = null
+          let plantTarget = null;
           /*if(tile == "B"){plantTarget = [
             index + currentPGS, // down
             index + 1, // right
@@ -465,67 +465,58 @@ iter[1] = [...iter[0]];
               );
             }
           );
-          }else*/ if(tile == "J" || tile == "j"){
+          }else*/ if (tile == "J" || tile == "j") {
             plantTarget = [
               index + currentPGS, // down
               index + 1, // right
               index - currentPGS, // up
               index - 1, // left
-            ].find(
-              function(c){
-                return (
-                  neighbors.includes(c) &&
-                  plantTiles.has(iter[0][c]) &&
-                  plantTiles.has(iter[1][c])
-                );
-              }
-            );
+            ].find(function (c) {
+              return (
+                neighbors.includes(c) &&
+                plantTiles.has(iter[0][c]) &&
+                plantTiles.has(iter[1][c])
+              );
+            });
           }
-          let sproutTarget = 
-[
+          let sproutTarget = [
             index + currentPGS, // down
             index + 1, // right
             index - currentPGS, // up
             index - 1, // left
-          ].find(
-            function(c){
-              return (
-                neighbors.includes(c) &&
-                iter[0][c] === "S" &&
-                iter[1][c] === "S"
-              );
-            }
-          );
-          let treeTarget = null
-          if(tile == "B"){
+          ].find(function (c) {
+            return (
+              neighbors.includes(c) && iter[0][c] === "S" && iter[1][c] === "S"
+            );
+          });
+          let treeTarget = null;
+          if (tile == "B") {
             treeTarget = [
               index + currentPGS, // down
               index + 1, // right
               index - currentPGS, // up
               index - 1, // left
-            ].find(
-              function(c){
-                return (
-                  neighbors.includes(c) &&
-                  iter[0][c] === "T" &&
-                  iter[1][c] === "T"
-                );
-              }
-            );
+            ].find(function (c) {
+              return (
+                neighbors.includes(c) &&
+                iter[0][c] === "T" &&
+                iter[1][c] === "T"
+              );
+            });
           }
-          if(treeTarget !== null){
+          if (treeTarget !== null) {
             iter[1][index] = "J"; // B becomes J when eating a tree, growing up.
             iter[1][treeTarget] = "t"; // Trees lose leaves when eaten, but can grow them back.
             grow[treeTarget] = false; // Don't immediately grow leaves back
-          }else if(plantTarget !== null){
+          } else if (plantTarget !== null) {
             iter[1][plantTarget] = "J"; // j and J become J when eating a plant, restoring health.
             iter[1][index] = "_";
-          }else if(sproutTarget !== null){
+          } else if (sproutTarget !== null) {
             iter[1][sproutTarget] = "J"; // j, B and J become J when eating a sprout, restoring health or growing up.
             iter[1][index] = "_";
-          }else if(tile == "j" || tile == "B"){
+          } else if (tile == "j" || tile == "B") {
             iter[1][index] = "O"; // j and B die if they can't eat anything, becoming organic matter. J can survive without eating, but will lose health.
-      }else if(tile == "J"){
+          } else if (tile == "J") {
             iter[1][index] = "j"; // J becomes j if it can't eat anything, losing health.
           }
         }
