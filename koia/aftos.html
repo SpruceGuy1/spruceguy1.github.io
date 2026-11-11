@@ -384,9 +384,16 @@
           if (tile !== "H" && tile !== "h") continue;
 
           const neighbors = getNeighbors(index, currentPGS);
-          const treeTarget =[index + currentPGS, index + 1, index - currentPGS, index-1].find(function(c){
-            return (neighbors.includes(c) && original[c] == "T" && next[c] == "T");
-          })
+          const treeTarget = [
+            index + currentPGS,
+            index + 1,
+            index - currentPGS,
+            index - 1,
+          ].find(function (c) {
+            return (
+              neighbors.includes(c) && original[c] == "T" && next[c] == "T"
+            );
+          });
           const target = [
             index + currentPGS, // down
             index + 1, // right
@@ -398,13 +405,10 @@
               plantTiles.has(original[candidate]) &&
               plantTiles.has(next[candidate]),
           );
-          if(treeTarget !== undefined){
+          if (treeTarget !== undefined) {
             next[index] = "H"; // H and h become H when eating a tree, restoring health.
             next[treeTarget] = "t"; // Trees lose leaves when eaten, but can grow them back.
-          }
-          else
-
-          if (target !== undefined) {
+          } else if (target !== undefined) {
             next[index] = "_";
             next[target] = "H"; // Eating restores a low-health herbivore.
           }
