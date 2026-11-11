@@ -50,8 +50,8 @@
       var data = "";
       var currentPGS = 4; //default pixel grid size
       var hasCustomPGS = false;
-      var grow = []
-      
+      var grow = [];
+
       function defaultData() {
         var retval = "";
         for (var i = 0; i < 16; i++) {
@@ -188,9 +188,9 @@
       function loadData(d) {
         data = Array.from(d);
         scene.data = r(data);
-        grow = new Array(currentPGS**2)
-        for(let i in grow){
-          grow[i] = true
+        grow = new Array(currentPGS ** 2);
+        for (let i in grow) {
+          grow[i] = true;
         }
       }
       $("#loadData").click(function () {
@@ -415,10 +415,7 @@
             next[index] = "H"; // H and h become H when eating a tree, restoring health.
             next[treeTarget] = "t"; // Trees lose leaves when eaten, but can grow them back.
             grow[treeTarget] = false; // Don't immediately grow leaves back
-          }
-          else
-
-          if (target !== undefined) {
+          } else if (target !== undefined) {
             next[index] = "_";
             next[target] = "H"; // Eating restores a low-health herbivore.
           }
@@ -428,9 +425,9 @@
           //sprouts become plants, OS0123456789x become S0123456789xy, y becomes t, t becomes T
           const tile = next[index];
           if (!"OS0123456789xytT".includes(tile)) continue;
-          if(!grow[index]){
-            grow[index] = true
-            continue
+          if (!grow[index]) {
+            grow[index] = true;
+            continue;
           }
           if (tile == "y") next0[index] = "t";
           else if (tile == "t") next0[index] = "T";
