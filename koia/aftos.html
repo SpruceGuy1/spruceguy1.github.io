@@ -188,10 +188,11 @@
       function loadData(d) {
         data = Array.from(d);
         scene.data = r(data);
-        grow = new Array(currentPGS ** 2);
+       /* grow = new Array(currentPGS ** 2);
         for (let i in grow) {
           grow[i] = true;
-        }
+        }*/
+       grow = new Array(data.length).fill(true);
       }
       $("#loadData").click(function () {
         var d = prompt("Paste your data here:");
