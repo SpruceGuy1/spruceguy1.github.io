@@ -40,6 +40,10 @@
         id="customPGS"
         placeholder="Pixel Grid Size (default 4)"
       />
+      <select id="music">
+        <option id="musicNone" value="none">No music</option>
+        <option id="std0" value="std0">Standard Music</option>
+      </select>
       <button type="submit">Save values</button>
     </form>
     <script type="module">
@@ -577,6 +581,26 @@
       });
       $("#stopAuto").click(function () {
         if (autoInterval) clearInterval(autoInterval);
+      });
+      $("#music").change(function () {
+        const selectedMusic = $(this).val();
+        if (selectedMusic === "none") {
+          // Stop any currently playing music
+          if (window.currentMusic) {
+            window.currentMusic.pause();
+            window.currentMusic.currentTime = 0;
+            window.currentMusic = null;
+          }
+        } else if (selectedMusic === "std0") {
+          // Play standard music
+          if (window.currentMusic) {
+            window.currentMusic.pause();
+            window.currentMusic.currentTime = 0;
+          }
+          window.currentMusic = new Audio("/audio/aftos-std0.mp3");
+          window.currentMusic.loop = true;
+          window.currentMusic.play();
+        }
       });
     </script>
   </body>
