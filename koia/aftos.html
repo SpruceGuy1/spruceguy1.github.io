@@ -23,6 +23,10 @@
       plants, and trees.
     </h2>
     <button id="progressButton">Progress by 1 step</button>
+    <button id="autoSlow">Progress once every 20 seconds</button>
+    <button id="autoFast">Progress once every 2 seconds</button>
+    <button id="stopAuto">Stop automatic progression</button>
+
     <div id="render"></div>
     <button id="getData">Get Data</button>
     <div id="data"></div>
@@ -428,6 +432,22 @@
       }
       $("#progressButton").click(function () {
         data = progress(data);
+      });
+      var autoInterval = null;
+      $("#autoSlow").click(function () {
+        if (autoInterval) clearInterval(autoInterval);
+        autoInterval = setInterval(() => {
+          data = progress(data);
+        }, 20000);
+      });
+      $("#autoFast").click(function () {
+        if (autoInterval) clearInterval(autoInterval);
+        autoInterval = setInterval(() => {
+          data = progress(data);
+        }, 2000);
+      });
+      $("#stopAuto").click(function () {
+        if (autoInterval) clearInterval(autoInterval);
       });
     </script>
   </body>
