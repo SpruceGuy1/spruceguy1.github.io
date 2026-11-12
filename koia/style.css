@@ -15,7 +15,7 @@
 .koia1 {
   font-family: "Roboto Mono", monospace, "Roboto", sans-serif;
 }
-@font-face{
+@font-face {
   font-family: "Roboto Mono";
-  src: url("/koia/RobotoMono-VariableFont_wght.ttf") format("opentype")
+  src: url("/koia/RobotoMono-VariableFont_wght.ttf") format("opentype");
 }
