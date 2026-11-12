@@ -61,15 +61,26 @@ export const maps = {
     ],
     pgs: 5,
   },
-  carrycap:{
+  carrycap: {
     name: "The carrying capacity for a 4x4 is 5 herbivores",
-    pgs:4,
-    data:[
-      "H", "t", "t", "H",
-      "T", "H", "t", "T",
-      "T", "T", "_", "T",
-      "H", "t", "t", "H"
-    ]
-
-  }
+    pgs: 4,
+    data: [
+      "H",
+      "t",
+      "t",
+      "H",
+      "T",
+      "H",
+      "t",
+      "T",
+      "T",
+      "T",
+      "_",
+      "T",
+      "H",
+      "t",
+      "t",
+      "H",
+    ],
+  },
 };
