@@ -190,6 +190,9 @@
       }
       var scene = new Scene({});
       function loadData(d) {
+        if(d.length > currentPGS ** 2){
+          d.splice(-(d.length - currentPGS ** 2))
+        }
         data = Array.from(d);
         scene.data = r(data);
         /* grow = new Array(currentPGS ** 2);
