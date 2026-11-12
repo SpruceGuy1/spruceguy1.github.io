@@ -1,8 +1,8 @@
 //
 export const maps = {
-  blank:{
+  blank: {
     name: "Blank",
-    data: new Array(16).fill("_")
+    data: new Array(16).fill("_"),
   },
   test0: {
     name: "Test 0",
@@ -28,7 +28,7 @@ export const maps = {
   test1: {
     name: "Test 1",
     data: ["H", "h", "J", "j", "B", "z", "O", "S", "_"],
-    pgs:3
+    pgs: 3,
   },
   everything: {
     name: "Everything",
