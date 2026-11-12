@@ -451,6 +451,10 @@
           } else if (target !== undefined) {
             iter[0][index] = "_";
             iter[0][target] = "H"; // Eating restores a low-health herbivore.
+          }else if(tile == "H"){
+            iter[0][index] = "h"
+          }else if(tile == "h"){
+            iter[0][index] = "O"
           }
         }
         iter[1] = [...iter[0]];
