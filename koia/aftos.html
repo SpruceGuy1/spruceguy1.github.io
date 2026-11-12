@@ -455,6 +455,7 @@
             iter[0][index] = "h";
           } else if (tile == "h") {
             iter[0][index] = "O";
+            grow[index] = false; //don't immediately grow back
           }
         }
         iter[1] = [...iter[0]];
@@ -588,6 +589,12 @@
           data = progress(data);
         }, 2000);
       });
+      $("#speedee").click(function(){
+        if(autoInterval) clearInterval(autoInterval);
+        autoInterval = setInterval(function(){
+          data = progress(data)
+        }, 200)
+      })
       $("#stopAuto").click(function () {
         if (autoInterval) clearInterval(autoInterval);
       });
