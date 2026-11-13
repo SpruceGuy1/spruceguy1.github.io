@@ -452,15 +452,17 @@
           } else if (target !== undefined) {
             iter[0][index] = "_";
             iter[0][target] = "H"; // Eating restores a low-health herbivore.
-          } else if(
-            data[getNeighbors(index)[0]] == "_" || data[getNeighbors(index)[1]] == "_" || data[getNeighbors(index)[2]] == "_" || data[getNeighbors(index)[3]] == "_" 
-            || data[getNeighbors(index)[0]] == "S" || data[getNeighbors(index)[1]] == "S" || data[getNeighbors(index)[2]] == "S" || data[getNeighbors(index)[3]] == "S" 
-
-
-          ){
-            
-
-          }else if (tile == "H") {
+          } else if (
+            data[getNeighbors(index)[0]] == "_" ||
+            data[getNeighbors(index)[1]] == "_" ||
+            data[getNeighbors(index)[2]] == "_" ||
+            data[getNeighbors(index)[3]] == "_" ||
+            data[getNeighbors(index)[0]] == "S" ||
+            data[getNeighbors(index)[1]] == "S" ||
+            data[getNeighbors(index)[2]] == "S" ||
+            data[getNeighbors(index)[3]] == "S"
+          ) {
+          } else if (tile == "H") {
             iter[0][index] = "h";
           } else if (tile == "h") {
             iter[0][index] = "O";
