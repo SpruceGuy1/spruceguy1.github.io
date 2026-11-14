@@ -27,7 +27,7 @@
     <button id="autoFast">Progress once every 2 seconds</button>
     <button id="speedee">Progress 5 times per second</button>
     <button id="stopAuto">Stop automatic progression</button>
-
+<span id="time">0</span> turns have passed.
     <div id="render"></div>
     <button id="getData">Get Data</button>
     <div id="data"></div>
@@ -58,6 +58,7 @@
       var currentPGS = 4; //default pixel grid size
       var hasCustomPGS = false;
       var grow = [];
+      var turns = 0
 
       function defaultData() {
         var retval = "";
@@ -437,6 +438,7 @@
           return () => false;
       }
       function progress(dataArray) {
+        turns ++; $("#time").text(turns)
         const original = [...dataArray];
         let iter = [];
         iter[0] = [...dataArray];
