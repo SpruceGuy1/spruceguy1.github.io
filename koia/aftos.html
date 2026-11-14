@@ -277,8 +277,8 @@
       });
       function getNeighbors(index, pgs, f = false) {
         const neighbors = [];
-        if(f){
-          neighbors = [-1, -1, -1, -1]
+        if (f) {
+          neighbors = [-1, -1, -1, -1];
         }
         const row = Math.floor(index / pgs);
         const col = index % pgs;
@@ -293,16 +293,19 @@
               !(r === row && c === col) &&
               Math.abs(r - row) + Math.abs(c - col) <= 1
             ) {
-              if(!f){
-              neighbors.push(r * pgs + c);
-              }else{
-                let k = r * pgs + c
-                if(k == index + pgs){neighbors[0] = k}
-                else                 if(k == index + 1){neighbors[1] = k}
-              else  if(k == index - pgs){neighbors[2] = k}
-                else if(k == index - 1){neighbors[3] = k}
-
-
+              if (!f) {
+                neighbors.push(r * pgs + c);
+              } else {
+                let k = r * pgs + c;
+                if (k == index + pgs) {
+                  neighbors[0] = k;
+                } else if (k == index + 1) {
+                  neighbors[1] = k;
+                } else if (k == index - pgs) {
+                  neighbors[2] = k;
+                } else if (k == index - 1) {
+                  neighbors[3] = k;
+                }
               }
             }
           }
@@ -310,15 +313,15 @@
 
         return neighbors;
       }
-      function getDataNeighbors(index,p,f){
-        let neighbors = getNeighbors(index,p,f)
-        let retval = []
-        for(let i of neighbors){
-          retval.push(data[i])
+      function getDataNeighbors(index, p, f) {
+        let neighbors = getNeighbors(index, p, f);
+        let retval = [];
+        for (let i of neighbors) {
+          retval.push(data[i]);
         }
-return retval
+        return retval;
       }
-      
+
       /*function progress(dataArray) {
         //1: move adult herbivores
         var index = 0;
@@ -485,25 +488,23 @@ return retval
             data[getNeighbors(index, currentPGS)[3]] == "S"
           ) {
             let newTarget = -1;
-            let l = ["_", "S"] // herbivores can go to these tiles
-            let array = new Array(currentPGS**2).fill(2000)
-            function a(){
-            for(let neighbor of getNeighbors(index, currentPGS)){
-              if(l.includes(data[neighbor])){
-                if(neighbor == index + currentPGS){
-                  array[neighbor] = 0
-                }else if(neighbor == index + 1){
-                  array[neighbor] = 1
-
-                }else if(neighbor == index - currentPGS){
-                 array[neighbor] = 2
-                }else{
-                  array[neighbor] = 3
+            let l = ["_", "S"]; // herbivores can go to these tiles
+            let array = new Array(currentPGS ** 2).fill(2000);
+            function a() {
+              for (let neighbor of getNeighbors(index, currentPGS)) {
+                if (l.includes(data[neighbor])) {
+                  if (neighbor == index + currentPGS) {
+                    array[neighbor] = 0;
+                  } else if (neighbor == index + 1) {
+                    array[neighbor] = 1;
+                  } else if (neighbor == index - currentPGS) {
+                    array[neighbor] = 2;
+                  } else {
+                    array[neighbor] = 3;
+                  }
                 }
-
               }
             }
-          }
           } else if (tile == "H") {
             iter[0][index] = "h";
           } else if (tile == "h") {
