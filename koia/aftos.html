@@ -1,0 +1,716 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/eruda"></script>
+    <script>
+      eruda.init();
+    </script>
+    <style>
+      #render > canvas {
+        display: block;
+        width: 100% !important;
+        height: auto !important;
+        image-rendering: pixelated;
+      }
+    </style>
+  </head>
+  <body class="koia1">
+    <h1>Aftos</h1>
+    <h2>
+      Aftos is a cellular automaton that simulates herbivores, carnivores,
+      plants, and trees.
+    </h2>
+    <button id="progressButton">Progress by 1 step</button>
+    <button id="autoSlow">Progress once every 20 seconds</button>
+    <button id="autoFast">Progress once every 2 seconds</button>
+    <button id="speedee">Progress 5 times per second</button>
+    <button id="stopAuto">Stop automatic progression</button>
+
+    <div id="render"></div>
+    <button id="getData">Get Data</button>
+    <div id="data"></div>
+    Copy this data, and put it on your computer. When you want to load your
+    save, click the "Load Data" button and paste the data into the prompt.
+    <button id="loadData">Load Data</button>
+    <select id="mapSelect"></select>
+    <form id="customValues">
+      <input
+        type="number"
+        id="customPGS"
+        placeholder="Pixel Grid Size (default 4)"
+      />
+      <select id="music">
+        <option id="musicNone" value="none">No music</option>
+        <option id="std0" value="std0">Standard Music</option>
+      </select>
+      <button type="submit">Save values</button>
+    </form>
+    Warning: Carnivores and herbivores are not fully implemented, as of November
+    12, 2026.
+    <script type="module">
+      import { Scene, render, animate } from "/koia/renderer.js";
+      import { addFrame } from "/modules/general/messages.js";
+      import { maps } from "/modules/aftos/maps.js";
+      $("body").append(addFrame());
+      var data = "";
+      var currentPGS = 4; //default pixel grid size
+      var hasCustomPGS = false;
+      var grow = [];
+
+      function defaultData() {
+        var retval = "";
+        for (var i = 0; i < 16; i++) {
+          retval += "_"; //(empty tile)
+        }
+        return retval;
+      }
+      data = Array.from(defaultData());
+      var mode = "standard";
+      /* Modes:
+            standard: OS0123456789xyTtHhCcJjBz_
+            simple: OSPHhCcz_
+            more coming
+
+            */
+      function r(d) {
+        var retval = {
+          "kr-type": "2d-color",
+          "kr-data": {},
+        };
+        var n = 0;
+        for (let i of d) {
+          if (!"OS0123456789xyTtHhCcJjBz_".includes(i)) {
+            alert("Invalid character in data: " + i);
+            return Array.from(defaultData());
+          }
+          var imageURL;
+          switch (i) {
+            case "O":
+              imageURL = "/images/ecosim/co2.png"; //organic matter = brown circle
+              break;
+            case "S":
+              imageURL = "/images/koia/sprout.png"; //sprout = small green line
+
+              break;
+            case "0":
+              imageURL = "/images/koia/plant0.png"; //plant
+              break;
+            case "1":
+              imageURL = "/images/koia/plant1.png"; //plant
+              break;
+            case "2":
+              imageURL = "/images/koia/plant2.png"; //plant
+              break;
+            case "3":
+              imageURL = "/images/koia/plant3.png"; //plant
+              break;
+            case "4":
+              imageURL = "/images/koia/plant4.png"; //plant
+              break;
+            case "5":
+              imageURL = "/images/koia/plant5.png"; //plant
+              break;
+            case "6":
+              imageURL = "/images/koia/plant6.png"; //plant
+              break;
+            case "7":
+              imageURL = "/images/koia/plant7.png"; //plant
+              break;
+            case "8":
+              imageURL = "/images/koia/plant8.png"; //plant
+              break;
+            case "9":
+              imageURL = "/images/koia/plant9.png"; //plant
+              break;
+            case "x":
+              imageURL = "/images/koia/plant10.png"; //sapling
+
+              break;
+            case "y":
+              imageURL = "/images/koia/plant11.png"; //sapling
+              break;
+            case "T":
+              imageURL = "/spruce-tree.png"; //tree sprite reused from Blocks
+              break;
+            case "t":
+              imageURL = "/images/koia/bare-tree.png"; //bare tree
+              break;
+            case "H":
+              imageURL = "/cow.png"; // reused cow from Blocks
+              break;
+            case "h":
+              imageURL = "/images/koia/herbivore-lowhp.png"; //herbivore with half hp
+              break;
+            case "C":
+              imageURL = "/images/koia/carnivore.png"; //carnivore
+              break;
+            case "c":
+              imageURL = "/images/koia/carnivore-lowhp.png"; //carnivore with half hp
+              break;
+            case "J":
+              imageURL = "/images/koia/herbivore-juvenile.png"; // juveniles have 2 hp, but cannot reach tree leaves
+              break;
+            case "j":
+              imageURL = "/images/koia/herbivore-juvenile-lowhp.png"; //juvenile with half hp
+              break;
+            case "B":
+              imageURL = "/images/koia/herbivore-baby.png"; //babies have 1hp and only eat sprouts
+              break;
+            case "z":
+              imageURL = "/images/koia/carnivore-posteating.png"; // carnivore standing on the remains of an herbivore. when it walks away, organic matter will be left behind.
+              break;
+            case "_":
+              imageURL = "/images/koia/empty.png"; //empty tile
+              break;
+            default:
+              imageURL = "/images/koia/error.png"; //error tile
+              break;
+          }
+
+          if (!retval["kr-data"].points) {
+            retval["kr-data"].points = [];
+          }
+          retval["kr-data"].points.push({
+            /*x: (n % 4) * 16,
+            y: Math.floor(n / 4) * 16,*/
+            /*x: 8 + (n % 4) * 16,
+            y: 8 + Math.floor(n / 4) * 16,*/
+            x: 8 + (n % currentPGS) * 16,
+            y: 8 + Math.floor(n / currentPGS) * 16,
+            image: {
+              src: imageURL,
+              width: 16,
+              height: 16,
+            },
+            ref: n,
+          });
+          n++;
+        }
+
+        return retval;
+      }
+      var scene = new Scene({});
+      function loadData(d) {
+        if (d.length > currentPGS ** 2) {
+          d.splice(-(d.length - currentPGS ** 2));
+        }
+        data = Array.from(d);
+        scene.data = r(data);
+        /* grow = new Array(currentPGS ** 2);
+        for (let i in grow) {
+          grow[i] = true;
+        }*/
+        grow = new Array(data.length).fill(true);
+      }
+      $("#loadData").click(function () {
+        var d = prompt("Paste your data here:");
+        if (d) {
+          data = d;
+          loadData(data);
+
+          //  render(document.getElementById("render"), scene.data);
+          render(document.getElementById("render"), scene.data, {
+            pixelGrid: true,
+            pgs: currentPGS || 4,
+          });
+        }
+      });
+      loadData(data);
+      //  render(document.getElementById("render"), scene.data);
+      render(document.getElementById("render"), scene.data, {
+        pixelGrid: true,
+        pgs: currentPGS || 4,
+      });
+      $("#getData").click(function () {
+        $("#data").text(data.join(""));
+      });
+      /* $("#mapSelect").change(function () {
+        console.log("mapSelect changed");
+        var selectedMap = $(this).val();
+        if (selectedMap && maps[selectedMap]) {
+          data = maps[selectedMap];
+          loadData(data.data); //data.data :)
+          render(document.getElementById("render"), scene.data, {
+            pixelGrid: true,
+            pgs: data.pgs || 4,
+          });
+        }
+      });*/
+      $("#mapSelect").change(function () {
+        const selectedMap = maps[$(this).val()];
+
+        if (selectedMap) {
+          if (!hasCustomPGS) {
+            currentPGS =
+              Number.isInteger(selectedMap.pgs) && selectedMap.pgs > 0
+                ? selectedMap.pgs
+                : 4;
+          }
+          loadData(selectedMap.data);
+          render(document.getElementById("render"), scene.data, {
+            pixelGrid: true,
+            pgs: currentPGS,
+          });
+        }
+      });
+      for (let prop in maps) {
+        $("#mapSelect").append(
+          "<option value='" + prop + "'>" + maps[prop].name + "</option>",
+        );
+      }
+      $("#customValues").submit(function (e) {
+        e.preventDefault();
+        var pgsValue = parseInt($("#customPGS").val());
+        if (!isNaN(pgsValue) && pgsValue > 0) {
+          currentPGS = pgsValue;
+          hasCustomPGS = true;
+          loadData(data);
+          render(document.getElementById("render"), scene.data, {
+            pixelGrid: true,
+            pgs: currentPGS,
+          });
+        } else {
+          alert("Please enter a valid positive number for Pixel Grid Size.");
+        }
+      });
+      function getNeighbors(index, pgs, f = false) {
+        const neighbors = [];
+        if (f) {
+          neighbors = [-1, -1, -1, -1];
+        }
+        const row = Math.floor(index / pgs);
+        const col = index % pgs;
+
+        for (let r = row - 1; r <= row + 1; r++) {
+          for (let c = col - 1; c <= col + 1; c++) {
+            if (
+              r >= 0 &&
+              r < pgs &&
+              c >= 0 &&
+              c < pgs &&
+              !(r === row && c === col) &&
+              Math.abs(r - row) + Math.abs(c - col) <= 1
+            ) {
+              if (!f) {
+                neighbors.push(r * pgs + c);
+              } else {
+                let k = r * pgs + c;
+                if (k == index + pgs) {
+                  neighbors[0] = k;
+                } else if (k == index + 1) {
+                  neighbors[1] = k;
+                } else if (k == index - pgs) {
+                  neighbors[2] = k;
+                } else if (k == index - 1) {
+                  neighbors[3] = k;
+                }
+              }
+            }
+          }
+        }
+
+        return neighbors;
+      }
+      function getDataNeighbors(index, p, f) {
+        let neighbors = getNeighbors(index, p, f);
+        let retval = [];
+        for (let i of neighbors) {
+          retval.push(data[i]);
+        }
+        return retval;
+      }
+
+      /*function progress(dataArray) {
+        //1: move adult herbivores
+        var index = 0;
+        for (let i of dataArray) {
+          if (i === "H") {
+            //move adult herbivore
+            let possibleFoodIndices = [];
+
+            for (let neighborIndex of getNeighbors(index, currentPGS)) {
+              /*if(dataArray[neighborIndex]==="_"){
+                //move to this empty tile
+                dataArray[neighborIndex] = "H";
+                dataArray[index] = "_";
+                break;
+              }
+              if (
+                dataArray[neighborIndex] === "0" ||
+                dataArray[neighborIndex] === "1" ||
+                dataArray[neighborIndex] === "2" ||
+                dataArray[neighborIndex] === "3" ||
+                dataArray[neighborIndex] === "4" ||
+                dataArray[neighborIndex] === "5" ||
+                dataArray[neighborIndex] === "6" ||
+                dataArray[neighborIndex] === "7" ||
+                dataArray[neighborIndex] === "8" ||
+                dataArray[neighborIndex] === "9" ||
+                dataArray[neighborIndex] === "x" ||
+                dataArray[neighborIndex] === "y"
+              ) {
+                possibleFoodIndices.push(neighborIndex);
+              }
+              //eat this plant
+            }
+            let nuArray = new Array(4);
+            for (let i of possibleFoodIndices) {
+              if (i == index - currentPGS) {
+                nuArray[0] = i;
+              } else if (i == index + 1) {
+                nuArray[1] = i;
+              } else if (i == index + currentPGS) {
+                nuArray[2] = i;
+              } else if (i == index - 1) {
+                nuArray[3] = i;
+              }
+            }
+            for (let i of nuArray) {
+              if (i !== undefined) {
+                dataArray[i] = "H";
+                dataArray[index] = "_";
+                break;
+              }
+            }
+          }
+          if (i === "h") {
+            //move adult herbivore with low hp
+            let possibleFoodIndices = [];
+
+            for (let neighborIndex of getNeighbors(index, currentPGS)) {
+              //=== "0" || dataArray[neighborIndex] == "1" || ) {
+              if ("0123456789xy".includes(dataArray[neighborIndex])) {
+                //move to this empty tile
+                possibleFoodIndices.push(neighborIndex);
+              }
+            }
+            let nuArray = new Array(4);
+            for (let i of possibleFoodIndices) {
+              if (i == index - currentPGS) {
+                nuArray[0] = i;
+              } else if (i == index + 1) {
+                nuArray[1] = i;
+              } else if (i == index + currentPGS) {
+                nuArray[2] = i;
+              } else if (i == index - 1) {
+                nuArray[3] = i;
+              }
+              for (let i of nuArray) {
+                if (i !== undefined) {
+                  dataArray[i] = "H"; //gain hp by eating plant
+                  dataArray[index] = "_";
+                  break;
+                }
+              }
+            }
+          }
+          index++;
+        }
+        data = dataArray;
+        loadData(dataArray);
+        render(document.getElementById("render"), scene.data, {
+          pixelGrid: true,
+          pgs: currentPGS,
+        });
+        return dataArray;
+      }*/
+      //babies eat sprouts and tree leaves, juveniles eat plants and sprouts
+      function getCandidateFunction(tile, index, next) {
+        if (tile === "B") {
+          return (candidate) =>
+            [
+              index + currentPGS, // down
+              index + 1, // right
+              index - currentPGS, // up
+              index - 1, // left
+            ].includes(candidate) && data[candidate] === "S";
+        } else if (tile == "J" || tile == "j")
+          /*(tile === "J" || tile === "j") {
+          return (candidate) =>
+            getNeighbors(candidate, currentPGS).some(
+              (neighbor) =>
+                "0123456789xy".includes(data[neighbor]) ||
+                data[neighbor] === "S" ||
+                data[neighbor] === "y",
+            );
+        }*/
+          return () => false;
+      }
+      function progress(dataArray) {
+        const original = [...dataArray];
+        let iter = [];
+        iter[0] = [...dataArray];
+        const plantTiles = new Set("0123456789xy");
+
+        for (let index = 0; index < original.length; index++) {
+          const tile = original[index];
+          if (tile !== "H" && tile !== "h") continue;
+
+          const neighbors = getNeighbors(index, currentPGS);
+          const treeTarget = [
+            index + currentPGS,
+            index + 1,
+            index - currentPGS,
+            index - 1,
+          ].find(function (c) {
+            return (
+              neighbors.includes(c) && original[c] == "T" && iter[0][c] == "T"
+            );
+          });
+          const target = [
+            index + currentPGS, // down
+            index + 1, // right
+            index - currentPGS, // up
+            index - 1, // left
+          ].find(
+            (candidate) =>
+              neighbors.includes(candidate) &&
+              plantTiles.has(original[candidate]) &&
+              plantTiles.has(iter[0][candidate]),
+          );
+          if (treeTarget !== undefined) {
+            iter[0][index] = "H"; // H and h become H when eating a tree, restoring health.
+            iter[0][treeTarget] = "t"; // Trees lose leaves when eaten, but can grow them back.
+            grow[treeTarget] = false; // Don't immediately grow leaves back
+          } else if (target !== undefined) {
+            iter[0][index] = "_";
+            iter[0][target] = "H"; // Eating restores a low-health herbivore.
+          } else if (
+            data[getNeighbors(index, currentPGS)[0]] == "_" ||
+            data[getNeighbors(index, currentPGS)[1]] == "_" ||
+            data[getNeighbors(index, currentPGS)[2]] == "_" ||
+            data[getNeighbors(index, currentPGS)[3]] == "_" ||
+            data[getNeighbors(index, currentPGS)[0]] == "S" ||
+            data[getNeighbors(index, currentPGS)[1]] == "S" ||
+            data[getNeighbors(index, currentPGS)[2]] == "S" ||
+            data[getNeighbors(index, currentPGS)[3]] == "S"
+          ) {
+            let newTarget = -1;
+            let l = ["_", "S"]; // herbivores can go to these tiles
+            let array = new Array(currentPGS ** 2).fill(2000);
+            function a() {
+              for (let neighbor of getNeighbors(index, currentPGS)) {
+                if (l.includes(data[neighbor])) {
+                  if (neighbor == index + currentPGS) {
+                    array[neighbor] = 0;
+                  } else if (neighbor == index + 1) {
+                    array[neighbor] = 1;
+                  } else if (neighbor == index - currentPGS) {
+                    array[neighbor] = 2;
+                  } else {
+                    array[neighbor] = 3;
+                  }
+                }
+                if (
+                  getDataNeighbors(neighbor).includes("C") ||
+                  getDataNeighbors(neighbor).includes("c") ||
+                  getDataNeighbors(neighbor).includes("z")
+                ) {
+                  array[neighbor]++;
+                }
+                if (plantTiles.includes(getDataNeighbors(neighbor))) {
+                  array[neighbor]--;
+                }
+              }
+              function check(ar, dex) {
+                let lowest = [ar.length + 20];
+                for (let i in ar) {
+                  if (ar[i] == lowest[0]) {
+                    lowest.push(i);
+                  }
+                  if (ar[i] < lowest[0]) {
+                    lowest = [i];
+                  }
+                }
+                if (lowest.length > 1) {
+                  for (let i in lowest) {
+                    if (lowest[i] == dex + 1) {
+                      array[i]++;
+                    } else if (lowest[i] == dex - currentPGS) {
+                      array[i] += 2;
+                    } else if (lowest[i] == dex - 1) {
+                      array[i] += 3;
+                    }
+                  }
+                  lowest = check(array);
+                }
+
+                return lowest;
+              }
+
+              target = check(data, index);
+            }
+            iter[0][index] = "_";
+            iter[0][target] = "h"; // herbivore loses 1 hp if it has nowhere to go
+          } else if (tile == "H") {
+            iter[0][index] = "h";
+          } else if (tile == "h") {
+            iter[0][index] = "O";
+            grow[index] = false; //don't immediately grow back
+          }
+        }
+        iter[1] = [...iter[0]];
+        // move babies and juveniles
+        for (let index = 0; index < iter[0].length; index++) {
+          const tile = iter[0][index];
+          if (tile !== "B" && tile !== "J" && tile !== "j") continue;
+          const neighbors = getNeighbors(index, currentPGS);
+          let plantTarget = undefined;
+          /*if(tile == "B"){plantTarget = [
+            index + currentPGS, // down
+            index + 1, // right
+            index - currentPGS, // up
+            index - 1, // left
+          ].find(
+            function(c){
+              return (
+                neighbors.includes(c) &&
+                iter[0][c] === "S" &&
+                iter[1][c] === "S"
+              );
+            }
+          );
+          }else*/ if (tile == "J" || tile == "j") {
+            plantTarget = [
+              index + currentPGS, // down
+              index + 1, // right
+              index - currentPGS, // up
+              index - 1, // left
+            ].find(function (c) {
+              return (
+                neighbors.includes(c) &&
+                plantTiles.has(iter[0][c]) &&
+                plantTiles.has(iter[1][c])
+              );
+            });
+          }
+          let sproutTarget = [
+            index + currentPGS, // down
+            index + 1, // right
+            index - currentPGS, // up
+            index - 1, // left
+          ].find(function (c) {
+            return (
+              neighbors.includes(c) && iter[0][c] === "S" && iter[1][c] === "S"
+            );
+          });
+          let treeTarget = undefined;
+          if (tile == "B") {
+            treeTarget = [
+              index + currentPGS, // down
+              index + 1, // right
+              index - currentPGS, // up
+              index - 1, // left
+            ].find(function (c) {
+              return (
+                neighbors.includes(c) &&
+                iter[0][c] === "T" &&
+                iter[1][c] === "T"
+              );
+            });
+          }
+          if (treeTarget !== undefined) {
+            iter[1][index] = "J"; // B becomes J when eating a tree, growing up.
+            iter[1][treeTarget] = "t"; // Trees lose leaves when eaten, but can grow them back.
+            grow[treeTarget] = false; // Don't immediately grow leaves back
+          } else if (plantTarget !== undefined) {
+            iter[1][plantTarget] = "H"; // j and J become H when eating a plant, restoring health and growing up.
+            iter[1][index] = "_";
+          } else if (sproutTarget !== undefined) {
+            if (tile == "B") {
+              iter[1][sproutTarget] = "J";
+            } else {
+              iter[1][sproutTarget] = "H";
+            } // B becomes J when eating a sprout,  growing up.
+            // j and J become H when eating a sprout, growing up.
+            iter[1][index] = "_";
+          } else if (tile == "j" || tile == "B") {
+            iter[1][index] = "O"; // j and B die if they can't eat anything, becoming organic matter. J can survive without eating, but will lose health.
+            grow[index] = false; // Don't immediately grow a sprout back
+          } else if (tile == "J") {
+            iter[1][index] = "j"; // J becomes j if it can't eat anything, losing health.
+          }
+        }
+        iter[2] = [...iter[1]];
+        for (let index = 0; index < iter[1].length; index++) {
+          //sprouts become plants, OS0123456789x become S0123456789xy, y becomes t, t becomes T
+          const tile = iter[1][index];
+          if (!"OS0123456789xytT".includes(tile)) continue;
+          if (!grow[index]) {
+            grow[index] = true;
+            continue;
+          }
+          if (tile == "y") iter[2][index] = "t";
+          else if (tile == "t") iter[2][index] = "T";
+          else if (tile == "O") iter[2][index] = "S";
+          else if (tile == "S") iter[2][index] = "0";
+          else if (tile == "T") continue;
+          else {
+            const num = parseInt(tile);
+            if (num < 9) iter[2][index] = (num + 1).toString();
+            else if (num == 9) iter[2][index] = "x";
+            else if (tile == "x") iter[2][index] = "y";
+            for (let neighbor of getNeighbors(index, currentPGS)) {
+              if (iter[1][neighbor] == "_") {
+                iter[2][neighbor] = "S"; //sprout grows in empty tile next to plant. up to 4 sprouts can grow from one plant
+              }
+            }
+          }
+        }
+        loadData(iter[iter.length - 1]);
+        render(document.getElementById("render"), scene.data, {
+          pixelGrid: true,
+          pgs: currentPGS,
+        });
+        return iter[iter.length - 1];
+      }
+      $("#progressButton").click(function () {
+        data = progress(data);
+      });
+      var autoInterval = null;
+      $("#autoSlow").click(function () {
+        if (autoInterval) clearInterval(autoInterval);
+        autoInterval = setInterval(() => {
+          data = progress(data);
+        }, 20000);
+      });
+      $("#autoFast").click(function () {
+        if (autoInterval) clearInterval(autoInterval);
+        autoInterval = setInterval(() => {
+          data = progress(data);
+        }, 2000);
+      });
+      $("#speedee").click(function () {
+        if (autoInterval) clearInterval(autoInterval);
+        autoInterval = setInterval(function () {
+          data = progress(data);
+        }, 200);
+      });
+      $("#stopAuto").click(function () {
+        if (autoInterval) clearInterval(autoInterval);
+      });
+      $("#music").change(function () {
+        const selectedMusic = $(this).val();
+        if (selectedMusic === "none") {
+          // Stop any currently playing music
+          if (window.currentMusic) {
+            window.currentMusic.pause();
+            window.currentMusic.currentTime = 0;
+            window.currentMusic = null;
+          }
+        } else if (selectedMusic === "std0") {
+          // Play standard music
+          if (window.currentMusic) {
+            window.currentMusic.pause();
+            window.currentMusic.currentTime = 0;
+          }
+          window.currentMusic = new Audio("/audio/aftos-std0.m4a");
+          window.currentMusic.loop = true;
+          window.currentMusic.play();
+        }
+      });
+    </script>
+  </body>
+</html>

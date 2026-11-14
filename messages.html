@@ -1,0 +1,288 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      @font-face {
+        font-family: "toki-pona";
+        src: url("/toki-pona.otf") format("opentype");
+      }
+      .tok {
+        font-family: "toki-pona", sans-serif;
+      }
+      body {
+        background-color: #c0c0ff;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>R3S Messages</h1>
+    <form id="login">
+      <label>
+        Login Email
+        <input id="log-email" type="email" required />
+      </label>
+      <label>
+        Password
+        <input id="log-pword" type="password" required />
+      </label>
+      <button id="login-submit" type="submit" disabled>Log In</button>
+    </form>
+
+    <form id="register">
+      <label>
+        Register Email
+        <input id="reg-email" type="email" required />
+      </label>
+      <label>
+        Password
+        <input id="reg-pword" type="password" required />
+      </label>
+      <button id="register-submit" type="submit" disabled>Register</button>
+    </form>
+    <p>
+      To type a message in Toki Pona, use the prefix 'tok='. Example: 'tok=mi
+      wile lape' renders as <span class="tok">mi wile lape</span>
+    </p>
+    <form id="typeText">
+      <label>
+        To
+        <input
+          id="recipient-email"
+          type="email"
+          autocomplete="email"
+          required
+          placeholder="Recipient email"
+        />
+      </label>
+      <label>
+        Message
+        <input
+          id="msg"
+          maxlength="2000"
+          required
+          placeholder="Type your message..."
+        />
+      </label>
+      <button id="save-btn" type="submit" disabled>Send</button>
+    </form>
+    <button id="load-btn" type="button" disabled>Refresh Inbox</button>
+    <p id="status" role="status">Connecting to Firebase...</p>
+    <ul id="messages" aria-live="polite"></ul>
+
+    <!--p id="date">Enere 1, 236FQ</p>
+    <select id="date-format">
+      <option value="fq">FQ</option>
+      <option value="ad">AD</option>
+      <option value="cq">CQ</option>
+    </select-->
+    <script type="module">
+      try {
+        const { initializeApp } =
+          await import("https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js");
+        const {
+          getAuth,
+          onAuthStateChanged,
+          createUserWithEmailAndPassword,
+          signInWithEmailAndPassword,
+        } =
+          await import("https://www.gstatic.com/firebasejs/12.17.0/firebase-auth.js");
+        const {
+          getFirestore,
+          collection,
+          addDoc,
+          getDocs,
+          query,
+          where,
+          serverTimestamp,
+        } =
+          await import("https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js");
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyAeINE31darFq72BB4N1WtWDARk9YPxJzY",
+          authDomain: "sapient-origin-462411-t7.firebaseapp.com",
+          projectId: "sapient-origin-462411-t7",
+          storageBucket: "sapient-origin-462411-t7.firebasestorage.app",
+          messagingSenderId: "749880999520",
+          appId: "1:749880999520:web:9246df43f9ecb2279fcd05",
+          measurementId: "G-2HT9YKBXV4",
+        };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const status = document.getElementById("status");
+        const saveButton = document.getElementById("save-btn");
+        const loadButton = document.getElementById("load-btn");
+        const loginSubmitButton = document.getElementById("login-submit");
+        const registerSubmitButton = document.getElementById("register-submit");
+        const messageList = document.getElementById("messages");
+        let currentUser = null;
+
+        function showFirebaseError(action, error) {
+          console.error(`${action} failed:`, error);
+          status.textContent = `${action} failed. Please try again.`;
+        }
+
+        function renderMessages(messages) {
+          messageList.replaceChildren();
+          if (messages.length === 0) {
+            const emptyMessage = document.createElement("li");
+            emptyMessage.textContent = "No messages yet.";
+            messageList.append(emptyMessage);
+            return;
+          }
+
+          for (const message of messages) {
+            const item = document.createElement("li");
+            const heading = document.createElement("strong");
+            const body = document.createElement("p");
+            const time = document.createElement("time");
+            const isSent = message.senderUid === currentUser.uid;
+            const createdAt = message.createdAt?.toDate?.();
+
+            heading.textContent = isSent
+              ? `To ${message.recipientEmail}`
+              : `From ${message.senderEmail}`;
+            const text = typeof message.body === "string" ? message.body : "";
+            const isTok = text.startsWith("tok=");
+
+            body.classList.toggle("tok", isTok);
+            body.textContent = isTok ? text.substring(4) : text;
+            /*body.innerHTML = message.body;*/
+            if (createdAt) {
+              time.dateTime = createdAt.toISOString();
+              time.textContent = createdAt.toLocaleString();
+            } else {
+              time.textContent = "Just now";
+            }
+            item.append(heading, body, time);
+            messageList.append(item);
+          }
+        }
+
+        async function refreshMessages() {
+          if (!currentUser) return;
+          status.textContent = "Loading messages...";
+          try {
+            const messagesRef = collection(db, "messages");
+            const [inbox, sent] = await Promise.all([
+              getDocs(
+                query(
+                  messagesRef,
+                  where("recipientEmail", "==", currentUser.email),
+                ),
+              ),
+              getDocs(
+                query(messagesRef, where("senderUid", "==", currentUser.uid)),
+              ),
+            ]);
+            const messages = new Map();
+            for (const snapshot of [inbox, sent]) {
+              for (const message of snapshot.docs) {
+                messages.set(message.id, message.data());
+              }
+            }
+            const orderedMessages = [...messages.values()].sort(
+              (left, right) =>
+                (right.createdAt?.seconds ?? 0) -
+                (left.createdAt?.seconds ?? 0),
+            );
+            renderMessages(orderedMessages);
+            status.textContent = `${orderedMessages.length} message${orderedMessages.length === 1 ? "" : "s"}.`;
+          } catch (error) {
+            showFirebaseError("Loading messages", error);
+          }
+        }
+
+        onAuthStateChanged(auth, async (user) => {
+          currentUser = user;
+          const signedIn = Boolean(user);
+          loginSubmitButton.disabled = false;
+          registerSubmitButton.disabled = false;
+          saveButton.disabled = !signedIn;
+          loadButton.disabled = !signedIn;
+          if (signedIn) {
+            status.textContent = `Signed in as ${user.email}.`;
+            await refreshMessages();
+          } else {
+            messageList.replaceChildren();
+            status.textContent = "Not signed in.";
+          }
+        });
+
+        document
+          .getElementById("register")
+          .addEventListener("submit", async (event) => {
+            event.preventDefault();
+            try {
+              const credential = await createUserWithEmailAndPassword(
+                auth,
+                document.getElementById("reg-email").value,
+                document.getElementById("reg-pword").value,
+              );
+              status.textContent = `Registered as ${credential.user.email}.`;
+            } catch (error) {
+              showFirebaseError("Registration", error);
+            }
+          });
+
+        document
+          .getElementById("login")
+          .addEventListener("submit", async (event) => {
+            event.preventDefault();
+            try {
+              const credential = await signInWithEmailAndPassword(
+                auth,
+                document.getElementById("log-email").value,
+                document.getElementById("log-pword").value,
+              );
+              status.textContent = `Signed in as ${credential.user.email}.`;
+            } catch (error) {
+              showFirebaseError("Login", error);
+            }
+          });
+
+        document
+          .getElementById("typeText")
+          .addEventListener("submit", async (event) => {
+            event.preventDefault();
+            if (!currentUser) return;
+            const recipientEmail = document
+              .getElementById("recipient-email")
+              .value.trim();
+            const body = document.getElementById("msg").value.trim();
+            if (body.startsWith("tok=")) {
+              const tokBody =
+                '<span class="tok">' + body.substring(4) + "</span>";
+              document.getElementById("msg").value = tokBody;
+            }
+            if (!recipientEmail || !body) return;
+
+            saveButton.disabled = true;
+            status.textContent = "Sending message...";
+            try {
+              await addDoc(collection(db, "messages"), {
+                senderUid: currentUser.uid,
+                senderEmail: currentUser.email,
+                recipientEmail,
+                body,
+                createdAt: serverTimestamp(),
+              });
+              document.getElementById("msg").value = "";
+              await refreshMessages();
+            } catch (error) {
+              showFirebaseError("Sending message", error);
+            } finally {
+              saveButton.disabled = !currentUser;
+            }
+          });
+
+        loadButton.addEventListener("click", refreshMessages);
+      } catch (error) {
+        const status = document.getElementById("status");
+        const detail = error?.message || String(error);
+        status.textContent = `Startup error: ${detail}`;
+        console.error("R3S Messages startup failed:", error);
+      }
+    </script>
+  </body>
+</html>
