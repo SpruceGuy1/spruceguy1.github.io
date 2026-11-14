@@ -503,47 +503,47 @@
                     array[neighbor] = 3;
                   }
                 }
-                if(getDataNeighbors(neighbor).includes("C") || getDataNeighbors(neighbor).includes("c") || getDataNeighbors(neighbor).includes("z")){
-                  array[neighbor]++
+                if (
+                  getDataNeighbors(neighbor).includes("C") ||
+                  getDataNeighbors(neighbor).includes("c") ||
+                  getDataNeighbors(neighbor).includes("z")
+                ) {
+                  array[neighbor]++;
                 }
-                if(plantTiles.includes(getDataNeighbors(neighbor))){
-                  array[neighbor] --
+                if (plantTiles.includes(getDataNeighbors(neighbor))) {
+                  array[neighbor]--;
                 }
-                
               }
-              function check(ar, dex){
-                let lowest = [ar.length + 20]
-                for(let i in ar ){
-                  if(ar[i] == lowest[0]){
-                    lowest.push(i)
+              function check(ar, dex) {
+                let lowest = [ar.length + 20];
+                for (let i in ar) {
+                  if (ar[i] == lowest[0]) {
+                    lowest.push(i);
                   }
-                  if(ar[i] < lowest[0]){
-                    lowest = [i]
+                  if (ar[i] < lowest[0]) {
+                    lowest = [i];
                   }
-                  
                 }
-                if(lowest.length > 1){
-                  for(let i in lowest){
-                    if(lowest[i] == dex + 1){
-                      array[i] ++
-                    }else if(lowest[i] == dex - currentPGS){
-                      array[i] += 2
-                    }else if(lowest[i] == dex - 1){
-                      array[i] += 3
+                if (lowest.length > 1) {
+                  for (let i in lowest) {
+                    if (lowest[i] == dex + 1) {
+                      array[i]++;
+                    } else if (lowest[i] == dex - currentPGS) {
+                      array[i] += 2;
+                    } else if (lowest[i] == dex - 1) {
+                      array[i] += 3;
                     }
                   }
-                  lowest = check(array)
-
+                  lowest = check(array);
                 }
-                
-                return lowest
 
+                return lowest;
               }
-              
-              target = check(data, index)
+
+              target = check(data, index);
             }
-            iter[0][index] = "_"
-            iter[0][target] = "h" // herbivore loses 1 hp if it has nowhere to go
+            iter[0][index] = "_";
+            iter[0][target] = "h"; // herbivore loses 1 hp if it has nowhere to go
           } else if (tile == "H") {
             iter[0][index] = "h";
           } else if (tile == "h") {
