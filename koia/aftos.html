@@ -559,7 +559,11 @@
 
             if (destination !== undefined) {
               iter[0][index] = "_";
-              iter[0][destination] = "h";
+              //iter[0][destination] = "h";
+              iter[0][destination] = tile === "H" ? "h" : "O";
+if (tile === "h") {
+  grow[destination] = false;
+}
             } else if (tile === "H") {
               iter[0][index] = "h";
             } else {
