@@ -477,7 +477,7 @@
           } else if (target !== undefined) {
             iter[0][index] = "_";
             iter[0][target] = "H"; // Eating restores a low-health herbivore.
-          } else if (
+          /*} else if (
             data[getNeighbors(index, currentPGS)[0]] == "_" ||
             data[getNeighbors(index, currentPGS)[1]] == "_" ||
             data[getNeighbors(index, currentPGS)[2]] == "_" ||
@@ -549,6 +549,23 @@
           } else if (tile == "h") {
             iter[0][index] = "O";
             grow[index] = false; //don't immediately grow back
+          }*/
+                   } else {
+            const destination = neighbors.find(
+              (candidate) =>
+                (original[candidate] === "_" || original[candidate] === "S") &&
+                iter[0][candidate] === original[candidate],
+            );
+
+            if (destination !== undefined) {
+              iter[0][index] = "_";
+              iter[0][destination] = "h";
+            } else if (tile === "H") {
+              iter[0][index] = "h";
+            } else {
+              iter[0][index] = "O";
+              grow[index] = false;
+            }
           }
         }
         iter[1] = [...iter[0]];
