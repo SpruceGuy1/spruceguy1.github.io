@@ -191,7 +191,7 @@
         return retval;
       }
       var scene = new Scene({});
-      function loadData(d) {
+      /*function loadData(d) {
         if (d.length > currentPGS ** 2) {
           d.splice(-(d.length - currentPGS ** 2));
         }
@@ -200,14 +200,19 @@
         /* grow = new Array(currentPGS ** 2);
         for (let i in grow) {
           grow[i] = true;
-        }*/
+        }
         grow = new Array(data.length).fill(true);
-      }
+      }*/
+      function loadData(d) {
+  data = Array.from(d).slice(0, currentPGS ** 2);
+  scene.data = r(data);
+  grow = new Array(data.length).fill(true);
+}
       $("#loadData").click(function () {
         var d = prompt("Paste your data here:");
         if (d) {
-          data = d;
-          loadData(data);
+          loadData(d)
+          
 
           //  render(document.getElementById("render"), scene.data);
           render(document.getElementById("render"), scene.data, {
@@ -591,6 +596,7 @@
 
               target = check(data, index);
             }
+            a()
             if (target == undefined) {
               target = index;
             }
