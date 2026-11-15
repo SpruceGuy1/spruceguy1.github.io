@@ -312,6 +312,53 @@
 
         return neighbors;
       }
+      function getFarNeighbor(i, p){
+        function gc(I){
+          return I % p
+        }
+        function gr(I){
+          return Math.floor(I/p)
+
+        }
+        var a = [
+          i - 2*p - 2,
+          i - 2*p,
+          i - 2*p + 2,
+          i + 2,
+          i + 2*p + 2,
+          i + 2*p,
+          i + 2*p - 2,
+          i - 2
+
+        ]
+        var rc = [
+          gr(i) - 2,
+          gr(i) - 2,
+          gr(i) - 2,
+          gr(i),
+          gr(i) + 2,
+          gr(i) + 2,
+          gr(i) + 2,
+          gr(i)
+        ]
+        var cc = [
+          gc(i) - 2,
+          gc(i),
+          gc(i) + 2,
+          gc(i) + 2,
+          gc(i) + 2,
+          gc(i),
+          gc(i) - 2,
+          gc(i) - 2
+        ]
+      let neighbors = []
+        for(let iterator in a){
+          if(gr(a[iterator]) == rc[iterator] && gc(a[iterator]) == cc[iterator]){
+            neighbors.push(a[iterator])
+          }
+        }
+        return neighbors
+      }
       function getDataNeighbors(index, p, f) {
         let neighbors = getNeighbors(index, p, f);
         let retval = [];
@@ -668,7 +715,13 @@
           else if (tile == "t") iter[2][index] = "T";
           else if (tile == "O") iter[2][index] = "S";
           else if (tile == "S") iter[2][index] = "0";
-          else if (tile == "T") continue;
+          else if (tile == "T"){
+            for(let fn of getFarNeighbor(index, currentPGS)){
+              if(iter[1][fn] == "_"){
+                iter[2][fn] = "S"
+              }
+            }
+          }
           else {
             const num = parseInt(tile);
             if (num < 9) iter[2][index] = (num + 1).toString();
