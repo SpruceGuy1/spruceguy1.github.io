@@ -530,7 +530,7 @@
           } else if (target !== undefined) {
             iter[0][index] = "_";
             iter[0][target] = "H"; // Eating restores a low-health herbivore.
-        /*  } else if (
+            /*  } else if (
             data[getNeighbors(index, currentPGS)[0]] == "_" ||
             data[getNeighbors(index, currentPGS)[1]] == "_" ||
             data[getNeighbors(index, currentPGS)[2]] == "_" ||
@@ -626,19 +626,18 @@
               iter[0][index] = "O";
               grow[index] = false;
             }*/
-                     } else {
+          } else {
             // Evaluate available moves in tie-break order.
             const ordered = [
               index + currentPGS, // down
-              index + 1,          // right
+              index + 1, // right
               index - currentPGS, // up
-              index - 1,          // left
+              index - 1, // left
             ].filter(
               (candidate) =>
                 neighbors.includes(candidate) &&
                 candidate < original.length &&
-                (original[candidate] === "_" ||
-                  original[candidate] === "S") &&
+                (original[candidate] === "_" || original[candidate] === "S") &&
                 iter[0][candidate] === original[candidate],
             );
 
@@ -676,7 +675,6 @@
               iter[0][index] = "O";
               grow[index] = false;
             }
-          
           }
         }
         iter[1] = [...iter[0]];
