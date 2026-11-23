@@ -679,74 +679,80 @@
         }
         iter[1] = [...iter[0]];
         //move carnivores
-        for(let index = 0; index < iter[0].length; index++){
-          const tile = iter[0][index]
-          if(tile !== "C" && tile !== "c" && tile !== "z"){
-            continue
+        for (let index = 0; index < iter[0].length; index++) {
+          const tile = iter[0][index];
+          if (tile !== "C" && tile !== "c" && tile !== "z") {
+            continue;
           }
-          const neighbors = getNeighbors(index,currentPGS)
-          let adultTarget = undefined
-          let juvenileTarget = undefined
-          let babyTarget = undefined
-          adultTarget = [index + currentPGS, index + 1, index - currentPGS, index-1].find((c)=>{
+          const neighbors = getNeighbors(index, currentPGS);
+          let adultTarget = undefined;
+          let juvenileTarget = undefined;
+          let babyTarget = undefined;
+          adultTarget = [
+            index + currentPGS,
+            index + 1,
+            index - currentPGS,
+            index - 1,
+          ].find((c) => {
             return (
-              neighbors.includes(c)
-              && ["H", "h"].includes(iter[0][c])
-              && ["H", "h"].includes(iter[1][c])
-            )
-          })
-          juvenileTarget = [index + currentPGS, index + 1, index - currentPGS, index - 1].find((c)=>{
+              neighbors.includes(c) &&
+              ["H", "h"].includes(iter[0][c]) &&
+              ["H", "h"].includes(iter[1][c])
+            );
+          });
+          juvenileTarget = [
+            index + currentPGS,
+            index + 1,
+            index - currentPGS,
+            index - 1,
+          ].find((c) => {
             return (
-              neighbors.includes(c)
-              && ["J", "j"].includes(iter[0][c])
-              && ["J", "j"].includes(iter[1][c])
-             
-            )
+              neighbors.includes(c) &&
+              ["J", "j"].includes(iter[0][c]) &&
+              ["J", "j"].includes(iter[1][c])
+            );
+          });
+          babyTarget = [
+            index + currentPGS,
+            index + 1,
+            index - currentPGS,
+            index - 1,
+          ].find((c) => {
+            neighbors.includes(c) && iter[0][c] == "B" && iter[1][c] == "B";
+          });
+          if (adultTarget !== undefined) {
+            if (tile == "z") {
+              iter[1][index] = "O";
 
-            
-          })
-          babyTarget = [index + currentPGS, index + 1, index - currentPGS, index - 1].find((c)=>{
-            neighbors.includes(c)
-            && iter[0][c] == "B"
-            && iter[1][c] == "B"
-          })
-          if(adultTarget !== undefined){
-            if(tile == "z"){iter[1][index] = "O"
-
-                          grow[index] = false
-
-            }else{
-            iter[1][index] = "_"}
-            iter[1][adultTarget] = "z"
-          }else if(juvenileTarget !== undefined){
-            if(tile=="z"){
-              iter[1][index] = "O"
-              grow[index] = false
-
-            }else{
-              iter[1][index] = "_"
+              grow[index] = false;
+            } else {
+              iter[1][index] = "_";
             }
-            iter[1][juvenileTarget] = "z"
-          }else if(babyTarget !== undefined){
-            if(tile == "z"){
-              iter[1][index] = "O"
-              grow[index] = false
-            }else{
-              iter[1][index] = "_"
+            iter[1][adultTarget] = "z";
+          } else if (juvenileTarget !== undefined) {
+            if (tile == "z") {
+              iter[1][index] = "O";
+              grow[index] = false;
+            } else {
+              iter[1][index] = "_";
             }
-            iter[1][babyTarget] = "z"
-          }else if(tile=="c"){
-            iter[1][index] = "O"
-            grow[index] = false
-          }else{
-            iter[1][index] = "c"
+            iter[1][juvenileTarget] = "z";
+          } else if (babyTarget !== undefined) {
+            if (tile == "z") {
+              iter[1][index] = "O";
+              grow[index] = false;
+            } else {
+              iter[1][index] = "_";
+            }
+            iter[1][babyTarget] = "z";
+          } else if (tile == "c") {
+            iter[1][index] = "O";
+            grow[index] = false;
+          } else {
+            iter[1][index] = "c";
           }
-
-
-
-          
         }
-        iter[2] = [...iter[1]]
+        iter[2] = [...iter[1]];
         // move babies and juveniles
         for (let index = 0; index < iter[1].length; index++) {
           const tile = iter[1][index];
