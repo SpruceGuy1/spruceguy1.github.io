@@ -209,8 +209,8 @@
         grow = new Array(data.length).fill(true);
       }
       $("#loadData").click(function () {
-        turns = 0
-        $("#time").text(turns)
+        turns = 0;
+        $("#time").text(turns);
         var d = prompt("Paste your data here:");
         if (d) {
           loadData(d);
@@ -245,8 +245,8 @@
       });*/
       $("#mapSelect").change(function () {
         const selectedMap = maps[$(this).val()];
-turns = 0
-        $("#time").text(turns)
+        turns = 0;
+        $("#time").text(turns);
 
         if (selectedMap) {
           if (!hasCustomPGS) {
