@@ -22,8 +22,7 @@
 @font-face {
   font-family: "sitelen";
   src: url("/toki-pona.otf") format("opentype");
-
 }
-.sit{
+.sit {
   font-family: "sitelen";
 }
