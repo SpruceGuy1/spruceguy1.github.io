@@ -19,3 +19,11 @@
   font-family: "Roboto Mono";
   src: url("/koia/RobotoMono-VariableFont_wght.ttf") format("opentype");
 }
+@font-face {
+  font-family: "sitelen";
+  src: url("/toki-pona.otf") format("opentype");
+
+}
+.sit{
+  font-family: "sitelen";
+}
