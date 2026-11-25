@@ -527,24 +527,30 @@
               plantTiles.has(original[candidate]) &&
               plantTiles.has(iter[0][candidate]),
           );
-          var canReproduce = false
-          var possibleParent = undefined
-          
+          var canReproduce = false;
+          var possibleParent = undefined;
+
           /*HP -> BH
             PH -> H_ */
-          if(neighbors.includes(index + 1) && neighbors.includes(index + currentPGS)){
-             possibleParent = index + currentPGS + 1
-             let parentNeighbors = getNeighbors(possibleParent)
-             if(parentNeighbors.includes(index + 1) && parentNeighbors.includes(index + currentPGS)){
-              canReproduce = true
-             iter[0][index] = "B"
-             grow[index] = false
-             iter[0][index + 1] = "H"
-             iter[0][index + currentPGS] = "H"
-             iter[0][index + currentPGS + 1] = "_"
-             treeTarget = undefined
-             target = undefined
-             }
+          if (
+            neighbors.includes(index + 1) &&
+            neighbors.includes(index + currentPGS)
+          ) {
+            possibleParent = index + currentPGS + 1;
+            let parentNeighbors = getNeighbors(possibleParent);
+            if (
+              parentNeighbors.includes(index + 1) &&
+              parentNeighbors.includes(index + currentPGS)
+            ) {
+              canReproduce = true;
+              iter[0][index] = "B";
+              grow[index] = false;
+              iter[0][index + 1] = "H";
+              iter[0][index + currentPGS] = "H";
+              iter[0][index + currentPGS + 1] = "_";
+              treeTarget = undefined;
+              target = undefined;
+            }
           }
           if (treeTarget !== undefined) {
             iter[0][index] = "H"; // H and h become H when eating a tree, restoring health.
@@ -744,37 +750,32 @@
             neighbors.includes(c) && iter[0][c] == "B" && iter[1][c] == "B";
           });
           let destination;
-            let lowestCost = Infinity;
+          let lowestCost = Infinity;
 
-            for (const candidate of ordered) {
-              const nearby = getNeighbors(candidate, currentPGS);
-              let cost = 0;
+          for (const candidate of ordered) {
+            const nearby = getNeighbors(candidate, currentPGS);
+            let cost = 0;
 
-              
-              if (
-                nearby.some(
-                  (n) => new Set("HhJjB").has(iter[0][n]),
-                )
-              ) {
-                cost -= 1;
-              }
-
-              if (cost < lowestCost) {
-                lowestCost = cost;
-                destination = candidate;
-              }
+            if (nearby.some((n) => new Set("HhJjB").has(iter[0][n]))) {
+              cost -= 1;
             }
 
-            if (destination !== undefined) {
-              let t = "_"
-              if(tile  == "z"){
-                t = "O"
-                grow[index] = false
-              }
-              iter[0][index] = t;
-              iter[0][destination] = tile === "c" ? "O" : "c";
-              if (tile === "c") grow[destination] = false;
+            if (cost < lowestCost) {
+              lowestCost = cost;
+              destination = candidate;
             }
+          }
+
+          if (destination !== undefined) {
+            let t = "_";
+            if (tile == "z") {
+              t = "O";
+              grow[index] = false;
+            }
+            iter[0][index] = t;
+            iter[0][destination] = tile === "c" ? "O" : "c";
+            if (tile === "c") grow[destination] = false;
+          }
           if (adultTarget !== undefined) {
             if (tile == "z") {
               iter[1][index] = "O";
