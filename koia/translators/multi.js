@@ -5,18 +5,16 @@ export var koia_multi_tsl = {
     fbz: "menüve kentrális",
     "tok-sit": "<span class='sit'>alasa nanpa wan</span>",
   },
-  "rigbos": {
+  rigbos: {
     en: "Rigbos",
     fbz: "Rigbos",
     "tok-las": "ijo Lipo",
-    "tok-sit": "ijo [lipu..o]"
-
+    "tok-sit": "ijo [lipu..o]",
   },
-  lil_jim:{
+  lil_jim: {
     en: "Lil' Jim",
     fbz: "Jamo Minis",
     "tok-las": "jan lili Imu",
-    "tok-sit": "jan lili [ijo mu .]"
-    
-  }
+    "tok-sit": "jan lili [ijo mu .]",
+  },
 };
