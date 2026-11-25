@@ -21,26 +21,26 @@ export var koia_multi_tsl = {
     "tok-las": "jan lili Imu",
     "tok-sit": "<span class='sit'>jan lili [ijo mu .]</span>",
   },
-  attack:{
+  "attack-button":{
     en:"ATTACK",
     fbz:"PUÑNA",
     "tok-las": "O UTALA",
     "tok-sit": "<span class='sit'>o utala</span>"
   },
-  use:{
+  "use-primary":{
     en: "Use main hand",
     fbz: "Utilisa manem kentrálem",
     "tok-las": "O KEPEKEN E LUKA NANPA WAN",
     "tok-sit": "<span class='sit'>o kepeken e luka nanpa wan</span>"
 
   },
-  swap: {
+  "swap-hands": {
     en: "Swap hands",
     fbz: "Trada manei",
     "tok-las": "o esun e luka nanpa wan e luka nanpa tu",
     "tok-sit": "<span class='sit'>o esun e luka nanpa wan e luka nanpa tu</span>"
   },
-  sec: {
+  "use-secondary": {
     en: "Secondary use",
     fbz: "Utilimen sekondáris",
     "tok-las": "o kepeken pi nasin nanpa tu e luka nanpa wan",
