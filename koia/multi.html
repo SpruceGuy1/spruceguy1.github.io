@@ -27,12 +27,13 @@
     <button id="swap">Swap offhand</button>
     <button id="sec">Secondary use</button>
     <div id="item1">
-      <span id="i1text">Empty</span>
+      <span id="i1text"></span>
       <div id="i1image"></div>
     </div>
-    <div id="item1">
-      Offhand: <span id="i1text">Empty</span>
-      <div id="i1image"></div>
+    <div id="item5">
+      <span id="offhand">Item 5 (Offhand)</span>
+      <span id="i5text"></span>
+      <div id="i5image"></div>
     </div>
 
     <table id="mot">
@@ -52,9 +53,9 @@
         <td></td>
       </tr>
       <tr>
-        <td id="item2">Empty</td>
-        <td id="item3">Empty</td>
-        <td id="item4">Empty</td>
+        <td id="item2"></td>
+        <td id="item3"></td>
+        <td id="item4"></td>
       </tr>
     </table>
   </body>
@@ -67,6 +68,17 @@
     $("#lang").change(() => {
       const clang = $("#lang").val();
       $("#header").html(tsl[clang]["header-default"]);
+      //  attack use swap
+      // sec offhand
+      $("#attack").html(tsl[clang]["attack-button"])
+      $("#use").html(tsl[clang]["use-primary"])
+      $("#swap").html(tsl[clang]["swap-hands"]
+      )
+            $("#sec").html(tsl[clang]["use-secondary"])
+                  $("#offhand").html(tsl[clang]["offhand"])
+
+
+
     });
   </script>
 </html>
