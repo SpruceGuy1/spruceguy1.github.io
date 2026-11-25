@@ -21,13 +21,13 @@ export var koia_multi_tsl = {
     "tok-las": "jan lili Imu",
     "tok-sit": "<span class='sit'>jan lili [ijo mu .]</span>",
   },
-  "attack-button":{
-    en:"ATTACK",
-    fbz:"PUÑNA",
+  "attack-button": {
+    en: "ATTACK",
+    fbz: "PUÑNA",
     "tok-las": "O UTALA",
     "tok-sit": "<span class='sit'>o utala</span>",
   },
-  "use-primary":{
+  "use-primary": {
     en: "Use main hand",
     fbz: "Utilisa manem kentrálem",
     "tok-las": "O KEPEKEN E LUKA NANPA WAN",
