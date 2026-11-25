@@ -535,9 +535,9 @@
          /* if (
             neighbors.includes(index + 1) &&
             neighbors.includes(index + currentPGS) &&
-            plantTiles.has(original[index+1]) &&
-            plantTiles.has(original[index+currentPGS]) &&
-            original[index+currentPGS+1] == "H"
+            plantTiles.has(original[index + 1]) &&
+            plantTiles.has(original[index + currentPGS]) &&
+            original[index + currentPGS + 1] == "H"
           ) {
             possibleParent = index + currentPGS + 1;
             let parentNeighbors = getNeighbors(possibleParent, currentPGS);
@@ -834,7 +834,7 @@
         for (let index = 0; index < iter[1].length; index++) {
           const tile = iter[1][index];
           if (tile !== "B" && tile !== "J" && tile !== "j") continue;
-          if (grow[index] == false) continue
+          if (grow[index] == false) continue;
           const neighbors = getNeighbors(index, currentPGS);
           let plantTarget = undefined;
           /*  if(tile == "B"){plantTarget = [
