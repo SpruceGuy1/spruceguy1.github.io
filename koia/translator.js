@@ -1,10 +1,14 @@
 export var translator = {
-  init: (t) => {
-    var retval = {};
-    for (let item in t) {
-      for (let lang in item) {
-        retval?.[lang]?.[item] = item[lang];
+  init: (translations) => {
+    const result = {};
+
+    for (const [item, languages] of Object.entries(translations)) {
+      for (const [lang, text] of Object.entries(languages)) {
+        if (!result[lang]) result[lang] = {};
+        result[lang][item] = text;
       }
     }
+
+    return result;
   },
 };
