@@ -28,16 +28,14 @@
     import { translator } from "./translator.js";
     import { koia_multi_tsl } from "./translators/multi.js";
 
-      const tsl = translator.init(koia_multi_tsl);
-      $("#lang").change(() => {
-        const clang = $("#lang").val();
-        $("#header").html(tsl[clang]["header-default"]);
-      });
-    </script>
-  
-
-    </html>
-    <!--script
+    const tsl = translator.init(koia_multi_tsl);
+    $("#lang").change(() => {
+      const clang = $("#lang").val();
+      $("#header").html(tsl[clang]["header-default"]);
+    });
+  </script>
+</html>
+<!--script
         import { translator } from "/koia/translator.js"
         import {koia_multi_tsl} from "/koia/translators/multi.js"
         var tsl = translator.init(koia_multi_tsl)
