@@ -4,28 +4,31 @@
     <link rel="stylesheet" href="style.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/eruda"></script>
-<script>eruda.init()</script>
-        <title>Koia Multi</title>
-    </head>
-    <body>
-        <h3 id="header">Start</h3>
-        <details>
-        <select id="lang">
-            <option value="en">English</option>
-            <option value="tok-las">toki pona kepeken sitelen Lasina</option>
-            <option value="tok-sit"><span class="sit">toki-pona kepeken sitelen [la . sina ...]</span></option>
-            <option value="fbz">Ferbëzane</option>
-        </select>
-        </details>
-    </body>
-    <script type="module">
-        import { translator } from "translator.js"
-        import {koia_multi_tsl} from "translators/multi.js"
-        var tsl = translator.init(koia_multi_tsl)
-        $("#lang").change(()=>{
-            var clang = $("#lang").val()
-            $("#header").html(tsl[clang]["header-default"])
-
-        })
+    <script>
+      eruda.init();
     </script>
+    <title>Koia Multi</title>
+  </head>
+  <body>
+    <h3 id="header">Start</h3>
+    <details>
+      <select id="lang">
+        <option value="en">English</option>
+        <option value="tok-las">toki pona kepeken sitelen Lasina</option>
+        <option value="tok-sit">
+          <span class="sit">toki-pona kepeken sitelen [la . sina ...]</span>
+        </option>
+        <option value="fbz">Ferbëzane</option>
+      </select>
+    </details>
+  </body>
+  <script type="module">
+    import { translator } from "translator.js";
+    import { koia_multi_tsl } from "translators/multi.js";
+    var tsl = translator.init(koia_multi_tsl);
+    $("#lang").change(() => {
+      var clang = $("#lang").val();
+      $("#header").html(tsl[clang]["header-default"]);
+    });
+  </script>
 </html>
