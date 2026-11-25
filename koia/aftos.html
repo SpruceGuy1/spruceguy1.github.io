@@ -774,17 +774,17 @@
             neighbors.includes(c) && iter[0][c] == "B" && iter[1][c] == "B";
           });
           const ordered = [
-  index + currentPGS, // down
-  index + 1,          // right
-  index - currentPGS, // up
-  index - 1,          // left
-].filter(
-  (candidate) =>
-    neighbors.includes(candidate) &&
-    candidate < iter[0].length &&
-    (iter[0][candidate] === "_" || iter[0][candidate] === "S") &&
-    iter[1][candidate] === iter[0][candidate],
-);
+            index + currentPGS, // down
+            index + 1, // right
+            index - currentPGS, // up
+            index - 1, // left
+          ].filter(
+            (candidate) =>
+              neighbors.includes(candidate) &&
+              candidate < iter[0].length &&
+              (iter[0][candidate] === "_" || iter[0][candidate] === "S") &&
+              iter[1][candidate] === iter[0][candidate],
+          );
           let destination;
           let lowestCost = Infinity;
 
