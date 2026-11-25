@@ -502,8 +502,11 @@
         const plantTiles = new Set("0123456789xy");
 
         for (let index = 0; index < original.length; index++) {
+       /*    original[index];
+          if ( !== "H" && tile !== "h") continue;*/
           const tile = original[index];
-          if (tile !== "H" && tile !== "h") continue;
+if (tile !== "H" && tile !== "h") continue;
+if (iter[0][index] !== tile) continue;
 
           const neighbors = getNeighbors(index, currentPGS);
           let treeTarget = [
