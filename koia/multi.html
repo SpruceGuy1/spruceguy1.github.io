@@ -68,7 +68,8 @@
       "kr-type": "2d-color",
       "kr-data": {},
     });
-render(document.getElementById("render"), s.data);    const tsl = translator.init(koia_multi_tsl);
+    render(document.getElementById("render"), s.data);
+    const tsl = translator.init(koia_multi_tsl);
     $("#lang").change(() => {
       const clang = $("#lang").val();
       $("#header").html(tsl[clang]["header-default"]);
