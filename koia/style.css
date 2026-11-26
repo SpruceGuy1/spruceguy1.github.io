@@ -33,3 +33,8 @@
   height: 75%;
   width: auto;
 }
+#lang{
+  position:absolute;
+  top:0;
+  left:76%;
+}
