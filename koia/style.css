@@ -26,3 +26,8 @@
 .sit {
   font-family: "sitelen";
 }
+#intro {
+  position:absolute;
+  top:0;
+  left:0;
+}
