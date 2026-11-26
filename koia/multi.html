@@ -70,7 +70,7 @@
     });
     render(document.getElementById("render"), s.data);
     const tsl = translator.init(koia_multi_tsl);
-    $("#lang").change(() => {
+    function loadLang(){
       const clang = $("#lang").val();
       $("#header").html(tsl[clang]["header-default"]);
       //  attack use swap
@@ -80,7 +80,9 @@
       $("#swap").html(tsl[clang]["swap-hands"]);
       $("#sec").html(tsl[clang]["use-secondary"]);
       $("#offhand").html(tsl[clang]["offhand"]);
-    });
+  }
+      $("#lang").change(loadLang)
+loadLang()
     $("#render").append(
       "<img id='intro' src='/images/koia/multi-intro/0.png'/>",
     );
