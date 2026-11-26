@@ -35,7 +35,7 @@ function render(el, json, { pixelGrid = false, pgs = 4 } = {}) {
 
   const scene = typeof json === "string" ? JSON.parse(json) : json;
   if (!scene || scene["kr-type"] !== "2d-color") {
-    throw new Error("Unsupported Koia renderer type");
+    throw new Error("Unsupported Koia renderer type" + String(scene?.["kr-type"]));
   }
 
   const data = scene["kr-data"] || {};
