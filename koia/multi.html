@@ -68,6 +68,10 @@
       'script[src="https://vercel.live/_next-live/feedback/feedback.js"]',
     ).remove();
     $("vercel-live-feedback").remove();
+    var _AMBIENT = 2
+    var _TENSE = 0
+    var mood = "ambient"
+    //ambient, tense, 
     var s = new Scene({
       "kr-type": "2d-color",
       "kr-data": {},
@@ -94,11 +98,43 @@
     var intro = setInterval(function () {
       if (n >= 10) {
         clearInterval(intro);
+        setMusic("/audio/multi-ambient-"+Math.floor(Math.random()*_AMBIENT)+".m4a")
       } else {
         n++;
         $("#intro").attr("src", "/images/koia/multi-intro/" + n + ".png");
       }
     }, 250);
+    function setMusic (selectedMusic) {
+        if (selectedMusic === "none") {
+          // Stop any currently playing music
+          if (window.currentMusic) {
+            window.currentMusic.pause();
+            window.currentMusic.currentTime = 0;
+            window.currentMusic = null;
+          }
+        }
+          // Play standard music
+          if (window.currentMusic) {
+            window.currentMusic.pause();
+            window.currentMusic.currentTime = 0;
+          }
+          window.currentMusic = new Audio(selectedMusic);
+          window.currentMusic.loop = true;
+          window.currentMusic.play();
+      }
+      window.currentMusic.addEventListener('ended', () => {
+  console.log('Audio has finished playing.');
+  if(!currentScene.audio){
+    switch(mood){
+      case "ambient":
+                setMusic("/audio/multi-ambient-"+Math.floor(Math.random()*_AMBIENT)+".m4a")
+      case "tense":
+                setMusic("/audio/multi-tense-"+Math.floor(Math.random()*_TENSE)+".m4a")
+
+    }
+  }
+  // Run your next action here
+});
   </script>
 </html>
 <!--script
