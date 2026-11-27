@@ -53,10 +53,10 @@ export var koia_multi_tsl = {
     "tok-las": "luka nanpa tu",
     "tok-sit": "<span class='sit'>luka nanpa tu</span>",
   },
-  start:{
-    en:"Start Game",
-    fbz:"starta ludem",
+  start: {
+    en: "Start Game",
+    fbz: "starta ludem",
     "tok-las": "o open e musi",
-    "tok-sit": "<span class='sit'>o open e musi</span>"
-  }
+    "tok-sit": "<span class='sit'>o open e musi</span>",
+  },
 };
