@@ -22,6 +22,7 @@
     <div id="render"></div>
     <div id="sub">
       <h3 id="header"></h3>
+      <button id="start">Start game</button>
       <button id="attack">Attack</button>
       <button id="use">Use</button>
       <button id="swap">Swap offhand</button>
@@ -89,12 +90,17 @@
       $("#swap").html(tsl[clang]["swap-hands"]);
       $("#sec").html(tsl[clang]["use-secondary"]);
       $("#offhand").html(tsl[clang]["offhand"]);
+      $("#start").html(tsl[clang]["start"])
     }
     $("#lang").change(loadLang);
     loadLang();
+    $("#start").click(function(){
+
+  
     $("#render").append(
       "<img id='intro' src='/images/koia/multi-intro/0.png'/>",
     );
+
     var n = 0;
     var intro = setInterval(function () {
       if (n >= 10) {
@@ -109,6 +115,7 @@
         $("#intro").attr("src", "/images/koia/multi-intro/" + n + ".png");
       }
     }, 250);
+  })
     window.currentMusic = null;
     function setMusic(selectedMusic) {
       if (selectedMusic === "none") {
