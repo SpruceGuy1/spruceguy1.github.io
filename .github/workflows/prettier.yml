@@ -14,5 +14,6 @@ jobs:
       - name: Run Prettier Action
         uses: creyD/prettier_action@v4.6
         with:
+          clean_node_folder: false
           prettier_options: --write **/*.{js,jsx,ts,tsx,md,json,html,css}
           commit_message: "chore: format code with Prettier"

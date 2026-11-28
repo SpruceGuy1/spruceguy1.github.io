@@ -1,0 +1,64 @@
+0: Jadmekiz
+> 1, 4, 9, 57
+1: Svre Temple. Meet Roboska and Roboski
+> 0, 2
+2: Rebuild the Svre Temple with the robots
+> 3, 4, 9
+3: Farms, mines, and forests of eastern Jadotolvia
+> 13, 52
+4: A spaceship to Ferbeza
+> 5, 56
+5: A conlang meeting
+> 6, 7
+6: A pub
+> 5, 8
+7: ilo waso pi jan pi toki pona
+> 10
+8: on a spaceship with Farmer Ivon
+> 3
+9: The Grand River of Jadotol
+> 10, 11, 12
+10: meeting with people from Faus
+> 3, 13, 33
+11: The Voltic Court. If you egg the rebels to burn it down, it skips to 21.
+> 3, 13, 21, 33
+12: The East Forests
+> 3, 13, 33
+###### ON THE SIDE OF FAUS ######
+13: the start of the war
+14: Fight a u.vlijan
+15: Fight 6 u.vlijanin
+16: Fight a uorsi and 2 u.vlijanin
+17: Forgery unlocked
+18: Fight 6 uorsi and 10 u.vlijanin
+19: Fight Uorsvl, Atsiuort, and 3 u.vlijanin
+20: March towards Vols
+21: The Fire of Voltic Court
+22: Fight Esperanto and VötGil
+23: Fight 20 Miletes Alikes, VötGil, and Atsiuort
+24: Fight 40 uorsi
+25: Fight Mr. Bern and 20 u.vlijanin
+26: Fight Uorsvl and Mr. Bern
+27: Fight Big Tim
+28: Fight a Voltic Subdictator
+29: Fight 20 M.A., 20 Uorsi, and Esperanto
+30: The Great Battle
+    Win: > 31
+    Loss: > 32
+31: Win as Faus
+>53
+32: Lose the Battle
+>54
+33-50: Like 13-30 on the other side
+    Win: >51
+    Loss: >32
+51: Win as Vols
+
+52: Peaceful Ending
+53: Faus Ending
+54: Loss Ending
+55: Vols Ending
+56: Exit Ending
+57-80: different city scenes
+81: Crime Ending
+82: City Ending

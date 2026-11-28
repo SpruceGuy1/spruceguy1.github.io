@@ -6,6 +6,8 @@
     <script>
       eruda.init();
     </script>
+    <title>Ferbingo</title>
+    <link rel="stylesheet" href="/ferbingo/style.css" />
   </head>
 
   <body>
@@ -15,6 +17,7 @@
       alt="Ferbingo logo"
     />
     <a href="/index.html">Home</a>
+    <h1>Ferbingo - Learn the conlang Ferbezan</h1>
     <fieldset>
       <legend>Log-In</legend>
       <!--form id="login" onsubmit="return false">
@@ -104,7 +107,7 @@
       <legend>Questions</legend>
       <p id="skill">Translation</p>
       <select id="choose-skill">
-        <option value="translation">Translation (30 questions)</option>
+        <option value="translation">Translation (34 questions)</option>
         <option value="vocab">Vocabulary (15 lessons)</option>
         <option value="orthography">Orthography (1 lesson)</option>
         <option value="pronunciation">
@@ -123,6 +126,10 @@
       </button>
       <button id="go-back">Go back</button>
       <p id="qstatus">Not answered yet</p>
+      <div id="unit">
+        <h1>Unit: <span id="unit-name">N/A</span></h1>
+        <div id="unit-lessons">No lessons in this unit.</div>
+      </div>
     </fieldset>
     <fieldset>
       <legend>Artworks</legend>
@@ -212,9 +219,15 @@
     <script type="module">
       //import questions from "./questions.json" with { type: "json" };
       let questions;
+      import { addFrame } from "/modules/general/messages.js";
+      $("body").append(addFrame());
+      import { theme } from "/images/themes/theme.js";
+      theme(function (t) {
+        return $(t);
+      });
 
       try {
-        const response = await fetch("./questions.json");
+        const response = await fetch("/ferbingo/questions.json");
 
         if (!response.ok) {
           throw new Error(`questions-load-failed-${response.status}`);
@@ -245,6 +258,23 @@
       }
       /* import conj from "./conjugation-tables.js";
 
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
+            import {
+              getAuth,
+              onAuthStateChanged,
+              createUserWithEmailAndPassword,
+              signInWithEmailAndPassword,
+            } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-auth.js";
+            import {
+              getFirestore,
+              doc,
+              setDoc,
+              getDoc,
+              collection,
+              getDocs,
+            } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js";
+             import conj from "./conjugation-tables.js";
+
       import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
       import {
         getAuth,
@@ -259,24 +289,7 @@
         getDoc,
         collection,
         getDocs,
-      } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js";
-       import conj from "./conjugation-tables.js";
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
-import {
-  getAuth,
-  onAuthStateChanged,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "https://www.gstatic.com/firebasejs/12.17.0/firebase-auth.js";
-import {
-  getFirestore,
-  doc,
-  setDoc,
-  getDoc,
-  collection,
-  getDocs,
-} from "https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js";*/
+      } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js";*/
       // let questions;
       let conj;
       let initializeApp;
@@ -292,7 +305,7 @@ import {
       let getDocs;
 
       try {
-        const questionResponse = await fetch("./questions.json", {
+        const questionResponse = await fetch("/ferbingo/questions.json", {
           cache: "no-store",
         });
 
@@ -319,7 +332,7 @@ import {
           throw new Error("invalid-questions-data");
         }
 
-        ({ default: conj } = await import("./conjugation-tables.js"));
+        ({ default: conj } = await import("/ferbingo/conjugation-tables.js"));
 
         ({ initializeApp } =
           await import("https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js"));
@@ -592,24 +605,24 @@ import {
       }
 
       /*function applyGameData(data) {
-        const isPlainObject =
-          data?.questionProgress !== null &&
-          typeof data?.questionProgress === "object" &&
-          !Array.isArray(data.questionProgress);
+              const isPlainObject =
+                data?.questionProgress !== null &&
+                typeof data?.questionProgress === "object" &&
+                !Array.isArray(data.questionProgress);
 
-        if (
-          data?.version !== 2 ||
-          !isPlainObject ||
-          typeof data.lastSaved !== "string"
-        ) {
-          throw new Error("invalid-save-data");
-        }
+              if (
+                data?.version !== 2 ||
+                !isPlainObject ||
+                typeof data.lastSaved !== "string"
+              ) {
+                throw new Error("invalid-save-data");
+              }
 
-        questionProgress = data.questionProgress;
-        $("#xpc").text(questionProgress.xp);
+              questionProgress = data.questionProgress;
+              $("#xpc").text(questionProgress.xp);
 
-        render();
-      }*/
+              render();
+            }*/
       function applyGameData(data) {
         const normalizedData = normalizeGameData(data);
 
@@ -691,6 +704,12 @@ import {
 
       saveButton.addEventListener("click", async () => {
         if (!currentUser) return;
+        if (questionProgress.xp == 0) {
+          var confirmSave = confirm(
+            "You have 0 XP. Are you sure you want to save your progress?",
+          );
+          if (!confirmSave) return;
+        }
         status.textContent = "Saving game...";
         const previousStreak = questionProgress.streak;
         const previousDayLastSaved = questionProgress.dayLastSaved;
@@ -714,6 +733,9 @@ import {
 
       loadButton.addEventListener("click", async () => {
         if (!currentUser) return;
+        /*   if(questionProgress.xp==0){
+
+              }*/
         status.textContent = "Loading game...";
 
         try {
@@ -742,16 +764,16 @@ import {
         $("#userAnswer").val($("#userAnswer").val() + "kʷ");
       });
       tables.conj2 = `
-        -ere verbs:
-        MOOD VOICE TENSE    SINGULAR             PLURAL
-                          1     2     3     1       2       3
-        INDC ACTV  PRES   -eijo -es   -et   -emus   -etis   -ent
-                   PAST   -ebo  -ebas -ebat -ebamus -ebatis -ebant
-                   FUTURE Present tense + 'vod'
-                   FUT-PFC Past tense + 'vod'
+              -ere verbs:
+              MOOD VOICE TENSE    SINGULAR             PLURAL
+                                1     2     3     1       2       3
+              INDC ACTV  PRES   -eijo -es   -et   -emus   -etis   -ent
+                         PAST   -ebo  -ebas -ebat -ebamus -ebatis -ebant
+                         FUTURE Present tense + 'vod'
+                         FUT-PFC Past tense + 'vod'
 
-                  
-        `;
+
+              `;
       for (const i in tables) {
         tables[i] = "<pre>" + tables[i] + "</pre>";
       }
@@ -767,37 +789,190 @@ import {
         $("#skill").text(name);
         render();
       });
-      function render() {
-        const currentQuestion = questions[skill]?.[questionProgress[skill]];
-        if (currentQuestion["dyna-info"]) {
-          var d = currentQuestion["dyna-info"];
-          var retval = "<h1>" + d.title + "</h1>";
-          switch (d.typ) {
-            case "table":
-              retval += "<table>";
-              for (let i of d.data) {
-                retval += "<tr>";
-                for (let j of i) {
-                  retval += "<td>" + j + "</td>";
-                }
-                retval += "</tr>";
-              }
-              retval += "</table>";
+      function normalizeUnitId(unitEntry) {
+        if (!unitEntry) return null;
+        if (typeof unitEntry === "string") return unitEntry;
+        if (!isPlainObject(unitEntry)) return null;
+        return unitEntry["unit-id"] || unitEntry.id || null;
+      }
 
-              break;
-            case "std":
-              retval += "<br><p>" + d.data + "</p>";
-              break;
-            case "br":
-              for (let i of d.data) {
-                retval += "<br>" + i;
-              }
-              break;
+      function getQuestionUnit(currentQuestion) {
+        if (!currentQuestion) return null;
+
+        const unitId = normalizeUnitId(
+          currentQuestion.special?.unit ?? currentQuestion.unit,
+        );
+        if (!unitId) return null;
+
+        const unitFromQuestion = isPlainObject(currentQuestion.unit)
+          ? currentQuestion.unit
+          : null;
+
+        const unitFromSpecial = isPlainObject(currentQuestion.special)
+          ? currentQuestion.special.unit
+          : null;
+
+        const unitValue = unitFromQuestion ?? unitFromSpecial ?? null;
+        const unitData = isPlainObject(unitValue) ? unitValue : null;
+
+        const fallbackUnit = {
+          id: unitId,
+          title: unitData?.title || unitData?.name || unitId,
+          optional: Boolean(unitData?.optional),
+          data: Array.isArray(unitData?.data) ? unitData.data : [],
+        };
+
+        const unitBag = new Map();
+        for (const skillName of Object.keys(questions)) {
+          const entries = questions[skillName];
+          if (!Array.isArray(entries)) continue;
+          for (const entry of entries) {
+            if (!isPlainObject(entry)) continue;
+            const entryUnitId = normalizeUnitId(
+              entry.special?.unit ?? entry.unit,
+            );
+            if (!entryUnitId) continue;
+            const entryUnit = isPlainObject(entry.unit) ? entry.unit : null;
+            const entrySpecialUnit = isPlainObject(entry.special)
+              ? entry.special.unit
+              : null;
+            const entryValue = entryUnit ?? entrySpecialUnit ?? null;
+            const entryUnitData = isPlainObject(entryValue) ? entryValue : null;
+            if (!unitBag.has(entryUnitId)) {
+              unitBag.set(entryUnitId, {
+                id: entryUnitId,
+                title:
+                  entryUnitData?.title ||
+                  entryUnitData?.name ||
+                  entry.name ||
+                  entry.q ||
+                  entryUnitId,
+                optional: Boolean(
+                  entryUnitData?.optional || entry.special?.optional,
+                ),
+                data: Array.isArray(entryUnitData?.data)
+                  ? entryUnitData.data
+                  : [],
+              });
+            }
           }
-          $("#questions").html(retval);
+        }
+
+        return unitBag.get(unitId) || fallbackUnit;
+      }
+
+      function renderUnitInfo(currentQuestion) {
+        const unit = getQuestionUnit(currentQuestion);
+        if (!unit) {
+          $("#unit-name").text("N/A");
+          $("#unit-lessons").text("No lessons in this unit.");
           return;
         }
 
+        $("#unit-name").text(unit.title);
+
+        const lessonEntries = [];
+        for (const bucket of Object.values(questions)) {
+          if (!Array.isArray(bucket)) continue;
+          for (const entry of bucket) {
+            if (!isPlainObject(entry)) continue;
+            const entryUnitId = normalizeUnitId(
+              entry.special?.unit ?? entry.unit,
+            );
+            if (entryUnitId !== unit.id) continue;
+            if (entry.name) {
+              lessonEntries.push(entry.name);
+            } else if (entry.q && typeof entry.q === "string") {
+              lessonEntries.push(entry.q);
+            } else if (entry.id) {
+              lessonEntries.push(entry.id);
+            }
+          }
+        }
+
+        const unitLessonData =
+          Array.isArray(unit.data) && unit.data.length > 0 ? unit.data : [];
+
+        const renderedLessons = lessonEntries.length
+          ? lessonEntries
+          : unitLessonData.map((lesson) => {
+              if (isPlainObject(lesson) && lesson["dyna-info"]?.title) {
+                return lesson["dyna-info"].title;
+              }
+              if (isPlainObject(lesson) && lesson.name) return lesson.name;
+              if (isPlainObject(lesson) && lesson.q) return lesson.q;
+              return String(lesson);
+            });
+
+        if (!renderedLessons.length) {
+          $("#unit-lessons").text("No lessons in this unit.");
+          return;
+        }
+
+        const uniqueLessons = [...new Set(renderedLessons)];
+        $("#unit-lessons").html(
+          uniqueLessons.map((lesson) => `<div>${lesson}</div>`).join(""),
+        );
+      }
+
+      function renderDynaInfo(d) {
+        if (!isPlainObject(d)) return "";
+
+        var retval = "<h1>" + (d.title || "Lesson") + "</h1>";
+        switch (d.typ) {
+          case "table":
+            retval += "<table>";
+            for (let i of d.data || []) {
+              retval += "<tr>";
+              for (let j of i || []) {
+                retval += "<td>" + j + "</td>";
+              }
+              retval += "</tr>";
+            }
+            retval += "</table>";
+            break;
+          case "std":
+            retval += "<br><p>" + (d.data || "") + "</p>";
+            break;
+          case "br":
+            for (let i of d.data || []) {
+              retval += "<br>" + i;
+            }
+            break;
+          default:
+            retval += "<br><p>" + (d.data || "") + "</p>";
+        }
+        return retval;
+      }
+
+      function render() {
+        const currentQuestion = questions[skill]?.[questionProgress[skill]];
+        if (currentQuestion) {
+          $("#answer-area").empty();
+          $("#qstatus").text("Not answered yet");
+          $("#check").text("Check answer").prop("disabled", false);
+          $("#skip-question").prop("disabled", true).prop("hidden", true);
+          renderUnitInfo(currentQuestion);
+          const unitDataLesson =
+            isPlainObject(currentQuestion.unit) &&
+            Array.isArray(currentQuestion.unit.data)
+              ? currentQuestion.unit.data.find(
+                  (lesson) => isPlainObject(lesson) && lesson["dyna-info"],
+                )
+              : null;
+
+          if (currentQuestion["dyna-info"]) {
+            $("#questions").html(renderDynaInfo(currentQuestion["dyna-info"]));
+            $("#check").text("Continue");
+            return;
+          }
+
+          if (unitDataLesson) {
+            $("#questions").html(renderDynaInfo(unitDataLesson["dyna-info"]));
+            $("#check").text("Continue");
+            return;
+          }
+        }
         if (!currentQuestion) {
           $("#questions").text("No questions available.");
           $("#answer-area").empty();
@@ -808,9 +983,9 @@ import {
         }
 
         const isOptionalQuestion = Boolean(currentQuestion?.special?.optional);
-        $("#qstatus").text("Not answered yet");
-        $("#check").prop("disabled", false);
-        $("#check").text("Check answer");
+        /*$("#qstatus").text("Not answered yet");
+              $("#check").prop("disabled", false);
+              $("#check").text("Check answer");*/
         $("#skip-question")
           .prop("disabled", !isOptionalQuestion)
           .prop("hidden", !isOptionalQuestion);
@@ -822,17 +997,17 @@ import {
           );
           $("#questions").append(currentQuestion.otext);
           /* for (let i of currentQuestion.options) {
-            var indx = currentQuestion.options.getIndexOf(i);
-            function clickHandler(num) {
-              if (currentQuestion.correctOption == num) {
-                checkAnswer(false);
-              }
-            }
-            $("#opt-" + indx).on("click", function () {
-              clickHandler(indx);
-            });
-            $("#questions").append(
-              "<button class='opt-button' id='opt-" + ind*/ for (const [
+                  var indx = currentQuestion.options.getIndexOf(i);
+                  function clickHandler(num) {
+                    if (currentQuestion.correctOption == num) {
+                      checkAnswer(false);
+                    }
+                  }
+                  $("#opt-" + indx).on("click", function () {
+                    clickHandler(indx);
+                  });
+                  $("#questions").append(
+                    "<button class='opt-button' id='opt-" + ind*/ for (const [
             index,
             option,
           ] of currentQuestion.options.entries()) {
@@ -914,7 +1089,8 @@ import {
       function checkAnswer(p) {
         const skillQuestions = questions[skill];
         const currentQuestion = skillQuestions?.[questionProgress[skill]];
-        if (currentQuestion.information) {
+        // if (currentQuestion.information) {
+        if (currentQuestion.information || currentQuestion["dyna-info"]) {
           if (questionProgress[skill] < skillQuestions.length - 1) {
             new Audio("/audio/correct.m4a").play().catch((e) => {
               console.error("Error: " + e);
@@ -932,9 +1108,22 @@ import {
         }
 
         if (p && !currentQuestion?.rega) return;
+        function aString(array) {
+          var retval = "";
+          for (i of array) {
+            retval += i;
+          }
+          return retval;
+        }
 
         var regex = new RegExp(currentQuestion.rega, currentQuestion.flags);
         if (!p || regex.test($("#userAnswer").val())) {
+          var t = $("#userAnswer").val();
+          var u = t
+            .replace(/[\u2018\u2019]/g, "'")
+            // Replace left and right double curly quotes with a straight double quote
+            .replace(/[\u201C\u201D]/g, '"');
+          $("#userAnswer").val(u);
           job();
         } else {
           new Audio("/audio/incorrect.m4a").play().catch((e) => {
@@ -1054,6 +1243,8 @@ import {
       setInterval(() => {
         if (minigameActive) {
           correctPosition = Math.floor(Math.random() * 5) - 2; // Random position between -2 and 2
+          var arr = ["=", "=", "=", "=", "="];
+          arr[correctPosition + 2] = " ";
         }
       }, 5000); // Change correct position every 5 seconds
     </script>

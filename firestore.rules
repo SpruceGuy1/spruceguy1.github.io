@@ -13,5 +13,27 @@ service cloud.firestore {
       allow create, update, delete: if request.auth != null
         && request.auth.uid == userId;
     }
+    match /koia_saves/{userId} {
+      allow read, write: if request.auth != null
+        && request.auth.uid == userId;
+    }
+    match /messages/{messageId} {
+      allow read: if request.auth != null
+        && (resource.data.senderUid == request.auth.uid
+          || resource.data.recipientEmail == request.auth.token.email);
+      allow create: if request.auth != null
+        && request.resource.data.keys().hasAll([
+          'senderUid', 'senderEmail', 'recipientEmail', 'body', 'createdAt'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'senderUid', 'senderEmail', 'recipientEmail', 'body', 'createdAt'
+        ])
+        && request.resource.data.senderUid == request.auth.uid
+        && request.resource.data.senderEmail == request.auth.token.email
+        && request.resource.data.recipientEmail is string
+        && request.resource.data.body is string
+        && request.resource.data.body.size() > 0
+        && request.resource.data.body.size() <= 2000;
+    }
   }
 }
