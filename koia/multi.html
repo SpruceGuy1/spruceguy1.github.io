@@ -208,27 +208,25 @@
       }
     });
 
-        loadButton.addEventListener("click", async () => {
-          if (!currentUser) return;
-          status.textContent = "Loading progress...";
-          try {
-            const snapshot = await getDoc(
-              doc(db, "multi_saves", currentUser.uid),
-            );
-            if (!snapshot.exists()) {
-              status.textContent = "No saved progress found.";
-              return;
-            }
-            applySaveData(snapshot.data());
-            status.textContent = "Progress loaded.";
-          } catch (error) {
-            if (error.message === "invalid-save-data") {
-              status.textContent = "Saved progress is invalid.";
-            } else {
-              showFirebaseError("Load", error);
-            }
-          }
-        });
+    loadButton.addEventListener("click", async () => {
+      if (!currentUser) return;
+      status.textContent = "Loading progress...";
+      try {
+        const snapshot = await getDoc(doc(db, "multi_saves", currentUser.uid));
+        if (!snapshot.exists()) {
+          status.textContent = "No saved progress found.";
+          return;
+        }
+        applySaveData(snapshot.data());
+        status.textContent = "Progress loaded.";
+      } catch (error) {
+        if (error.message === "invalid-save-data") {
+          status.textContent = "Saved progress is invalid.";
+        } else {
+          showFirebaseError("Load", error);
+        }
+      }
+    });
     var scenes = [{}];
     var currentScene = scenes[0];
     var player = { id: "rigbos", hp: 10 };
