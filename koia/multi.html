@@ -227,19 +227,19 @@
         }
       }
     });
-    $("#goog").hide()
-    var loginOpen = false
-    $("#openlogin").click(function(){
-      if(!loginOpen){
-      $("#goog").show()
-      $("#openlogin").text("Hide login")
-      loginOpen = true
-      }else{
-        $("#goog").hide()
-        $("#openlogin").text("Log In or Sign Up")
-        loginOpen = false
+    $("#goog").hide();
+    var loginOpen = false;
+    $("#openlogin").click(function () {
+      if (!loginOpen) {
+        $("#goog").show();
+        $("#openlogin").text("Hide login");
+        loginOpen = true;
+      } else {
+        $("#goog").hide();
+        $("#openlogin").text("Log In or Sign Up");
+        loginOpen = false;
       }
-    })
+    });
     var scenes = [{}];
     var currentScene = scenes[0];
     var player = { id: "rigbos", hp: 10 };
