@@ -213,7 +213,7 @@ player = data.player        }
           status.textContent = "Loading progress...";
           try {
             const snapshot = await getDoc(
-              doc(db, "koia_saves", currentUser.uid),
+              doc(db, "multi_saves", currentUser.uid),
             );
             if (!snapshot.exists()) {
               status.textContent = "No saved progress found.";
