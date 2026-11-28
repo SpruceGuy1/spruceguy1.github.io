@@ -67,13 +67,9 @@
     import { translator } from "./translator.js";
     import { koia_multi_tsl } from "./translators/multi.js";
     import { Scene, render, animate } from "./renderer.js";
-    var scenes = [{
-
-    }]
-    var currentScene = scenes[0]
-    var player = {id:"rigbos",
-     hp : 10,
-  }
+    var scenes = [{}];
+    var currentScene = scenes[0];
+    var player = { id: "rigbos", hp: 10 };
     $(
       'script[src="https://vercel.live/_next-live/feedback/feedback.js"]',
     ).remove();
